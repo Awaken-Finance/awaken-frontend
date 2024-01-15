@@ -1,0 +1,33 @@
+/* .header-group-fullscreen{float: right;}
+.header-group-intervals > .intervals-container > .quick span{padding-left: 15px; padding-right: 15px;}
+.chart-page .header-chart-panel .my-group{float: left;}
+.separator-3cgsM4c1-{background-color: #d1d4db;} */
+/* .my-group {height: 100%;} */
+body {
+  background: #262B3D;
+}
+.layout__area--top [class^="group-"] {
+
+}
+.my-group.active .myDate {
+  color: #2483ff;
+}
+
+.fullscreen,
+.my-group {
+  cursor: pointer;
+}
+.fullscreen {
+  width: 20px;
+  height: 20px;
+  background: url(../images/expand.svg) no-repeat;
+}
+/* 
+.chart-page .chart-container{border-color: #d1d4db;}
+
+.charting-mask{display: block; position: absolute; top: 38px; width: 100%; left: 0; bottom: 0;}
+
+.chart-page .layout__area--left [class^="drawingToolbar-"]{background: #ebecf1!important;}
+
+.b{color: #589065; color: #03c087} */
+

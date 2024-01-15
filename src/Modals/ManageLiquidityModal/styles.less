@@ -1,0 +1,117 @@
+.remove-modal-box,
+.add-modal-box {
+  border-radius: 8px;
+  &-input {
+    padding: 16px 12px;
+    border-radius: 4px;
+    background-color: var(--ant-input-bg-color);
+    border: 1px solid var(--ant-input-bg-color);
+    transition: border-color 0.2s;
+    box-sizing: border-box;
+
+    .remove-input {
+      padding: 0;
+      line-height: 24px;
+      height: 24px;
+    }
+
+    .remove-input.ant-input-affix-wrapper {
+      padding-left: 0;
+    }
+
+    .common-input.ant-input-affix-wrapper {
+      border: none;
+    }
+
+    &:hover,
+    &:focus-within {
+      border-color: var(--ant-primary-color);
+    }
+    .ant-input {
+      font-size: 20px;
+      &::placeholder {
+        font-size: 20px;
+      }
+    }
+  }
+
+  .add-btn {
+    margin-top: 2px;
+  }
+
+  &-lp {
+    padding: 16px 12px;
+    background-color: var(--ant-k-line-bg-color);
+    border-radius: 4px;
+  }
+
+  .comfirm-btn {
+    width: 100%;
+  }
+}
+
+.ant-modal-header {
+  .manage-liquidity-setting.ant-btn.setting-fee-btn {
+    position: absolute;
+    right: 20px;
+    top: calc(50% - 1px);
+    transform: translateY(-44%);
+    background-color: var(--ant-container-bg-color);
+  }
+}
+
+.ant-drawer-header {
+  .manage-liquidity-setting.ant-btn.setting-fee-btn {
+    position: absolute;
+    right: 12px;
+    top: calc(50% - 1px);
+    transform: translateY(-44%);
+    background-color: var(--ant-container-bg-color);
+  }
+}
+
+.pooled-tokens-modal {
+  .title {
+    padding-bottom: 24px;
+    line-height: 20px;
+  }
+  .ant-modal-header {
+    border-bottom: none;
+  }
+  .ant-modal-body {
+    padding: 0 16px 24px;
+  }
+}
+
+.remove-liq-confirm-modal,
+.add-liq-confirm-modal,
+.liq-confirm-modal-m {
+  .ant-modal-header {
+    border-bottom: none;
+  }
+
+  .ant-modal-body {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    padding-top: 0;
+
+    .sub-row-container {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+  }
+}
+
+.pc-site-content {
+  .manage-liquidity-modal-wrap {
+    pointer-events: none;
+  }
+}
+.liq-confirm-modal-m {
+  border-radius: 8px;
+  .ant-modal-body {
+    padding: 0 16px 24px;
+  }
+}

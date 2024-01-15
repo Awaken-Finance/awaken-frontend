@@ -1,0 +1,43 @@
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+  60% {
+    transform: scale(1.4);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+.awaken-loading {
+  width: 100%;
+  left: 0;
+  position: absolute;
+  display: flex;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  align-items: center;
+  justify-content: center;
+  background: #000d;
+  svg {
+    animation: pulse 800ms linear infinite;
+  }
+}
+.awaken-page-loading {
+  top: 64px;
+  bottom: 64px;
+}
+.awaken-user-center-loading {
+  left: 200px;
+  top: 64px;
+  bottom: 64px;
+  // display: none;
+  background: #fff;
+  svg {
+    margin-right: 200px;
+  }
+}
+.mobile-site-content .awaken-user-center-loading {
+  display: none;
+}

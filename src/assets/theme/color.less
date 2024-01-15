@@ -1,0 +1,231 @@
+@import './customer.theme.less';
+body {
+  // primary color
+  --ant-primary-color: #477BFF;
+  --ant-primary-4: #477BFF;
+  --ant-primary-5: #477BFF;
+  // primary color 16%
+  --ant-primary-color-percent-16: rgb(71 123 255 / 16%);
+
+  // secondary color
+  --ant-secondary-color: #FFC736;
+
+  // rise color
+  --ant-rise-color: #1BC57D;
+
+  // fall color
+  --ant-fall-color: #E43555;
+  --ant-primary-disabled-color: @primary-disabled-color;
+  --ant-input-placeholder-color: @input-placeholder-color;
+  --ant-border-color-base: @border-color-base;
+  --ant-white-color: @white-color;
+  --ant-dark-gay-color: @dark-gay-color;
+  --ant-default-percent-color: @default-percent-color;
+  --ant-layout-body-background: @layout-body-background;
+  --ant-menu-item-active-bg: @menu-item-active-bg;
+  --ant-modal-header-border: @modal-header-border;
+  --ant-apy-color: @apy-color;
+  --ant-alter-color: @alter-color;
+  //
+  --ant-steps-background: @steps-background;
+  --ant-process-tail-color: @process-tail-color;
+  //
+  --ant-blue1: @blue1;
+  --ant-blue2: @blue2;
+  //
+  --ant-green1: @green1;
+  --ant-green2: @green2;
+  --ant-green3: @green3;
+  --ant-green4: @green4;
+  //
+  --ant-red1: @red1;
+  --ant-red2: @red2;
+  --ant-red3: @red3;
+  --ant-red4: @red4;
+  --ant-red5: @red5;
+  //
+  --ant-grey1: @grey1;
+  --ant-grey2: @grey2;
+  --ant-grey3: @grey3;
+  --ant-grey4: @grey4;
+  --ant-grey5: @grey5;
+  --ant-grey6: @grey6;
+  --ant-grey7: @grey7;
+  //
+  --ant-black1: @black1;
+  --ant-black2: @black2;
+  --ant-black3: @black3;
+  --ant-black4: @black4;
+  --ant-black5: @black5;
+  --ant-black6: @black6;
+  //
+  --ant-bg1: @bg1;
+  --ant-bg2: @bg2;
+  --ant-bg3: @bg3;
+  --ant-bg4: @bg4;
+  --ant-bg5: @bg5;
+  --ant-bg6: @bg6;
+
+  // error color
+  --ant-error-color: var(--ant-fall-color);
+  --ant-error-color-hover: var(--ant-fall-color);
+
+  // up down
+  --ant-up-color: @up-color;
+  --ant-up-hover-color: @up-hover-color;
+  --ant-up-clicked-color: @up-clicked-color;
+  //
+  --ant-down-color: @down-color;
+  --ant-down-hover-color: @down-hover-color;
+  --ant-down-clicked-color: @down-clicked-color;
+  //
+  --ant-panel-bg: @panel-bg;
+  --ant-panel-grey: @panel-grey;
+  //
+  --ant-border1: @border1;
+  --ant-border2: @border2;
+  --ant-border3: @border3;
+  --ant-border4: @border4;
+  //
+  --ant-text1-color: @text1-color;
+  --ant-text2-color: @text2-color;
+  --ant-text3-color: @text3-color;
+  --ant-text4-color: @text4-color;
+  --ant-text5-color: @text5-color;
+  --ant-text6-color: @text6-color;
+  --ant-text7-color: @text7-color;
+  --ant-text8-color: @text8-color;
+  --ant-text9-color: @text9-color;
+
+  // primary font
+  --ant-primary-font-color: @primary-font-color;
+
+  // black font
+  --ant-black-font-color-1: #E5E8EF;
+  --ant-black-font-color-2: #9BA0B0;
+  --ant-black-font-color-3: #5C6170;
+
+  // fall font
+  --ant-rise-font-color: #2AED9B;
+  // rise font
+  --ant-fall-font-color: #FF496A;
+
+  // body bg
+  --ant-body-bg-color: #101217;
+  --ant-sidebar-bg-color: #181B23;
+  // K line
+  --ant-k-line-bg-color: #181B23;
+  // input bg
+  --ant-input-bg-color: #131620;
+  // container bg
+  --ant-container-bg-color: #1E212B;
+  --ant-container-bg-color-2: #2A2E3A;
+  // title bg
+  --ant-title-bg-color: #2A2E3A;
+  // alert bg
+  --ant-alert-bg-color: #484E60;
+  // border 
+  --ant-border-color: #5685FF;
+  // gray color
+  --ant-gray-color: #343948;
+  
+  //
+  --ant-button-gray-color: #343948;
+  --ant-button-ghost-border-color: #393D47;
+  --ant-button-gray-hover-color: #484E60;
+  --ant-primary-button-hover: #477BFF;
+  --ant-primary-button-clicked: #477BFF;
+  //
+  --ant-slider1-color: @slider1-color;
+  --ant-switch1-color: @switch1-color;
+  --ant-switch2-color: @switch2-color;
+  //
+  --ant-button1-bg-color: @button1-bg-color;
+  --ant-fail-input: @fail-input;
+
+  // btn hover
+  --ant-primary-color-hover: #477BFF;
+  --ant-list-item-color-hover: #2A2E3A;
+
+  // portkey theme
+  --portkey-ui-text-primary: #e5e8ef;
+  --portkey-ui-text-secondary: #9ba0b0;
+  --portkey-ui-scan-bg: #2a2e3a;
+  --portkey-ui-segmented-bg: #131620;
+  --portkey-ui-segmented-selected-bg: #343948;
+  --portkey-ui-default-btn-bg: #343948;
+  --portkey-ui-border-1: #393d47;
+  --portkey-ui-default-border: #393d47;
+  --portkey-ui-primary-border: transparent;
+  --portkey-ui-input-border: transparent;
+  --portkey-ui-segmented-input-border: #131620;
+  --portkey-ui-text-tip: #5c6170;
+  --portkey-ui-input-text: #d2d3d5;
+  --portkey-ui-input-placeholder: #5c6170;
+  --portkey-ui-text-disabled: #5c6170;
+  --portkey-ui-font-7: #5c6170;
+  --portkey-ui-btn-bg: #343948;
+  --portkey-ui-input-bg: #131620;
+  --portkey-ui-input-bg-1: #131620;
+  --portkey-ui-select-bg: #343948;
+  --portkey-ui-select-dropdown-bg: #1e212b;
+  --portkey-ui-default-bg: #1e212b;
+  --portkey-ui-form-label: #9ba0b0;
+  --portkey-ui-text-error: #ff496a;
+  --portkey-ui-title-text-1: 24px;
+  --portkey-ui-primary-border-radius: 4px;
+  --portkey-ui-scan-border: 8px solid #fff;
+  --portkey-ui-primary-btn-bg: var(--ant-primary-color);
+  --portkey-ui-primary-bg: var(--ant-primary-color);
+  --portkey-ui-border-7: var(--ant-primary-color);
+  --portkey-ui-font-4: var(--ant-primary-color);
+
+  .aelf-web-login.aelf-extra-wallets .web2-header .title {
+    color: var(--ant-black-font-color-2) ;
+    margin-top: 24px;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 20px;
+  }
+
+  .aelf-web-login.aelf-extra-wallets .wallet-entries.web2-content {
+    margin-top: 16px;
+  }
+
+  .aelf-web-login.aelf-extra-wallets .web2-content .plugin-entry {
+    background-color: var(--portkey-ui-default-btn-bg) ;
+    border: none;
+  }
+
+  .aelf-web-login.aelf-extra-wallets .web2-content .plugin-entry .name {
+    color: var(--ant-black-font-color-1) ;
+  }
+}
+
+.set-allowance-wrapper .set-allowance-body {
+  background-color: #2A2E3A;
+  margin: 0 24px;
+  border-radius: 4px;
+  padding: 24px;
+  .portkey-ant-input-affix-wrapper {
+    border: none;
+  }
+}
+
+.set-allowance-dapp-info-inner {
+  display: inline-block;
+  white-space: nowrap;
+  width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  border: 1px solid #393D47;
+  margin: 0 24px;
+}
+
+.mobile-site-content {
+  --ant-up-color: @up2-color;
+  --ant-down-color: @down2-color;
+  --ant-slider1-color: @slider2-color;
+}
+

@@ -1,0 +1,149 @@
+.trade-pair-list {
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+  border-radius: 2px;
+
+  .common-card-title {
+    background-color: var(--ant-container-bg-color);
+  }
+
+  .pari-collect {
+    margin-top: -2px;
+  }
+
+  .common-card-container {
+    padding: 0;
+    flex: 1;
+  }
+  .search {
+    padding: 0 16px;
+    display: flex;
+    flex-direction: column;
+    .search-input {
+      height: 32px;
+      border-radius: 4px;
+      padding: 4px 8px;
+      &.mobile {
+        height: 40px;
+      }
+      .ant-input-prefix {
+        padding: 4px 0;
+      }
+    }
+    &-title {
+      line-height: 24px;
+      font-size: 16px;
+      color: var(--ant-black-font-color-1);
+      font-weight: bold;
+    }
+  }
+
+  .tard-meun {
+    padding: 0 16px;
+    .tard-meun-list {
+      height: 44px;
+      font-size: 14px;
+      grid-column-gap: 16px;
+    }
+  }
+
+  .trade-pair-fee-rate-use-bg {
+    line-height: 18px;
+    height: 18px;
+    width: fit-content;
+  }
+
+  .trade-pair-table-cell {
+    font-size: 12px;
+    line-height: 18px;
+    // display: inline-block;
+  }
+
+  .trade-pair-table-column-slash {
+    margin: 0 4px;
+  }
+}
+
+.tarding-pair-list-pc {
+  .pair-name {
+    flex: 1;
+  }
+
+  .common-table-list .ant-table-thead {
+    background: #1e212b;
+    position: relative;
+  }
+
+  .ant-table-header {
+    z-index: 2;
+  }
+
+  .common-table-list table {
+    background: #1e212b;
+  }
+
+  @media (max-width: 1919PX) {
+    .common-table-list .ant-table-tbody > tr > td {
+      padding-top: 7px;
+      padding-bottom: 7px;
+    }
+
+    .pair-name {
+      flex: 0 0 100%;
+    }
+  }
+
+  .common-table-list .ant-table-thead > tr > th {
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+
+  .ant-table-body {
+    margin-top: 4px;
+  }
+
+  &-en {
+    @media (max-width: 1679PX) {
+      .ant-table-thead > tr > th:nth-child(2) {
+        position: absolute;
+        left: 161px;
+        width: 40px;
+        display: inline-block;
+        z-index: 1;
+      }
+    }
+  
+    @media (min-width: 1680PX) and (max-width: 1919PX) {
+      .ant-table-thead > tr > th:nth-child(2) {
+        position: absolute;
+        left: 234px;
+        width: 40px;
+        display: block;
+        z-index: 1;
+      }
+    }
+  }
+
+  &-tw {
+    @media (max-width: 1679PX) {
+      .ant-table-thead > tr > th:nth-child(2) {
+        position: absolute;
+        left: 179px;
+        width: 40px;
+        display: inline-block;
+        z-index: 1;
+      }
+    }
+  
+    @media (min-width: 1680PX) and (max-width: 1919PX) {
+      .ant-table-thead > tr > th:nth-child(2) {
+        position: absolute;
+        left: 250px;
+        width: 40px;
+        display: block;
+        z-index: 1;
+      }
+    }
+  }
+}

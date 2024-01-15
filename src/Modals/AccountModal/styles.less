@@ -1,0 +1,195 @@
+.account-modal.ant-modal {
+  max-width: 100%;
+  padding-bottom: 0;
+  z-index: 1000;
+
+  .account-info {
+    display: flex;
+    align-items: center;
+
+    .account-addr-info {
+      display: flex;
+      align-items: center;
+
+      .ant-col {
+        display: flex;
+        align-items: center;
+      }
+    }
+  }
+
+  .icon-copy-addr {
+    color: var(--ant-black-font-color-2);
+
+    &:hover {
+      color: var(--ant-black-font-color-1);
+      cursor: pointer;
+    }
+  }
+
+  .logout-icon {
+    width: 32px;
+    height: 32px;
+    padding: 4px;
+    border-radius: 16px;
+    background-color: #343948;
+    color: var(--ant-black-font-color-2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .ant-modal-body {
+    padding: 0;
+    margin: 0;
+    background-color: transparent;
+  }
+
+  .ant-modal-content {
+    background-color: var(--ant-container-bg-color);
+    border-radius: 8px;
+    max-height: calc(100vh - 110px);
+    overflow-y: auto;
+    box-shadow: 0 0 24px 0 rgb(0 0 0 / 50%);
+  } 
+
+  .switch-wallet-btn {
+    width: 100%;
+    margin: 24px 0;
+    height: 40px;
+  }
+
+  .account-content {
+    width: 420px;
+    min-height: 628px;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    
+  }
+  .account-switch {
+    padding: 8px;
+
+    .switch-wallet-header {
+      padding: 16px;
+
+      .back-icon {
+        width: 32px;
+        height: 32px;
+        padding: 4px;
+        color: var(--ant-black-font-color-2);
+      }
+
+      .title {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+    }
+
+    .wallet-item {
+      height: 68px;
+      border-radius: 4px;
+      width: 100%;
+      padding-right: 16px;
+      user-select: none;
+
+      &:hover {
+        background-color: var(--ant-list-item-color-hover);
+      }
+      
+      .icon-col {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .name-col {
+        display: flex;
+        align-items: center;
+      }
+
+      .state-col {
+        display: flex;
+        align-items: center;
+        justify-content: right;
+      }
+    }
+  }
+
+  .my-tokens-hidden-btn {
+    height: 24px;
+    padding: 2px 8px;
+    font-size: 14px;
+
+    > span {
+      display: block;
+      width: 41px;
+    }
+  }
+
+  .my-tokens-split {
+    padding: 20px 0;
+  }
+
+  .my-token-list-empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+
+    img {
+      width: 80px;
+      height: 80px;
+    }
+  }
+}
+
+.mobile-site-content {
+  .account-modal {
+    width: 100%;
+    height: 100%;
+
+    .account-content {
+      padding: 16px;
+    }
+
+    .ant-modal-header {
+      height: 48px;
+      background-color: var(--ant-container-bg-color);
+      border: none;
+    }
+    .ant-modal-close {
+      color: var(--ant-black-font-color-2);
+      .ant-modal-close-x {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 32px;
+        height: 32px;
+        padding: 4px;
+        line-height: 48px;
+        margin-right: 12px;
+        margin-top: 12px;
+      }
+    }
+
+    &.ant-modal, .ant-modal-content {
+      height: 100%;
+      width: 100vw;
+      margin: 0;
+      top: 0;
+      max-height: max-content;
+      border-radius: 0;
+    }
+
+    .ant-modal-body {
+      height: calc(100vh - 48px);
+    }
+
+    .ant-modal-content {
+      max-height: auto;
+    }
+  }
+}

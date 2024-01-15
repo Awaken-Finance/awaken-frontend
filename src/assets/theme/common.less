@@ -1,0 +1,121 @@
+
+/**
+  Mobile
+*/
+.mobile-site-content {
+  .ant-layout {
+    background: none;
+  }
+}
+
+@keyframes input-transform {
+  0% {
+    transform: translateY(3px);
+  }
+  50% {
+    transform: translateY(-3px);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+.input-transform {
+  animation: input-transform 200ms;
+}
+.input-error-status {
+  border-color: var(--ant-red1);
+  &:not(.ant-input-affix-wrapper-disabled):hover {
+    border-color: var(--ant-red1);
+  }
+}
+
+.ant-notification-notice {
+  width: 343px;
+  border-radius: 4px !important;
+  padding: 0 0 0 4px;
+  background-color: var(--ant-container-bg-color-2);
+  .ant-notification-notice-content {
+    padding: 16px 16px 16px 14px;
+    background-color: var(--ant-container-bg-color-2);
+  }
+  .ant-notification-notice-icon {
+    margin: 0;
+  }
+  .ant-notification-notice-message {
+    margin: 0 36px;
+    padding: 0;
+    font-weight: 500;
+    font-size: 16px;
+    color: #FFF;
+    line-height: 24px;
+  }
+  .ant-notification-notice-description {
+    margin: 4px 36px 0;
+    color: var(--ant-black-font-color-2);
+    line-height: 20px;
+  }
+  .ant-notification-notice-close {
+    color: #e5e8ef;
+    font-size: 14px;
+    line-height: 20px;
+  }
+}
+.ant-notification-notice-success {
+  background-color: #1bc57d;
+}
+.ant-notification-notice-warning {
+  background-color: #f1ad3c;
+}
+.ant-notification-notice-error {
+  background-color: #e43555;
+}
+.ant-notification-notice-info {
+  background-color: #477bff;
+}
+.notification-notice-common {
+  .ant-notification-notice-message {
+    font-weight: 700;
+  }
+}
+
+.notification-notice-open {
+  padding: 0;
+}
+
+.ant-table-filter-dropdown {
+  background-color: #1e212b;
+}
+
+*::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+*::-webkit-scrollbar-track {
+  background: #1e212b;
+  border-radius: 10px;
+}
+*::-webkit-scrollbar-thumb {
+  background: #484e60;
+  border-radius: 10px;
+  visibility: hidden;
+}
+*::-webkit-scrollbar-thumb:hover {
+  background: #484e60;
+}
+*::-webkit-scrollbar-corner {
+  background: #1e212b;
+}
+
+*:hover::-webkit-scrollbar-thumb {
+  visibility: visible;
+}
+
+.flex-center-middle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ant-tabs {
+  line-height: 1;
+}

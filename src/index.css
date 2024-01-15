@@ -1,0 +1,28 @@
+html,
+body {
+  font-size: 14px;
+  width: 100% !important;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+.flex {
+  display: flex;
+}
+.justify-between {
+  justify-content: space-between;
+}
+li {
+  list-style-type: none;
+}
+ul,
+ol,
+dl {
+  margin: 0;
+  padding-inline-start: 0;
+}
+em {
+  font-style: inherit;
+}

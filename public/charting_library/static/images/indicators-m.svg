@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="12px" height="12px" viewBox="0 0 12 12" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>expand备份</title>
+    <g id="页面-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="K线图" transform="translate(-308.000000, -184.000000)">
+            <g id="编组-9" transform="translate(15.000000, 184.000000)">
+                <g id="expand备份" transform="translate(293.000000, 0.000000)">
+                    <rect id="矩形" fill="#6D87A8" fill-rule="nonzero" opacity="0" x="0" y="0" width="12" height="12"></rect>
+                    <path d="M5.83678837,10.5495767 L9.67357673,10.5495767 C10.2258615,10.5495767 10.6735767,10.1018614 10.6735767,9.54957667 L10.6735767,2.44957667 C10.6735767,1.89729192 10.2258615,1.44957667 9.67357673,1.44957667 L2.22588781,1.44957667 C1.67360306,1.44957667 1.22588781,1.89729192 1.22588781,2.44957667 L1.22588781,9.54957667 C1.22588781,10.1018614 1.67360306,10.5495767 2.22588781,10.5495767 L2.65941897,10.5495767 L2.65941897,10.5495767 L4.91003377,5.76312653 L6.42946024,8.0882398 L8.09398338,4.38661605" id="路径-2" stroke="#6D87A8" stroke-width="0.64" stroke-linecap="round" stroke-linejoin="round"></path>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

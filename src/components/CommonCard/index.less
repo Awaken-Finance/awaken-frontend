@@ -1,0 +1,26 @@
+.common-card {
+  background-color: var(--ant-container-bg-color);
+  border-radius: 2px;
+  overflow: hidden;
+  padding: 16px 0;
+  &-mobile {
+    border-radius: 0;
+  }
+  &-title {
+    padding: 0 16px;
+    background-color: var(--ant-title-bg-color);
+    height: 56px;
+    margin-top: -16px;
+    display: flex;
+    align-items: center;
+    &-mobile {
+      height: 48px;
+      .menu-content.transaction-menu {
+        height: 100%;
+      }
+    }
+  }
+  &-container {
+    padding: 0 16px;
+  }
+}

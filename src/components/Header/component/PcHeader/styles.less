@@ -1,0 +1,75 @@
+/* stylelint-disable no-descending-specificity */
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  min-width: 1440PX;
+
+  @media screen and (max-width: 1920PX) {
+    width: 100vw;
+  }
+
+  @media screen and (max-width: 1680PX) {
+    width: 100vw;
+  }
+  
+  @media screen and (max-width: 1440PX) {
+    width: 100vw;
+  }
+
+  &.ant-layout-header {
+    padding: 0 20px 0 24px;
+    height: 60px;
+    background-color: var(--ant-bg6);
+    line-height: unset;
+  }
+
+  .menu-logo {
+    width: 105px;
+    height: 28px;
+    margin-right: 20px;
+    position: relative;
+    margin-top: 20px;
+  }
+
+  .ant-menu {
+    .ant-menu-item a {
+      color: var(--ant-black-font-color-2);
+      font-weight: 700;
+      font-size: 18px;
+    }
+  }
+
+  .header-nav.ant-menu .ant-menu-item.ant-menu-item-active {
+    &::after {
+      display: none;
+    }
+  }
+
+  .header-nav.ant-menu .ant-menu-item.ant-menu-item-selected {
+    .ant-menu-title-content > a {
+      color: var(--ant-primary-font-color);
+    }
+
+    &::after {
+      display: block;
+    }
+  }
+
+  .header-right {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 5px;
+
+    .assets-btn {
+      font-weight: 600;
+    }
+
+    .signup-btn {
+      width: 80px;
+      height: 28px;
+      margin-right: 6px;
+    }
+  }
+}

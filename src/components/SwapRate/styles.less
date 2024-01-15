@@ -1,0 +1,60 @@
+.swap-rate,
+.swap-rate-mobile {
+  .rate-row {
+    cursor: pointer;
+    border: 1px solid #393d47;
+    border-radius: 4px;
+    height: 74px;
+    position: relative;
+    transition: all 0.2s;
+    display: flex;
+    padding: 8px 0;
+    flex-direction: column;
+    align-items: center;
+    justify-content: stretch;
+
+    > .ant-col {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    &-created {
+      background-color: var(--ant-primary-color-percent-16);
+      padding: 4px 8px;
+      border-radius: 2px;
+      font-size: 12px;
+      display: inline-block;
+    }
+
+    .selected-icon {
+      position: absolute;
+      top: 4px;
+      right: 4px;
+      color: var(--ant-primary-color);
+      transform: scale(0.75);
+    }
+  }
+
+  .rate-active {
+    border-color: var(--ant-primary-color);
+  }
+
+  .rate-disabled {
+    border-color: var(--ant-container-bg-color-2);
+    cursor: not-allowed;
+  }
+
+  .rate-row-to-create {
+    display: inline-block;
+    width: 48px;
+    text-align: center;
+  }
+}
+
+.swap-rate-mobile {
+  .rate-row-created {
+    padding: 4px;
+  }
+}

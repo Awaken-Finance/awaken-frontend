@@ -1,0 +1,84 @@
+.trade-meun-list {
+	display: flex;
+	height: 64px;
+	width: 100%;
+	grid-column-gap: 24px;
+	align-items: center;
+	box-sizing: border-box;
+	user-select: none;
+	font-size: 16px;
+	position: relative;
+	&.is-show-left-arrow {
+		padding-left: 30px;
+	}
+	.swiper-wrapper {
+		height: 100%;
+		display: flex;
+	}
+	.collect-icon {
+		margin: 0;
+	}
+
+	.menu-left-button {
+		position: absolute;
+		height: 100%;
+		color: var(--ant-black-font-color-1);
+		top: 0;
+		left: 0;
+		z-index: 2;
+		border: none;
+		background: linear-gradient(to left, rgb(255 255 255 / 0%), 1%, var(--ant-container-bg-color));
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		&.market-background-color {
+			background: linear-gradient(to left, rgb(255 255 255 / 0%), 1%, var(--ant-container-bg-color));
+		}
+	}
+
+	.menu-right-button {
+		position: absolute;
+		height: 100%;
+		color: var(--ant-black-font-color-1);
+		top: 0;
+		right: 0;
+		z-index: 2;
+		border: none;
+		background: linear-gradient(to right, rgb(255 255 255 / 0%), 1%, var(--ant-container-bg-color));
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		&.market-background-color {
+			background: linear-gradient(to right, rgb(255 255 255 / 0%), 1%, var(--ant-container-bg-color));
+		}
+	}
+
+	.menu-item {
+		cursor: pointer;
+		color: var(--ant-black-font-color-2);
+		line-height: 64px;
+		position: relative;
+		transition: all .3s;
+		display: flex;
+		align-items: center;
+		width: auto;
+		height: 100%;
+		&:hover {
+			color: var(--ant-black-font-color-1);
+		}
+	}
+
+	.menu-item-active {
+		color: var(--ant-black-font-color-1);
+		text-shadow: 0 0 .5px var(--ant-black-font-color-1), 0 0 .5px var(--ant-black-font-color-1), 0 0 .5px var(--ant-black-font-color-1);
+		&::before {
+			content: '';
+			position: absolute;
+			left: 0;
+			right: 0;
+			bottom: 0;
+			background-color: #3C72FF;
+			height: 2px;
+		}
+	}
+}

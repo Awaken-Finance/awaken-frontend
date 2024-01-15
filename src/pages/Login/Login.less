@@ -1,0 +1,70 @@
+.page-login {
+  min-height: calc(100vh - 60px);
+  overflow: hidden;
+}
+
+.pc-site-content {
+  .page-login {
+    padding-top: 80PX;
+
+    @media screen and (max-width: 1920PX) {
+      padding-top: calc((100vw - 1680PX)/(1920 - 1680) * 20 + 60PX);
+    }
+
+    @media screen and (max-width: 1680PX) {
+      padding-top: calc((100vw - 1440PX)/(1680 - 1440) * 20 + 40PX);
+    }
+    
+    @media screen and (max-width: 1440PX) {
+      padding-top: 40PX;
+    }
+  }
+}
+
+#awaken-portkey-sdk-root {
+  background-color: var(--ant-container-bg-color);
+  max-height: calc(100vh - 60px);
+  max-width: 960px;
+  width: 960px;
+  height: 760px;
+  border-radius: 8px;
+
+  &.awaken-portkey-sdk-pc {
+    margin: 0 auto;
+
+    
+
+  }
+  
+
+  .step-page-full-wrapper {
+    max-height: calc(100vh - 60px);
+  }
+
+  .portkey-sign-full-wrapper {
+    height: 100%;
+
+    // .step-page-wrapper {
+      // height: 100%;
+    // }
+  }
+
+  &.awaken-portkey-sdk-mobile {
+    width: 100%;
+    min-height: calc(100vh - 60px);
+    max-height: calc(100vh - 60px);
+  }
+}
+
+.mobile-site-content {
+  .page-login { 
+    overflow: initial;
+  }
+  #awaken-portkey-sdk-root {
+    max-height: none;
+    height: calc(100vh - 60px);
+    .portkey-sign-full-wrapper {
+      height: 100%;
+    }
+  }
+}

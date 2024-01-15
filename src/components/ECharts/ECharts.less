@@ -1,0 +1,53 @@
+/**
+  depth chart
+*/
+
+.depth-chart-tooltip-wrap {
+  font-size: 12px;
+  color: var(--ant-black-font-color-1);
+  line-height: 14px;
+  width: 195px;
+  display: flex;
+  flex-direction: column;
+  padding: 12px;
+  background-color: var(--ant-container-bg-color-2);
+  border-radius: 4px;
+  &-mobile {
+    padding: 8px;
+  }
+  .price {
+    div:nth-child(1) {
+      flex: 1;
+      margin-right: 8px;
+    }
+  }
+
+  .price-usd {
+    align-self: flex-end;
+    font-size: 10px;
+    color: var(--ant-black-font-color-2);
+    line-height: 12px;
+  }
+
+  .changes {
+    margin-top: 8px;
+  }
+
+  .token {
+    margin-top: 4px;
+  }
+
+  .item {
+    display: flex;
+    justify-content: space-between;
+  }
+}
+
+.mobile-site-content {
+  .echarts-box .tooltip-modal {
+    z-index: 1 !important;
+  }
+  .depth-chart-tooltip-wrap {
+    padding: 8px;
+  }
+}

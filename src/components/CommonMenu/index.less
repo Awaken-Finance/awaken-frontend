@@ -1,0 +1,37 @@
+.menu-content {
+	display: flex;
+	height: 64px;
+	grid-column-gap: 24px;
+	align-items: center;
+	// box-sizing: border-box;
+	user-select: none;
+  font-size: 16px;
+
+	.menu-item {
+		cursor: pointer;
+		color: var(--ant-black-font-color-2);
+		line-height: 64px;
+		position: relative;
+		transition: all .3s;
+    display: flex;
+    align-items: center;
+    height: 100%;
+		&:hover {
+			color: var(--ant-black-font-color-1);
+		}
+	}
+
+	.menu-item-active {
+		color: var(--ant-black-font-color-1);
+		text-shadow: 0 0 .5px var(--ant-black-font-color-1), 0 0 .5px var(--ant-black-font-color-1), 0 0 .5px var(--ant-black-font-color-1);
+		&::before {
+			content: '';
+			position: absolute;
+			left: 0;
+			right: 0;
+			bottom: 0;
+			background-color: #3C72FF;
+			height: 2px;
+		}
+	}
+}
