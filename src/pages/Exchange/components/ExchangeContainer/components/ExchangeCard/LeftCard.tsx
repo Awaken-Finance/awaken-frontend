@@ -85,7 +85,7 @@ export default function LeftCard({
       val,
       divDecimals(reserves?.[getCurrencyAddress(tokenB)], tokenB?.decimals),
       divDecimals(reserves?.[getCurrencyAddress(tokenA)], tokenA?.decimals),
-    ).dp(tokenB?.decimals || 8);
+    ).dp(tokenB?.decimals ?? 8);
   }, [tokenA, reserves, maxTotal, userSlippageTolerance, rate, tokenB]);
 
   const [progressValue, setProgressValue] = useState(0);

@@ -1,6 +1,6 @@
 import BigNumber from 'bignumber.js';
 import { ZERO, VALUE_B, VALUE_M, VALUE_T } from 'constants/misc';
-export function timesDecimals(a?: BigNumber.Value, decimals: string | number = 18) {
+export function timesDecimals(a?: BigNumber.Value, decimals: string | number = 0) {
   if (!a) return ZERO;
   const bigA = BigNumber.isBigNumber(a) ? a : new BigNumber(a || '');
   if (bigA.isNaN()) return ZERO;
@@ -9,7 +9,7 @@ export function timesDecimals(a?: BigNumber.Value, decimals: string | number = 1
   }
   return bigA.times(`1e${decimals}`);
 }
-export function divDecimals(a?: BigNumber.Value, decimals: string | number = 18) {
+export function divDecimals(a?: BigNumber.Value, decimals: string | number = 0) {
   if (!a) return ZERO;
   const bigA = BigNumber.isBigNumber(a) ? a : new BigNumber(a || '');
   if (bigA.isNaN()) return ZERO;

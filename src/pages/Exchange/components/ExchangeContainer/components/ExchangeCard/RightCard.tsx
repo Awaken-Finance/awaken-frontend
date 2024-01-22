@@ -85,7 +85,7 @@ export default function RightCard({
       val,
       divDecimals(reserves?.[getCurrencyAddress(tokenA)], tokenA?.decimals),
       divDecimals(reserves?.[getCurrencyAddress(tokenB)], tokenB?.decimals),
-    ).dp(tokenB?.decimals || 8);
+    ).dp(tokenB?.decimals ?? 8);
   }, [tokenA, reserves, maxAmount, userSlippageTolerance, rate, tokenB]);
 
   const [progressValue, setProgressValue] = useState(0);

@@ -120,7 +120,7 @@ export function sideToInput(side: number, total: string | BigNumber) {
 }
 
 export function bigNumberToString(big: BigNumber, decimals?: number) {
-  return big.isNaN() ? '0' : big.dp(decimals || 18).toString();
+  return big.isNaN() ? '0' : big.dp(decimals ?? 18).toString();
 }
 
 /**
