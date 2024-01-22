@@ -5,7 +5,7 @@ export function isUrl(url: string) {
   return URL_REG.test(url);
 }
 
-const SYMBOL_REG = /^[A-Za-z0-9]+$/;
+const SYMBOL_REG = /^[A-Za-z0-9\-]+$/;
 export function isSymbol(symbol: string) {
   return SYMBOL_REG.test(symbol);
 }
