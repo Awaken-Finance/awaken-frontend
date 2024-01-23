@@ -279,7 +279,7 @@ export async function getContractMethods(address: string) {
 }
 
 export const isElfChainSymbol = (symbol?: string | null) => {
-  if (symbol && symbol.length >= 2 && symbol.length <= 10 && isSymbol(symbol)) return symbol;
+  if (symbol && symbol.length >= 1 && symbol.length <= 50 && isSymbol(symbol)) return symbol;
   return false;
 };
 
