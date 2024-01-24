@@ -59,6 +59,8 @@ export default function Remove({ pairInfo }: { pairInfo: PairInfo }) {
 
   const showLpBalance = divDecimals(lpBalance, getLPDecimals());
 
+  console.log('showLpBalance: ', showLpBalance.toNumber(), lpBalance.toNumber());
+
   const routerAddress = ChainConstants.constants.ROUTER[rate];
   const routerContract = useRouterContract(rate);
   const lpSymbol = useLPSymbol(tokenA, tokenB);

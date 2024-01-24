@@ -20,6 +20,7 @@ function InputAmount({
   error = false,
   text = '',
   type = 'amount',
+  disabled = false,
 }: {
   onChange?: (val: string) => void;
   onFocus?: () => void;
@@ -28,6 +29,7 @@ function InputAmount({
   error: boolean;
   text?: string;
   type?: string;
+  disabled?: boolean;
 }) {
   const { t } = useTranslation();
 
@@ -73,6 +75,7 @@ function InputAmount({
         placeholder="0.00"
         status={error ? 'error' : ''}
         resumePositionOnBlur
+        disabled={disabled}
       />
     </CommonTooltip>
   );

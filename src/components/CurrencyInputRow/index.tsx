@@ -35,7 +35,7 @@ export default function CurrencyInputRow(props: Props) {
   const {
     token,
     onChange,
-    value = '',
+    value,
     placeholder = '0.00',
     suffix = '',
     hideUSD = false,
@@ -107,7 +107,7 @@ export default function CurrencyInputRow(props: Props) {
         <CommonInput
           suffix={renderSuffix}
           onChange={inputChange}
-          value={value}
+          value={value ?? ''}
           placeholder={placeholder}
           className="currency-input"
           disabled={!token || disabled}

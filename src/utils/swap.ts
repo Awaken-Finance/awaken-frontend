@@ -127,6 +127,7 @@ export function bigNumberToString(big: BigNumber, decimals?: number) {
  * output = (input * R_out * 1000) / ((R_In - input) * (100 - fee) * 10)
  */
 export const getAmountByInput = (fee: string, amountIn: BigNumber, reserveIn: BigNumber, reserveOut: BigNumber) => {
+  console.log('getAmountByInput :', amountIn.toFixed(), reserveIn.toFixed(), reserveOut.toFixed());
   const fe = new BigNumber(100).minus(fee).times(10);
 
   const molecular = amountIn.times(reserveOut).times(1000);

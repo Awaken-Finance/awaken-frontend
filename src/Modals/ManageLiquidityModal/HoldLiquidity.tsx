@@ -33,6 +33,7 @@ export default function HoldLiquidity({
   const pairAddress = usePairsAddress(rate, leftToken, rightToken);
 
   const [lpBalance, lp] = useLPBalances(pairAddress, undefined, rate);
+  console.log('lp count :', lp);
 
   const showLp = divDecimals(lp, getLPDecimals());
 

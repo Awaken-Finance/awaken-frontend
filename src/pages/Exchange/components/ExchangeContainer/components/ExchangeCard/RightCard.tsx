@@ -217,6 +217,14 @@ export default function RightCard({
     setShowZeroInputTips(!amount);
   };
 
+  const disabledTotal = useMemo(() => {
+    return /-/.test(tokenA?.symbol ?? '') && !/-/.test(tokenB?.symbol ?? '');
+  }, [tokenA?.symbol, tokenB?.symbol]);
+
+  const disabledAmount = useMemo(() => {
+    return !/-/.test(tokenA?.symbol ?? '') && /-/.test(tokenB?.symbol ?? '');
+  }, [tokenA?.symbol, tokenB?.symbol]);
+
   useUpdateEffect(() => {
     setAmount('');
     setTotal('');
@@ -239,13 +247,18 @@ export default function RightCard({
               onChange={inputAmount}
               onFocus={() => setShowZeroInputTips(false)}
               {...amountError}
+              disabled={disabledAmount}
             />
           </Col>
           <Col span={24}>
             {isMobile ? (
-              <CommonBlockProgress value={progressValue} onChange={sliderAmount} />
+              <CommonBlockProgress
+                value={progressValue}
+                onChange={sliderAmount}
+                disabled={disabledAmount || disabledTotal}
+              />
             ) : (
-              <CommonSlider value={sliderValue} onChange={sliderAmount} />
+              <CommonSlider value={sliderValue} onChange={sliderAmount} disabled={disabledAmount || disabledTotal} />
             )}
           </Col>
           <Col span={24}>
@@ -256,6 +269,7 @@ export default function RightCard({
               onFocus={() => setShowZeroInputTips(false)}
               {...totalError}
               type="total"
+              disabled={disabledTotal}
             />
           </Col>
         </Row>
