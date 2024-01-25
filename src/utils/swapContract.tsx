@@ -287,7 +287,7 @@ export const onSwap: (param: SwapProps) => Promise<boolean | any> = async ({
   tokenB,
   t,
 }) => {
-  if (amountOutMin.isZero()) amountOutMin = ZERO.plus(1);
+  if (amountOutMin.lt(1)) amountOutMin = ZERO.plus(1);
 
   let methodName: string,
     args: Array<string | string[] | number | boolean | PBTimestamp>,
