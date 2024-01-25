@@ -122,6 +122,9 @@ export function sideToInput(side: number, total: string | BigNumber) {
 export function bigNumberToString(big: BigNumber, decimals?: number) {
   return big.isNaN() ? '0' : big.dp(decimals ?? 18).toString();
 }
+export function bigNumberToUPString(big: BigNumber, decimals?: number) {
+  return big.isNaN() ? '0' : big.dp(decimals ?? 18, BigNumber.ROUND_UP).toString();
+}
 
 /**
  * output = (input * R_out * 1000) / ((R_In - input) * (100 - fee) * 10)

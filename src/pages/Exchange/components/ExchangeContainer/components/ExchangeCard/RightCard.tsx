@@ -16,6 +16,7 @@ import {
   sideToInput,
   getPriceImpactWithSell,
   getAmountByInput,
+  bigNumberToUPString,
 } from 'utils/swap';
 import { useUpdateEffect } from 'react-use';
 
@@ -176,8 +177,7 @@ export default function RightCard({
           divDecimals(reserves?.[getCurrencyAddress(tokenB)], tokenB?.decimals),
           divDecimals(reserves?.[getCurrencyAddress(tokenA)], tokenA?.decimals),
         );
-
-        amountStr = bigNumberToString(amountValue, tokenA?.decimals);
+        amountStr = bigNumberToUPString(amountValue, tokenA?.decimals);
       }
 
       setAmount(amountStr);

@@ -9,7 +9,7 @@ import { useMobile } from 'utils/isMobile';
 import { useRequest } from 'ahooks';
 import BigNumber from 'bignumber.js';
 import { getTransactionFee } from 'pages/Exchange/apis/getTransactionFee';
-import { divDecimals } from 'utils/calculate';
+import { divDecimals, timesDecimals } from 'utils/calculate';
 import { usePair, usePairsAddress } from 'hooks/userPairs';
 import { getCurrencyAddress, getLiquidity, parseUserSlippageTolerance } from 'utils/swap';
 import { useUserSettings } from 'contexts/useUserSettings';
@@ -17,6 +17,9 @@ import { PairsAndLogos } from 'components/PariAndLogo';
 import { unitConverter } from 'utils';
 import { ChainConstants } from 'constants/ChainConstants';
 import { useMemo } from 'react';
+import { A_TOKEN_PREFIX } from 'constants/aelf';
+
+const isNFTSymbol = (symbol?: string) => symbol?.includes('-') && !symbol.includes(A_TOKEN_PREFIX);
 
 export function AddConfirmModal({
   tokenA,
@@ -49,14 +52,24 @@ export function AddConfirmModal({
   const routerAddress = ChainConstants.constants.ROUTER[rate];
   const { reserves, totalSupply } = usePair(pairAddress, routerAddress);
 
-  const lp = useMemo(
-    () => getLiquidity(tokenAValue, reserves?.[getCurrencyAddress(tokenA)], totalSupply).toFixed(),
-    [reserves, tokenA, tokenAValue, totalSupply],
-  );
+  const lp = useMemo(() => {
+    if (isNFTSymbol(tokenA?.symbol) && isNFTSymbol(tokenB?.symbol)) {
+      return getLiquidity(tokenAValue, timesDecimals(reserves?.[getCurrencyAddress(tokenA)], 8), totalSupply).toFixed();
+    }
+
+    return getLiquidity(tokenAValue, reserves?.[getCurrencyAddress(tokenA)], totalSupply).toFixed();
+  }, [reserves, tokenA, tokenAValue, tokenB?.symbol, totalSupply]);
 
   const [{ userSlippageTolerance }] = useUserSettings();
 
+  const lpUnit = useMemo(() => {
+    const uLP = unitConverter(lp, 8);
+    if (uLP === '0') return '0.00';
+    return uLP;
+  }, [lp]);
+
   if (!tokenA || !tokenB || !tokenAValue || !tokenBValue) return null;
+
   return (
     <CommonModal
       className={isMobile ? 'liq-confirm-modal-m' : 'add-liq-confirm-modal'}
@@ -94,7 +107,7 @@ export function AddConfirmModal({
         </Col>
         <Col>
           <Font lineHeight={24} size={16} weight="medium">
-            {unitConverter(lp)}
+            {lpUnit}
           </Font>
         </Col>
       </Row>
