@@ -175,6 +175,14 @@ export default function Add({ pairInfo }: { pairInfo: PairInfo }) {
     return true;
   }, [currencyBalances, leftToken, rightToken]);
 
+  const disabledTokenB = useMemo(() => {
+    return /-/.test(tokenA?.symbol ?? '') && !/-/.test(tokenB?.symbol ?? '');
+  }, [tokenA?.symbol, tokenB?.symbol]);
+
+  const disabledTokenA = useMemo(() => {
+    return !/-/.test(tokenA?.symbol ?? '') && /-/.test(tokenB?.symbol ?? '');
+  }, [tokenA?.symbol, tokenB?.symbol]);
+
   return (
     <Row gutter={[0, 16]} className="add-modal-box">
       <HoldLiquidity leftToken={leftToken} rightToken={rightToken} rate={rate} reserves={reserves} />
@@ -190,6 +198,7 @@ export default function Add({ pairInfo }: { pairInfo: PairInfo }) {
               referToken={rightToken}
               showMax={showMax}
               maxCallback={maxCallback}
+              disabled={disabledTokenA}
             />
           </Col>
           <Col span={24}>
@@ -199,6 +208,7 @@ export default function Add({ pairInfo }: { pairInfo: PairInfo }) {
               balance={currencyBalances?.[getCurrencyAddress(rightToken)]}
               token={rightToken}
               referToken={leftToken}
+              disabled={disabledTokenB}
             />
           </Col>
         </Row>
