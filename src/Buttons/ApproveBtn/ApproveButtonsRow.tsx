@@ -94,6 +94,7 @@ export default function ApproveButtonsRow({
           key="left"
           type="primary"
           size="large"
+          ellipsis
           symbol={leftToken?.symbol}
           tokenContractAddress={tokenContractAddress}
           approveTargetAddress={routerAddress}
@@ -113,6 +114,7 @@ export default function ApproveButtonsRow({
           key="right"
           type="primary"
           size="large"
+          ellipsis
           symbol={rightToken?.symbol}
           tokenContractAddress={tokenContractAddress}
           approveTargetAddress={routerAddress}

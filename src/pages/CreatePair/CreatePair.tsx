@@ -203,6 +203,7 @@ export default function CreatePair({ onCancel }: { onCancel: () => void }) {
             }
             loading={loading}
             style={{ width: '100%' }}
+            ellipsis
             onClick={createCb}>
             {t(`${buttonTitle}`)}
           </CommonButton>
