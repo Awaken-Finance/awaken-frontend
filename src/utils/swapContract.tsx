@@ -12,6 +12,8 @@ import { IContract } from 'types';
 import getTransactionId from './contractResult';
 import { TFunction } from 'react-i18next';
 import { formatSwapError } from './formatError';
+import { A_TOKEN_PREFIX } from 'constants/aelf';
+const isNFTSymbol = (symbol?: string) => symbol?.includes('-') && !symbol.includes(A_TOKEN_PREFIX);
 
 type addLiquidityTokensProps = {
   tokenA: string;
@@ -136,8 +138,21 @@ export const removeLiquidityTokens: (param: removeLiquidityTokensProps) => Promi
 }) => {
   const contract = routerContract;
   const minRate = getMinRate();
-  const amountAMin = amountA.times(minRate);
-  const amountBMin = amountB.times(minRate);
+
+  // nft rate
+
+  let amountAMin = amountA.times(minRate);
+  let amountBMin = amountB.times(minRate);
+
+  if (isNFTSymbol(tokenA)) {
+    amountAMin = amountA.times(minRate.minus(0.9));
+    amountBMin = amountB.times(minRate.minus(0.9));
+  }
+  if (isNFTSymbol(tokenB)) {
+    amountAMin = amountA.times(minRate.minus(0.9));
+    amountBMin = amountB.times(minRate.minus(0.9));
+  }
+
   const args =
     ChainConstants.chainType === 'ELF'
       ? [
