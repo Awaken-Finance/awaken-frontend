@@ -447,6 +447,6 @@ export function getLPDecimals() {
   return ChainConstants.chainType === 'ELF' ? 8 : 18;
 }
 export function getLPSymbol(symbols: string | Currency[]) {
-  const symbol = typeof symbols !== 'string' ? `${symbols[0].symbol}-${symbols[1].symbol}` : symbols;
-  return A_TOKEN_PREFIX + sortLPSymbol(symbol);
+  if (Array.isArray(symbols)) return A_TOKEN_PREFIX + [symbols[0]?.symbol, symbols[1]?.symbol].sort().join('-');
+  return A_TOKEN_PREFIX + symbols;
 }
