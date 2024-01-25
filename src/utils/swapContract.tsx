@@ -7,7 +7,7 @@ import notification from './notification';
 import { getCID, isUserDenied } from 'utils';
 import { ChainConstants } from 'constants/ChainConstants';
 import { PBTimestamp } from 'types/aelf';
-import { REQ_CODE } from 'constants/misc';
+import { REQ_CODE, ZERO } from 'constants/misc';
 import { IContract } from 'types';
 import getTransactionId from './contractResult';
 import { TFunction } from 'react-i18next';
@@ -287,6 +287,8 @@ export const onSwap: (param: SwapProps) => Promise<boolean | any> = async ({
   tokenB,
   t,
 }) => {
+  if (amountOutMin.isZero()) amountOutMin = ZERO.plus(1);
+
   let methodName: string,
     args: Array<string | string[] | number | boolean | PBTimestamp>,
     sendOptions: any = {
