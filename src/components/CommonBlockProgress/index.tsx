@@ -7,6 +7,7 @@ export type CommonBlockProgressProps = {
   blocks?: number;
   totalProgress?: number;
   onChange: (value: number) => void;
+  disabled?: boolean;
 };
 
 export default function CommonBlockProgress({
@@ -14,6 +15,7 @@ export default function CommonBlockProgress({
   blocks = 4,
   totalProgress = 100,
   onChange,
+  disabled = false,
 }: CommonBlockProgressProps) {
   const blockList = useMemo(() => {
     const list = [];
@@ -26,6 +28,7 @@ export default function CommonBlockProgress({
   }, [blocks, totalProgress]);
 
   const onClickBlock = (b: { progress: number }) => {
+    console.log('onClickBlock: ', b);
     onChange(b.progress);
   };
 
@@ -38,7 +41,7 @@ export default function CommonBlockProgress({
               'block-item': true,
               'block-item-active': b.progress <= value,
             })}
-            onClick={() => onClickBlock(b)}>
+            onClick={() => !disabled && onClickBlock(b)}>
             <div className="block-bar"></div>
             <div className="block-label">{b.progress}%</div>
           </div>

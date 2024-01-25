@@ -16,6 +16,7 @@ import {
   sideToInput,
   getPriceImpactWithSell,
   getAmountByInput,
+  bigNumberToUPString,
 } from 'utils/swap';
 import { useUpdateEffect } from 'react-use';
 
@@ -85,7 +86,7 @@ export default function RightCard({
       val,
       divDecimals(reserves?.[getCurrencyAddress(tokenA)], tokenA?.decimals),
       divDecimals(reserves?.[getCurrencyAddress(tokenB)], tokenB?.decimals),
-    ).dp(tokenB?.decimals || 8);
+    ).dp(tokenB?.decimals ?? 8);
   }, [tokenA, reserves, maxAmount, userSlippageTolerance, rate, tokenB]);
 
   const [progressValue, setProgressValue] = useState(0);
@@ -176,8 +177,7 @@ export default function RightCard({
           divDecimals(reserves?.[getCurrencyAddress(tokenB)], tokenB?.decimals),
           divDecimals(reserves?.[getCurrencyAddress(tokenA)], tokenA?.decimals),
         );
-
-        amountStr = bigNumberToString(amountValue, tokenA?.decimals);
+        amountStr = bigNumberToUPString(amountValue, tokenA?.decimals);
       }
 
       setAmount(amountStr);
@@ -217,6 +217,14 @@ export default function RightCard({
     setShowZeroInputTips(!amount);
   };
 
+  const disabledTotal = useMemo(() => {
+    return /-/.test(tokenA?.symbol ?? '') && !/-/.test(tokenB?.symbol ?? '');
+  }, [tokenA?.symbol, tokenB?.symbol]);
+
+  const disabledAmount = useMemo(() => {
+    return !/-/.test(tokenA?.symbol ?? '') && /-/.test(tokenB?.symbol ?? '');
+  }, [tokenA?.symbol, tokenB?.symbol]);
+
   useUpdateEffect(() => {
     setAmount('');
     setTotal('');
@@ -239,13 +247,18 @@ export default function RightCard({
               onChange={inputAmount}
               onFocus={() => setShowZeroInputTips(false)}
               {...amountError}
+              disabled={disabledAmount}
             />
           </Col>
           <Col span={24}>
             {isMobile ? (
-              <CommonBlockProgress value={progressValue} onChange={sliderAmount} />
+              <CommonBlockProgress
+                value={progressValue}
+                onChange={sliderAmount}
+                disabled={disabledAmount || disabledTotal}
+              />
             ) : (
-              <CommonSlider value={sliderValue} onChange={sliderAmount} />
+              <CommonSlider value={sliderValue} onChange={sliderAmount} disabled={disabledAmount || disabledTotal} />
             )}
           </Col>
           <Col span={24}>
@@ -256,6 +269,7 @@ export default function RightCard({
               onFocus={() => setShowZeroInputTips(false)}
               {...totalError}
               type="total"
+              disabled={disabledTotal}
             />
           </Col>
         </Row>

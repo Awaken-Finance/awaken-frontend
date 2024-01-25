@@ -36,7 +36,7 @@ export function useAddLiquidityInputs(
       const showAmountOut = divDecimals(amountOut, outputToken?.decimals);
       setInputs({
         [inputAddress]: input,
-        [outputAddress]: showAmountOut.dp(outputToken?.decimals || 8).toString(),
+        [outputAddress]: showAmountOut.dp(outputToken?.decimals ?? 8).toString(),
       });
     },
     [inputs, reserves, tokens],

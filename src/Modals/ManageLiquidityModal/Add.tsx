@@ -168,12 +168,24 @@ export default function Add({ pairInfo }: { pairInfo: PairInfo }) {
       !currencyBalances?.[getCurrencyAddress(leftToken)] ||
       !currencyBalances?.[getCurrencyAddress(rightToken)] ||
       currencyBalances?.[getCurrencyAddress(leftToken)]?.isZero() ||
-      currencyBalances?.[getCurrencyAddress(rightToken)]?.isZero()
+      currencyBalances?.[getCurrencyAddress(rightToken)]?.isZero() ||
+      !reserves?.[getCurrencyAddress(leftToken)] ||
+      !reserves?.[getCurrencyAddress(rightToken)] ||
+      new BigNumber(reserves?.[getCurrencyAddress(leftToken)]).isZero() ||
+      new BigNumber(reserves?.[getCurrencyAddress(rightToken)]).isZero()
     ) {
       return false;
     }
     return true;
-  }, [currencyBalances, leftToken, rightToken]);
+  }, [currencyBalances, leftToken, reserves, rightToken]);
+
+  const disabledTokenB = useMemo(() => {
+    return /-/.test(tokenA?.symbol ?? '') && !/-/.test(tokenB?.symbol ?? '');
+  }, [tokenA?.symbol, tokenB?.symbol]);
+
+  const disabledTokenA = useMemo(() => {
+    return !/-/.test(tokenA?.symbol ?? '') && /-/.test(tokenB?.symbol ?? '');
+  }, [tokenA?.symbol, tokenB?.symbol]);
 
   return (
     <Row gutter={[0, 16]} className="add-modal-box">
@@ -190,6 +202,7 @@ export default function Add({ pairInfo }: { pairInfo: PairInfo }) {
               referToken={rightToken}
               showMax={showMax}
               maxCallback={maxCallback}
+              disabled={disabledTokenA}
             />
           </Col>
           <Col span={24}>
@@ -199,6 +212,7 @@ export default function Add({ pairInfo }: { pairInfo: PairInfo }) {
               balance={currencyBalances?.[getCurrencyAddress(rightToken)]}
               token={rightToken}
               referToken={leftToken}
+              disabled={disabledTokenB}
             />
           </Col>
         </Row>

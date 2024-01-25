@@ -33,8 +33,14 @@ export default function HoldLiquidity({
   const pairAddress = usePairsAddress(rate, leftToken, rightToken);
 
   const [lpBalance, lp] = useLPBalances(pairAddress, undefined, rate);
+  console.log('lp count :', lp);
 
   const showLp = divDecimals(lp, getLPDecimals());
+  const lpUnit = useMemo(() => {
+    const uLP = unitConverter(showLp, 8);
+    if (uLP === '0') return '0.00';
+    return uLP;
+  }, [showLp]);
 
   const leftLPBalance = useMemo(() => {
     const reserveL = reserves?.[getCurrencyAddress(leftToken)];
@@ -85,7 +91,7 @@ export default function HoldLiquidity({
             </Col>
             <Col>
               <Font lineHeight={24} size={16} weight="medium">
-                {unitConverter(showLp)}
+                {lpUnit}
               </Font>
             </Col>
           </Row>

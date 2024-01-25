@@ -59,7 +59,8 @@
     }
   }
 
-  &[disabled], &.ant-btn-primary[disabled] {
+  &[disabled],
+  &.ant-btn-primary[disabled] {
     background-color: var(--ant-button-gray-color);
     border-color: var(--ant-button-gray-color);
     color: var(--ant-black-font-color-2);
@@ -75,4 +76,13 @@
   height: 28px;
   padding: 0 8px;
   font-size: 14px;
+}
+
+.common-button-ellipsis.common-button.ant-btn {
+  & > span {
+    flex: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
 }

@@ -72,7 +72,7 @@ export function SellBtnWithPay({
     }
     onClick?.();
 
-    if (!amount) return;
+    if (!amount || amountOutMin?.lte(0)) return;
     if (amountBN.isNaN() || amountBN.lte(0)) return;
 
     setTrading(true);

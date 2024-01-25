@@ -120,13 +120,17 @@ export function sideToInput(side: number, total: string | BigNumber) {
 }
 
 export function bigNumberToString(big: BigNumber, decimals?: number) {
-  return big.isNaN() ? '0' : big.dp(decimals || 18).toString();
+  return big.isNaN() ? '0' : big.dp(decimals ?? 18).toString();
+}
+export function bigNumberToUPString(big: BigNumber, decimals?: number) {
+  return big.isNaN() ? '0' : big.dp(decimals ?? 18, BigNumber.ROUND_UP).toString();
 }
 
 /**
  * output = (input * R_out * 1000) / ((R_In - input) * (100 - fee) * 10)
  */
 export const getAmountByInput = (fee: string, amountIn: BigNumber, reserveIn: BigNumber, reserveOut: BigNumber) => {
+  console.log('getAmountByInput :', amountIn.toFixed(), reserveIn.toFixed(), reserveOut.toFixed());
   const fe = new BigNumber(100).minus(fee).times(10);
 
   const molecular = amountIn.times(reserveOut).times(1000);
@@ -446,6 +450,6 @@ export function getLPDecimals() {
   return ChainConstants.chainType === 'ELF' ? 8 : 18;
 }
 export function getLPSymbol(symbols: string | Currency[]) {
-  const symbol = typeof symbols !== 'string' ? `${symbols[0].symbol}-${symbols[1].symbol}` : symbols;
-  return A_TOKEN_PREFIX + sortLPSymbol(symbol);
+  if (Array.isArray(symbols)) return A_TOKEN_PREFIX + [symbols[0]?.symbol, symbols[1]?.symbol].sort().join('-');
+  return A_TOKEN_PREFIX + symbols;
 }

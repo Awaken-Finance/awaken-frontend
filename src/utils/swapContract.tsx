@@ -7,11 +7,13 @@ import notification from './notification';
 import { getCID, isUserDenied } from 'utils';
 import { ChainConstants } from 'constants/ChainConstants';
 import { PBTimestamp } from 'types/aelf';
-import { REQ_CODE } from 'constants/misc';
+import { REQ_CODE, ZERO } from 'constants/misc';
 import { IContract } from 'types';
 import getTransactionId from './contractResult';
 import { TFunction } from 'react-i18next';
 import { formatSwapError } from './formatError';
+import { A_TOKEN_PREFIX } from 'constants/aelf';
+const isNFTSymbol = (symbol?: string) => symbol?.includes('-') && !symbol.includes(A_TOKEN_PREFIX);
 
 type addLiquidityTokensProps = {
   tokenA: string;
@@ -136,8 +138,21 @@ export const removeLiquidityTokens: (param: removeLiquidityTokensProps) => Promi
 }) => {
   const contract = routerContract;
   const minRate = getMinRate();
-  const amountAMin = amountA.times(minRate);
-  const amountBMin = amountB.times(minRate);
+
+  // nft rate
+
+  let amountAMin = amountA.times(minRate);
+  let amountBMin = amountB.times(minRate);
+
+  if (isNFTSymbol(tokenA)) {
+    amountAMin = amountA.times(minRate.minus(0.9));
+    amountBMin = amountB.times(minRate.minus(0.9));
+  }
+  if (isNFTSymbol(tokenB)) {
+    amountAMin = amountA.times(minRate.minus(0.9));
+    amountBMin = amountB.times(minRate.minus(0.9));
+  }
+
   const args =
     ChainConstants.chainType === 'ELF'
       ? [
@@ -287,6 +302,8 @@ export const onSwap: (param: SwapProps) => Promise<boolean | any> = async ({
   tokenB,
   t,
 }) => {
+  if (amountOutMin.lt(1)) amountOutMin = ZERO.plus(1);
+
   let methodName: string,
     args: Array<string | string[] | number | boolean | PBTimestamp>,
     sendOptions: any = {

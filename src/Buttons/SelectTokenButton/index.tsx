@@ -39,7 +39,13 @@ export default function SelectTokenButton({ token, setToken, className, ...props
           <CurrencyLogo size={24} currency={token} />
         </Col>
         <Col className="flex-center-middle">
-          <Pair symbol={token?.symbol} size={16} lineHeight={16} weight="medium" />
+          {/* <CommonTooltip
+            visible
+            className="select-token-tooltip"
+            title={token?.symbol}
+            buttonTitle={t('ok')}> */}
+          <Pair className="select-token-pair" symbol={token?.symbol} size={16} lineHeight={16} weight="medium" />
+          {/* </CommonTooltip> */}
         </Col>
       </Row>
     );
@@ -52,7 +58,7 @@ export default function SelectTokenButton({ token, setToken, className, ...props
       onClick={onClick}
       {...props}>
       <Row justify="space-between" align="middle">
-        <Col>{renderContent()}</Col>
+        <Col className="select-token-middle">{renderContent()}</Col>
         <Col className="select-token-icon-col">
           <IconArrowDown className="select-token-icon" />
         </Col>
