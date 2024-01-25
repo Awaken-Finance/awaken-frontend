@@ -168,12 +168,16 @@ export default function Add({ pairInfo }: { pairInfo: PairInfo }) {
       !currencyBalances?.[getCurrencyAddress(leftToken)] ||
       !currencyBalances?.[getCurrencyAddress(rightToken)] ||
       currencyBalances?.[getCurrencyAddress(leftToken)]?.isZero() ||
-      currencyBalances?.[getCurrencyAddress(rightToken)]?.isZero()
+      currencyBalances?.[getCurrencyAddress(rightToken)]?.isZero() ||
+      !reserves?.[getCurrencyAddress(leftToken)] ||
+      !reserves?.[getCurrencyAddress(rightToken)] ||
+      new BigNumber(reserves?.[getCurrencyAddress(leftToken)]).isZero() ||
+      new BigNumber(reserves?.[getCurrencyAddress(rightToken)]).isZero()
     ) {
       return false;
     }
     return true;
-  }, [currencyBalances, leftToken, rightToken]);
+  }, [currencyBalances, leftToken, reserves, rightToken]);
 
   const disabledTokenB = useMemo(() => {
     return /-/.test(tokenA?.symbol ?? '') && !/-/.test(tokenB?.symbol ?? '');

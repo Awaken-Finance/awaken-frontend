@@ -78,7 +78,7 @@ export default function Provider({ children }: { children: React.ReactNode }) {
   }, [mobile, language]);
 
   // blockHeight
-  const blockHeight = useCurrentBlockHeight();
+  // const blockHeight = useCurrentBlockHeight();
 
   // CID
   const cid = useSearchParam('cid');
@@ -93,8 +93,7 @@ export default function Provider({ children }: { children: React.ReactNode }) {
   });
 
   return (
-    <StoreContext.Provider
-      value={useMemo(() => [{ ...state, mobile, blockHeight }, { dispatch }], [state, mobile, blockHeight])}>
+    <StoreContext.Provider value={useMemo(() => [{ ...state, mobile }, { dispatch }], [state, mobile])}>
       {children}
     </StoreContext.Provider>
   );
