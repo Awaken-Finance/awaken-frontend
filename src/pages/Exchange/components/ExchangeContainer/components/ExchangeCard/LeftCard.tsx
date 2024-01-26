@@ -157,8 +157,6 @@ export default function LeftCard({
           divDecimals(reserves?.[getCurrencyAddress(tokenB)], tokenB?.decimals),
         );
 
-        console.log('totalValue: ', totalValue.toNumber(), maxAmount.toFixed());
-
         totalStr = bigNumberToUPString(totalValue, tokenB?.decimals);
       }
 
