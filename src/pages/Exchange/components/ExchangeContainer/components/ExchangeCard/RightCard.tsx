@@ -157,7 +157,7 @@ export default function RightCard({
           divDecimals(reserves?.[getCurrencyAddress(tokenB)], tokenB?.decimals),
         );
 
-        totalStr = bigNumberToString(totalValue, tokenB?.decimals);
+        totalStr = bigNumberToUPString(totalValue, tokenB?.decimals);
       }
 
       setTotal(totalStr);

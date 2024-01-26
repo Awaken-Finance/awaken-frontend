@@ -7,7 +7,7 @@ import { useUserSettings } from 'contexts/useUserSettings';
 import { CurrencyBalances, Reserves } from 'types/swap';
 import { divDecimals } from 'utils/calculate';
 import {
-  bigNumberToString,
+  bigNumberToUPString,
   getCurrencyAddress,
   parseUserSlippageTolerance,
   inputToSide,
@@ -16,6 +16,7 @@ import {
   getAmountByInput,
   getPriceImpactWithBuy,
   getAmountOut,
+  bigNumberToString,
 } from 'utils/swap';
 import { useUpdateEffect } from 'react-use';
 
@@ -158,7 +159,7 @@ export default function LeftCard({
 
         console.log('totalValue: ', totalValue.toNumber(), maxAmount.toFixed());
 
-        totalStr = bigNumberToString(totalValue, tokenB?.decimals);
+        totalStr = bigNumberToUPString(totalValue, tokenB?.decimals);
       }
 
       setTotal(totalStr);
@@ -178,7 +179,7 @@ export default function LeftCard({
           divDecimals(reserves?.[getCurrencyAddress(tokenB)], tokenB?.decimals),
           divDecimals(reserves?.[getCurrencyAddress(tokenA)], tokenA?.decimals),
         );
-        amountStr = bigNumberToString(amountValue, tokenA?.decimals);
+        amountStr = bigNumberToUPString(amountValue, tokenA?.decimals);
       }
 
       setAmount(amountStr);
