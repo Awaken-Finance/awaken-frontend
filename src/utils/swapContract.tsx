@@ -12,8 +12,7 @@ import { IContract } from 'types';
 import getTransactionId from './contractResult';
 import { TFunction } from 'react-i18next';
 import { formatSwapError } from './formatError';
-import { A_TOKEN_PREFIX } from 'constants/aelf';
-const isNFTSymbol = (symbol?: string) => symbol?.includes('-') && !symbol.includes(A_TOKEN_PREFIX);
+import { isNFTSymbol } from 'utils/reg';
 
 type addLiquidityTokensProps = {
   tokenA: string;
