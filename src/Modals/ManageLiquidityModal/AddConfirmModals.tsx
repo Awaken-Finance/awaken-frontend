@@ -51,27 +51,17 @@ export function AddConfirmModal({
   const { reserves, totalSupply } = usePair(pairAddress, routerAddress);
 
   const lp = useMemo(() => {
-    if (isNFTSymbol(tokenA?.symbol) && isNFTSymbol(tokenB?.symbol)) {
+    if (isNFTSymbol(tokenA?.symbol)) {
       return getLiquidity(tokenAValue, timesDecimals(reserves?.[getCurrencyAddress(tokenA)], 8), totalSupply).toFixed();
     }
 
     return getLiquidity(tokenAValue, reserves?.[getCurrencyAddress(tokenA)], totalSupply).toFixed();
-  }, [reserves, tokenA, tokenAValue, tokenB?.symbol, totalSupply]);
-
-  console.log(
-    'tokenAValue: ',
-    tokenAValue,
-    'reserves?.[getCurrencyAddress(tokenA)]: ',
-    reserves?.[getCurrencyAddress(tokenA)],
-    'totalSupply: ',
-    totalSupply,
-    'lp: ',
-    lp,
-  );
+  }, [reserves, tokenA, tokenAValue, totalSupply]);
 
   const [{ userSlippageTolerance }] = useUserSettings();
 
   if (!tokenA || !tokenB || !tokenAValue || !tokenBValue) return null;
+
   return (
     <CommonModal
       className={isMobile ? 'liq-confirm-modal-m' : 'add-liq-confirm-modal'}
@@ -109,8 +99,8 @@ export function AddConfirmModal({
         </Col>
         <Col>
           <Font lineHeight={24} size={16} weight="medium">
-            {/* {unitConverter(lp)} */}
-            {lp}
+            {unitConverter(lp, 8)}
+            {/* {lp} */}
           </Font>
         </Col>
       </Row>

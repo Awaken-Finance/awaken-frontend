@@ -59,8 +59,6 @@ export default function Remove({ pairInfo }: { pairInfo: PairInfo }) {
 
   const showLpBalance = divDecimals(lpBalance, getLPDecimals());
 
-  console.log('showLpBalance: ', showLpBalance.toNumber(), lpBalance.toNumber());
-
   const routerAddress = ChainConstants.constants.ROUTER[rate];
   const routerContract = useRouterContract(rate);
   const lpSymbol = useLPSymbol(tokenA, tokenB);
@@ -138,6 +136,12 @@ export default function Remove({ pairInfo }: { pairInfo: PairInfo }) {
     }
   };
 
+  const lpBalanceText = useMemo(() => {
+    const uLP = unitConverter(showLpBalance, 8);
+    if (uLP === '0') return '0.00';
+    return uLP;
+  }, [showLpBalance]);
+
   return (
     <Row gutter={[0, 16]} className="remove-modal-box">
       <Col span={24} className="remove-modal-box-input" onClick={() => inputRef.current?.focus()}>
@@ -169,7 +173,7 @@ export default function Remove({ pairInfo }: { pairInfo: PairInfo }) {
           </Col>
           <Col>
             <Font lineHeight={14} size={12} color="two">
-              {`${t('lp')}：${unitConverter(showLpBalance)}`}
+              {`${t('lp')}：${lpBalanceText}`}
             </Font>
           </Col>
         </Row>
