@@ -9,7 +9,7 @@ import { useMobile } from 'utils/isMobile';
 import { useRequest } from 'ahooks';
 import BigNumber from 'bignumber.js';
 import { getTransactionFee } from 'pages/Exchange/apis/getTransactionFee';
-import { divDecimals } from 'utils/calculate';
+import { divDecimals, timesDecimals } from 'utils/calculate';
 import { usePair, usePairsAddress } from 'hooks/userPairs';
 import { getCurrencyAddress, getLiquidity, parseUserSlippageTolerance } from 'utils/swap';
 import { useUserSettings } from 'contexts/useUserSettings';
@@ -17,6 +17,7 @@ import { PairsAndLogos } from 'components/PariAndLogo';
 import { unitConverter } from 'utils';
 import { ChainConstants } from 'constants/ChainConstants';
 import { useMemo } from 'react';
+import { isNFTSymbol } from 'utils/reg';
 
 export function AddConfirmModal({
   tokenA,
@@ -49,9 +50,23 @@ export function AddConfirmModal({
   const routerAddress = ChainConstants.constants.ROUTER[rate];
   const { reserves, totalSupply } = usePair(pairAddress, routerAddress);
 
-  const lp = useMemo(
-    () => getLiquidity(tokenAValue, reserves?.[getCurrencyAddress(tokenA)], totalSupply).toFixed(),
-    [reserves, tokenA, tokenAValue, totalSupply],
+  const lp = useMemo(() => {
+    if (isNFTSymbol(tokenA?.symbol) && isNFTSymbol(tokenB?.symbol)) {
+      return getLiquidity(tokenAValue, timesDecimals(reserves?.[getCurrencyAddress(tokenA)], 8), totalSupply).toFixed();
+    }
+
+    return getLiquidity(tokenAValue, reserves?.[getCurrencyAddress(tokenA)], totalSupply).toFixed();
+  }, [reserves, tokenA, tokenAValue, tokenB?.symbol, totalSupply]);
+
+  console.log(
+    'tokenAValue: ',
+    tokenAValue,
+    'reserves?.[getCurrencyAddress(tokenA)]: ',
+    reserves?.[getCurrencyAddress(tokenA)],
+    'totalSupply: ',
+    totalSupply,
+    'lp: ',
+    lp,
   );
 
   const [{ userSlippageTolerance }] = useUserSettings();
@@ -94,7 +109,8 @@ export function AddConfirmModal({
         </Col>
         <Col>
           <Font lineHeight={24} size={16} weight="medium">
-            {unitConverter(lp)}
+            {/* {unitConverter(lp)} */}
+            {lp}
           </Font>
         </Col>
       </Row>

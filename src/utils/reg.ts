@@ -17,3 +17,8 @@ export function isValidNumber(n: string) {
   if (n.includes('-')) return false;
   return P_N_REG.test(n);
 }
+
+const NFT_TOKEN = /-/;
+export function isNFTSymbol(symbol?: string) {
+  return NFT_TOKEN.test(symbol ?? '');
+}
