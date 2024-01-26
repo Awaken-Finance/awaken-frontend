@@ -28,7 +28,6 @@ export default function CommonBlockProgress({
   }, [blocks, totalProgress]);
 
   const onClickBlock = (b: { progress: number }) => {
-    console.log('onClickBlock: ', b);
     onChange(b.progress);
   };
 

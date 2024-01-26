@@ -17,9 +17,7 @@ import { PairsAndLogos } from 'components/PariAndLogo';
 import { unitConverter } from 'utils';
 import { ChainConstants } from 'constants/ChainConstants';
 import { useMemo } from 'react';
-import { A_TOKEN_PREFIX } from 'constants/aelf';
-
-const isNFTSymbol = (symbol?: string) => symbol?.includes('-') && !symbol.includes(A_TOKEN_PREFIX);
+import { isNFTSymbol } from 'utils/reg';
 
 export function AddConfirmModal({
   tokenA,
@@ -53,12 +51,12 @@ export function AddConfirmModal({
   const { reserves, totalSupply } = usePair(pairAddress, routerAddress);
 
   const lp = useMemo(() => {
-    if (isNFTSymbol(tokenA?.symbol) && isNFTSymbol(tokenB?.symbol)) {
+    if (isNFTSymbol(tokenA?.symbol)) {
       return getLiquidity(tokenAValue, timesDecimals(reserves?.[getCurrencyAddress(tokenA)], 8), totalSupply).toFixed();
     }
 
     return getLiquidity(tokenAValue, reserves?.[getCurrencyAddress(tokenA)], totalSupply).toFixed();
-  }, [reserves, tokenA, tokenAValue, tokenB?.symbol, totalSupply]);
+  }, [reserves, tokenA, tokenAValue, totalSupply]);
 
   const [{ userSlippageTolerance }] = useUserSettings();
 
