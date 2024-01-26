@@ -60,6 +60,12 @@ export function AddConfirmModal({
 
   const [{ userSlippageTolerance }] = useUserSettings();
 
+  const lpUnit = useMemo(() => {
+    const uLP = unitConverter(lp, 8);
+    if (uLP === '0') return '0.00';
+    return uLP;
+  }, [lp]);
+
   if (!tokenA || !tokenB || !tokenAValue || !tokenBValue) return null;
 
   return (
@@ -99,8 +105,7 @@ export function AddConfirmModal({
         </Col>
         <Col>
           <Font lineHeight={24} size={16} weight="medium">
-            {unitConverter(lp, 8)}
-            {/* {lp} */}
+            {lpUnit}
           </Font>
         </Col>
       </Row>
