@@ -55,8 +55,12 @@ export function AddConfirmModal({
       return getLiquidity(tokenAValue, timesDecimals(reserves?.[getCurrencyAddress(tokenA)], 8), totalSupply).toFixed();
     }
 
+    if (isNFTSymbol(tokenB?.symbol)) {
+      return getLiquidity(tokenBValue, timesDecimals(reserves?.[getCurrencyAddress(tokenB)], 8), totalSupply).toFixed();
+    }
+
     return getLiquidity(tokenAValue, reserves?.[getCurrencyAddress(tokenA)], totalSupply).toFixed();
-  }, [reserves, tokenA, tokenAValue, totalSupply]);
+  }, [reserves, tokenA, tokenAValue, tokenB, tokenBValue, totalSupply]);
 
   const [{ userSlippageTolerance }] = useUserSettings();
 

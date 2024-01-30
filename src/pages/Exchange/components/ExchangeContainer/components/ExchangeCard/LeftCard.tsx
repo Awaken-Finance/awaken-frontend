@@ -32,6 +32,7 @@ import { SellBtnWithPay } from 'Buttons/SellBtn/SellBtn';
 import { ZERO } from 'constants/misc';
 import { useMobile } from 'utils/isMobile';
 import CommonBlockProgress from 'components/CommonBlockProgress';
+import { isNFTSymbol } from 'utils/reg';
 
 export default function LeftCard({
   tokenA,
@@ -218,11 +219,11 @@ export default function LeftCard({
   };
 
   const disabledTotal = useMemo(() => {
-    return /-/.test(tokenA?.symbol ?? '') && !/-/.test(tokenB?.symbol ?? '');
+    return isNFTSymbol(tokenA?.symbol) && !isNFTSymbol(tokenB?.symbol);
   }, [tokenA?.symbol, tokenB?.symbol]);
 
   const disabledAmount = useMemo(() => {
-    return !/-/.test(tokenA?.symbol ?? '') && /-/.test(tokenB?.symbol ?? '');
+    return !isNFTSymbol(tokenA?.symbol) && isNFTSymbol(tokenB?.symbol);
   }, [tokenA?.symbol, tokenB?.symbol]);
 
   useUpdateEffect(() => {
