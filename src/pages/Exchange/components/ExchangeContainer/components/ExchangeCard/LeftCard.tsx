@@ -177,7 +177,7 @@ export default function LeftCard({
           divDecimals(reserves?.[getCurrencyAddress(tokenB)], tokenB?.decimals),
           divDecimals(reserves?.[getCurrencyAddress(tokenA)], tokenA?.decimals),
         );
-        amountStr = bigNumberToUPString(amountValue, tokenA?.decimals);
+        amountStr = bigNumberToString(amountValue, tokenA?.decimals);
       }
 
       setAmount(amountStr);
