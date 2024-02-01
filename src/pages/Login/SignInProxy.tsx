@@ -72,6 +72,8 @@ export default React.forwardRef((props, ref) => {
     return PortkeyDid.SignIn;
   }, [version]);
 
+  const [isShowSign, setShowSign] = useState<Boolean>(false);
+
   /**
    * User open login/signup page, loginState will change to logining.
    * So we need to call onCancel when use left login/signup page.
@@ -82,9 +84,11 @@ export default React.forwardRef((props, ref) => {
     }
     if (pathname === '/login' || pathname === '/signup') {
       setShouldCallOnCancel(true);
+      setShowSign(true);
       return;
     }
     if (pathname !== '/login' && pathname !== '/signup') {
+      setShowSign(false);
       const anyProps = props as any;
       if (!switching && loginState === WebLoginState.logining && shouldCallOnCancel) {
         setShouldCallOnCancel(false);
@@ -107,6 +111,7 @@ export default React.forwardRef((props, ref) => {
 
   if (isPreparing) return <></>; // !!! don't delete this line
   if (switching) return <></>;
+  if (!isShowSign) return <></>;
 
   if (!renderDom) {
     return (
