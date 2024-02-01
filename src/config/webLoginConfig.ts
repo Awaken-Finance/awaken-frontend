@@ -2,7 +2,7 @@ import { setGlobalConfig } from 'aelf-web-login';
 import { CHAIN_INFO as tDVV } from 'constants/platform/aelf-tdvv';
 import { CHAIN_INFO as tDVW } from 'constants/platform/aelf-tdvw';
 import { CHAIN_INFO as tDVV_TEST3 } from 'constants/platform/aelf-tdvv-test3';
-import { PORTKEY_SERVICE } from 'constants/portkey';
+import { PORTKEY_SERVICE } from './portkeyonConfig';
 
 const API_ENV = process.env.REACT_APP_API_ENV;
 const APPNAME = 'awaken.finance';
@@ -42,6 +42,7 @@ setGlobalConfig({
     useLocalStorage: true,
     graphQLUrl: portkeyService.v1.graphQLUrl,
     connectUrl: portkeyService.v1.connectServer,
+    serviceUrl: portkeyService.v1.apiServer,
     // loginConfig: {
     //   recommendIndexes: [0, 1],
     //   loginMethodsOrder: ['Google', 'Telegram', 'Apple', 'Phone', 'Email'],
@@ -66,6 +67,7 @@ setGlobalConfig({
     useLocalStorage: true,
     graphQLUrl: portkeyService.v2.graphQLUrl,
     connectUrl: portkeyService.v2.connectServer,
+    serviceUrl: portkeyService.v2.apiServer,
     // loginConfig: {
     //   recommendIndexes: [0, 1],
     //   loginMethodsOrder: ['Google', 'Telegram', 'Apple', 'Phone', 'Email'],
