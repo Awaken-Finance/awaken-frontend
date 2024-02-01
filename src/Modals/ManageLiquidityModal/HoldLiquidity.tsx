@@ -8,7 +8,7 @@ import { usePairsAddress } from 'hooks/userPairs';
 import { useTranslation } from 'react-i18next';
 import { unitConverter } from 'utils';
 import { divDecimals } from 'utils/calculate';
-import { formatPercentage, formatPrice } from 'utils/price';
+import { formatLiquidity, formatPercentage, formatPrice } from 'utils/price';
 import { getCurrencyAddress, getLPDecimals } from 'utils/swap';
 import { ZERO } from 'constants/misc';
 
@@ -33,7 +33,6 @@ export default function HoldLiquidity({
   const pairAddress = usePairsAddress(rate, leftToken, rightToken);
 
   const [lpBalance, lp] = useLPBalances(pairAddress, undefined, rate);
-  console.log('lp count :', lp);
 
   const showLp = divDecimals(lp, getLPDecimals());
   const lpUnit = useMemo(() => {
@@ -109,7 +108,7 @@ export default function HoldLiquidity({
                 </Col>
                 <Col>
                   <Font lineHeight={24} size={16} weight="medium">
-                    {formatPrice(leftLPBalance, leftToken?.decimals)}
+                    {formatLiquidity(leftLPBalance, leftToken?.decimals)}
                   </Font>
                 </Col>
               </Row>
@@ -125,7 +124,7 @@ export default function HoldLiquidity({
                 </Col>
                 <Col>
                   <Font lineHeight={24} size={16} weight="medium">
-                    {formatPrice(rightLPBalance, rightToken?.decimals)}
+                    {formatLiquidity(rightLPBalance, rightToken?.decimals)}
                   </Font>
                 </Col>
               </Row>
