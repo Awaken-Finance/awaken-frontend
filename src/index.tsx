@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { ConfigProvider } from 'antd';
 import { WebLoginProvider, getConfig } from 'aelf-web-login';
-import { PortkeyProvider } from '@portkey/did-ui-react';
+import { PortkeyProvider } from '@portkey-v1/did-ui-react';
 import './sentry';
 import App from './App';
 import ModalProvider from './contexts/useModal';
@@ -18,7 +18,7 @@ import { useLanguage } from './i18n';
 import SignInProxy from 'pages/Login/SignInProxy';
 import ConfirmLogoutDialog from 'Modals/ConfirmLogoutDialog';
 import './config/webLoginConfig';
-import '@portkey/did-ui-react/dist/assets/index.css';
+import '@portkey-v1/did-ui-react/dist/assets/index.css';
 import 'aelf-web-login/dist/assets/index.css';
 
 import './index.css';
