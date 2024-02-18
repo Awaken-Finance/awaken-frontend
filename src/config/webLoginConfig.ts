@@ -82,6 +82,7 @@ setGlobalConfig({
       defaultNetwork: NETWORK_V2,
     },
   } as any,
+  onlyShowV2: true,
   aelfReact: {
     appName: APPNAME,
     nodes: {
