@@ -5,7 +5,7 @@ import { CHAIN_INFO as tDVV_TEST3 } from 'constants/platform/aelf-tdvv-test3';
 
 const API_ENV = process.env.REACT_APP_API_ENV;
 const APPNAME = 'awaken.finance';
-const WEBSITE_ICON = API_ENV ? 'https://test.awaken.finance/favicon.ico' : 'https://awaken.finance/favicon.ico';
+const WEBSITE_ICON = API_ENV ? 'https://test-v1.awaken.finance/favicon.ico' : 'https://v1.awaken.finance/favicon.ico';
 
 let CHAIN_ID = tDVV.chainId,
   NETWORK = 'MAIN',
