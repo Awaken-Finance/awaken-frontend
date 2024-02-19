@@ -36,9 +36,9 @@ export default function Login() {
     }
   }, [history, login, loginState, redirect, tryLogin]);
 
-  useWebLoginEvent(WebLoginEvents.LOGIN_ERROR, (error) => {
-    message.error(error.message);
-  });
+  // useWebLoginEvent(WebLoginEvents.LOGIN_ERROR, (error) => {
+  //   message.error(error.message);
+  // });
 
   return (
     <div className="page-login">
