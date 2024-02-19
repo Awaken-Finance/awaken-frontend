@@ -1,7 +1,7 @@
 import { Suspense } from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { Layout, message } from 'antd';
-import { PortkeyLoading } from '@portkey-v1/did-ui-react';
+import { PortkeyLoading } from '@portkey/did-ui-react';
 import Header from 'components/Header';
 import ScrollToTop from 'components/ScrollToTop';
 import { routes } from 'routes';

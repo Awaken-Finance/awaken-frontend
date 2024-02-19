@@ -1,4 +1,4 @@
-import { SignIn } from '@portkey-v1/did-ui-react';
+import { SignIn } from '@portkey/did-ui-react';
 import { WebLoginState, useMultiWallets, usePortkeyPreparing, useWebLogin } from 'aelf-web-login';
 import useInterval from 'hooks/useInterval';
 import React, { useEffect, useMemo, useState } from 'react';
