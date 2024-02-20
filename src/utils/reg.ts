@@ -5,7 +5,7 @@ export function isUrl(url: string) {
   return URL_REG.test(url);
 }
 
-const SYMBOL_REG = /^[A-Za-z0-9]+$/;
+const SYMBOL_REG = /^[A-Za-z0-9\-]+$/;
 export function isSymbol(symbol: string) {
   return SYMBOL_REG.test(symbol);
 }
@@ -16,4 +16,10 @@ const P_N_REG = /^(0|([1-9][0-9]*))(\.[0-9]*)?$/;
 export function isValidNumber(n: string) {
   if (n.includes('-')) return false;
   return P_N_REG.test(n);
+}
+
+const NFT_TOKEN = /-/;
+const A_TOKEN_PREFIX = /ALP/;
+export function isNFTSymbol(symbol?: string) {
+  return NFT_TOKEN.test(symbol ?? '') && !A_TOKEN_PREFIX.test(symbol ?? '');
 }

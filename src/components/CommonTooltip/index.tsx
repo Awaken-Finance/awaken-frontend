@@ -113,6 +113,7 @@ export default function CommonTooltip({
       overlayClassName={style}
       visible={open}
       title={title}
+      className="awk-common-tool-tip"
       arrowPointAtCenter={arrowPointAtCenter}
       autoAdjustOverflow={false}
       align={renderAlign}

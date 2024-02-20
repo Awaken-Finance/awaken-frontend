@@ -7,7 +7,7 @@ import { useUserSettings } from 'contexts/useUserSettings';
 import { CurrencyBalances, Reserves } from 'types/swap';
 import { divDecimals } from 'utils/calculate';
 import {
-  bigNumberToString,
+  bigNumberToUPString,
   getCurrencyAddress,
   parseUserSlippageTolerance,
   inputToSide,
@@ -16,6 +16,7 @@ import {
   getAmountByInput,
   getPriceImpactWithBuy,
   getAmountOut,
+  bigNumberToString,
 } from 'utils/swap';
 import { useUpdateEffect } from 'react-use';
 
@@ -31,6 +32,7 @@ import { SellBtnWithPay } from 'Buttons/SellBtn/SellBtn';
 import { ZERO } from 'constants/misc';
 import { useMobile } from 'utils/isMobile';
 import CommonBlockProgress from 'components/CommonBlockProgress';
+import { isNFTSymbol } from 'utils/reg';
 
 export default function LeftCard({
   tokenA,
@@ -85,7 +87,7 @@ export default function LeftCard({
       val,
       divDecimals(reserves?.[getCurrencyAddress(tokenB)], tokenB?.decimals),
       divDecimals(reserves?.[getCurrencyAddress(tokenA)], tokenA?.decimals),
-    ).dp(tokenB?.decimals || 8);
+    ).dp(tokenB?.decimals ?? 8);
   }, [tokenA, reserves, maxTotal, userSlippageTolerance, rate, tokenB]);
 
   const [progressValue, setProgressValue] = useState(0);
@@ -156,7 +158,7 @@ export default function LeftCard({
           divDecimals(reserves?.[getCurrencyAddress(tokenB)], tokenB?.decimals),
         );
 
-        totalStr = bigNumberToString(totalValue, tokenB?.decimals);
+        totalStr = bigNumberToUPString(totalValue, tokenB?.decimals);
       }
 
       setTotal(totalStr);
@@ -176,7 +178,7 @@ export default function LeftCard({
           divDecimals(reserves?.[getCurrencyAddress(tokenB)], tokenB?.decimals),
           divDecimals(reserves?.[getCurrencyAddress(tokenA)], tokenA?.decimals),
         );
-        amountStr = bigNumberToString(amountValue, tokenB?.decimals);
+        amountStr = bigNumberToString(amountValue, tokenA?.decimals);
       }
 
       setAmount(amountStr);
@@ -216,6 +218,14 @@ export default function LeftCard({
     setShowZeroInputTips(!amount);
   };
 
+  const disabledTotal = useMemo(() => {
+    return isNFTSymbol(tokenA?.symbol) && !isNFTSymbol(tokenB?.symbol);
+  }, [tokenA?.symbol, tokenB?.symbol]);
+
+  const disabledAmount = useMemo(() => {
+    return !isNFTSymbol(tokenA?.symbol) && isNFTSymbol(tokenB?.symbol);
+  }, [tokenA?.symbol, tokenB?.symbol]);
+
   useUpdateEffect(() => {
     setAmount('');
     setTotal('');
@@ -238,13 +248,18 @@ export default function LeftCard({
               onChange={inputAmount}
               onFocus={() => setShowZeroInputTips(false)}
               {...amountError}
+              disabled={disabledAmount}
             />
           </Col>
           <Col span={24}>
             {isMobile ? (
-              <CommonBlockProgress value={progressValue} onChange={sliderAmount} />
+              <CommonBlockProgress
+                value={progressValue}
+                onChange={sliderAmount}
+                disabled={disabledAmount || disabledTotal}
+              />
             ) : (
-              <CommonSlider value={sliderValue} onChange={sliderAmount} />
+              <CommonSlider value={sliderValue} onChange={sliderAmount} disabled={disabledAmount || disabledTotal} />
             )}
           </Col>
           <Col span={24}>
@@ -255,6 +270,7 @@ export default function LeftCard({
               onFocus={() => setShowZeroInputTips(false)}
               {...totalError}
               type="total"
+              disabled={disabledTotal}
             />
           </Col>
         </Row>

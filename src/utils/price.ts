@@ -106,7 +106,10 @@ export function formatPriceChange(price?: BigNumber.Value, digits = 12): string 
   if (!price) {
     return ZERO.toString();
   }
+
   const bigNum = new BigNumber(price);
+
+  if (digits === 0) return bigNum.dp(digits).toString();
 
   if (bigNum.gte(10)) {
     return bigNum.dp(2).toString();

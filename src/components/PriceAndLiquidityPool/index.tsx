@@ -10,6 +10,7 @@ import { getEstimatedShare, getPairTokenRatio } from 'utils/swap';
 import { useTokens } from 'hooks/swap';
 import { unitConverter } from 'utils';
 import { getCurrencyAddress } from 'utils/swap';
+import { timesDecimals } from 'utils/calculate';
 import './index.less';
 
 interface PriceAndLiquidityPoolProps {
@@ -22,14 +23,17 @@ interface PriceAndLiquidityPoolProps {
 
 const getRatio = (tokenA?: Currency, tokenB?: Currency, reserves?: Reserves, language?: string, inputs?: Inputs) => {
   let tokenReserves = reserves;
-  if (tokenReserves?.[getCurrencyAddress(tokenA)] == '0' && tokenReserves?.[getCurrencyAddress(tokenB)] == '0') {
+  if (!tokenReserves?.[getCurrencyAddress(tokenA)] && !tokenReserves?.[getCurrencyAddress(tokenB)]) {
     tokenReserves = {
-      [getCurrencyAddress(tokenA)]: inputs?.[getCurrencyAddress(tokenA)] || '0',
-      [getCurrencyAddress(tokenB)]: inputs?.[getCurrencyAddress(tokenB)] || '0',
+      [getCurrencyAddress(tokenA)]: inputs?.[getCurrencyAddress(tokenA)]
+        ? timesDecimals(inputs?.[getCurrencyAddress(tokenA)], tokenA?.decimals).toFixed()
+        : '0',
+      [getCurrencyAddress(tokenB)]: inputs?.[getCurrencyAddress(tokenB)]
+        ? timesDecimals(inputs?.[getCurrencyAddress(tokenB)], tokenB?.decimals).toFixed()
+        : '0',
     };
   }
-  const v = getPairTokenRatio({ tokenA, tokenB, reserves: tokenReserves });
-  const ratio = v;
+  const ratio = getPairTokenRatio({ tokenA, tokenB, reserves: tokenReserves });
   return unitConverter(ratio, 8);
 };
 
