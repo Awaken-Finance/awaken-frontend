@@ -1,5 +1,11 @@
-import { SignIn } from '@portkey/did-ui-react';
-import { WebLoginState, useMultiWallets, usePortkeyPreparing, useWebLogin } from 'aelf-web-login';
+import {
+  WebLoginState,
+  useMultiWallets,
+  usePortkeyPreparing,
+  useWebLogin,
+  PortkeyDid,
+  PortkeyDidV1,
+} from 'aelf-web-login';
 import useInterval from 'hooks/useInterval';
 import React, { useEffect, useMemo, useState } from 'react';
 import { createPortal } from 'react-dom';
@@ -8,15 +14,13 @@ import { isNightElfApp, isPortkeyAppWithDiscover } from 'utils/isApp';
 import isMobile from 'utils/isMobile';
 
 export default React.forwardRef((props, ref) => {
-  const { wallet, loginState } = useWebLogin();
+  const { loginState, version } = useWebLogin();
   const { switching } = useMultiWallets();
   const { isPreparing } = usePortkeyPreparing();
   const { pathname } = useLocation();
   const [shouldCallOnCancel, setShouldCallOnCancel] = useState(false);
   const [renderDom, setRenderDom] = useState<HTMLElement>();
   const [lifeCycle, setLifeCycle] = useState<any>(pathname?.startsWith('/login') ? 'Login' : 'SignUp');
-
-  console.log(wallet.portkeyInfo?.walletInfo?.address);
 
   const defaultLifeCycle = useMemo(() => {
     if (pathname?.startsWith('/login')) {
@@ -60,6 +64,16 @@ export default React.forwardRef((props, ref) => {
     }
   }, [height, width]);
 
+  const SignComponent = useMemo(() => {
+    if (version === 'v1') {
+      return PortkeyDidV1.SignIn;
+    }
+
+    return PortkeyDid.SignIn;
+  }, [version]);
+
+  const [isShowSign, setShowSign] = useState<Boolean>(false);
+
   /**
    * User open login/signup page, loginState will change to logining.
    * So we need to call onCancel when use left login/signup page.
@@ -70,9 +84,11 @@ export default React.forwardRef((props, ref) => {
     }
     if (pathname === '/login' || pathname === '/signup') {
       setShouldCallOnCancel(true);
+      setShowSign(true);
       return;
     }
     if (pathname !== '/login' && pathname !== '/signup') {
+      setShowSign(false);
       const anyProps = props as any;
       if (!switching && loginState === WebLoginState.logining && shouldCallOnCancel) {
         setShouldCallOnCancel(false);
@@ -95,10 +111,11 @@ export default React.forwardRef((props, ref) => {
 
   if (isPreparing) return <></>; // !!! don't delete this line
   if (switching) return <></>;
+  if (!isShowSign) return <></>;
 
   if (!renderDom) {
     return (
-      <SignIn
+      <SignComponent
         key="signin"
         {...props}
         ref={ref}
@@ -109,7 +126,7 @@ export default React.forwardRef((props, ref) => {
   }
 
   return createPortal(
-    <SignIn
+    <SignComponent
       key="signin"
       {...props}
       ref={ref}

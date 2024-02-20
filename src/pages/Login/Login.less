@@ -19,6 +19,10 @@
       padding-top: 40PX;
     }
   }
+
+  .portkey-ui-web2design-wrapper {
+    overflow-y: hidden;
+  }
 }
 
 #awaken-portkey-sdk-root {
@@ -31,9 +35,6 @@
 
   &.awaken-portkey-sdk-pc {
     margin: 0 auto;
-
-    
-
   }
   
 
@@ -53,6 +54,89 @@
     width: 100%;
     min-height: calc(100vh - 60px);
     max-height: calc(100vh - 60px);
+  }
+  
+  .portkey-ui-web2design-wrapper {
+    .left-wrapper {
+      .portkey-ui-flex-1 {
+        flex: none;
+      }
+      .web2-design-upgraded-portkey {
+        margin: 0;
+        padding: 0;
+        border: none;
+        background-color: var(--ant-primary-color-percent-16);
+      }
+    }
+  }
+
+  .web2-content {
+    .ant-btn-primary {
+      background-color: var(--portkey-ui-btn-bg);
+      .title {
+        color: var(--portkey-ui-text-secondary);
+      }
+    }
+  }
+
+  .web2-header {
+    .title {
+      color: var(--portkey-ui-font-7);
+    }
+  }
+  
+  .portkey-ui-switch-upgraded-wrapper {
+    width: 100%;
+    align-self: center;
+    margin: 0;
+  }
+
+  .aelf-web-conntect-drawer {
+    .ant-drawer-mask {
+      background: rgb(0 0 0 / 60%);
+    }
+    .portkey-ant-drawer-content {
+      background-color: var(--ant-container-bg-color);
+      border: none;
+    }
+    .portkey-ant-drawer-title{
+      position: relative;
+      .title {
+        color: var(--ant-black-font-color-1);
+        font-weight: 500;
+      }
+      >img {
+        position: absolute;
+        right: 0;
+        top: 0.01rem;
+      }
+    }
+  }
+
+  .aelf-web-connect-modal {
+    border-radius: 8px;
+    overflow: hidden;
+    .ant-modal-header, .ant-modal-body, .portkey-ant-modal-content {
+      background-color: var(--ant-container-bg-color);
+      border: none;
+    }
+    .portkey-ant-modal-title {
+      position: relative;
+      .title {
+        color: var(--ant-black-font-color-1);
+        font-weight: 500;
+      }
+      >img {
+        position: absolute;
+        right: 0;
+        top: 0.01rem;
+        cursor: pointer;
+      }
+    }
+  }
+
+  .portkey-ui-web2design-switch-sign {
+    display: none;
   }
 }
 
