@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { ConfigProvider } from 'antd';
 import { WebLoginProvider, getConfig } from 'aelf-web-login';
-import { PortkeyProvider } from '@portkey/did-ui-react';
+import { NetworkType, PortkeyProvider } from '@portkey/did-ui-react';
 import './sentry';
 import App from './App';
 import ModalProvider from './contexts/useModal';
@@ -41,7 +41,7 @@ function ContextProviders({ children }: { children?: React.ReactNode }) {
 
 ReactDOM.render(
   <ChianProvider>
-    <PortkeyProvider networkType={getConfig().networkType} theme="dark">
+    <PortkeyProvider networkType={getConfig().networkType as NetworkType} theme="dark">
       <WebLoginProvider
         extraWallets={['discover', 'elf']}
         nightElf={{ connectEagerly: true }}
