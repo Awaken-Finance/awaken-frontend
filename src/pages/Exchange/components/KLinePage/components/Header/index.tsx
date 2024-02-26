@@ -20,7 +20,14 @@ export default ({ pairInfo, onClose }: { pairInfo: PoolItem; onClose: () => void
           <CommonButton type="text" icon={<IconArrowLeft2 />} onClick={onClose}></CommonButton>
         </Col>
         <Col flex={1} className="symbol">
-          <Pairs size={20} lineHeight={30} weight="bold" tokenA={pairInfo.token0} tokenB={pairInfo.token1} />
+          <Pairs
+            size={20}
+            lineHeight={30}
+            weight="bold"
+            tokenA={pairInfo.token0}
+            tokenB={pairInfo.token1}
+            maxLenth={10}
+          />
           <FeeRate useBg className="kline-header-feeRate">
             {formatPercentage(pairInfo?.feeRate * 100)}
           </FeeRate>

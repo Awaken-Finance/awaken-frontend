@@ -32,7 +32,14 @@ export default function Header({
         <CommonButton type="text" icon={<IconSwitchPair />} onClick={openTradePair} />
       </Col>
       <Col flex={1} className="symbol">
-        <Pairs size={20} lineHeight={30} weight="bold" tokenA={pairInfo.token0} tokenB={pairInfo.token1} />
+        <Pairs
+          size={20}
+          lineHeight={30}
+          weight="bold"
+          tokenA={pairInfo.token0}
+          tokenB={pairInfo.token1}
+          maxLenth={10}
+        />
         <FeeRate useBg className="mobile-header-feeRate">
           {formatPercentage(new BigNumber(pairInfo?.feeRate ?? 0).times(100))}
         </FeeRate>
