@@ -1,10 +1,10 @@
 import { request } from 'api';
 import useChainId from 'hooks/useChainId';
 import { useActiveWeb3React } from './web3';
-import { message } from 'antd';
+// import { message } from 'antd';
 import { useState } from 'react';
 import { useInterval } from 'react-use';
-import i18n from 'i18next';
+// import i18n from 'i18next';
 
 export type UserAssetTokenInfo = {
   symbol: string;
