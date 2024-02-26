@@ -14,7 +14,7 @@ export interface PairsProps extends FontStyleProps {
 
 export default function Pairs({ tokenA = '', tokenB = '', delimiter = '/', ...props }: PairsProps) {
   return (
-    <span>
+    <span className="pairs">
       <Pair symbol={tokenA} {...props} />
       <Font {...props}>{delimiter}</Font>
       <Pair symbol={tokenB} {...props} />

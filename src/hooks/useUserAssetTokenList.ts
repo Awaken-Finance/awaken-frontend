@@ -34,7 +34,7 @@ export default function useUserAssetTokenList(shouldFetchInterval = true) {
       },
     });
     if (!resp || resp.error || !resp.data) {
-      message.error(i18n.t('Failed to get token list'));
+      // message.error(i18n.t('Failed to get token list'));
       return;
     }
     setList(resp.data);

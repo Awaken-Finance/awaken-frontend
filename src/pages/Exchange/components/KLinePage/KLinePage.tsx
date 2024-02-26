@@ -1,6 +1,5 @@
 import { useMemo } from 'react';
 import { Drawer, Row, Col } from 'antd';
-import clsx from 'clsx';
 import { useSwapContext } from 'pages/Exchange/hooks/useSwap';
 import TVContainer from '../ExchangeContainer/components/TVContainer';
 
@@ -23,7 +22,7 @@ export default function KLinePage({ onClose, visible }: { visible: boolean; onCl
     return (
       <Row>
         <Col span={24} className="kline-header-box">
-          <Header pairInfo={pairInfo} onClose={onClose} className={clsx('kline-header')} />
+          <Header pairInfo={pairInfo} onClose={onClose} />
         </Col>
         <Col span={24}>
           <Row gutter={[0, 8]}>
