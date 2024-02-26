@@ -2,11 +2,12 @@ import { memo, useMemo } from 'react';
 import { Row, Col } from 'antd';
 
 import { CurrencyLogo } from 'components/CurrencyLogo';
-import { unifyWTokenSymbol, unitConverter } from 'utils';
+import { unitConverter } from 'utils';
 import { useTranslation } from 'react-i18next';
 import Font from 'components/Font';
 import FallOrRise from 'components/FallOrRise';
 import CommonCard from 'components/CommonCard';
+import { Pair } from 'components/Pair';
 
 import { useSwapContext } from 'pages/Exchange/hooks/useSwap';
 import BigNumber from 'bignumber.js';
@@ -35,9 +36,7 @@ function CapitalPool() {
                   <CurrencyLogo size={24} {...pairInfo?.token0} />
                 </Col>
                 <Col>
-                  <Font size={16} lineHeight={24}>
-                    {unifyWTokenSymbol(pairInfo?.token0)}
-                  </Font>
+                  <Pair symbol={pairInfo?.token0} size={16} lineHeight={24} />
                 </Col>
               </Row>
             </Col>
@@ -54,7 +53,7 @@ function CapitalPool() {
                   <CurrencyLogo size={24} {...pairInfo?.token1} />
                 </Col>
                 <Col>
-                  <Font size={16}>{unifyWTokenSymbol(pairInfo?.token1)}</Font>
+                  <Pair symbol={pairInfo?.token1} size={16} lineHeight={24} />
                 </Col>
               </Row>
             </Col>

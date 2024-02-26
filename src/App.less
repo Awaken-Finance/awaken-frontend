@@ -221,3 +221,21 @@ em {
   overflow: hidden;
 }
 
+.font-one-line {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  /* stylelint-disable-next-line value-no-vendor-prefix */
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+}
+
+.font-two-line {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  /* stylelint-disable-next-line value-no-vendor-prefix */
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+

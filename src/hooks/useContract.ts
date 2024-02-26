@@ -40,9 +40,8 @@ export function useGetContractMethods(contractAddress?: string) {
   const fetchContractMethods = useCallback(async () => {
     if (!contractAddress) return;
     try {
-      // console.log('[Contract] getContractMethods', contractAddress);
       const methods = await getContractMethods(contractAddress);
-      // console.log('[Contract] getContractMethods', methods);
+
       methodsRef.current = methods;
       addressRef.current = contractAddress;
       promisesRef.current.forEach(({ resolve }) => {
