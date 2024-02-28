@@ -59,7 +59,7 @@ export default ({ pairInfo }: { pairInfo: PoolItem }) => {
               </Font>
             </Col>
             <Col span={12} className="text-right">
-              <Font lineHeight={18} size={12} color="two" className="font-two-line">
+              <Font lineHeight={18} size={12} color="two" className="font-two-line" align="right">
                 {`${t('vol24H')} ${pairInfo?.token0?.symbol ? '(' + pairInfo.token0.symbol + ')' : ''}`}
               </Font>
             </Col>
@@ -84,7 +84,7 @@ export default ({ pairInfo }: { pairInfo: PoolItem }) => {
               </Font>
             </Col>
             <Col span={12} className="text-right">
-              <Font lineHeight={18} size={12} color="two" className="font-two-line">
+              <Font lineHeight={18} size={12} color="two" className="font-two-line" align="right">
                 {`${t('vol24H')} ${pairInfo?.token1?.symbol ? '(' + pairInfo.token1.symbol + ')' : ''}`}
               </Font>
             </Col>

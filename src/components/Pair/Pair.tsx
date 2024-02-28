@@ -4,21 +4,20 @@ import { unifyWTokenSymbol } from 'utils';
 import { TokenInfo } from 'types';
 
 import Font from 'components/Font';
-
+import { stringCut } from 'utils/string';
 import { FontStyleProps } from 'utils/getFontStyle';
 
 export interface PairProps extends FontStyleProps {
   symbol?: TokenInfo | string;
+  maxLenth?: number;
 }
 
-export default function Pair({ symbol, ...props }: PairProps) {
+export default function Pair({ symbol, maxLenth, ...props }: PairProps) {
   const text = useMemo(() => {
-    if (typeof symbol === 'string') {
-      return symbol;
-    }
-
-    return unifyWTokenSymbol(symbol);
-  }, [symbol]);
+    const symbolStr = typeof symbol === 'string' ? symbol : unifyWTokenSymbol(symbol);
+    console.log('symbol: ', symbolStr, symbolStr.length, maxLenth, stringCut(symbolStr, maxLenth ?? symbolStr.length));
+    return stringCut(symbolStr, maxLenth ?? symbolStr.length);
+  }, [maxLenth, symbol]);
 
   return <Font {...props}>{text}</Font>;
 }

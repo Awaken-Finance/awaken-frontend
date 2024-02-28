@@ -10,6 +10,7 @@ export interface PairsProps extends FontStyleProps {
   tokenA?: TokenInfo | string;
   tokenB?: TokenInfo | string;
   delimiter?: string;
+  maxLenth?: number;
 }
 
 export default function Pairs({ tokenA = '', tokenB = '', delimiter = '/', ...props }: PairsProps) {
