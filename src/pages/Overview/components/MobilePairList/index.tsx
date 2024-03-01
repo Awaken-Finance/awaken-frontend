@@ -19,6 +19,7 @@ import { PairItem } from 'types';
 import { FetchParam } from 'types/requeset';
 
 import './index.less';
+import BigNumber from 'bignumber.js';
 
 export default function MobilePairList({
   dataSource = [],
@@ -69,7 +70,7 @@ export default function MobilePairList({
                 </Col>
                 <Col span={24}>
                   <Font lineHeight={18} size={12} color="two">
-                    {formatPriceUSDWithSymBol(pairData?.volume24h, 'Vol ')}
+                    {formatPriceUSDWithSymBol(new BigNumber(pairData?.volume24h).times(pairData.priceUSD), 'Vol ')}
                   </Font>
                 </Col>
               </Row>
