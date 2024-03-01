@@ -152,7 +152,7 @@ export default function PcTable({
         render: (val: number, record: RecentTransaction) => (
           <>
             <Font lineHeight={24}>{new BigNumber(val).dp(8)}</Font>&nbsp;
-            <Pair lineHeight={24} symbol={record?.tradePair?.token0?.symbol} />
+            <Pair lineHeight={24} symbol={record?.tradePair?.[record.side === 0 ? 'token1' : 'token0']?.symbol} />
           </>
         ),
       },
