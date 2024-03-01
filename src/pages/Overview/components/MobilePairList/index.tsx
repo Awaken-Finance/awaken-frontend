@@ -1,7 +1,6 @@
 import { useMemo } from 'react';
 import { Row, Col } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
-import BigNumber from 'bignumber.js';
 import { useTranslation } from 'react-i18next';
 
 import CreatePairBtn from 'Buttons/CreatePairBtn';
@@ -89,7 +88,7 @@ export default function MobilePairList({
         render: (val: number, record: PairItem) => (
           <Row justify="end">
             <Col span={24}>
-              <Font lineHeight={20}>{`$${new BigNumber(record.price).toFormat(2)}`}</Font>
+              <Font lineHeight={20}>{formatPriceUSDWithSymBol(record.priceUSD)}</Font>
             </Col>
             <Col>
               <FallOrRise lineHeight={18} className="fail-or-rise" num={formatPriceByNumberToFix(val)} />
