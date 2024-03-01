@@ -107,10 +107,10 @@ export default function TradePairList({
       {
         title: t('price'),
         width: !isLargeScreen && !isMobile ? 0 : 'auto',
-        dataIndex: 'priceUSD',
-        key: 'priceUSD',
+        dataIndex: 'price',
+        key: 'price',
         sorter: true,
-        sortOrder: pageInfo?.field === 'priceUSD' ? pageInfo?.order : null,
+        sortOrder: pageInfo?.field === 'price' ? pageInfo?.order : null,
         align: 'right',
         className: !isLargeScreen && !isMobile ? 'small-column-title' : '',
         render: (price: string) =>
