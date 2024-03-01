@@ -27,6 +27,7 @@ interface SellBtnProps {
   amount?: string;
   amountBN: BigNumber;
   amountOutMin?: BigNumber;
+  checkAuth?: boolean;
   onClick?: () => void;
   symbolA?: string;
   symbolB?: string;
@@ -121,6 +122,7 @@ export default function SellBtn({
   symbolA = '',
   disabled = false,
   loading = false,
+  checkAuth,
   onClick,
 }: Omit<SellBtnProps, 'amountBN' | 'rate' | 'tokenA' | 'tokenB' | 'onTradeSuccess'>) {
   const { t } = useTranslation();
@@ -141,6 +143,7 @@ export default function SellBtn({
       disabled={disabled}
       className={style}
       onClick={onClick}
+      checkAuth={checkAuth}
       size="large"
       block
       type="primary">
