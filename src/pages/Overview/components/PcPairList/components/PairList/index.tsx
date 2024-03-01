@@ -17,6 +17,7 @@ import { FetchParam } from 'types/requeset';
 import { formatPercentage, formatPriceChange, formatPriceByNumberToFix, formatPriceUSDWithSymBol } from 'utils/price';
 
 import './index.less';
+import BigNumber from 'bignumber.js';
 
 interface PairListProps {
   dataSource: PairItem[];
@@ -136,7 +137,9 @@ export default function ({ getData, field, order, poolType, ...args }: PairListP
         key: 'volume24h',
         sorter: true,
         sortOrder: field === 'volume24h' ? order : null,
-        render: (volume24h: number) => <Font lineHeight={20}>{formatPriceUSDWithSymBol(volume24h)}</Font>,
+        render: (volume24h: number, record: PairItem) => (
+          <Font lineHeight={20}>{formatPriceUSDWithSymBol(new BigNumber(volume24h).times(record.priceUSD))}</Font>
+        ),
       },
       {
         title: t('liquidity'),

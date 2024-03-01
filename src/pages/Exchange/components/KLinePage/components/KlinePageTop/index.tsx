@@ -7,7 +7,13 @@ import FallOrRise from 'components/FallOrRise';
 
 import { PoolItem } from 'types';
 import { unitConverter } from 'utils';
-import { formatPriceByNumberToDp, formatPercentage, formatBalance, formatPriceUSDWithSymBol } from 'utils/price';
+import {
+  formatPriceByNumberToDp,
+  formatPercentage,
+  formatBalance,
+  formatPriceUSDWithSymBol,
+  formatPrice,
+} from 'utils/price';
 
 import './index.less';
 
@@ -23,7 +29,7 @@ export default ({ pairInfo }: { pairInfo: PoolItem }) => {
                 size={32}
                 lineHeight={36}
                 weight="bold"
-                num={formatPriceUSDWithSymBol(pairInfo.price)}
+                num={formatPrice(pairInfo.price)}
                 useSubfix={false}
                 usePrefix={false}
                 status={pairInfo.pricePercentChange24h}

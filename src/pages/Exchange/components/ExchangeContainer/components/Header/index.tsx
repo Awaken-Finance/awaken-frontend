@@ -61,7 +61,7 @@ function Header() {
                   size={16}
                   lineHeight={20}
                   weight="bold"
-                  num={formatPriceUSDWithSymBol(pairInfo.price)}
+                  num={formatPrice(pairInfo.price)}
                   useSubfix={false}
                   usePrefix={false}
                   status={pairInfo.pricePercentChange24h}
