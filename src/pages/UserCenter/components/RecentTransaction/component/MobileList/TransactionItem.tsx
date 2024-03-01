@@ -105,7 +105,7 @@ export default function TransactionItem({
       <Col span={12} className="align-right height-20">
         <Font lineHeight={20}>{new BigNumber(totalFee ?? 0).dp(8)}</Font>
         &nbsp;
-        <Pair lineHeight={20} symbol={tradePair?.token0?.symbol} />
+        <Pair lineHeight={20} symbol={tradePair?.[side === 0 ? 'token1' : 'token0']?.symbol} />
       </Col>
 
       <Col span={12} className="height-20">
