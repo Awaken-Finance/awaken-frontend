@@ -1,1 +1,1 @@
-export { default } from './MobileWrap';
+export { default } from './MobileWrapDefaultKline';
