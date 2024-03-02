@@ -72,7 +72,7 @@ export default ({ pairInfo }: { pairInfo: PoolItem }) => {
             </Col>
             <Col span={12}>
               <Font lineHeight={18} size={12} align="right">
-                {formatPriceChange(pairInfo.priceHigh24h, 4)}
+                {formatBalance(pairInfo.priceHigh24h)}
               </Font>
             </Col>
             <Col span={12} className="text-right">
