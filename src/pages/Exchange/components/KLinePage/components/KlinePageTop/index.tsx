@@ -13,6 +13,7 @@ import {
   formatBalance,
   formatPriceUSDWithSymBol,
   formatPrice,
+  formatPriceChange,
 } from 'utils/price';
 
 import './index.less';
@@ -70,12 +71,9 @@ export default ({ pairInfo }: { pairInfo: PoolItem }) => {
               </Font>
             </Col>
             <Col span={12}>
-              <FallOrRise
-                lineHeight={18}
-                size={12}
-                num={formatPriceByNumberToDp(pairInfo.pricePercentChange24h)}
-                useSubfix={false}
-              />
+              <Font lineHeight={18} size={12} align="right">
+                {formatPriceChange(pairInfo.priceHigh24h, 4)}
+              </Font>
             </Col>
             <Col span={12} className="text-right">
               <Font lineHeight={18} size={12}>

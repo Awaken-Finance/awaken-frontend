@@ -2,6 +2,7 @@ import NotFound from 'pages/NotFound';
 import { lazy } from 'react';
 import { RoutesProps } from 'types';
 import { sleep } from 'utils';
+import { isMobileDevices } from 'utils/isMobile';
 
 const Overview = lazy(() => import('pages/Overview'));
 const Exchange = lazy(() => import('pages/Exchange'));
@@ -61,6 +62,6 @@ export const routes: RoutesProps[] = [
   },
   {
     path: '/',
-    component: Exchange,
+    component: isMobileDevices() ? Overview : Exchange,
   },
 ];
