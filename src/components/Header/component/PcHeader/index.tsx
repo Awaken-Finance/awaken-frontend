@@ -71,7 +71,7 @@ function PcHeader() {
     <Layout.Header className={clsx('site-header', isOpacity && 'opacity-header')}>
       <Row>
         <Col flex="146px">
-          <NavLink to={list[0].path}>
+          <NavLink to={'/'}>
             <IconLogo className="menu-logo" />
           </NavLink>
         </Col>

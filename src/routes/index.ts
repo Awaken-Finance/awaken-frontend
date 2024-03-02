@@ -61,6 +61,6 @@ export const routes: RoutesProps[] = [
   },
   {
     path: '/',
-    component: Exchange,
+    component: Overview,
   },
 ];

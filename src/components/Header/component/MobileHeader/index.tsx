@@ -86,7 +86,7 @@ function MobileHeader() {
   return (
     <>
       <Layout.Header className="site-header-mobile">
-        <IconLogo className="mobile-logo" onClick={() => history.push('/trading')} />
+        <IconLogo className="mobile-logo" onClick={() => history.push('/')} />
         <div
           className={clsx({
             'header-right': true,
