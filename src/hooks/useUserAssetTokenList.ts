@@ -1,10 +1,8 @@
 import { request } from 'api';
 import useChainId from 'hooks/useChainId';
 import { useActiveWeb3React } from './web3';
-// import { message } from 'antd';
 import { useState } from 'react';
 import { useInterval } from 'react-use';
-// import i18n from 'i18next';
 
 export type UserAssetTokenInfo = {
   symbol: string;
@@ -34,10 +32,12 @@ export default function useUserAssetTokenList(shouldFetchInterval = true) {
       },
     });
     if (!resp || resp.error || !resp.data) {
-      // message.error(i18n.t('Failed to get token list'));
       return;
     }
-    setList(resp.data);
+    setList({
+      showList: resp.data.items,
+      hiddenList: [],
+    });
     return resp;
   };
 
