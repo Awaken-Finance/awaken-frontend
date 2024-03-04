@@ -32,7 +32,7 @@ import { SellBtnWithPay } from 'Buttons/SellBtn/SellBtn';
 import { ZERO } from 'constants/misc';
 import { useMobile } from 'utils/isMobile';
 import CommonBlockProgress from 'components/CommonBlockProgress';
-import { isNFTSymbol } from 'utils/reg';
+import { isNFTToken } from 'utils/NFT';
 
 export default function RightCard({
   tokenA,
@@ -219,12 +219,12 @@ export default function RightCard({
   };
 
   const disabledTotal = useMemo(() => {
-    return isNFTSymbol(tokenA?.symbol) && !isNFTSymbol(tokenB?.symbol);
-  }, [tokenA?.symbol, tokenB?.symbol]);
+    return isNFTToken(tokenA?.decimals) && !isNFTToken(tokenB?.decimals);
+  }, [tokenA?.decimals, tokenB?.decimals]);
 
   const disabledAmount = useMemo(() => {
-    return !isNFTSymbol(tokenA?.symbol) && isNFTSymbol(tokenB?.symbol);
-  }, [tokenA?.symbol, tokenB?.symbol]);
+    return !isNFTToken(tokenA?.decimals) && isNFTToken(tokenB?.decimals);
+  }, [tokenA?.decimals, tokenB?.decimals]);
 
   useUpdateEffect(() => {
     setAmount('');

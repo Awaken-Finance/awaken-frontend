@@ -25,7 +25,7 @@ import { AddConfirmModal } from './AddConfirmModals';
 import { PairInfo } from 'contexts/useModal/actions';
 import { divDecimals } from 'utils/calculate';
 import BigNumber from 'bignumber.js';
-import { isNFTSymbol } from 'utils/reg';
+import { isNFTToken } from 'utils/NFT';
 
 export default function Add({ pairInfo }: { pairInfo: PairInfo }) {
   const { t } = useTranslation();
@@ -181,12 +181,12 @@ export default function Add({ pairInfo }: { pairInfo: PairInfo }) {
   }, [currencyBalances, leftToken, reserves, rightToken]);
 
   const disabledTokenB = useMemo(() => {
-    return isNFTSymbol(tokenA?.symbol) && !isNFTSymbol(tokenB?.symbol);
-  }, [tokenA?.symbol, tokenB?.symbol]);
+    return isNFTToken(tokenA?.decimals) && !isNFTToken(tokenB?.decimals);
+  }, [tokenA?.decimals, tokenB?.decimals]);
 
   const disabledTokenA = useMemo(() => {
-    return !isNFTSymbol(tokenA?.symbol) && isNFTSymbol(tokenB?.symbol);
-  }, [tokenA?.symbol, tokenB?.symbol]);
+    return !isNFTToken(tokenA?.decimals) && isNFTToken(tokenB?.decimals);
+  }, [tokenA?.decimals, tokenB?.decimals]);
 
   return (
     <Row gutter={[0, 16]} className="add-modal-box">

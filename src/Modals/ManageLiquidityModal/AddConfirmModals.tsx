@@ -17,7 +17,7 @@ import { PairsAndLogos } from 'components/PariAndLogo';
 import { unitConverter } from 'utils';
 import { ChainConstants } from 'constants/ChainConstants';
 import { useMemo } from 'react';
-import { isNFTSymbol } from 'utils/reg';
+import { isNFTToken } from 'utils/NFT';
 
 export function AddConfirmModal({
   tokenA,
@@ -51,11 +51,11 @@ export function AddConfirmModal({
   const { reserves, totalSupply } = usePair(pairAddress, routerAddress);
 
   const lp = useMemo(() => {
-    if (isNFTSymbol(tokenA?.symbol)) {
+    if (isNFTToken(tokenA?.decimals)) {
       return getLiquidity(tokenAValue, timesDecimals(reserves?.[getCurrencyAddress(tokenA)], 8), totalSupply).toFixed();
     }
 
-    if (isNFTSymbol(tokenB?.symbol)) {
+    if (isNFTToken(tokenB?.decimals)) {
       return getLiquidity(tokenBValue, timesDecimals(reserves?.[getCurrencyAddress(tokenB)], 8), totalSupply).toFixed();
     }
 
