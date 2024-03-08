@@ -33,7 +33,7 @@ export function formatPriceUSD(price?: BigNumber.Value, digits = 2): string {
     return bigNum.dp(2).toString();
   }
 
-  return bigNum.dp(digits).toString();
+  return bigNum.dp(digits).precision(2).toString();
 }
 
 export function formatPriceUSDWithSymBol(price?: BigNumber.Value, prefix?: string, subfix?: string): string {
@@ -41,7 +41,7 @@ export function formatPriceUSDWithSymBol(price?: BigNumber.Value, prefix?: strin
     return '-';
   }
 
-  return `${prefix ?? ''}$${formatPrice(price)}${subfix ?? ''}`;
+  return `${prefix ?? ''}$${formatPriceUSD(price)}${subfix ?? ''}`;
 }
 
 export function formatPrice(price?: BigNumber.Value, digits = 4): string {
@@ -70,7 +70,7 @@ export function formatPrice(price?: BigNumber.Value, digits = 4): string {
     return bigNum.dp(4).toString();
   }
 
-  return bigNum.dp(digits).toString();
+  return bigNum.dp(digits).precision(4).toString();
 }
 
 export function formatTokenAmount(num?: BigNumber.Value, digits = 4) {
@@ -99,7 +99,7 @@ export function formatTokenAmount(num?: BigNumber.Value, digits = 4) {
     return bigNum.toFixed(2);
   }
 
-  return bigNum.dp(digits).toString();
+  return bigNum.dp(digits).precision(digits).toString();
 }
 
 export function formatPriceChange(price?: BigNumber.Value, digits = 12): string {

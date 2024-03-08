@@ -34,10 +34,7 @@ export default function useUserAssetTokenList(shouldFetchInterval = true) {
     if (!resp || resp.error || !resp.data) {
       return;
     }
-    setList({
-      showList: resp.data.items ?? [],
-      hiddenList: [],
-    });
+    setList(resp.data);
     return resp;
   };
 

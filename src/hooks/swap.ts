@@ -79,10 +79,11 @@ export function useRemoveLiquidityInputs(
 
         const amountA = divDecimals(getLiquidityAmount(bigIn, reserveA, totalSupply), tokenA.decimals).toFixed();
         const amountB = divDecimals(getLiquidityAmount(bigIn, reserveB, totalSupply), tokenB.decimals).toFixed();
+
         setInputs({
           [addressA]: amountA,
           [addressB]: amountB,
-          lp: divDecimals(bigIn, lpDecimals).toFixed(),
+          lp: divDecimals(bigIn, lpDecimals).dp(lpDecimals).toFixed(),
           side: input,
         });
       } else if (inputAddress === 'lp') {

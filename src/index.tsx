@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { ConfigProvider } from 'antd';
+import { ConfigProvider, message } from 'antd';
 import { WebLoginProvider, getConfig, PortkeyProvider, PortkeyDid, PortkeyDidV1 } from 'aelf-web-login';
 
 import App from './App';
@@ -26,6 +26,10 @@ import 'aelf-web-login/dist/assets/index.css';
 
 import './index.css';
 import './App.less';
+
+message.config({
+  maxCount: 1,
+});
 
 function ContextProviders({ children }: { children?: React.ReactNode }) {
   const { language } = useLanguage();
