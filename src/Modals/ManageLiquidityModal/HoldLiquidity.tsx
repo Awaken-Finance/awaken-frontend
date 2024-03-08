@@ -8,7 +8,7 @@ import { usePairsAddress } from 'hooks/userPairs';
 import { useTranslation } from 'react-i18next';
 import { unitConverter } from 'utils';
 import { divDecimals } from 'utils/calculate';
-import { formatLiquidity, formatPercentage, formatTokenAmount } from 'utils/price';
+import { formatPercentage, formatTokenAmount } from 'utils/price';
 import { getCurrencyAddress, getLPDecimals } from 'utils/swap';
 import { ZERO } from 'constants/misc';
 
