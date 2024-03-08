@@ -79,8 +79,6 @@ export default function Remove({ pairInfo }: { pairInfo: PairInfo }) {
   const [progress, setProgress] = useState(0);
   const [inputs, onChange, clearInputs] = useRemoveLiquidityInputs(lpBalance, reserves, totalSupply, tokens);
 
-  console.log('inputs :', inputs);
-
   const liquidity = useMemo(() => {
     return timesDecimals(inputs?.['lp'], getLPDecimals());
   }, [inputs]);

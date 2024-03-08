@@ -99,7 +99,7 @@ export function formatTokenAmount(num?: BigNumber.Value, digits = 4) {
     return bigNum.toFixed(2);
   }
 
-  return bigNum.dp(digits).precision(4).toString();
+  return bigNum.dp(digits).toString();
 }
 
 export function formatPriceChange(price?: BigNumber.Value, digits = 12): string {
