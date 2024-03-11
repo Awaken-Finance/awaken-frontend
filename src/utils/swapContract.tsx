@@ -12,7 +12,7 @@ import { IContract } from 'types';
 import getTransactionId from './contractResult';
 import { TFunction } from 'react-i18next';
 import { formatSwapError } from './formatError';
-import { isNFTSymbol } from 'utils/reg';
+import { isZeroDecimalsNFT } from './NFT';
 
 type addLiquidityTokensProps = {
   tokenA: string;
@@ -124,6 +124,8 @@ type removeLiquidityTokensProps = {
   account: string;
   routerContract: IContract;
   t: TFunction<'translation'>;
+  decimalsA?: number;
+  decimalsB?: number;
 };
 export const removeLiquidityTokens: (param: removeLiquidityTokensProps) => Promise<boolean | any> = async ({
   tokenA,
@@ -134,20 +136,20 @@ export const removeLiquidityTokens: (param: removeLiquidityTokensProps) => Promi
   account,
   routerContract,
   t,
+  decimalsA,
+  decimalsB,
 }) => {
   const contract = routerContract;
   const minRate = getMinRate();
 
-  // nft rate
-
   let amountAMin = amountA.times(minRate);
   let amountBMin = amountB.times(minRate);
 
-  if (isNFTSymbol(tokenA)) {
+  if (isZeroDecimalsNFT(decimalsA)) {
     amountAMin = amountA.times(minRate.minus(0.9));
     amountBMin = amountB.times(minRate.minus(0.9));
   }
-  if (isNFTSymbol(tokenB)) {
+  if (isZeroDecimalsNFT(decimalsB)) {
     amountAMin = amountA.times(minRate.minus(0.9));
     amountBMin = amountB.times(minRate.minus(0.9));
   }
@@ -172,9 +174,7 @@ export const removeLiquidityTokens: (param: removeLiquidityTokensProps) => Promi
           account,
           getDeadline(),
         ];
-  console.log(args, '=removeLiquidityTokens');
   const result = await contract.callSendMethod('removeLiquidity', account, args);
-  console.log(result, '=removeLiquidityTokens');
   if (result.error) {
     notification.error({
       message: t('RemoveLiquidityFailed'),
@@ -211,45 +211,8 @@ export const onRemoveLiquidity: (param: removeLiquidityProps) => Promise<boolean
   t,
 }) => {
   const liquidity = timesDecimals(inputs?.['lp'], getLPDecimals());
-  // const approve = await checkApprove(
-  //   library,
-  //   lpAddress,
-  //   account,
-  //   routerAddress,
-  //   bigNumberToWeb3Input(liquidity),
-  //   undefined,
-  //   awTokenAddress,
-  // );
-  // if (approve !== REQ_CODE.Success) return approve;
 
-  if (tokenA?.isNative || tokenB?.isNative) {
-    // let tokenAddress = '',
-    //   amountToken = new BigNumber('0'),
-    //   amountETH = new BigNumber('0');
-    // const tokenAInput = inputs?.[getCurrencyAddress(tokenA)],
-    //   tokenBInput = inputs?.[getCurrencyAddress(tokenB)];
-    // if (tokenA?.isToken) {
-    //   tokenAddress = tokenA.address;
-    //   amountToken = timesDecimals(tokenAInput, tokenA.decimals);
-    // } else {
-    //   amountETH = timesDecimals(tokenAInput);
-    // }
-    // if (tokenB?.isToken) {
-    //   tokenAddress = tokenB.address;
-    //   amountToken = timesDecimals(tokenBInput, tokenB.decimals);
-    // } else {
-    //   amountETH = timesDecimals(tokenBInput);
-    // }
-    // return await removeLiquidityETH({
-    //   ethereum: library,
-    //   tokenAddress,
-    //   liquidity,
-    //   amountToken,
-    //   amountETH,
-    //   account,
-    //   routerContract,
-    // });
-  } else if (tokenA?.isToken && tokenB?.isToken) {
+  if (tokenA?.isToken && tokenB?.isToken) {
     const tokenAddress = tokenA.address;
     const tokenBAddress = tokenB.address;
     const amountA = timesDecimals(inputs?.[tokenAddress], tokenA.decimals);
@@ -263,6 +226,8 @@ export const onRemoveLiquidity: (param: removeLiquidityProps) => Promise<boolean
       account,
       routerContract,
       t,
+      decimalsA: tokenA.decimals,
+      decimalsB: tokenB.decimals,
     });
   } else if (tokenA?.isELFChain && tokenB?.isELFChain) {
     const symbolA = tokenA.symbol;
@@ -278,6 +243,8 @@ export const onRemoveLiquidity: (param: removeLiquidityProps) => Promise<boolean
       account,
       routerContract,
       t,
+      decimalsA: tokenA.decimals,
+      decimalsB: tokenB.decimals,
     });
   }
 };

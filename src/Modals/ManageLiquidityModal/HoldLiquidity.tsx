@@ -8,7 +8,7 @@ import { usePairsAddress } from 'hooks/userPairs';
 import { useTranslation } from 'react-i18next';
 import { unitConverter } from 'utils';
 import { divDecimals } from 'utils/calculate';
-import { formatLiquidity, formatPercentage } from 'utils/price';
+import { formatPercentage, formatTokenAmount } from 'utils/price';
 import { getCurrencyAddress, getLPDecimals } from 'utils/swap';
 import { ZERO } from 'constants/misc';
 
@@ -108,7 +108,7 @@ export default function HoldLiquidity({
                 </Col>
                 <Col>
                   <Font lineHeight={24} size={16} weight="medium">
-                    {formatLiquidity(leftLPBalance, leftToken?.decimals)}
+                    {formatTokenAmount(leftLPBalance, leftToken?.decimals)}
                   </Font>
                 </Col>
               </Row>
@@ -124,7 +124,7 @@ export default function HoldLiquidity({
                 </Col>
                 <Col>
                   <Font lineHeight={24} size={16} weight="medium">
-                    {formatLiquidity(rightLPBalance, rightToken?.decimals)}
+                    {formatTokenAmount(rightLPBalance, rightToken?.decimals)}
                   </Font>
                 </Col>
               </Row>

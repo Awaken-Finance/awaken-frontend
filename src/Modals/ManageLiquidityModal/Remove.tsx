@@ -11,7 +11,7 @@ import { divDecimals, timesDecimals } from 'utils/calculate';
 import { getCurrencyAddress, getLPDecimals } from 'utils/swap';
 import { onRemoveLiquidity } from 'utils/swapContract';
 import { checkRemoveButtonStatus } from 'utils/swap';
-import { getELFChainTokenURL, unitConverter } from 'utils';
+import { getELFChainTokenURL, parseInputChange, unitConverter } from 'utils';
 import { useTranslation } from 'react-i18next';
 import { REQ_CODE } from 'constants/misc';
 
@@ -35,6 +35,7 @@ import { PairInfo } from 'contexts/useModal/actions';
 
 import './styles.less';
 import CommonBlockProgress from 'components/CommonBlockProgress';
+import { formatTokenAmount } from 'utils/price';
 
 export default function Remove({ pairInfo }: { pairInfo: PairInfo }) {
   const { t } = useTranslation();
@@ -58,6 +59,8 @@ export default function Remove({ pairInfo }: { pairInfo: PairInfo }) {
   const lpBalance = bs[0];
 
   const showLpBalance = divDecimals(lpBalance, getLPDecimals());
+
+  const min = useRef<BigNumber>(divDecimals('1', getLPDecimals()));
 
   const routerAddress = ChainConstants.constants.ROUTER[rate];
   const routerContract = useRouterContract(rate);
@@ -92,8 +95,9 @@ export default function Remove({ pairInfo }: { pairInfo: PairInfo }) {
     if (event.target.value && !isValidNumber(event.target.value)) {
       return;
     }
+
     setProgress(0);
-    onChange && onChange('lp', event.target.value);
+    onChange && onChange('lp', parseInputChange(event.target.value, min.current, getLPDecimals()));
   };
 
   const removeCb = async () => {
@@ -215,7 +219,7 @@ export default function Remove({ pairInfo }: { pairInfo: PairInfo }) {
               </Col>
               <Col>
                 <Font lineHeight={20} weight="medium">
-                  {unitConverter(
+                  {formatTokenAmount(
                     tmpInput?.[getCurrencyAddress(leftToken)] || inputs?.[getCurrencyAddress(leftToken)],
                     leftToken?.decimals,
                   )}
@@ -236,7 +240,7 @@ export default function Remove({ pairInfo }: { pairInfo: PairInfo }) {
               </Col>
               <Col>
                 <Font lineHeight={20} weight="medium">
-                  {unitConverter(
+                  {formatTokenAmount(
                     tmpInput?.[getCurrencyAddress(rightToken)] || inputs?.[getCurrencyAddress(rightToken)],
                     rightToken?.decimals,
                   )}

@@ -6,6 +6,7 @@
 .pc-site-content {
   .page-login {
     padding-top: 80PX;
+    padding-bottom: 40PX;
 
     @media screen and (max-width: 1920PX) {
       padding-top: calc((100vw - 1680PX)/(1920 - 1680) * 20 + 60PX);
@@ -28,9 +29,10 @@
 #awaken-portkey-sdk-root {
   background-color: var(--ant-container-bg-color);
   max-height: calc(100vh - 60px);
+  min-height: 562px !important;
   max-width: 960px;
   width: 960px;
-  height: 760px;
+  height: 562px;
   border-radius: 8px;
 
   &.awaken-portkey-sdk-pc {
@@ -44,10 +46,6 @@
 
   .portkey-sign-full-wrapper {
     height: 100%;
-
-    // .step-page-wrapper {
-      // height: 100%;
-    // }
   }
 
   &.awaken-portkey-sdk-mobile {
@@ -63,9 +61,10 @@
       }
       .web2-design-upgraded-portkey {
         margin: 0;
-        padding: 0;
+        padding: 3px 10px;
         border: none;
-        background-color: var(--ant-primary-color-percent-16);
+        background-color: rgb(250 173 20 / 10%);
+        
       }
     }
   }
@@ -138,10 +137,6 @@
   .portkey-ui-web2design-switch-sign {
     display: none;
   }
-
-  .left-wrapper {
-    padding: 24PX 16PX 0;
-  }
 }
 
 .mobile-site-content {
@@ -153,6 +148,10 @@
     height: calc(100vh - 60px);
     .portkey-sign-full-wrapper {
       height: 100%;
+    }
+
+    .left-wrapper {
+      padding: 24PX 16PX 0;
     }
   }
 }
