@@ -73,7 +73,7 @@ export function formatPrice(price?: BigNumber.Value, digits = 4): string {
   return bigNum.dp(digits).precision(4).toString();
 }
 
-export function formatTokenAmount(num?: BigNumber.Value, digits = 4) {
+export function formatTokenAmount(num?: BigNumber.Value, digits?: number) {
   if (!num) {
     return ZERO.toString();
   }
@@ -95,11 +95,16 @@ export function formatTokenAmount(num?: BigNumber.Value, digits = 4) {
     return formatThousand(bigNum);
   }
 
+  // NFT
+  if (digits === 0) {
+    return bigNum.toFixed(0);
+  }
+
   if (bigNum.gte(0.1)) {
     return bigNum.toFixed(2);
   }
 
-  return bigNum.dp(digits).toString();
+  return bigNum.dp(digits ?? 4).toString();
 }
 
 export function formatPriceChange(price?: BigNumber.Value, digits = 12): string {
