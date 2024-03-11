@@ -1,7 +1,10 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import ReactDOM from 'react-dom';
 import { ConfigProvider, message } from 'antd';
 import { WebLoginProvider, getConfig, PortkeyProvider, PortkeyDid, PortkeyDidV1 } from 'aelf-web-login';
+import { devicesEnv } from '@portkey/utils';
+import type { ExtraWalletNames } from 'aelf-web-login';
+import { useAsync } from 'react-use';
 
 import App from './App';
 import ModalProvider from './contexts/useModal';
@@ -46,40 +49,53 @@ function ContextProviders({ children }: { children?: React.ReactNode }) {
   );
 }
 
-ReactDOM.render(
-  <ChianProvider>
-    <PortkeyProvider
-      networkType={getConfig().networkType as PortkeyDidV1.NetworkType}
-      networkTypeV2={getConfig().portkeyV2?.networkType as PortkeyDid.NetworkType}
-      theme="dark">
-      <WebLoginProvider
-        extraWallets={['discover', 'elf']}
-        nightElf={{ connectEagerly: true }}
-        portkey={{
-          autoShowUnlock: false,
-          checkAccountInfoSync: true,
-          SignInComponent: SignInProxy as any,
-          design: 'Web2Design',
-          ConfirmLogoutDialog,
-          noCommonBaseModal: true,
-        }}
-        discover={{
-          autoRequestAccount: true,
-          autoLogoutOnAccountMismatch: true,
-          autoLogoutOnChainMismatch: true,
-          autoLogoutOnDisconnected: true,
-          autoLogoutOnNetworkMismatch: false,
-        }}>
-        <StoreProvider>
-          <ContextProviders>
-            <App />
-          </ContextProviders>
-        </StoreProvider>
-      </WebLoginProvider>
-    </PortkeyProvider>
-  </ChianProvider>,
-  document.getElementById('root'),
-);
+function RootApp() {
+  const { value, loading } = useAsync(async () => await devicesEnv.getPortkeyShellApp());
+
+  const extraWallets: ExtraWalletNames[] | undefined = useMemo(() => {
+    if (loading) {
+      return;
+    }
+
+    return value ? undefined : ['discover', 'elf'];
+  }, [loading, value]);
+
+  return (
+    <ChianProvider>
+      <PortkeyProvider
+        networkType={getConfig().networkType as PortkeyDidV1.NetworkType}
+        networkTypeV2={getConfig().portkeyV2?.networkType as PortkeyDid.NetworkType}
+        theme="dark">
+        <WebLoginProvider
+          extraWallets={extraWallets}
+          nightElf={{ connectEagerly: true }}
+          portkey={{
+            autoShowUnlock: false,
+            checkAccountInfoSync: true,
+            SignInComponent: SignInProxy as any,
+            design: 'Web2Design',
+            ConfirmLogoutDialog,
+            noCommonBaseModal: true,
+          }}
+          discover={{
+            autoRequestAccount: true,
+            autoLogoutOnAccountMismatch: true,
+            autoLogoutOnChainMismatch: true,
+            autoLogoutOnDisconnected: true,
+            autoLogoutOnNetworkMismatch: false,
+          }}>
+          <StoreProvider>
+            <ContextProviders>
+              <App />
+            </ContextProviders>
+          </StoreProvider>
+        </WebLoginProvider>
+      </PortkeyProvider>
+    </ChianProvider>
+  );
+}
+
+ReactDOM.render(<RootApp />, document.getElementById('root'));
 
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))
