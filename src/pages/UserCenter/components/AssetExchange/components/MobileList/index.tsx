@@ -5,7 +5,13 @@ import { Pairs } from 'components/Pair';
 import Font from 'components/Font';
 import FeeRate from 'components/FeeRate';
 import ManageLiquidityBtn from 'Buttons/ManageLiquidityBtn';
-import { formatLiquidity, formatPercentage, formatPriceChange, formatPriceUSDWithSymBol } from 'utils/price';
+import {
+  formatLiquidity,
+  formatPercentage,
+  formatPriceChange,
+  formatPriceUSDWithSymBol,
+  formatTokenAmount,
+} from 'utils/price';
 import CommonList from 'components/CommonList';
 import { useTranslation } from 'react-i18next';
 import { SortOrder } from 'antd/lib/table/interface';
@@ -116,10 +122,14 @@ export default function MobileList({
               </Row>
             </Col>
             <Col span={12} className="col-height-20">
-              <Font lineHeight={20}>{`${formatPriceChange(token0Amount ?? 0)} ${tradePair.token0.symbol}`}</Font>
+              <Font lineHeight={20}>{`${formatTokenAmount(token0Amount ?? 0, tradePair.token0.decimals)} ${
+                tradePair.token0.symbol
+              }`}</Font>
             </Col>
             <Col span={12} className="col-height-20">
-              <Font lineHeight={20}>{`${formatPriceChange(token1Amount ?? 0)} ${tradePair.token1.symbol}`}</Font>
+              <Font lineHeight={20}>{`${formatTokenAmount(token1Amount ?? 0, tradePair.token1.decimals)} ${
+                tradePair.token1.symbol
+              }`}</Font>
             </Col>
           </Row>
         )}

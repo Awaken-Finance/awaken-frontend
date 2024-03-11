@@ -144,7 +144,7 @@ export function formatPriceChangeSD(price?: BigNumber.Value, digits = 12): strin
   return bigNum.sd(digits).toString();
 }
 
-export function formatLiquidity(price?: BigNumber.Value, digits = 7): string {
+export function formatLiquidity(price?: BigNumber.Value, digits = 8): string {
   if (!price) {
     return ZERO.toString();
   }

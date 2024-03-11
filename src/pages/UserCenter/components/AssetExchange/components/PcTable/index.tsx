@@ -9,7 +9,13 @@ import Font from 'components/Font';
 import { CurrencyLogos } from 'components/CurrencyLogo';
 import { Pairs } from 'components/Pair';
 import FeeRate from 'components/FeeRate';
-import { formatPercentage, formatPriceChange, formatPriceUSDWithSymBol } from 'utils/price';
+import {
+  formatLiquidity,
+  formatPercentage,
+  formatPriceChange,
+  formatPriceUSDWithSymBol,
+  formatTokenAmount,
+} from 'utils/price';
 import ManageLiquidityBtn from 'Buttons/ManageLiquidityBtn';
 import { SortOrder } from 'antd/lib/table/interface';
 import Amount from '../Amount';
@@ -66,7 +72,7 @@ export default function PcTable({
         sorter: true,
         sortOrder: field === 'lpTokenAmount' ? order : null,
         align: 'right',
-        render: (val: number) => <Font lineHeight={24}>{`${formatPriceChange(val)} LP`}</Font>,
+        render: (val: number) => <Font lineHeight={24}>{`${formatLiquidity(val)} LP`}</Font>,
       },
       {
         title: t('Value'),
@@ -83,7 +89,9 @@ export default function PcTable({
         dataIndex: 'token0Amount',
         align: 'right',
         render: (val: number, record) => (
-          <Font lineHeight={24}>{`${formatPriceChange(val)} ${record.tradePair.token0.symbol}`}</Font>
+          <Font lineHeight={24}>{`${formatTokenAmount(val, record.tradePair.token0.decimals)} ${
+            record.tradePair.token0.symbol
+          }`}</Font>
         ),
       },
       {
@@ -92,7 +100,9 @@ export default function PcTable({
         dataIndex: 'token1Amount',
         align: 'right',
         render: (val: number, record) => (
-          <Font lineHeight={24}>{`${formatPriceChange(val)} ${record.tradePair.token1.symbol}`}</Font>
+          <Font lineHeight={24}>{`${formatTokenAmount(val, record.tradePair.token1.decimals)} ${
+            record.tradePair.token1.symbol
+          }`}</Font>
         ),
       },
       {
