@@ -5,13 +5,7 @@ import { Pairs } from 'components/Pair';
 import Font from 'components/Font';
 import FeeRate from 'components/FeeRate';
 import ManageLiquidityBtn from 'Buttons/ManageLiquidityBtn';
-import {
-  formatLiquidity,
-  formatPercentage,
-  formatPriceChange,
-  formatPriceUSDWithSymBol,
-  formatTokenAmount,
-} from 'utils/price';
+import { formatLiquidity, formatPercentage, formatPriceUSDWithSymBol, formatTokenAmount } from 'utils/price';
 import CommonList from 'components/CommonList';
 import { useTranslation } from 'react-i18next';
 import { SortOrder } from 'antd/lib/table/interface';

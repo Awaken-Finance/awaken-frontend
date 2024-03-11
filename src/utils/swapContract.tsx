@@ -12,7 +12,7 @@ import { IContract } from 'types';
 import getTransactionId from './contractResult';
 import { TFunction } from 'react-i18next';
 import { formatSwapError } from './formatError';
-import { isNFTToken } from './NFT';
+import { isZeroDecimalsNFT } from './NFT';
 
 type addLiquidityTokensProps = {
   tokenA: string;
@@ -145,11 +145,11 @@ export const removeLiquidityTokens: (param: removeLiquidityTokensProps) => Promi
   let amountAMin = amountA.times(minRate);
   let amountBMin = amountB.times(minRate);
 
-  if (isNFTToken(decimalsA)) {
+  if (isZeroDecimalsNFT(decimalsA)) {
     amountAMin = amountA.times(minRate.minus(0.9));
     amountBMin = amountB.times(minRate.minus(0.9));
   }
-  if (isNFTToken(decimalsB)) {
+  if (isZeroDecimalsNFT(decimalsB)) {
     amountAMin = amountA.times(minRate.minus(0.9));
     amountBMin = amountB.times(minRate.minus(0.9));
   }

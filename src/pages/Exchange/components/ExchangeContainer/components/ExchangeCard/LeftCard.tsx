@@ -32,7 +32,7 @@ import { SellBtnWithPay } from 'Buttons/SellBtn/SellBtn';
 import { ZERO } from 'constants/misc';
 import { useMobile } from 'utils/isMobile';
 import CommonBlockProgress from 'components/CommonBlockProgress';
-import { isNFTToken } from 'utils/NFT';
+import { isZeroDecimalsNFT } from 'utils/NFT';
 
 export default function LeftCard({
   tokenA,
@@ -219,11 +219,11 @@ export default function LeftCard({
   };
 
   const disabledTotal = useMemo(() => {
-    return isNFTToken(tokenA?.decimals) && !isNFTToken(tokenB?.decimals);
+    return isZeroDecimalsNFT(tokenA?.decimals) && !isZeroDecimalsNFT(tokenB?.decimals);
   }, [tokenA?.decimals, tokenB?.decimals]);
 
   const disabledAmount = useMemo(() => {
-    return !isNFTToken(tokenA?.decimals) && isNFTToken(tokenB?.decimals);
+    return !isZeroDecimalsNFT(tokenA?.decimals) && isZeroDecimalsNFT(tokenB?.decimals);
   }, [tokenA?.decimals, tokenB?.decimals]);
 
   useUpdateEffect(() => {

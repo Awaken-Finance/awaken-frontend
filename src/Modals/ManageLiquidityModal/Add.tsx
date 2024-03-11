@@ -25,7 +25,7 @@ import { AddConfirmModal } from './AddConfirmModals';
 import { PairInfo } from 'contexts/useModal/actions';
 import { divDecimals } from 'utils/calculate';
 import BigNumber from 'bignumber.js';
-import { isNFTToken } from 'utils/NFT';
+import { isZeroDecimalsNFT } from 'utils/NFT';
 
 export default function Add({ pairInfo }: { pairInfo: PairInfo }) {
   const { t } = useTranslation();
@@ -181,11 +181,11 @@ export default function Add({ pairInfo }: { pairInfo: PairInfo }) {
   }, [currencyBalances, leftToken, reserves, rightToken]);
 
   const disabledTokenB = useMemo(() => {
-    return isNFTToken(tokenA?.decimals) && !isNFTToken(tokenB?.decimals);
+    return isZeroDecimalsNFT(tokenA?.decimals) && !isZeroDecimalsNFT(tokenB?.decimals);
   }, [tokenA?.decimals, tokenB?.decimals]);
 
   const disabledTokenA = useMemo(() => {
-    return !isNFTToken(tokenA?.decimals) && isNFTToken(tokenB?.decimals);
+    return !isZeroDecimalsNFT(tokenA?.decimals) && isZeroDecimalsNFT(tokenB?.decimals);
   }, [tokenA?.decimals, tokenB?.decimals]);
 
   return (
