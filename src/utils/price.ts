@@ -44,7 +44,7 @@ export function formatPriceUSDWithSymBol(price?: BigNumber.Value, prefix?: strin
   return `${prefix ?? ''}$${formatPriceUSD(price)}${subfix ?? ''}`;
 }
 
-export function formatPrice(price?: BigNumber.Value, digits = 4): string {
+export function formatPrice(price?: BigNumber.Value, digits = 12): string {
   if (!price) {
     return ZERO.toString();
   }

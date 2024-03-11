@@ -14,7 +14,13 @@ import Font from 'components/Font';
 
 import { PairItem } from 'types';
 import { FetchParam } from 'types/requeset';
-import { formatPercentage, formatPriceChange, formatPriceByNumberToFix, formatPriceUSDWithSymBol } from 'utils/price';
+import {
+  formatPercentage,
+  formatPriceChange,
+  formatPriceByNumberToFix,
+  formatPriceUSDWithSymBol,
+  formatPrice,
+} from 'utils/price';
 
 import './index.less';
 import BigNumber from 'bignumber.js';
@@ -73,7 +79,7 @@ export default function ({ getData, field, order, poolType, ...args }: PairListP
         render: (price: string, record: PairItem) => (
           <div className="price-box">
             <Font align="right" lineHeight={20}>
-              {formatPriceChange(record.price, 4)}
+              {formatPrice(record.price)}
             </Font>
             <Font lineHeight={18} size={12} color="two" align="right">
               {formatPriceUSDWithSymBol(record.priceUSD, '≈')}
