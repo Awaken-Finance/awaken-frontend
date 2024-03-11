@@ -43,10 +43,6 @@ setGlobalConfig({
     graphQLUrl: portkeyService.v1.graphQLUrl,
     connectUrl: portkeyService.v1.connectServer,
     serviceUrl: portkeyService.v1.apiServer,
-    // loginConfig: {
-    //   recommendIndexes: [0, 1],
-    //   loginMethodsOrder: ['Google', 'Telegram', 'Apple', 'Phone', 'Email'],
-    // },
     socialLogin: {
       Portkey: {
         websiteName: APPNAME,
@@ -68,6 +64,10 @@ setGlobalConfig({
     graphQLUrl: portkeyService.v2.graphQLUrl,
     connectUrl: portkeyService.v2.connectServer,
     serviceUrl: portkeyService.v2.apiServer,
+    loginConfig: {
+      recommendIndexes: [0, 1],
+      loginMethodsOrder: ['Email', 'Google', 'Apple', 'Telegram'],
+    },
     socialLogin: {
       Portkey: {
         websiteName: APPNAME,

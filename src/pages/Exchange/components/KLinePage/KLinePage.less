@@ -2,15 +2,6 @@
 .mobile-trade-pair-kline {
   height: 100%;
   z-index: 10 !important;
-  .kline-header {
-    height: 54px;
-    padding: 12px 0;
-    &-box {
-      position: sticky;
-      top: 0;
-      z-index: 10;
-    }
-  }
   .ant-drawer-body {
     line-height: 1;
     padding: 0;
@@ -38,4 +29,10 @@
     background-color: var(--ant-body-bg-color);
     padding-bottom: 72px;
   }
+}
+
+.kline-operate-bottom-wrapper {
+  position: fixed;
+  width: 100%;
+  bottom: 0;
 }

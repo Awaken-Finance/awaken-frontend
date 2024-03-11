@@ -1,10 +1,10 @@
-import { WebLoginEvents, WebLoginState, usePortkeyPreparing, useWebLogin, useWebLoginEvent } from 'aelf-web-login';
+import { WebLoginState, usePortkeyPreparing, useWebLogin } from 'aelf-web-login';
 import { useEffect, useMemo, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import './Login.less';
 import { useMobile } from 'utils/isMobile';
 import useQuery from 'hooks/useQuery';
-import { message } from 'antd';
+// import { message } from 'antd';
 
 export default function Login() {
   const query = useQuery();

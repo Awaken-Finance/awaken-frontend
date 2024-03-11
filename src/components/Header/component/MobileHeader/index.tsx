@@ -63,9 +63,12 @@ function MobileHeader() {
     }
     return (
       <>
-        <CommonButton className="signup-btn" type="primary" onClick={toSignup}>
-          {t('Sign Up')}
+        <CommonButton className="signup-btn" type="primary" style={{ fontWeight: '600' }} onClick={toLogin}>
+          {t('Log In')}
         </CommonButton>
+        {/* <CommonButton className="signup-btn" type="primary" onClick={toSignup}>
+          {t('Sign Up')}
+        </CommonButton> */}
       </>
     );
   };
@@ -83,7 +86,7 @@ function MobileHeader() {
   return (
     <>
       <Layout.Header className="site-header-mobile">
-        <IconLogo className="mobile-logo" onClick={() => history.push('/trading')} />
+        <IconLogo className="mobile-logo" onClick={() => history.push('/')} />
         <div
           className={clsx({
             'header-right': true,

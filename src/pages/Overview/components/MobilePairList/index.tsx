@@ -1,7 +1,6 @@
 import { useMemo } from 'react';
 import { Row, Col } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
-import BigNumber from 'bignumber.js';
 import { useTranslation } from 'react-i18next';
 
 import CreatePairBtn from 'Buttons/CreatePairBtn';
@@ -13,13 +12,14 @@ import FeeRate from 'components/FeeRate';
 import FallOrRise from 'components/FallOrRise';
 import { useGoSwapPage } from 'Buttons/SwapBtn';
 import { SortOrder } from 'antd/lib/table/interface';
-import { formatPercentage, formatPriceByNumberToFix, formatPriceUSDWithSymBol } from 'utils/price';
+import { formatPercentage, formatPrice, formatPriceByNumberToFix, formatPriceUSDWithSymBol } from 'utils/price';
 import SearchTairByName from 'components/SearchTairByName';
 import ScrollTableList from 'components/CommonTable/ScrollTableList';
 import { PairItem } from 'types';
 import { FetchParam } from 'types/requeset';
 
 import './index.less';
+import BigNumber from 'bignumber.js';
 
 export default function MobilePairList({
   dataSource = [],
@@ -70,7 +70,7 @@ export default function MobilePairList({
                 </Col>
                 <Col span={24}>
                   <Font lineHeight={18} size={12} color="two">
-                    {formatPriceUSDWithSymBol(pairData?.volume24h, 'Vol ')}
+                    {formatPriceUSDWithSymBol(new BigNumber(pairData?.volume24h).times(pairData.priceUSD), 'Vol ')}
                   </Font>
                 </Col>
               </Row>
@@ -89,7 +89,7 @@ export default function MobilePairList({
         render: (val: number, record: PairItem) => (
           <Row justify="end">
             <Col span={24}>
-              <Font lineHeight={20}>{`$${new BigNumber(record.price).toFormat(2)}`}</Font>
+              <Font lineHeight={20}>{formatPrice(record.price)}</Font>
             </Col>
             <Col>
               <FallOrRise lineHeight={18} className="fail-or-rise" num={formatPriceByNumberToFix(val)} />

@@ -7,7 +7,14 @@ import FallOrRise from 'components/FallOrRise';
 
 import { PoolItem } from 'types';
 import { unitConverter } from 'utils';
-import { formatPriceByNumberToDp, formatPercentage, formatBalance, formatPriceUSDWithSymBol } from 'utils/price';
+import {
+  formatPriceByNumberToDp,
+  formatPercentage,
+  formatBalance,
+  formatPriceUSDWithSymBol,
+  formatPrice,
+  formatPriceChange,
+} from 'utils/price';
 
 import './index.less';
 
@@ -23,7 +30,7 @@ export default ({ pairInfo }: { pairInfo: PoolItem }) => {
                 size={32}
                 lineHeight={36}
                 weight="bold"
-                num={formatPriceByNumberToDp(pairInfo.price)}
+                num={formatPrice(pairInfo.price)}
                 useSubfix={false}
                 usePrefix={false}
                 status={pairInfo.pricePercentChange24h}
@@ -59,17 +66,14 @@ export default ({ pairInfo }: { pairInfo: PoolItem }) => {
               </Font>
             </Col>
             <Col span={12} className="text-right">
-              <Font lineHeight={18} size={12} color="two">
-                {`${t('vol24H')}${pairInfo?.token0?.symbol ? '(' + pairInfo.token0.symbol + ')' : ''}`}
+              <Font lineHeight={18} size={12} color="two" className="font-two-line" align="right">
+                {`${t('vol24H')} ${pairInfo?.token0?.symbol ? '(' + pairInfo.token0.symbol + ')' : ''}`}
               </Font>
             </Col>
             <Col span={12}>
-              <FallOrRise
-                lineHeight={18}
-                size={12}
-                num={formatPriceByNumberToDp(pairInfo.pricePercentChange24h)}
-                useSubfix={false}
-              />
+              <Font lineHeight={18} size={12} align="right">
+                {formatBalance(pairInfo.priceHigh24h)}
+              </Font>
             </Col>
             <Col span={12} className="text-right">
               <Font lineHeight={18} size={12}>
@@ -84,8 +88,8 @@ export default ({ pairInfo }: { pairInfo: PoolItem }) => {
               </Font>
             </Col>
             <Col span={12} className="text-right">
-              <Font lineHeight={18} size={12} color="two">
-                {`${t('vol24H')}${pairInfo?.token1?.symbol ? '(' + pairInfo.token1.symbol + ')' : ''}`}
+              <Font lineHeight={18} size={12} color="two" className="font-two-line" align="right">
+                {`${t('vol24H')} ${pairInfo?.token1?.symbol ? '(' + pairInfo.token1.symbol + ')' : ''}`}
               </Font>
             </Col>
             <Col span={12}>

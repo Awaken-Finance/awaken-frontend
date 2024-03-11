@@ -1,34 +1,38 @@
 import { Col, Row } from 'antd';
 
 import CommonCard from 'components/CommonCard';
-import Font from 'components/Font';
 import FeeRate from 'components/FeeRate';
 import ManageLiquidityBtn from 'Buttons/ManageLiquidityBtn';
+import { Pairs } from 'components/Pair';
+import CommonButton from 'components/CommonButton';
 
 import { PoolItem } from 'types';
-import { unifyWTokenSymbol } from 'utils';
 import { formatPercentage } from 'utils/price';
-import CommonButton from 'components/CommonButton';
 import { IconArrowLeft2 } from 'assets/icons';
 
-export default ({ pairInfo, onClose, className }: { pairInfo: PoolItem; onClose: () => void; className: string }) => {
+import './style.less';
+
+export default ({ pairInfo, onClose }: { pairInfo: PoolItem; onClose: () => void }) => {
   return (
-    <CommonCard title={null} className={className}>
-      <Row justify="space-between" align="middle">
+    <CommonCard title={null} className="kline-header">
+      <Row justify="space-between" wrap={false}>
         <Col>
-          <Row gutter={[8, 0]} align="middle">
-            <CommonButton type="text" icon={<IconArrowLeft2 />} onClick={onClose}></CommonButton>
-            <Col>
-              <Font lineHeight={30} size={20} weight="bold">{`${unifyWTokenSymbol(pairInfo.token0)}/${unifyWTokenSymbol(
-                pairInfo.token1,
-              )}`}</Font>
-            </Col>
-            <Col>
-              <FeeRate useBg>{formatPercentage(pairInfo?.feeRate * 100)}</FeeRate>
-            </Col>
-          </Row>
+          <CommonButton type="text" icon={<IconArrowLeft2 />} onClick={onClose}></CommonButton>
         </Col>
-        <Col>
+        <Col flex={1} className="symbol">
+          <Pairs
+            size={20}
+            lineHeight={30}
+            weight="bold"
+            tokenA={pairInfo.token0}
+            tokenB={pairInfo.token1}
+            maxLenth={10}
+          />
+          <FeeRate useBg className="kline-header-feeRate">
+            {formatPercentage(pairInfo?.feeRate * 100)}
+          </FeeRate>
+        </Col>
+        <Col className="add-button">
           <ManageLiquidityBtn useBtn pair={pairInfo} />
         </Col>
       </Row>

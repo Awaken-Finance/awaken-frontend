@@ -5,8 +5,10 @@ import { MouseEvent } from 'react';
 export default function AuthBtn({
   onClick,
   onGotoLogin,
+  checkAuth = true,
   ...props
 }: CommonButtonProps & {
+  checkAuth?: boolean;
   onGotoLogin?: () => void;
 }) {
   const onClickWithAuth = useLoginCheck<MouseEvent<HTMLElement>>(
@@ -19,5 +21,5 @@ export default function AuthBtn({
     onGotoLogin,
   );
 
-  return <CommonButton {...props} onClick={onClickWithAuth} />;
+  return <CommonButton {...props} onClick={(e) => (checkAuth ? onClickWithAuth(e) : onClick?.(e))} />;
 }

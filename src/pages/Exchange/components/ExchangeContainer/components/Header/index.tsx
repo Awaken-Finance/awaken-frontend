@@ -15,6 +15,7 @@ import ManageLiquidityBtn from 'Buttons/ManageLiquidityBtn';
 import CommonCard from 'components/CommonCard';
 
 import { unifyWTokenSymbol } from 'utils';
+
 import {
   formatPriceByNumberToDp,
   formatPercentage,
@@ -60,7 +61,7 @@ function Header() {
                   size={16}
                   lineHeight={20}
                   weight="bold"
-                  num={formatPriceByNumberToDp(pairInfo.price)}
+                  num={formatPrice(pairInfo.price)}
                   useSubfix={false}
                   usePrefix={false}
                   status={pairInfo.pricePercentChange24h}

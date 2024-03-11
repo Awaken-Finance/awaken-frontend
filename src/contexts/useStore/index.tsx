@@ -1,7 +1,7 @@
 import { SupportedChainId } from 'constants/chain';
 import { supportedChainId } from 'constants/index';
 import { ChainConstants } from 'constants/ChainConstants';
-import { useCurrentBlockHeight } from 'hooks/useCurrentBlockHeight';
+// import { useCurrentBlockHeight } from 'hooks/useCurrentBlockHeight';
 import { useActiveWeb3React } from 'hooks/web3';
 import { useLanguage } from 'i18n';
 import { createContext, useContext, useEffect, useMemo, useReducer, useState } from 'react';
