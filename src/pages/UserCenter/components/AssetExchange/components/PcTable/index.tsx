@@ -9,13 +9,7 @@ import Font from 'components/Font';
 import { CurrencyLogos } from 'components/CurrencyLogo';
 import { Pairs } from 'components/Pair';
 import FeeRate from 'components/FeeRate';
-import {
-  formatLiquidity,
-  formatPercentage,
-  formatPriceChange,
-  formatPriceUSDWithSymBol,
-  formatTokenAmount,
-} from 'utils/price';
+import { formatLiquidity, formatPercentage, formatPriceUSDWithSymBol, formatTokenAmount } from 'utils/price';
 import ManageLiquidityBtn from 'Buttons/ManageLiquidityBtn';
 import { SortOrder } from 'antd/lib/table/interface';
 import Amount from '../Amount';
