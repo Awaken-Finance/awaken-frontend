@@ -17,9 +17,3 @@ export function isValidNumber(n: string) {
   if (n.includes('-')) return false;
   return P_N_REG.test(n);
 }
-
-const NFT_TOKEN = /-/;
-const A_TOKEN_PREFIX = /ALP/;
-export function isNFTSymbol(symbol?: string) {
-  return NFT_TOKEN.test(symbol ?? '') && !A_TOKEN_PREFIX.test(symbol ?? '');
-}

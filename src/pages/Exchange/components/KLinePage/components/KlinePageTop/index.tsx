@@ -13,7 +13,6 @@ import {
   formatBalance,
   formatPriceUSDWithSymBol,
   formatPrice,
-  formatPriceChange,
 } from 'utils/price';
 
 import './index.less';

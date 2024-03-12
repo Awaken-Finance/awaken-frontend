@@ -176,7 +176,7 @@ export default function TradePairList({
             i18n.language === 'zh_TW' && !isMobile && 'tarding-pair-list-pc-tw',
           )}>
           <ScrollTableList
-            useWindow
+            useWindow={false}
             dataSource={dataSource}
             columns={columns}
             loading={loading}

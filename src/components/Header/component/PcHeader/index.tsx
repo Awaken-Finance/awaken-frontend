@@ -19,7 +19,7 @@ import useLogin from 'hooks/useLogin';
 import './styles.less';
 
 function PcHeader() {
-  const { selectedKeys, list } = useSelectedKeys();
+  const { selectedKeys } = useSelectedKeys();
   const { loginState } = useWebLogin();
   const pathname = useLocation().pathname;
   const { t } = useTranslation();
