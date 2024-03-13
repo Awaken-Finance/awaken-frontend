@@ -6,7 +6,7 @@ import { LiquidityRecord } from 'pages/UserCenter/type';
 import Font from 'components/Font';
 import { Pair, Pairs } from 'components/Pair';
 import FeeRate from 'components/FeeRate';
-import { formatPercentage, formatPriceChange } from 'utils/price';
+import { formatPercentage, formatTokenAmount } from 'utils/price';
 import BigNumber from 'bignumber.js';
 import CommonCopy from 'components/CommonCopy';
 
@@ -47,7 +47,7 @@ export default function LiquidityRecordItem({
         </Font>
       </Col>
       <Col span={12} className="align-right height-20">
-        <Font lineHeight={20}>{formatPriceChange(token0Amount)}</Font>
+        <Font lineHeight={20}>{formatTokenAmount(token0Amount, tradePair.token0.decimals)}</Font>
         &nbsp;
         <Pair lineHeight={20} symbol={tradePair?.token0?.symbol} />
       </Col>
@@ -58,7 +58,7 @@ export default function LiquidityRecordItem({
         </Font>
       </Col>
       <Col span={12} className="align-right height-20">
-        <Font lineHeight={20}>{formatPriceChange(token1Amount)}</Font>
+        <Font lineHeight={20}>{formatTokenAmount(token1Amount, tradePair.token1.decimals)}</Font>
         &nbsp;
         <Pair lineHeight={20} symbol={tradePair?.token1?.symbol} />
       </Col>

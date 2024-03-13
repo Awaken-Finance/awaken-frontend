@@ -7,11 +7,7 @@ const ONE_MILLION = new BigNumber(1000000);
 const ONE_BILLION = new BigNumber(1000000000);
 const ONE_TRILLION = new BigNumber(1000000000000);
 
-export function formatPriceUSD(price?: BigNumber.Value, digits = 2): string {
-  if (!isShowUSD()) {
-    return '';
-  }
-
+export function formatPriceUSD(price?: BigNumber.Value, digits?: number): string {
   if (!price) {
     return ZERO.toString();
   }
@@ -33,18 +29,21 @@ export function formatPriceUSD(price?: BigNumber.Value, digits = 2): string {
     return bigNum.dp(2).toString();
   }
 
-  return bigNum.dp(digits).precision(2).toString();
+  return bigNum
+    .dp(digits ?? 12)
+    .precision(3)
+    .toString();
 }
 
 export function formatPriceUSDWithSymBol(price?: BigNumber.Value, prefix?: string, subfix?: string): string {
-  if (!isShowUSD()) {
-    return '-';
-  }
+  // if (!isShowUSD()) {
+  //   return '-';
+  // }
 
   return `${prefix ?? ''}$${formatPriceUSD(price)}${subfix ?? ''}`;
 }
 
-export function formatPrice(price?: BigNumber.Value, digits = 12): string {
+export function formatPrice(price?: BigNumber.Value, digits?: number): string {
   if (!price) {
     return ZERO.toString();
   }
@@ -70,7 +69,10 @@ export function formatPrice(price?: BigNumber.Value, digits = 12): string {
     return bigNum.dp(4).toString();
   }
 
-  return bigNum.dp(digits).precision(4).toString();
+  return bigNum
+    .dp(digits ?? 12)
+    .precision(4)
+    .toString();
 }
 
 export function formatTokenAmount(num?: BigNumber.Value, digits?: number) {
@@ -107,14 +109,14 @@ export function formatTokenAmount(num?: BigNumber.Value, digits?: number) {
   return bigNum.dp(digits ?? 4).toString();
 }
 
-export function formatPriceChange(price?: BigNumber.Value, digits = 12): string {
+export function formatPriceChange(price?: BigNumber.Value, digits?: number): string {
   if (!price) {
     return ZERO.toString();
   }
 
   const bigNum = new BigNumber(price);
 
-  if (digits === 0) return bigNum.dp(digits).toString();
+  if (digits === 0) return bigNum.toFixed(0);
 
   if (bigNum.gte(10)) {
     return bigNum.dp(2).toString();
@@ -124,24 +126,7 @@ export function formatPriceChange(price?: BigNumber.Value, digits = 12): string 
     return bigNum.dp(4).toString();
   }
 
-  return bigNum.dp(digits).toString();
-}
-
-export function formatPriceChangeSD(price?: BigNumber.Value, digits = 12): string {
-  if (!price) {
-    return ZERO.toString();
-  }
-  const bigNum = new BigNumber(price);
-
-  if (bigNum.gte(10)) {
-    return bigNum.dp(2).toString();
-  }
-
-  if (bigNum.gte(1)) {
-    return bigNum.dp(4).toString();
-  }
-
-  return bigNum.sd(digits).toString();
+  return bigNum.dp(digits ?? 12).toString();
 }
 
 export function formatLiquidity(price?: BigNumber.Value, digits = 8): string {

@@ -1,8 +1,8 @@
 const apiEnv = process.env.REACT_APP_API_ENV;
 const mainNetApi = {
-  nodeApi: 'http://192.168.66.55:8901',
-  webApi: 'http://192.168.66.55:8900/',
-  cmsApi: 'http://192.168.66.186:6776/', // 'http://192.168.66.186:6776/', // inner
+  nodeApi: 'http://awaken.finance',
+  webApi: 'http://awaken.finance/',
+  cmsApi: 'http://awaken.finance', // 'http://192.168.66.186:6776/', // inner
   farmApi: 'http://192.168.66.55:8900/',
   portkeyApi: 'https://did-portkey.portkey.finance',
   portkeyAuthApi: 'https://auth-portkey.portkey.finance',

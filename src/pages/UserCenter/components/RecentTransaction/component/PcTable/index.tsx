@@ -11,7 +11,7 @@ import Font from 'components/Font';
 import { CurrencyLogos } from 'components/CurrencyLogo';
 import { Pairs, Pair } from 'components/Pair';
 import FeeRate from 'components/FeeRate';
-import { formatPercentage, formatPrice, formatPriceChange, formatPriceUSDWithSymBol } from 'utils/price';
+import { formatPercentage, formatPrice, formatPriceUSDWithSymBol, formatTokenAmount } from 'utils/price';
 import { RecentTransaction, LiquidityRecord } from '../../../../type';
 import CommonCopy from 'components/CommonCopy';
 import CommonMenu from 'components/CommonMenu';
@@ -116,7 +116,7 @@ export default function PcTable({
         align: 'right',
         render: (val: number, record: RecentTransaction) => (
           <>
-            <Font lineHeight={24}>{formatPriceChange(val)}</Font>
+            <Font lineHeight={24}>{formatTokenAmount(val, record.tradePair.token0.decimals)}</Font>
             &nbsp;
             <Pair lineHeight={24} symbol={record?.tradePair?.token0?.symbol} />
           </>
@@ -129,7 +129,7 @@ export default function PcTable({
         align: 'right',
         render: (val: number, record: RecentTransaction) => (
           <>
-            <Font lineHeight={24}>{formatPriceChange(val)}</Font>
+            <Font lineHeight={24}>{formatTokenAmount(val, record.tradePair.token1.decimals)}</Font>
             &nbsp;
             <Pair lineHeight={24} symbol={record?.tradePair?.token1?.symbol} />
           </>
