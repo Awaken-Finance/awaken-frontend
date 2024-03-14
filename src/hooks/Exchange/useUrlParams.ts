@@ -3,6 +3,8 @@ import { SupportedSwapRateKeys, SupportedSwapRateKeysIndex } from 'constants/swa
 import { unifyWTokenSymbol } from 'utils';
 import { usePairInfo } from 'pages/Exchange/hooks/useSwap';
 import BigNumber from 'bignumber.js';
+import { getPairsOrderByTokenWeights } from 'utils/pair';
+import { TokenInfo } from 'types';
 
 export interface SymbolItem {
   id?: string;
@@ -14,10 +16,12 @@ export function useUrlParams() {
   const pairInfo = usePairInfo();
 
   return useMemo(() => {
+    const tokens = getPairsOrderByTokenWeights(pairInfo?.token0, pairInfo?.token1);
+
     if (pairInfo) {
       return {
         id: pairInfo.id,
-        symbol: `${unifyWTokenSymbol(pairInfo.token0)}_${unifyWTokenSymbol(pairInfo.token1)}`,
+        symbol: `${unifyWTokenSymbol(tokens[0] as TokenInfo)}_${unifyWTokenSymbol(tokens[1] as TokenInfo)}`,
         feeRate:
           SupportedSwapRateKeys[
             (new BigNumber(pairInfo?.feeRate).times(100).toString() + '%') as SupportedSwapRateKeysIndex
