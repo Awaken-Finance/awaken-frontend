@@ -7,6 +7,7 @@ import { ImageProps } from 'antd';
 import './index.less';
 import clsx from 'clsx';
 import { NATIVE_LOGO } from 'assets/logo';
+import { getPairsLogoOrderByTokenWeights } from 'utils/pair';
 export function CurrencyLogo({
   currency,
   address,
@@ -79,7 +80,7 @@ export function CurrencyLogos({
 
         maxHeight: tokens.length === 1 ? size : `${Math.ceil(size * tokens.length - size / 4)}px`,
       }}>
-      {tokens.map((i, k) => {
+      {getPairsLogoOrderByTokenWeights(tokens).map((i, k) => {
         const { currency, address, src, symbol } = i || {};
         return (
           <CurrencyLogo
