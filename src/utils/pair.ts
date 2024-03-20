@@ -12,7 +12,7 @@ export function getPairsOrderByTokenWeights(
     return [token0, token1];
   }
 
-  return getTokenWeights(typeof token0 === 'string' ? token0 : token0.symbol) >=
+  return getTokenWeights(typeof token0 === 'string' ? token0 : token0.symbol) >
     getTokenWeights(typeof token1 === 'string' ? token1 : token1.symbol)
     ? [token1, token0]
     : [token0, token1];
@@ -25,7 +25,7 @@ export function getPairsLogoOrderByTokenWeights(
     return tokens;
   }
 
-  return getTokenWeights(tokens[0]?.symbol || tokens[0].currency?.symbol) >=
+  return getTokenWeights(tokens[0]?.symbol || tokens[0].currency?.symbol) >
     getTokenWeights(tokens[1]?.symbol || tokens[1].currency?.symbol)
     ? tokens.reverse()
     : tokens;
@@ -58,11 +58,13 @@ export const getPairReversed = (_pair: PairItem) => {
     // TODO
     pair.priceHigh24h = ONE.div(_pair.priceLow24h).toNumber();
     pair.priceLow24h = ONE.div(_pair.priceHigh24h).toNumber();
+    pair.priceHigh24hUSD = ZERO.plus(pair.priceHigh24h).times(_pair.priceUSD).toNumber();
+    pair.priceLow24hUSD = ZERO.plus(pair.priceLow24h).times(_pair.priceUSD).toNumber();
 
     pair.priceChange24h = ZERO.minus(_pair.pricePercentChange24h).div(_pair.price).toNumber();
 
     pair.pricePercentChange24h = ZERO.minus(_pair.pricePercentChange24h)
-      .div(_pair.pricePercentChange24h + 1)
+      .div(new BigNumber(_pair.pricePercentChange24h).plus(1))
       .toNumber();
 
     pair.volume24h = _pair.tradeValue24h;
