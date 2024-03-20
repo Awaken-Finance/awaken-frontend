@@ -27,7 +27,10 @@ export function useUrlParams() {
           SupportedSwapRateKeys[
             (new BigNumber(pairInfo?.feeRate).times(100).toString() + '%') as SupportedSwapRateKeysIndex
           ],
-        isReversed: token0.symbol !== pairInfo.originToken0.symbol,
+        isReversed:
+          typeof token0.symbol !== 'undefined' &&
+          typeof pairInfo.originToken0?.symbol !== 'undefined' &&
+          token0.symbol !== pairInfo.originToken0?.symbol,
       };
     }
     return {
