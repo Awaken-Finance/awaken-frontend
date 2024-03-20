@@ -23,6 +23,7 @@ import { IconFilterPc } from 'assets/icons';
 import { getExploreLink, shortenTransactionId } from 'utils';
 
 import './index.less';
+import { getTokenWeights } from 'utils/token';
 
 export default function PcTable({
   dataSource,
@@ -91,14 +92,32 @@ export default function PcTable({
         title: t(getSideTitle(side)),
         key: 'side',
         dataIndex: 'side',
-        filteredValue: [side],
-        filters: filterSidSource,
-        filterMultiple: false,
-        filterIcon: () => <IconFilterPc />,
-        filterDropdown: (props: any) => <FilterSidInTable {...props} />,
-        render: (val: number) => (
-          <Font lineHeight={24} color={val === 0 ? 'rise' : 'fall'}>
-            {val === 0 ? t('buy') : t('sell')}
+        // filteredValue: [side],
+        // filters: filterSidSource,
+        // filterMultiple: false,
+        // filterIcon: () => <IconFilterPc />,
+        // filterDropdown: (props: any) => <FilterSidInTable {...props} />,
+        render: (val: number, record: RecentTransaction) => (
+          <Font
+            lineHeight={24}
+            color={
+              getTokenWeights(record.tradePair.token0.symbol) > getTokenWeights(record.tradePair.token1.symbol) &&
+              record.tradePair.token0.symbol < record.tradePair.token1.symbol
+                ? val === 0
+                  ? 'fall'
+                  : 'rise'
+                : val === 0
+                ? 'rise'
+                : 'fall'
+            }>
+            {getTokenWeights(record.tradePair.token0.symbol) > getTokenWeights(record.tradePair.token1.symbol) &&
+            record.tradePair.token0.symbol < record.tradePair.token1.symbol
+              ? val === 0
+                ? t('sell')
+                : t('buy')
+              : val === 0
+              ? t('buy')
+              : t('sell')}
           </Font>
         ),
       },

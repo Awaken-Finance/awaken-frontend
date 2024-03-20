@@ -21,15 +21,14 @@ export function getPairsOrderByTokenWeights(
 export function getPairsLogoOrderByTokenWeights(
   tokens: Array<{ symbol?: string; currency?: Currency | null; address?: string; src?: string }>,
 ): Array<{ symbol?: string; currency?: Currency | null; address?: string; src?: string }> {
-  // if ((!tokens[0]?.symbol && !tokens[0].currency?.symbol) || (!tokens[1]?.symbol && !tokens[1].currency?.symbol)) {
-  //   return tokens;
-  // }
+  if ((!tokens[0]?.symbol && !tokens[0].currency?.symbol) || (!tokens[1]?.symbol && !tokens[1].currency?.symbol)) {
+    return tokens;
+  }
 
-  // return getTokenWeights(tokens[0]?.symbol || tokens[0].currency?.symbol) >=
-  //   getTokenWeights(tokens[1]?.symbol || tokens[1].currency?.symbol)
-  //   ? tokens.reverse()
-  //   : tokens;
-  return tokens;
+  return getTokenWeights(tokens[0]?.symbol || tokens[0].currency?.symbol) >=
+    getTokenWeights(tokens[1]?.symbol || tokens[1].currency?.symbol)
+    ? tokens.reverse()
+    : tokens;
 }
 
 export const getIsReversed = (token0: string | TokenInfo, token1: string | TokenInfo) => {

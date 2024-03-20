@@ -19,5 +19,5 @@ export function getTokensOrderByASCLL(symbol1?: string, symbol2?: string) {
     return { symbol1, symbol2 };
   }
 
-  return symbol1 > symbol2 ? { symbol2, symbol1 } : { symbol1, symbol2 };
+  return symbol1 > symbol2 ? { symbol1: symbol2, symbol2: symbol1 } : { symbol1, symbol2 };
 }
