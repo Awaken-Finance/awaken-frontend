@@ -32,7 +32,10 @@ export default class Signalr {
   }
 
   doOpen() {
-    const signalr = new HubConnectionBuilder().withUrl(this.url).withAutomaticReconnect().build();
+    const signalr = new HubConnectionBuilder()
+      .withUrl(this.url, { withCredentials: false })
+      .withAutomaticReconnect()
+      .build();
     this.listener(signalr);
     signalr.onclose((err) => {
       console.log('onclose', err);
