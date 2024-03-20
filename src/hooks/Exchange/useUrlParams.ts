@@ -27,7 +27,7 @@ export function useUrlParams() {
           SupportedSwapRateKeys[
             (new BigNumber(pairInfo?.feeRate).times(100).toString() + '%') as SupportedSwapRateKeysIndex
           ],
-        isReversed: token0 !== pairInfo.originToken0,
+        isReversed: token0.symbol !== pairInfo.originToken0.symbol,
       };
     }
     return {
