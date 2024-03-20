@@ -18,6 +18,9 @@ import BigNumber from 'bignumber.js';
 import { formatPrice, formatLiquidity } from 'utils/price';
 
 import './LatestTrade.less';
+import { usePairTokens, useSwapContext } from 'pages/Exchange/hooks/useSwap';
+import { getPairsOrderByTokenWeights } from 'utils/pair';
+import { getTokenWeights } from 'utils/token';
 
 const menus = [
   {
@@ -38,11 +41,11 @@ function LatestTrade() {
 
   const { width } = useWindowSize();
 
-  const symbolItem = useUrlParams();
+  const [{ pairInfo }] = useSwapContext();
 
-  const marketList = useMarketTradeList(symbolItem?.id, 50);
+  const marketList = useMarketTradeList(pairInfo?.id, 50);
 
-  const userList = useUserTradList(symbolItem?.id, wallet?.address, 50);
+  const userList = useUserTradList(pairInfo?.id, wallet?.address, 50);
 
   const [menu, setMenu] = useState<string | number>('market');
 
@@ -84,7 +87,9 @@ function LatestTrade() {
   const columns = useMemo<ColumnType<TradeItem>[]>(() => {
     const defaultColumnx: ColumnType<TradeItem>[] = [
       {
-        title: `${t('price')}${symbolItem.symbol ? ' (' + symbolItem.symbol.split('_')[1] + ')' : ''}`,
+        title: `${t('price')}(${
+          getPairsOrderByTokenWeights(pairInfo?.token0?.symbol, pairInfo?.token1.symbol)[1] || ''
+        })`,
         dataIndex: 'price',
         key: 'price',
         width: priceLabelWidth,
@@ -102,13 +107,22 @@ function LatestTrade() {
         },
       },
       {
-        title: `${t('amount')}${symbolItem.symbol ? '(' + symbolItem.symbol.split('_')[0] + ')' : ''}`,
+        title: `${t('amount')}(${
+          getPairsOrderByTokenWeights(pairInfo?.token0?.symbol, pairInfo?.token1.symbol)[0] || ''
+        })`,
         dataIndex: 'token0Amount',
         key: 'token0Amount',
         width: isMobile ? 'auto' : 90,
         align: 'right',
-        render: (token0Amount: string) => (
-          <span className="last-trade-table-cell">{formatLiquidity(token0Amount, 8)}</span>
+        render: (token0Amount: string, record: TradeItem) => (
+          <span className="last-trade-table-cell">
+            {formatLiquidity(
+              getTokenWeights(pairInfo?.token0?.symbol) > getTokenWeights(pairInfo?.token1?.symbol)
+                ? record.token1Amount
+                : token0Amount,
+              8,
+            )}
+          </span>
         ),
       },
       {
@@ -127,7 +141,7 @@ function LatestTrade() {
     }
 
     return defaultColumnx;
-  }, [t, symbolItem.symbol, priceLabelWidth, isMobile]);
+  }, [t, pairInfo?.token0?.symbol, pairInfo?.token1.symbol, priceLabelWidth, isMobile]);
 
   const tableProps: Record<string, any> = {
     columns: columns,
@@ -135,7 +149,7 @@ function LatestTrade() {
     dataSource: dataSource,
     emptyType: 'nodata',
     emptyText: t('noTrades'),
-    height: 620,
+    scroll: { y: 600, x: 0 },
   };
 
   return (

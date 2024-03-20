@@ -52,7 +52,7 @@ export default function ExchangeDrawer({
       visible={visible}
       zIndex={11}
       className="mobile-trade-pair-kline">
-      <div className="mobile-trade-pair-kline-container">{renderContent}</div>
+      <div>{renderContent}</div>
     </Drawer>
   );
 }

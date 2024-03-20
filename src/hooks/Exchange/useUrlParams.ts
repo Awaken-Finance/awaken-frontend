@@ -16,22 +16,25 @@ export function useUrlParams() {
   const pairInfo = usePairInfo();
 
   return useMemo(() => {
-    const tokens = getPairsOrderByTokenWeights(pairInfo?.token0, pairInfo?.token1);
-
     if (pairInfo) {
+      const token0 = pairInfo.token0;
+      const token1 = pairInfo.token1;
+
       return {
         id: pairInfo.id,
-        symbol: `${unifyWTokenSymbol(tokens[0] as TokenInfo)}_${unifyWTokenSymbol(tokens[1] as TokenInfo)}`,
+        symbol: `${unifyWTokenSymbol(token0 as TokenInfo)}_${unifyWTokenSymbol(token1 as TokenInfo)}`,
         feeRate:
           SupportedSwapRateKeys[
             (new BigNumber(pairInfo?.feeRate).times(100).toString() + '%') as SupportedSwapRateKeysIndex
           ],
+        isReversed: token0 !== pairInfo.originToken0,
       };
     }
     return {
       id: '',
       symbol: '',
       feeRate: '',
+      isReversed: false,
     };
   }, [pairInfo]);
 }

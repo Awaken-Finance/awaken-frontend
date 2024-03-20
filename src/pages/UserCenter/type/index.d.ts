@@ -185,6 +185,7 @@ export interface LiquidityRecord {
   lpTokenAmount?: string;
   transactionHash?: string;
   transactionFee?: number;
+  price?: string;
 }
 
 export interface LiquidityRecordParams {

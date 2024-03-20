@@ -32,6 +32,8 @@ export default function Add({ pairInfo }: { pairInfo: PairInfo }) {
   const { account } = useActiveWeb3React();
   const [confirmVisible, setConfirmVisible] = useState<boolean>(false);
 
+  console.log('pairInfo: ', pairInfo);
+
   const { tokenA, tokenB, feeRate } = pairInfo || {};
   const rate = feeRate ? SupportedSwapRateMap[feeRate] : SupportedSwapRate.percent_0_05;
   const { leftToken, rightToken } = useSelectPair(tokenA || ChainConstants.constants.COMMON_BASES[0], tokenB);

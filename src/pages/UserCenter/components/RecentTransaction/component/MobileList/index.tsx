@@ -89,7 +89,7 @@ export default function MobileList({
           <CommonMenu menus={menuList} onChange={menuChange} value={menu} className="transaction-list-menu" />
         </Col>
         <Col>
-          {menu === 'all' && (
+          {/* {menu === 'all' && (
             <div className="transaction-list-filter">
               <IconFilter onClick={() => setSidVisible(true)} />
               {sidVisible && (
@@ -98,7 +98,7 @@ export default function MobileList({
                 </div>
               )}
             </div>
-          )}
+          )} */}
         </Col>
       </Row>
       <div className="transaction-list-box">

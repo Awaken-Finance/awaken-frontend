@@ -1,3 +1,4 @@
+import { ONE } from 'constants/misc';
 import Datafeed from './Datafeed/Datafeed';
 import {
   getOverrides,
@@ -371,6 +372,20 @@ export default class TV {
     const interval = subscriberUID.split('_')[2];
   }
 
+  getKlineData(_d: SKItem | UpdateKlineType) {
+    const isReversed = this.pairData.isReversed;
+
+    const d = { ..._d };
+    if (isReversed) {
+      d.close = ONE.div(d.close).toNumber();
+      d.high = ONE.div(d.low).toNumber();
+      d.low = ONE.div(d.high).toNumber();
+      d.open = ONE.div(d.open).toNumber();
+      d.volume = ONE.plus(d.close).times(d.volume).toNumber();
+    }
+    return d;
+  }
+
   onMessage(data: WebSKData): void {
     const ticker = `${this.name}-${this.interval}`;
     const tickerCallback = `${ticker}Callback`;
@@ -384,10 +399,11 @@ export default class TV {
        * Complementary data
        */
       const itemList: SKItem[] = [];
+
       let nextTime = data.data[0].timestamp || data.data[0].time;
       let nowItem = data.data[0];
       for (let i = 0; i < data.data.length; i++) {
-        const item = data.data[i];
+        const item = this.getKlineData({ ...data.data[i] });
         if ((item.time || (item?.timestamp as number)) <= nextTime) {
           const now = { ...item, time: item.timestamp || item.time };
           nowItem = now;
@@ -451,7 +467,8 @@ export default class TV {
   }
 
   ReceiveKline(data: UpdateKlineType) {
-    this.updateKline(data);
+    const _data = this.getKlineData(data);
+    this.updateKline(_data as UpdateKlineType);
   }
 
   updateKline(data: UpdateKlineType) {
