@@ -1,6 +1,7 @@
 import { request } from 'api';
 import { PairItem } from 'types';
 import { Response } from 'types/response';
+import { getPairReversed } from 'utils/pair';
 
 export async function getPairById(params: { id?: string; address?: string }): Promise<PairItem | null> {
   const response: Response<PairItem> = await request.GET_TRADE_PAIRS_LIST({
@@ -15,5 +16,7 @@ export async function getPairById(params: { id?: string; address?: string }): Pr
     return null;
   }
 
-  return response.data;
+  const pair = response.data;
+
+  return getPairReversed(pair);
 }

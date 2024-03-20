@@ -3,6 +3,8 @@ import { useSwapContext } from './useSwap';
 import { useActiveWeb3React } from 'hooks/web3';
 import { ReceiveUserTradeRecordsInterface, TradeItem } from 'socket/socketType';
 import { isArray } from 'lodash';
+import { getIsReversed } from 'utils/pair';
+import { ONE } from 'constants/misc';
 
 export function useMarketTradeList(tradePairId?: string, maxResultCount?: number) {
   const [list, setList] = useState<TradeItem[]>([]);
@@ -23,7 +25,23 @@ export function useMarketTradeList(tradePairId?: string, maxResultCount?: number
       if (rec.chainId !== apiChainId || rec.tradePairId !== tradePairId || !isArray(rec.data)) {
         return;
       }
-      setList(rec.data);
+      const data = [...rec.data].map((item) => {
+        const isReversed = getIsReversed(item.tradePair.token0, item.tradePair.token1);
+        if (isReversed) {
+          return {
+            ...item,
+            price: ONE.div(item.price).toNumber(),
+            token0Amount: item.token1Amount,
+            token1Amount: item.token0Amount,
+            tradePair: {
+              token0: item.tradePair.token1,
+              token1: item.tradePair.token0,
+            },
+          } as TradeItem;
+        }
+        return item;
+      });
+      setList(data);
     },
     [apiChainId, tradePairId],
   );
@@ -33,13 +51,27 @@ export function useMarketTradeList(tradePairId?: string, maxResultCount?: number
       if (rec.chainId !== apiChainId || rec.tradePair.id !== tradePairId) {
         return;
       }
+      let item = { ...rec };
+      const isReversed = getIsReversed(item.tradePair.token0, item.tradePair.token1);
+      if (isReversed) {
+        item = {
+          ...item,
+          price: ONE.div(item.price).toNumber(),
+          token0Amount: item.token1Amount,
+          token1Amount: item.token0Amount,
+          tradePair: {
+            token0: item.tradePair.token1,
+            token1: item.tradePair.token0,
+          },
+        } as TradeItem;
+      }
       // max is 50
       setList((v) => {
         if (v.length >= 50) {
           v.pop();
-          return [rec, ...v];
+          return [item, ...v];
         }
-        return [rec, ...v];
+        return [item, ...v];
       });
     },
     [apiChainId, tradePairId],
@@ -89,8 +121,24 @@ export function useUserTradList(tradePairId?: string, address?: string, maxResul
       if (rec.chainId !== apiChainId || rec.tradePairId !== tradePairId || !isArray(rec.data)) {
         return;
       }
+      const data = [...rec.data].map((item) => {
+        const isReversed = getIsReversed(item.tradePair.token0, item.tradePair.token1);
+        if (isReversed) {
+          return {
+            ...item,
+            price: ONE.div(item.price).toNumber(),
+            token0Amount: item.token1Amount,
+            token1Amount: item.token0Amount,
+            tradePair: {
+              token0: item.tradePair.token1,
+              token1: item.tradePair.token0,
+            },
+          } as TradeItem;
+        }
+        return item;
+      });
 
-      setList(rec.data);
+      setList(data);
     },
     [apiChainId, tradePairId],
   );
@@ -110,13 +158,29 @@ export function useUserTradList(tradePairId?: string, address?: string, maxResul
       if (rec.chainId !== apiChainId || rec.tradePair.id !== tradePairId) {
         return;
       }
+
+      let item = { ...rec };
+      const isReversed = getIsReversed(item.tradePair.token0, item.tradePair.token1);
+      if (isReversed) {
+        item = {
+          ...item,
+          price: ONE.div(item.price).toNumber(),
+          token0Amount: item.token1Amount,
+          token1Amount: item.token0Amount,
+          tradePair: {
+            token0: item.tradePair.token1,
+            token1: item.tradePair.token0,
+          },
+        } as TradeItem;
+      }
+
       // max is 50
       setList((v) => {
         if (v.length >= 50) {
           v.pop();
-          return [rec, ...v];
+          return [item, ...v];
         }
-        return [rec, ...v];
+        return [item, ...v];
       });
     },
     [apiChainId, tradePairId],
