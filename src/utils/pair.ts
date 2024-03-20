@@ -2,6 +2,7 @@ import { PairItem, TokenInfo } from 'types';
 import { getTokenWeights } from './token';
 import { Currency } from '@awaken/sdk-core';
 import { ONE, ZERO } from 'constants/misc';
+import BigNumber from 'bignumber.js';
 
 export function getPairsOrderByTokenWeights(
   token0?: TokenInfo | string,
@@ -33,7 +34,7 @@ export function getPairsLogoOrderByTokenWeights(
 
 export const getIsReversed = (token0: string | TokenInfo, token1: string | TokenInfo) => {
   return (
-    getTokenWeights(typeof token0 === 'string' ? token0 : token0.symbol) >=
+    getTokenWeights(typeof token0 === 'string' ? token0 : token0.symbol) >
     getTokenWeights(typeof token1 === 'string' ? token1 : token1.symbol)
   );
 };
@@ -52,16 +53,21 @@ export const getPairReversed = (_pair: PairItem) => {
     pair.valueLocked0 = _pair.valueLocked1;
     pair.valueLocked1 = _pair.valueLocked0;
 
-    pair.price = ONE.div(_pair.price).toNumber();
+    pair.price = new BigNumber(_pair.valueLocked0).div(_pair.valueLocked1).toNumber();
 
-    pair.priceUSD = ONE.div(_pair.price).times(_pair.priceUSD).toNumber();
+    pair.priceUSD = new BigNumber(pair.price).times(_pair.priceUSD).toNumber();
     // TODO
     pair.priceHigh24h = ONE.div(_pair.priceLow24h).toNumber();
     pair.priceLow24h = ONE.div(_pair.priceHigh24h).toNumber();
 
-    pair.pricePercentChange24h = ONE.div(_pair.pricePercentChange24h + 1)
-      .minus(1)
+    pair.priceChange24h = ZERO.minus(_pair.pricePercentChange24h).div(_pair.price).toNumber();
+
+    pair.pricePercentChange24h = ZERO.minus(_pair.pricePercentChange24h)
+      .div(_pair.pricePercentChange24h + 1)
       .toNumber();
+
+    pair.volume24h = _pair.tradeValue24h;
+    pair.tradeValue24h = _pair.volume24h;
   }
 
   return pair;
