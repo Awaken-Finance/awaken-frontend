@@ -149,13 +149,14 @@ function LatestTrade() {
     dataSource: dataSource,
     emptyType: 'nodata',
     emptyText: t('noTrades'),
+    scroll: { y: 600, x: 0 },
   };
 
   return (
     <CommonCard
       className="latest-transaction"
       title={<CommonMenu menus={menus} value={menu} onChange={onChangeMenu} className="transaction-menu" />}>
-      <CommonTableList {...tableProps} scroll={{ y: 600 }} />
+      <CommonTableList {...tableProps} />
     </CommonCard>
   );
 }
