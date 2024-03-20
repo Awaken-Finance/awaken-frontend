@@ -378,8 +378,8 @@ export default class TV {
     const d = { ..._d };
     if (isReversed) {
       d.close = ONE.div(d.close).toNumber();
-      d.high = ONE.div(d.low).toNumber();
-      d.low = ONE.div(d.high).toNumber();
+      d.high = ONE.div(_d.low).toNumber();
+      d.low = ONE.div(_d.high).toNumber();
       d.open = ONE.div(d.open).toNumber();
       d.volume = ONE.plus(d.close).times(d.volume).toNumber();
     }
