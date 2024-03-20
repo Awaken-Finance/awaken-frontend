@@ -13,3 +13,11 @@ export function getTokenWeights(symbol?: string): number {
 
   return tokenWeights[symbol] || 1;
 }
+
+export function getTokensOrderByASCLL(symbol1?: string, symbol2?: string) {
+  if (!symbol1 || !symbol2) {
+    return { symbol1, symbol2 };
+  }
+
+  return symbol1 > symbol2 ? { symbol2, symbol1 } : { symbol1, symbol2 };
+}

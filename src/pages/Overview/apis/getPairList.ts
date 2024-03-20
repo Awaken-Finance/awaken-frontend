@@ -2,6 +2,7 @@ import { request } from 'api';
 import { PairItem } from 'types';
 import { ListResponse } from 'types/response';
 import { getIsReversed, getPairReversed } from 'utils/pair';
+import { getTokenWeights, getTokensOrderByASCLL } from 'utils/token';
 
 export interface GetPairListParams {
   chainId?: string;
@@ -57,8 +58,21 @@ export const getTradePairsListOrigin = async (
 };
 
 export async function getPairList(
-  params: GetPairListParams,
+  _params: GetPairListParams,
 ): Promise<{ items: PairItem[]; totalCount: number } | undefined> {
+  let params = { ..._params };
+
+  const { symbol1: token0Symbol, symbol2: token1Symbol } = getTokensOrderByASCLL(
+    _params.token0Symbol,
+    _params.token1Symbol,
+  );
+
+  params = {
+    ...params,
+    token0Symbol,
+    token1Symbol,
+  };
+
   try {
     return await getTradePairsListOrigin(params);
   } catch (e) {
