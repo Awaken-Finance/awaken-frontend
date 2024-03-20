@@ -38,7 +38,13 @@ const TradingView: React.FC<{
     if (!symbolItem.id || !symbolItem.symbol) return;
     if (!apiChainId || !socket) return;
 
-    const pairData = { tradePairId: symbolItem.id, symbol: symbolItem.symbol, chainId: apiChainId, feeRate };
+    const pairData = {
+      isReversed: symbolItem.isReversed,
+      tradePairId: symbolItem.id,
+      symbol: symbolItem.symbol,
+      chainId: apiChainId,
+      feeRate,
+    };
 
     try {
       if (!createChart) {

@@ -19,6 +19,7 @@ export interface UpdateKlineType {
   tradePairId: string;
   period: number;
   timestamp: number;
+  time: number;
   open: number;
   high: number;
   low: number;
