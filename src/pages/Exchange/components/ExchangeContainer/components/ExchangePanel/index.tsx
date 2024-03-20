@@ -143,6 +143,67 @@ const MobileExchangePanel = memo(
       [activeKey],
     );
 
+    const cardDom = useMemo(() => {
+      const leftTokenWeight = getTokenWeights(leftToken?.symbol),
+        rightTokenWeight = getTokenWeights(rightToken?.symbol);
+
+      if (rightTokenWeight > leftTokenWeight) {
+        return (
+          <>
+            <Tabs.TabPane tab={t('buy')} key="buy">
+              <LeftCard
+                setToken={setRightToken}
+                getReserves={getReserves}
+                rate={rate}
+                tokenA={leftToken}
+                tokenB={rightToken}
+                reserves={reserves}
+                balances={currencyBalances}
+              />
+            </Tabs.TabPane>
+            <Tabs.TabPane tab={t('sell')} key="sell">
+              <RightCard
+                setToken={setLeftToken}
+                getReserves={getReserves}
+                rate={rate}
+                tokenA={leftToken}
+                tokenB={rightToken}
+                reserves={reserves}
+                balances={currencyBalances}
+              />
+            </Tabs.TabPane>
+          </>
+        );
+      } else {
+        return (
+          <>
+            <Tabs.TabPane tab={t('buy')} key="buy">
+              <LeftCard
+                setToken={setRightToken}
+                getReserves={getReserves}
+                rate={rate}
+                tokenA={rightToken}
+                tokenB={leftToken}
+                reserves={reserves}
+                balances={currencyBalances}
+              />
+            </Tabs.TabPane>
+            <Tabs.TabPane tab={t('sell')} key="sell">
+              <RightCard
+                setToken={setLeftToken}
+                getReserves={getReserves}
+                rate={rate}
+                tokenA={rightToken}
+                tokenB={leftToken}
+                reserves={reserves}
+                balances={currencyBalances}
+              />
+            </Tabs.TabPane>
+          </>
+        );
+      }
+    }, [currencyBalances, getReserves, leftToken, rate, reserves, rightToken, setLeftToken, setRightToken, t]);
+
     useEffect(() => {
       if (!sellType || sellType === activeKey) {
         return;
@@ -185,28 +246,7 @@ const MobileExchangePanel = memo(
           </Col>
           <Col span={24} className="exchange-card">
             <CardTabs activeKey={activeKey} renderTabBar={() => <div />}>
-              <Tabs.TabPane tab={t('buy')} key="buy">
-                <LeftCard
-                  setToken={setLeftToken}
-                  getReserves={getReserves}
-                  rate={rate}
-                  tokenA={leftToken}
-                  tokenB={rightToken}
-                  reserves={reserves}
-                  balances={currencyBalances}
-                />
-              </Tabs.TabPane>
-              <Tabs.TabPane tab={t('sell')} key="sell">
-                <RightCard
-                  setToken={setRightToken}
-                  getReserves={getReserves}
-                  rate={rate}
-                  tokenA={leftToken}
-                  tokenB={rightToken}
-                  reserves={reserves}
-                  balances={currencyBalances}
-                />
-              </Tabs.TabPane>
+              {cardDom}
             </CardTabs>
           </Col>
         </Row>
