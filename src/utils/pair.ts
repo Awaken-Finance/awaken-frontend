@@ -52,19 +52,13 @@ export const getPairReversed = (_pair: PairItem) => {
     pair.valueLocked0 = _pair.valueLocked1;
     pair.valueLocked1 = _pair.valueLocked0;
 
-    pair.price = ONE.div(pair.price).toNumber();
+    pair.price = ONE.div(_pair.price).toNumber();
 
-    pair.priceUSD = ONE.plus(pair.price).times(pair.priceUSD).toNumber();
+    pair.priceUSD = ONE.plus(_pair.price).times(_pair.priceUSD).toNumber();
     // TODO
-    pair.priceHigh24h = ONE.div(pair.priceLow24h).toNumber();
-    pair.priceLow24h = ONE.div(pair.priceHigh24h).toNumber();
+    pair.priceHigh24h = ONE.div(_pair.priceLow24h).toNumber();
+    pair.priceLow24h = ONE.div(_pair.priceHigh24h).toNumber();
 
-    // pair.priceHigh24hUSD = ONE.div(pair.priceHigh24hUSD).toNumber();
-    // pair.priceLow24hUSD = ONE.div(pair.priceLow24hUSD).toNumber();
-
-    // const price24h = ZERO.plus(pair.price).div(pair.pricePercentChange24h + 1);
-    // pair.pricePercentChange24h = ZERO.plus(pair.price).minus(price24h).div(price24h).toNumber();
-    console.log(pair.pricePercentChange24h, 'pair.pricePercentChange24h ==');
     pair.pricePercentChange24h = ONE.div(_pair.pricePercentChange24h + 1)
       .minus(1)
       .toNumber();
