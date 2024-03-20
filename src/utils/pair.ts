@@ -54,7 +54,7 @@ export const getPairReversed = (_pair: PairItem) => {
 
     pair.price = ONE.div(_pair.price).toNumber();
 
-    pair.priceUSD = ONE.plus(_pair.price).times(_pair.priceUSD).toNumber();
+    pair.priceUSD = ONE.div(_pair.price).times(_pair.priceUSD).toNumber();
     // TODO
     pair.priceHigh24h = ONE.div(_pair.priceLow24h).toNumber();
     pair.priceLow24h = ONE.div(_pair.priceHigh24h).toNumber();
