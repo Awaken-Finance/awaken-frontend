@@ -8,9 +8,9 @@ const ONE_BILLION = new BigNumber(1000000000);
 const ONE_TRILLION = new BigNumber(1000000000000);
 
 export function formatPriceUSD(price?: BigNumber.Value, digits = 2): string {
-  // if (!isShowUSD()) {
-  //   return '';
-  // }
+  if (!isShowUSD()) {
+    return '';
+  }
 
   if (!price) {
     return ZERO.toString();
@@ -37,9 +37,9 @@ export function formatPriceUSD(price?: BigNumber.Value, digits = 2): string {
 }
 
 export function formatPriceUSDWithSymBol(price?: BigNumber.Value, prefix?: string, subfix?: string): string {
-  // if (!isShowUSD()) {
-  //   return '-';
-  // }
+  if (!isShowUSD()) {
+    return '-';
+  }
 
   return `${prefix ?? ''}$${formatPriceUSD(price)}${subfix ?? ''}`;
 }
