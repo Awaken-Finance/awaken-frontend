@@ -37,6 +37,7 @@ export function useMarketTradeList(tradePairId?: string, maxResultCount?: number
               token0: item.tradePair.token1,
               token1: item.tradePair.token0,
             },
+            side: item.side === 0 ? 1 : 0,
           } as TradeItem;
         }
         return item;
@@ -65,9 +66,9 @@ export function useMarketTradeList(tradePairId?: string, maxResultCount?: number
           },
         } as TradeItem;
       }
-      // max is 50
+      // max is 200
       setList((v) => {
-        if (v.length >= 50) {
+        if (v.length >= 200) {
           v.pop();
           return [item, ...v];
         }
@@ -133,6 +134,7 @@ export function useUserTradList(tradePairId?: string, address?: string, maxResul
               token0: item.tradePair.token1,
               token1: item.tradePair.token0,
             },
+            side: item.side === 0 ? 1 : 0,
           } as TradeItem;
         }
         return item;
@@ -174,9 +176,9 @@ export function useUserTradList(tradePairId?: string, address?: string, maxResul
         } as TradeItem;
       }
 
-      // max is 50
+      // max is 200
       setList((v) => {
-        if (v.length >= 50) {
+        if (v.length >= 200) {
           v.pop();
           return [item, ...v];
         }
