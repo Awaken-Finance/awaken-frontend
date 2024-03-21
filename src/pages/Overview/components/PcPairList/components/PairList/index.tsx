@@ -73,8 +73,8 @@ export default function ({ getData, field, order, poolType, ...args }: PairListP
         width: 120,
         dataIndex: 'priceUSD',
         key: 'priceUSD',
-        sorter: true,
-        sortOrder: field === 'priceUSD' ? order : null,
+        // sorter: true,
+        // sortOrder: field === 'priceUSD' ? order : null,
         align: 'right',
         render: (price: string, record: PairItem) => (
           <div className="price-box">
@@ -93,8 +93,8 @@ export default function ({ getData, field, order, poolType, ...args }: PairListP
         dataIndex: 'pricePercentChange24h',
         key: 'pricePercentChange24h',
         align: 'right',
-        sorter: true,
-        sortOrder: field === 'pricePercentChange24h' ? order : null,
+        // sorter: true,
+        // sortOrder: field === 'pricePercentChange24h' ? order : null,
         render: (change: number) => <FallOrRise num={formatPriceByNumberToFix(change)} />,
       },
       {
@@ -103,8 +103,8 @@ export default function ({ getData, field, order, poolType, ...args }: PairListP
         dataIndex: 'priceHigh24h',
         align: 'right',
         key: 'priceHigh24h',
-        sorter: true,
-        sortOrder: field === 'priceHigh24h' ? order : null,
+        // sorter: true,
+        // sortOrder: field === 'priceHigh24h' ? order : null,
         render: (priceHigh24h: number, record: PairItem) => (
           <div className="price-box">
             <Font align="right" lineHeight={20}>
@@ -122,8 +122,8 @@ export default function ({ getData, field, order, poolType, ...args }: PairListP
         dataIndex: 'priceLow24h',
         align: 'right',
         key: 'priceLow24h',
-        sorter: true,
-        sortOrder: field === 'priceLow24h' ? order : null,
+        // sorter: true,
+        // sortOrder: field === 'priceLow24h' ? order : null,
         render: (priceLow24h: number, record: PairItem) => (
           <div className="price-box">
             <Font align="right" lineHeight={20}>

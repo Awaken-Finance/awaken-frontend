@@ -139,8 +139,7 @@ export default function useSearchPairList(
   );
 
   const updateItem = useCallback(
-    (_item: PairItem) => {
-      const item = getPairReversed(_item);
+    (item: PairItem) => {
       if (!dataSource?.find((i: PairItem) => i.id === item.id)) {
         return;
       }
@@ -222,11 +221,7 @@ export default function useSearchPairList(
   });
 
   return useMemo(() => {
-    const items = dataSource ?? [];
-
-    items.forEach((pair, index) => {
-      items[index] = getPairReversed(pair);
-    });
+    const items = (dataSource ?? []).map((pair) => getPairReversed(pair));
 
     return [
       {

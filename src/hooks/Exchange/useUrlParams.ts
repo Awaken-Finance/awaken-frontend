@@ -3,7 +3,6 @@ import { SupportedSwapRateKeys, SupportedSwapRateKeysIndex } from 'constants/swa
 import { unifyWTokenSymbol } from 'utils';
 import { usePairInfo } from 'pages/Exchange/hooks/useSwap';
 import BigNumber from 'bignumber.js';
-import { getPairsOrderByTokenWeights } from 'utils/pair';
 import { TokenInfo } from 'types';
 
 export interface SymbolItem {

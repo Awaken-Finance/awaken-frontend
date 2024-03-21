@@ -109,8 +109,8 @@ export default function TradePairList({
         width: !isLargeScreen && !isMobile ? 0 : 'auto',
         dataIndex: 'price',
         key: 'price',
-        sorter: true,
-        sortOrder: pageInfo?.field === 'price' ? pageInfo?.order : null,
+        // sorter: true,
+        // sortOrder: pageInfo?.field === 'price' ? pageInfo?.order : null,
         align: 'right',
         className: !isLargeScreen && !isMobile ? 'small-column-title' : '',
         render: (price: string) =>
@@ -127,8 +127,8 @@ export default function TradePairList({
         dataIndex: 'pricePercentChange24h',
         key: 'pricePercentChange24h',
         align: 'right',
-        sorter: true,
-        sortOrder: pageInfo?.field === 'pricePercentChange24h' ? pageInfo?.order : null,
+        // sorter: true,
+        // sortOrder: pageInfo?.field === 'pricePercentChange24h' ? pageInfo?.order : null,
         render: (change: number, _: PairItem) =>
           !isLargeScreen && !isMobile ? (
             <Col>
