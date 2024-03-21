@@ -2,7 +2,6 @@ import { useMemo, memo, useState } from 'react';
 import moment from 'moment';
 import { useWebLogin } from 'aelf-web-login';
 import { useMarketTradeList, useUserTradList } from 'pages/Exchange/hooks/useLatestList';
-import { useUrlParams } from 'hooks/Exchange/useUrlParams';
 import { TradeItem } from 'socket/socketType';
 import { useTranslation } from 'react-i18next';
 import { useMobile } from 'utils/isMobile';
@@ -16,11 +15,9 @@ import CommonCard from 'components/CommonCard';
 import useLoginCheck from 'hooks/useLoginCheck';
 import BigNumber from 'bignumber.js';
 import { formatPrice, formatLiquidity } from 'utils/price';
+import { useSwapContext } from 'pages/Exchange/hooks/useSwap';
 
 import './LatestTrade.less';
-import { usePairTokens, useSwapContext } from 'pages/Exchange/hooks/useSwap';
-import { getPairsOrderByTokenWeights } from 'utils/pair';
-import { getTokenWeights } from 'utils/token';
 
 const menus = [
   {
@@ -43,9 +40,9 @@ function LatestTrade() {
 
   const [{ pairInfo }] = useSwapContext();
 
-  const marketList = useMarketTradeList(pairInfo?.id, 50);
+  const marketList = useMarketTradeList(pairInfo?.id, 200);
 
-  const userList = useUserTradList(pairInfo?.id, wallet?.address, 50);
+  const userList = useUserTradList(pairInfo?.id, wallet?.address, 200);
 
   const [menu, setMenu] = useState<string | number>('market');
 
@@ -87,9 +84,7 @@ function LatestTrade() {
   const columns = useMemo<ColumnType<TradeItem>[]>(() => {
     const defaultColumnx: ColumnType<TradeItem>[] = [
       {
-        title: `${t('price')}(${
-          getPairsOrderByTokenWeights(pairInfo?.token0?.symbol, pairInfo?.token1.symbol)[1] || ''
-        })`,
+        title: `${t('price')}(${pairInfo?.token1.symbol || ''})`,
         dataIndex: 'price',
         key: 'price',
         width: priceLabelWidth,
@@ -107,22 +102,13 @@ function LatestTrade() {
         },
       },
       {
-        title: `${t('amount')}(${
-          getPairsOrderByTokenWeights(pairInfo?.token0?.symbol, pairInfo?.token1.symbol)[0] || ''
-        })`,
+        title: `${t('amount')}(${pairInfo?.token0?.symbol || ''})`,
         dataIndex: 'token0Amount',
         key: 'token0Amount',
         width: isMobile ? 'auto' : 90,
         align: 'right',
-        render: (token0Amount: string, record: TradeItem) => (
-          <span className="last-trade-table-cell">
-            {formatLiquidity(
-              getTokenWeights(pairInfo?.token0?.symbol) > getTokenWeights(pairInfo?.token1?.symbol)
-                ? record.token1Amount
-                : token0Amount,
-              8,
-            )}
-          </span>
+        render: (token0Amount: string) => (
+          <span className="last-trade-table-cell">{formatLiquidity(token0Amount)}</span>
         ),
       },
       {
