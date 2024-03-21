@@ -48,8 +48,9 @@ export default function ({ getData, field, order, poolType, ...args }: PairListP
         title: t('pairs'),
         dataIndex: 'tradePair',
         key: 'tradePair',
-        sorter: true,
-        sortOrder: field === 'tradePair' ? order : null,
+        // sorter: true,
+        sorter: (a: PairItem, b: PairItem) => (a.token0.symbol > b.token0.symbol ? 1 : -1),
+        // sortOrder: field === 'tradePair' ? order : null,
         render: (name: string, pairData: PairItem) => {
           return (
             <Row align="top" wrap={false}>
@@ -73,7 +74,7 @@ export default function ({ getData, field, order, poolType, ...args }: PairListP
         width: 120,
         dataIndex: 'priceUSD',
         key: 'priceUSD',
-        // sorter: true,
+        sorter: (a: PairItem, b: PairItem) => (a.priceUSD > b.priceUSD ? 1 : -1),
         // sortOrder: field === 'priceUSD' ? order : null,
         align: 'right',
         render: (price: string, record: PairItem) => (
@@ -93,7 +94,7 @@ export default function ({ getData, field, order, poolType, ...args }: PairListP
         dataIndex: 'pricePercentChange24h',
         key: 'pricePercentChange24h',
         align: 'right',
-        // sorter: true,
+        sorter: (a: PairItem, b: PairItem) => (a.pricePercentChange24h > b.pricePercentChange24h ? 1 : -1),
         // sortOrder: field === 'pricePercentChange24h' ? order : null,
         render: (change: number) => <FallOrRise num={formatPriceByNumberToFix(change)} />,
       },
@@ -103,7 +104,7 @@ export default function ({ getData, field, order, poolType, ...args }: PairListP
         dataIndex: 'priceHigh24h',
         align: 'right',
         key: 'priceHigh24h',
-        // sorter: true,
+        sorter: (a: PairItem, b: PairItem) => (a.priceHigh24h > b.priceHigh24h ? 1 : -1),
         // sortOrder: field === 'priceHigh24h' ? order : null,
         render: (priceHigh24h: number, record: PairItem) => (
           <div className="price-box">
@@ -122,7 +123,7 @@ export default function ({ getData, field, order, poolType, ...args }: PairListP
         dataIndex: 'priceLow24h',
         align: 'right',
         key: 'priceLow24h',
-        // sorter: true,
+        sorter: (a: PairItem, b: PairItem) => (a.priceLow24h > b.priceLow24h ? 1 : -1),
         // sortOrder: field === 'priceLow24h' ? order : null,
         render: (priceLow24h: number, record: PairItem) => (
           <div className="price-box">
@@ -141,8 +142,9 @@ export default function ({ getData, field, order, poolType, ...args }: PairListP
         dataIndex: 'volume24h',
         align: 'right',
         key: 'volume24h',
-        sorter: true,
-        sortOrder: field === 'volume24h' ? order : null,
+        sorter: (a: PairItem, b: PairItem) =>
+          new BigNumber(a.volume24h).times(a.priceUSD).gt(new BigNumber(b.volume24h).times(b.priceUSD)) ? 1 : -1,
+        // sortOrder: field === 'volume24h' ? order : null,
         render: (volume24h: number, record: PairItem) => (
           <Font lineHeight={20}>{formatPriceUSDWithSymBol(new BigNumber(volume24h).times(record.priceUSD))}</Font>
         ),
@@ -153,8 +155,8 @@ export default function ({ getData, field, order, poolType, ...args }: PairListP
         dataIndex: 'tvl',
         align: 'right',
         key: 'tvl',
-        sorter: true,
-        sortOrder: field === 'tvl' ? order : null,
+        sorter: (a: PairItem, b: PairItem) => (a.tvl > b.tvl ? 1 : -1),
+        // sortOrder: field === 'tvl' ? order : null,
         render: (tvl: number) => <Font lineHeight={20}>{formatPriceUSDWithSymBol(tvl)}</Font>,
       },
       {
@@ -163,8 +165,8 @@ export default function ({ getData, field, order, poolType, ...args }: PairListP
         dataIndex: 'feePercent7d',
         align: 'right',
         key: 'feePercent7d',
-        sorter: true,
-        sortOrder: field === 'feePercent7d' ? order : null,
+        sorter: (a: PairItem, b: PairItem) => (a.feePercent7d > b.feePercent7d ? 1 : -1),
+        // sortOrder: field === 'feePercent7d' ? order : null,
         render: (feePercent7d: number) => <Font lineHeight={20}>{`${formatPercentage(feePercent7d)}%`}</Font>,
       },
       {
@@ -211,7 +213,7 @@ export default function ({ getData, field, order, poolType, ...args }: PairListP
       <CommonTable
         showSorterTooltip={false}
         columns={columns}
-        onChange={getData}
+        // onChange={getData}
         rowKey="id"
         emptyText={emptyStatus.text}
         emptyType={emptyStatus.type}
