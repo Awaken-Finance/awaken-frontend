@@ -2,7 +2,7 @@ import { request } from 'api';
 import { PairItem } from 'types';
 import { ListResponse } from 'types/response';
 import { getIsReversed, getPairReversed } from 'utils/pair';
-import { getTokenWeights, getTokensOrderByASCLL } from 'utils/token';
+import { getTokensOrderByASCLL } from 'utils/token';
 
 export interface GetPairListParams {
   chainId?: string;
@@ -105,13 +105,10 @@ export async function getPairListByIds(
       };
     }
 
-    const items = respnse?.data.items;
-    items.forEach((pair, index) => {
-      items[index] = getPairReversed(pair);
-    });
-    respnse.data.items = items;
-
-    return respnse.data;
+    return {
+      totalCount: respnse?.data.totalCount,
+      items: (respnse?.data.items ?? []).map((pair) => getPairReversed(pair)),
+    };
   } catch (e) {
     console.error('e: ', e);
   }

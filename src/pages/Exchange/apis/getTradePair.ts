@@ -16,7 +16,5 @@ export async function getPairById(params: { id?: string; address?: string }): Pr
     return null;
   }
 
-  const pair = response.data;
-
-  return getPairReversed(pair);
+  return getPairReversed(response.data);
 }

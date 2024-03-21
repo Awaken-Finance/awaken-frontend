@@ -48,7 +48,7 @@ export default function TradePairList({
       page: 1,
     },
     {
-      customPageSize: 50,
+      customPageSize: 100,
       socket,
       scrollLoad: true,
     },
@@ -79,8 +79,8 @@ export default function TradePairList({
         title: t('pairs'),
         dataIndex: 'tradePair',
         key: 'tradePair',
-        sorter: true,
-        sortOrder: pageInfo?.field === 'tradePair' ? pageInfo?.order : null,
+        sorter: (a: PairItem, b: PairItem) => (a.token0.symbol > b.token0.symbol ? 1 : -1),
+        // sortOrder: pageInfo?.field === 'tradePair' ? pageInfo?.order : null,
         width: pairsLabelWidth,
         render: (id: string, pairData: PairItem) => {
           return (
@@ -109,8 +109,8 @@ export default function TradePairList({
         width: !isLargeScreen && !isMobile ? 0 : 'auto',
         dataIndex: 'price',
         key: 'price',
-        sorter: true,
-        sortOrder: pageInfo?.field === 'price' ? pageInfo?.order : null,
+        sorter: (a: PairItem, b: PairItem) => (a.price > b.price ? 1 : -1),
+        // sortOrder: pageInfo?.field === 'price' ? pageInfo?.order : null,
         align: 'right',
         className: !isLargeScreen && !isMobile ? 'small-column-title' : '',
         render: (price: string) =>
@@ -127,8 +127,8 @@ export default function TradePairList({
         dataIndex: 'pricePercentChange24h',
         key: 'pricePercentChange24h',
         align: 'right',
-        sorter: true,
-        sortOrder: pageInfo?.field === 'pricePercentChange24h' ? pageInfo?.order : null,
+        sorter: (a: PairItem, b: PairItem) => (a.pricePercentChange24h > b.pricePercentChange24h ? 1 : -1),
+        // sortOrder: pageInfo?.field === 'pricePercentChange24h' ? pageInfo?.order : null,
         render: (change: number, _: PairItem) =>
           !isLargeScreen && !isMobile ? (
             <Col>
@@ -182,7 +182,7 @@ export default function TradePairList({
             loading={loading}
             total={total}
             rowKey="id"
-            onChange={getData}
+            // onChange={getData}
             onRow={(record: PairItem) => {
               return {
                 onClick: () => {

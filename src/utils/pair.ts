@@ -3,6 +3,7 @@ import { getTokenWeights } from './token';
 import { Currency } from '@awaken/sdk-core';
 import { ONE, ZERO } from 'constants/misc';
 import BigNumber from 'bignumber.js';
+import lodash from 'lodash';
 
 export function getPairsOrderByTokenWeights(
   token0?: TokenInfo | string,
@@ -39,37 +40,38 @@ export const getIsReversed = (token0: string | TokenInfo, token1: string | Token
 };
 
 export const getPairReversed = (_pair: PairItem) => {
-  const pair = { ..._pair };
-
-  const isReversed = getIsReversed(pair.token0, pair.token1);
-  if (isReversed) {
-    pair.originToken0 = { ..._pair.token0 };
-    pair.originToken1 = { ..._pair.token1 };
-    const token0 = { ...pair.token0 };
-    const token1 = { ...pair.token1 };
-    pair.token0 = token1;
-    pair.token1 = token0;
-    pair.valueLocked0 = _pair.valueLocked1;
-    pair.valueLocked1 = _pair.valueLocked0;
-
-    pair.price = new BigNumber(_pair.valueLocked0).div(_pair.valueLocked1).toNumber();
-
-    pair.priceUSD = new BigNumber(pair.price).times(_pair.priceUSD).toNumber();
-    // TODO
-    pair.priceHigh24h = ONE.div(_pair.priceLow24h).toNumber();
-    pair.priceLow24h = ONE.div(_pair.priceHigh24h).toNumber();
-    pair.priceHigh24hUSD = ZERO.plus(pair.priceHigh24h).times(_pair.priceUSD).toNumber();
-    pair.priceLow24hUSD = ZERO.plus(pair.priceLow24h).times(_pair.priceUSD).toNumber();
-
-    pair.priceChange24h = ZERO.minus(_pair.pricePercentChange24h).div(_pair.price).toNumber();
-
-    pair.pricePercentChange24h = ZERO.minus(_pair.pricePercentChange24h)
-      .div(new BigNumber(_pair.pricePercentChange24h).plus(1))
-      .toNumber();
-
-    pair.volume24h = _pair.tradeValue24h;
-    pair.tradeValue24h = _pair.volume24h;
+  if (!getIsReversed(_pair.token0, _pair.token1)) {
+    return _pair;
   }
+
+  const pair = lodash.cloneDeep(_pair);
+
+  pair.originToken0 = { ..._pair.token0 };
+  pair.originToken1 = { ..._pair.token1 };
+  const token0 = { ...pair.token0 };
+  const token1 = { ...pair.token1 };
+  pair.token0 = token1;
+  pair.token1 = token0;
+  pair.valueLocked0 = _pair.valueLocked1;
+  pair.valueLocked1 = _pair.valueLocked0;
+
+  pair.price = new BigNumber(_pair.valueLocked0).div(_pair.valueLocked1).toNumber();
+
+  pair.priceUSD = new BigNumber(pair.price).times(_pair.priceUSD).toNumber();
+  // TODO
+  pair.priceHigh24h = ONE.div(_pair.priceLow24h).toNumber();
+  pair.priceLow24h = ONE.div(_pair.priceHigh24h).toNumber();
+  pair.priceHigh24hUSD = ZERO.plus(pair.priceHigh24h).times(_pair.priceUSD).toNumber();
+  pair.priceLow24hUSD = ZERO.plus(pair.priceLow24h).times(_pair.priceUSD).toNumber();
+
+  pair.priceChange24h = ZERO.minus(_pair.pricePercentChange24h).div(_pair.price).toNumber();
+
+  pair.pricePercentChange24h = ZERO.minus(_pair.pricePercentChange24h)
+    .div(new BigNumber(_pair.pricePercentChange24h).plus(1))
+    .toNumber();
+
+  pair.volume24h = _pair.tradeValue24h;
+  pair.tradeValue24h = _pair.volume24h;
 
   return pair;
 };
