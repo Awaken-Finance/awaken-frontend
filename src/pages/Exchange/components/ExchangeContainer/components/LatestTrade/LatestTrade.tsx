@@ -135,7 +135,7 @@ function LatestTrade() {
     dataSource: dataSource,
     emptyType: 'nodata',
     emptyText: t('noTrades'),
-    scroll: { y: 600, x: 0 },
+    scroll: dataSource.length ? { y: 600, x: 0 } : null,
   };
 
   return (
