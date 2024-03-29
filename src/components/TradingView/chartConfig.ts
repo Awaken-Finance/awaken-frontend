@@ -24,6 +24,7 @@ export interface PairDataType {
   tradePairId: string;
   feeRate?: string;
   symbol: string;
+  isReversed?: boolean;
 }
 
 interface ThemeColorTwo {

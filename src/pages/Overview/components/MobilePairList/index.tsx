@@ -84,8 +84,8 @@ export default function MobilePairList({
         key: 'pricePercentChange24h',
         align: 'right',
         width: '50%',
-        sorter: true,
-        sortOrder: field === 'pricePercentChange24h' ? order : null,
+        sorter: (a: PairItem, b: PairItem) => (a.pricePercentChange24h > b.pricePercentChange24h ? 1 : -1),
+        // sortOrder: field === 'pricePercentChange24h' ? order : null,
         render: (val: number, record: PairItem) => (
           <Row justify="end">
             <Col span={24}>
@@ -98,7 +98,7 @@ export default function MobilePairList({
         ),
       },
     ];
-  }, [t, field, order]);
+  }, [t]);
 
   return (
     <Row className="mobile-pari-list">
@@ -136,7 +136,7 @@ export default function MobilePairList({
           pageNum={pageNum}
           order={order}
           field={field}
-          onChange={getData}
+          // onChange={getData}
           onRow={(record: PairItem) => {
             return {
               onClick: () => callback(record),

@@ -12,6 +12,7 @@ import CommonCopy from 'components/CommonCopy';
 
 import './index.less';
 import { getExploreLink, shortenTransactionId } from 'utils';
+import { getTokenWeights } from 'utils/token';
 
 export default function TransactionItem({
   item: {
@@ -50,8 +51,26 @@ export default function TransactionItem({
             </Font>
           </Col>
           <Col span={24} className="height-20">
-            <Font lineHeight={20} color={side === 0 ? 'rise' : 'fall'}>
-              {side === 0 ? 'Buy' : 'Sell'}
+            <Font
+              lineHeight={20}
+              color={
+                getTokenWeights(tradePair.token0.symbol) > getTokenWeights(tradePair.token1.symbol) &&
+                tradePair.token0.symbol < tradePair.token1.symbol
+                  ? side === 0
+                    ? 'fall'
+                    : 'rise'
+                  : side === 0
+                  ? 'rise'
+                  : 'fall'
+              }>
+              {getTokenWeights(tradePair.token0.symbol) > getTokenWeights(tradePair.token1.symbol) &&
+              tradePair.token0.symbol < tradePair.token1.symbol
+                ? side === 0
+                  ? t('sell')
+                  : t('buy')
+                : side === 0
+                ? t('buy')
+                : t('sell')}
             </Font>
           </Col>
         </Row>

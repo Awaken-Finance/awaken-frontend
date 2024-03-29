@@ -9,6 +9,7 @@ import { useUser } from 'contexts/useUser';
 import { getPairList } from 'pages/Overview/apis/getPairList';
 import BigNumber from 'bignumber.js';
 import { PoolItem } from 'types';
+import { getPairReversed } from 'utils/pair';
 
 export default function Updater() {
   const [{ socket, pairInfo }, { setSocket, pairInfoUpdater }] = useSwapContext();
@@ -35,8 +36,9 @@ export default function Updater() {
         isFav: pairInfo.isFav,
         favId: pairInfo.favId,
       };
+      const info = getPairReversed(newPairInfo);
 
-      pairInfoUpdater(newPairInfo);
+      pairInfoUpdater(info);
     },
     [pairInfo?.favId, pairInfo?.id, pairInfo?.isFav, pairInfoUpdater],
   );

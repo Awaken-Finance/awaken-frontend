@@ -48,6 +48,9 @@ export interface PairToken {
 export interface PairItem {
   token0: PairToken;
   token1: PairToken;
+  originToken0: PairToken;
+  originToken1: PairToken;
+
   price: number;
   priceUSD: number;
   pricePercentChange24h: number;

@@ -28,9 +28,12 @@
       &:first-child {
         padding-left: 16px;
       }
-      &:last-child {
+
+      &:last-child:not(.ant-table-cell-scrollbar){
         padding-right: 16px;
       }
+
+
       .ant-table-column-sorters, .ant-table-filter-column {
         display: inline-flex;
       }
@@ -63,6 +66,12 @@
     }
     > tr.ant-table-placeholder:hover > td {
       background-color: var(--ant-container-bg-color);
+    }
+  }
+
+  .ant-table.ant-table-scroll-horizontal {
+    .ant-table-thead > tr > th:nth-last-of-type(2) {
+      padding-right: 16px;
     }
   }
         

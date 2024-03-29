@@ -7,6 +7,8 @@ import PcTable from './component/PcTable';
 import MobileList from './component/MobileList';
 import useGetList, { PageInfoParams } from './hooks/useGetList';
 import { useTranslation } from 'react-i18next';
+import { getTokenWeights } from 'utils/token';
+import BigNumber from 'bignumber.js';
 
 export default function Transaction() {
   const isMobile = useMobile();
@@ -146,6 +148,13 @@ export default function Transaction() {
     } else {
       preDataSource.current = list ?? [];
     }
+
+    preDataSource.current = preDataSource.current.map((item: LiquidityRecord | RecentTransaction) => {
+      if (getTokenWeights(item.tradePair?.token0?.symbol) > getTokenWeights(item.tradePair?.token1?.symbol)) {
+        item.price = new BigNumber(1).div(item.price || '').toString();
+      }
+      return item;
+    });
 
     return preDataSource.current;
   }, [isMobile, list]);

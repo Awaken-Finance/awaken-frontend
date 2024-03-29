@@ -18,7 +18,8 @@ const Overview = () => {
     },
     {
       socket,
-      customPageSize: isMobile ? 50 : 20,
+      // customPageSize: isMobile ? 50 : 20,
+      customPageSize: 100,
       scrollLoad: isMobile,
     },
   );

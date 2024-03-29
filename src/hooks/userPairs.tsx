@@ -7,6 +7,7 @@ import { ContractInterface } from 'utils/contract';
 import useInterval from 'hooks/useInterval';
 import { getLPSymbol } from 'utils/swap';
 import { useAElfContract } from 'contexts/useAElfContract/hooks';
+import { getTokensOrderByASCLL } from 'utils/token';
 export function usePairs(t1?: Currency, t2?: Currency): [Pairs | undefined, () => void] {
   const factoryContracts = useFactoryContracts();
   const [pairs, setPairs] = useAsyncState<Pairs>();
@@ -88,5 +89,8 @@ export function usePair(pairAddress?: string, routerAddress?: string) {
 
 export function usePairsAddress(rate: string, t1?: Currency, t2?: Currency) {
   if (!t1 || !t2) return;
-  return t1?.symbol + '-' + t2?.symbol;
+
+  const { symbol1, symbol2 } = getTokensOrderByASCLL(t1.symbol, t2.symbol);
+
+  return symbol1 + '-' + symbol2;
 }

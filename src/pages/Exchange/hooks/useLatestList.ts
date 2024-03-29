@@ -1,8 +1,10 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useSwapContext } from './useSwap';
 import { useActiveWeb3React } from 'hooks/web3';
 import { ReceiveUserTradeRecordsInterface, TradeItem } from 'socket/socketType';
-import { isArray } from 'lodash';
+import lodash, { isArray } from 'lodash';
+import { getIsReversed } from 'utils/pair';
+import { ONE } from 'constants/misc';
 
 export function useMarketTradeList(tradePairId?: string, maxResultCount?: number) {
   const [list, setList] = useState<TradeItem[]>([]);
@@ -33,9 +35,9 @@ export function useMarketTradeList(tradePairId?: string, maxResultCount?: number
       if (rec.chainId !== apiChainId || rec.tradePair.id !== tradePairId) {
         return;
       }
-      // max is 50
+      // max is 200
       setList((v) => {
-        if (v.length >= 50) {
+        if (v.length >= 200) {
           v.pop();
           return [rec, ...v];
         }
@@ -67,7 +69,26 @@ export function useMarketTradeList(tradePairId?: string, maxResultCount?: number
     };
   }, [apiChainId, maxResultCount, receiveTradeRecord, receiveTradeRecords, socket, tradePairId]);
 
-  return list;
+  return useMemo(() => {
+    return lodash.cloneDeep(list).map((item) => {
+      const isReversed = getIsReversed(item.tradePair.token0, item.tradePair.token1);
+      if (!isReversed) {
+        return item;
+      }
+
+      return {
+        ...item,
+        price: ONE.div(item.price).toNumber(),
+        token0Amount: item.token1Amount,
+        token1Amount: item.token0Amount,
+        tradePair: {
+          token0: item.tradePair.token1,
+          token1: item.tradePair.token0,
+        },
+        side: item.side === 0 ? 1 : 0,
+      };
+    });
+  }, [list]);
 }
 
 export function useUserTradList(tradePairId?: string, address?: string, maxResultCount?: number) {
@@ -110,9 +131,10 @@ export function useUserTradList(tradePairId?: string, address?: string, maxResul
       if (rec.chainId !== apiChainId || rec.tradePair.id !== tradePairId) {
         return;
       }
-      // max is 50
+
+      // max is 200
       setList((v) => {
-        if (v.length >= 50) {
+        if (v.length >= 200) {
           v.pop();
           return [rec, ...v];
         }
@@ -134,5 +156,24 @@ export function useUserTradList(tradePairId?: string, address?: string, maxResul
     };
   }, [apiChainId, socket, tradePairId, address, maxResultCount, receiveUserTradeRecords, receiveUserTradeRecord]);
 
-  return list;
+  return useMemo(() => {
+    return lodash.cloneDeep(list).map((item) => {
+      const isReversed = getIsReversed(item.tradePair.token0, item.tradePair.token1);
+      if (!isReversed) {
+        return item;
+      }
+
+      return {
+        ...item,
+        price: ONE.div(item.price).toNumber(),
+        token0Amount: item.token1Amount,
+        token1Amount: item.token0Amount,
+        tradePair: {
+          token0: item.tradePair.token1,
+          token1: item.tradePair.token0,
+        },
+        side: item.side === 0 ? 1 : 0,
+      };
+    });
+  }, [list]);
 }

@@ -58,6 +58,8 @@ export default function Remove({ pairInfo }: { pairInfo: PairInfo }) {
   const [bs] = useBalances(pairAddress, undefined, rate);
   const lpBalance = bs[0];
 
+  console.log('lpBalance: ', lpBalance, pairAddress);
+
   const showLpBalance = divDecimals(lpBalance, getLPDecimals());
 
   const min = useRef<BigNumber>(divDecimals('1', getLPDecimals()));

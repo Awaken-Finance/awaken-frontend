@@ -11,6 +11,7 @@ import { useWebLogin, useWebLoginEvent, WebLoginEvents } from 'aelf-web-login';
 
 import { useUpdateEffect } from 'ahooks';
 import { useUser } from 'contexts/useUser';
+import { getPairReversed } from 'utils/pair';
 
 interface PageInfoParams {
   pageNum?: number;
@@ -220,9 +221,11 @@ export default function useSearchPairList(
   });
 
   return useMemo(() => {
+    const items = (dataSource ?? []).map((pair) => getPairReversed(pair));
+
     return [
       {
-        dataSource,
+        dataSource: items,
         loading,
         total,
         pageInfo: pageInfo.current,
