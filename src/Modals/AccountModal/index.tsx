@@ -26,6 +26,8 @@ import { detectDiscoverProvider, detectNightElf } from 'aelf-web-login';
 import { useTranslation } from 'react-i18next';
 import { routes } from 'routes';
 import querystring from 'query-string';
+import { NavLink } from 'react-router-dom';
+import { RightOutlined } from '@ant-design/icons';
 
 import './styles.less';
 
@@ -217,17 +219,26 @@ function AccountModal() {
       onCancel={onClose}>
       <Carousel ref={corousel} dots={false} autoplay={false} swipe={false}>
         <div className="account-content">
-          <AccountInfo onClickLogout={onClickLogout} />
-          {!isMobile && (
-            <CommonButton className="switch-wallet-btn" type="ghost" onClick={toSwitchWallet}>
-              {t('SwitchWallet')}
-            </CommonButton>
-          )}
-          <Row style={{ marginTop: isMobile ? '20px' : 0 }}>
+          <AccountInfo onClickLogout={onClickLogout} onClickSwitchWallet={toSwitchWallet} />
+          <div className="account-content-list">
+            <NavLink to="/user-center/exchange" className="account-content-item" onClick={onClose}>
+              <Font weight="bold" lineHeight={24} size={16}>
+                {t('myMarketingMakingLiquidity')}
+              </Font>
+              <RightOutlined style={{ color: '#E5E8EF', fontSize: 10 }} />
+            </NavLink>
+            <NavLink to="/user-center/transaction" className="account-content-item" onClick={onClose}>
+              <Font weight="bold" lineHeight={24} size={16}>
+                {t('recentTransaction')}
+              </Font>
+              <RightOutlined style={{ color: '#E5E8EF', fontSize: 10 }} />
+            </NavLink>
+          </div>
+          <div className="account-content-title">
             <Font size={16} weight="medium">
               {t('tokens')}
             </Font>
-          </Row>
+          </div>
           {isEmpty ? renderEmpty() : renderTokenList()}
         </div>
         <div className="account-switch">

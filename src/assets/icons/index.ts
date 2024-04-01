@@ -36,6 +36,7 @@ import { ReactComponent as IconQuestion } from './icon-question.svg';
 import { ReactComponent as IconLogo } from './icon-logo.svg';
 import { ReactComponent as LoadingBg } from './loading-bg.svg';
 import { ReactComponent as IconQuestionHover } from './icon-question-hover.svg';
+import { ReactComponent as IconSwitch } from './icon-switch.svg';
 
 export {
   IconClose,
@@ -76,4 +77,5 @@ export {
   IconLogo,
   LoadingBg,
   IconQuestionHover,
+  IconSwitch,
 };

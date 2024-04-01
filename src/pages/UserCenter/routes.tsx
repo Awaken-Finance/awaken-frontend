@@ -1,7 +1,7 @@
 import { lazy } from 'react';
 import { RoutesProps } from 'types';
 // import { asset, exchange } from 'assets/images';
-const Home = lazy(() => import('./components/AssetOverview'));
+// const Home = lazy(() => import('./components/AssetOverview'));
 const AssetExchange = lazy(() => import('./components/AssetExchange'));
 const RecentTransaction = lazy(() => import('./components/RecentTransaction'));
 
@@ -10,13 +10,13 @@ interface RouteMapProps extends RoutesProps {
   icon?: any;
 }
 export const routeMap: RouteMapProps[] = [
-  {
-    path: '/',
-    exact: true,
-    menuItem: 'My Assets',
-    component: Home,
-    // icon: asset,
-  },
+  // {
+  //   path: '/',
+  //   exact: true,
+  //   menuItem: 'My Assets',
+  //   component: Home,
+  //   // icon: asset,
+  // },
   {
     path: '/exchange',
     exact: true,

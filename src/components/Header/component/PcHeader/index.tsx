@@ -15,8 +15,10 @@ import { useModal } from 'contexts/useModal';
 import CommonButton from 'components/CommonButton';
 import { IconUser } from 'assets/icons';
 import useLogin from 'hooks/useLogin';
+import { DownOutlined } from '@ant-design/icons';
 
 import './styles.less';
+import Font from 'components/Font';
 
 function PcHeader() {
   const { selectedKeys } = useSelectedKeys();
@@ -44,33 +46,45 @@ function PcHeader() {
   const renderLoginPart = () => {
     if (loginState === WebLoginState.logined) {
       return (
-        <>
-          <CommonButton
+        <Col>
+          {/* <CommonButton
             type="text"
             style={{ fontSize: 16, fontWeight: '600' }}
-            onClick={() => history.push('/user-center')}>
+            onClick={() => history.push('/user-center/exchange')}>
             {t('Assets')}
+          </CommonButton> */}
+          <CommonButton onClick={toggleAccountModal} className="my-btn">
+            <div className="my-btn-content">
+              <IconUser />
+              <Font size={14} className="my-btn-content-font">
+                My
+              </Font>
+              <DownOutlined className="my-btn-content-icon" />
+            </div>
           </CommonButton>
-          <CommonButton type="text" icon={<IconUser />} onClick={toggleAccountModal} />
-        </>
+        </Col>
       );
     }
     return (
       <>
-        <CommonButton className="login-btn" type="text" style={{ fontWeight: '600' }} onClick={toLogin}>
-          {t('Log In')}
-        </CommonButton>
-        <CommonButton className="signup-btn" style={{ fontWeight: '600' }} type="primary" onClick={toSignup}>
-          {t('Sign Up')}
-        </CommonButton>
+        <Col>
+          <CommonButton className="signup-btn" type="text" style={{ fontWeight: '600' }} onClick={toLogin}>
+            {t('Log In')}
+          </CommonButton>
+        </Col>
+        <Col>
+          <CommonButton className="signup-btn" style={{ fontWeight: '600' }} type="primary" onClick={toSignup}>
+            {t('Sign Up')}
+          </CommonButton>
+        </Col>
       </>
     );
   };
 
   return (
     <Layout.Header className={clsx('site-header', isOpacity && 'opacity-header')}>
-      <Row>
-        <Col flex="146px">
+      <Row align="middle" gutter={[20, 0]}>
+        <Col>
           <NavLink to={'/'}>
             <IconLogo className="menu-logo" />
           </NavLink>
@@ -78,10 +92,16 @@ function PcHeader() {
         <Col flex="1">
           <NavMenu />
         </Col>
-        <Col className="header-right">
-          <Network overlayClassName="network-wrap-pc" />
-          {renderLoginPart()}
-          <LanguageMenu />
+        <Col>
+          <Row align="middle" gutter={[16, 0]}>
+            <Col>
+              <Network />
+            </Col>
+            {renderLoginPart()}
+            <Col>
+              <LanguageMenu />
+            </Col>
+          </Row>
         </Col>
       </Row>
     </Layout.Header>

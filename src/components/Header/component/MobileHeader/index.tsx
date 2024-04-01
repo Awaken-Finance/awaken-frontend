@@ -56,7 +56,7 @@ function MobileHeader() {
     if (loginState === WebLoginState.logined) {
       return (
         <>
-          <CommonButton type="text" icon={<IconAssets />} onClick={() => history.push('/user-center')} />
+          {/* <CommonButton type="text" icon={<IconAssets />} onClick={() => history.push('/user-center/exchange')} /> */}
           <CommonButton type="text" icon={<IconUser />} onClick={toggleAccountModal} />
         </>
       );
