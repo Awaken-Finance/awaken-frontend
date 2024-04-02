@@ -1,5 +1,5 @@
 import { Layout, Row, Col } from 'antd';
-import { IconLogo } from 'assets/icons';
+import { IconArrowDown, IconLogo } from 'assets/icons';
 import clsx from 'clsx';
 import Network from 'components/Network';
 import { basicModalView } from 'contexts/useModal/actions';
@@ -15,7 +15,6 @@ import { useModal } from 'contexts/useModal';
 import CommonButton from 'components/CommonButton';
 import { IconUser } from 'assets/icons';
 import useLogin from 'hooks/useLogin';
-import { DownOutlined } from '@ant-design/icons';
 
 import './styles.less';
 import Font from 'components/Font';
@@ -25,7 +24,7 @@ function PcHeader() {
   const { loginState } = useWebLogin();
   const pathname = useLocation().pathname;
   const { t } = useTranslation();
-  const history = useHistory();
+  // const history = useHistory();
   const [modalState] = useModal();
   const modalDispatch = useModalDispatch();
   const { toLogin, toSignup } = useLogin();
@@ -47,19 +46,13 @@ function PcHeader() {
     if (loginState === WebLoginState.logined) {
       return (
         <Col>
-          {/* <CommonButton
-            type="text"
-            style={{ fontSize: 16, fontWeight: '600' }}
-            onClick={() => history.push('/user-center/exchange')}>
-            {t('Assets')}
-          </CommonButton> */}
           <CommonButton onClick={toggleAccountModal} className="my-btn">
             <div className="my-btn-content">
               <IconUser />
               <Font size={14} className="my-btn-content-font">
                 {t('My')}
               </Font>
-              <DownOutlined className="my-btn-content-icon" />
+              <IconArrowDown className="my-btn-content-icon" />
             </div>
           </CommonButton>
         </Col>

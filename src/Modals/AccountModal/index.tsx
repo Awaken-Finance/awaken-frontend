@@ -17,7 +17,7 @@ import AccountInfo from './AccountInfo';
 import CommonButton from 'components/CommonButton';
 import SwitchWallets from './SwitchWallets';
 import Font from 'components/Font';
-import { IconArrowDown, IconArrowUp, IconClose } from 'assets/icons';
+import { IconArrowDown, IconArrowRight, IconArrowUp, IconClose } from 'assets/icons';
 import { TableEmptyData } from 'assets/images';
 import MyTokenList from './MyTokenList';
 import { matchPath, useHistory } from 'react-router-dom';
@@ -27,7 +27,6 @@ import { useTranslation } from 'react-i18next';
 import { routes } from 'routes';
 import querystring from 'query-string';
 import { NavLink } from 'react-router-dom';
-import { RightOutlined } from '@ant-design/icons';
 
 import './styles.less';
 
@@ -225,13 +224,13 @@ function AccountModal() {
               <Font weight="bold" lineHeight={24} size={16}>
                 {t('myMarketingMakingLiquidity')}
               </Font>
-              <RightOutlined style={{ color: '#E5E8EF', fontSize: 10 }} />
+              <IconArrowRight />
             </NavLink>
             <NavLink to="/user-center/transaction" className="account-content-item" onClick={onClose}>
               <Font weight="bold" lineHeight={24} size={16}>
                 {t('recentTransaction')}
               </Font>
-              <RightOutlined style={{ color: '#E5E8EF', fontSize: 10 }} />
+              <IconArrowRight />
             </NavLink>
           </div>
           <div className="account-content-title">
