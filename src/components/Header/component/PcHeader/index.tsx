@@ -57,7 +57,7 @@ function PcHeader() {
             <div className="my-btn-content">
               <IconUser />
               <Font size={14} className="my-btn-content-font">
-                My
+                {t('My')}
               </Font>
               <DownOutlined className="my-btn-content-icon" />
             </div>
