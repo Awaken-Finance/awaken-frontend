@@ -596,6 +596,7 @@
     "Failed to log in using NightELF. Please try it again": "登錄失敗。請重試。",
     "Original": "基本版",
     "Depth": "深度",
-    "ensuring that you approve an adequate amount": "{{symbol}} 額度不足。請重新操作並確保您的授權金額滿足需求（{{amount}} {{symbol}}）。"
+    "ensuring that you approve an adequate amount": "{{symbol}} 額度不足。請重新操作並確保您的授權金額滿足需求（{{amount}} {{symbol}}）。",
+    "My": "我的"
   }
 }

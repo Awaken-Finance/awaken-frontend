@@ -6,7 +6,8 @@
   .account-info {
     display: flex;
     align-items: center;
-
+    margin-bottom: 24px;
+    padding: 0 24px;
     .account-addr-info {
       display: flex;
       align-items: center;
@@ -33,10 +34,19 @@
     padding: 4px;
     border-radius: 16px;
     background-color: #343948;
-    color: var(--ant-black-font-color-2);
     display: flex;
     align-items: center;
     justify-content: center;
+    cursor: pointer;
+    >path {
+      fill: var(--ant-black-font-color-2);
+    }
+
+    &:hover {
+      >path {
+        fill: var(--ant-black-font-color-1);
+      }
+    }
   }
 
   .ant-modal-body {
@@ -62,10 +72,27 @@
   .account-content {
     width: 420px;
     min-height: 628px;
-    padding: 24px;
+    padding: 24px 0;
     display: flex;
     flex-direction: column;
-    
+    &-list {
+      border-top: 1px solid var(--ant-button-ghost-border-color);
+    }
+    &-item {
+      height: 56px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid var(--ant-button-ghost-border-color);
+      padding: 0 24px;
+      &:hover {
+        background-color: var(--ant-container-bg-color-2);
+      }
+    }
+    &-title {
+      margin-top: 16px;
+      padding: 0 24px;
+    }
   }
   .account-switch {
     padding: 8px;
@@ -129,7 +156,7 @@
   }
 
   .my-tokens-split {
-    padding: 20px 0;
+    padding: 20px;
   }
 
   .my-token-list-empty {
@@ -152,7 +179,7 @@
     height: 100%;
 
     .account-content {
-      padding: 16px;
+      padding: 16px 0;
     }
 
     .ant-modal-header {
@@ -190,6 +217,29 @@
 
     .ant-modal-content {
       max-height: auto;
+    }
+    .account-info  {
+      padding: 0 16px;
+    }
+    .account-content-title {
+      padding: 0 16px;
+    }
+    .account-content-item {
+      padding: 0 16px;
+      &:hover {
+        background-color: unset;
+      }
+    }
+    .logout-icon {
+      >path {
+        fill: var(--ant-black-font-color-1);
+      }
+  
+      &:hover {
+        >path {
+          fill: unset;
+        }
+      }
     }
   }
 }

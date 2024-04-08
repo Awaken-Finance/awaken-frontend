@@ -20,8 +20,8 @@ export function shortenAddress(address: string | null, chars = 4): string {
   if (!parsed) {
     throw Error(`Invalid 'address' parameter '${address}'.`);
   }
-  const end = ChainConstants.chainType === 'ELF' ? 50 : 42;
-  return `${parsed.substring(0, chars + 2)}...${parsed.substring(end - chars - 1)}`;
+  // const end = ChainConstants.chainType === 'ELF' ? 50 : 42;
+  return `${parsed.substring(0, chars)}...${parsed.substring(address.length - chars)}`;
 }
 
 export function shortenString(address: string | null, chars = 10): string {

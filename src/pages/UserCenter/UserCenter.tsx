@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 import { Route, NavLink, useLocation, useHistory } from 'react-router-dom';
 import { Layout, Menu } from 'antd';
 import { UserCenterProvider } from './hooks/useUserCenter';
@@ -13,9 +13,17 @@ export function UserCenter({ url }: { url: string }) {
   const { t } = useTranslation();
   const { pathname } = useLocation();
   const history = useHistory();
+
   const defaultKeys = useMemo(() => {
     return pathname.replaceAll(url, '') || '/';
   }, [pathname, url]);
+
+  useEffect(() => {
+    if (pathname === '/user-center') {
+      history.push('/overview');
+    }
+  }, [history, pathname]);
+
   const isMobile = useMobile();
 
   return useMemo(
