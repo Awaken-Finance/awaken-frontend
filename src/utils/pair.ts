@@ -68,6 +68,7 @@ export const getPairReversed = (_pair: PairItem) => {
 
   pair.pricePercentChange24h = ZERO.minus(_pair.pricePercentChange24h)
     .div(new BigNumber(_pair.pricePercentChange24h).plus(100))
+    .times(100)
     .toNumber();
 
   pair.volume24h = _pair.tradeValue24h;
