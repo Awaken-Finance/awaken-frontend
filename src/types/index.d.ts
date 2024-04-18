@@ -89,3 +89,5 @@ export interface PinnedToken {
   symbol: string;
   order: number;
 }
+
+export type TSize = 'small' | 'default' | 'large';

@@ -6,13 +6,15 @@ import { RecentTransaction } from 'pages/UserCenter/type';
 import Font from 'components/Font';
 import { Pair, Pairs } from 'components/Pair';
 import FeeRate from 'components/FeeRate';
-import { formatPercentage, formatPrice, formatPriceChange, formatPriceUSDWithSymBol } from 'utils/price';
+import { formatPercentage, formatPriceChange, formatPriceUSDWithSymBol } from 'utils/price';
 import BigNumber from 'bignumber.js';
 import CommonCopy from 'components/CommonCopy';
 
 import './index.less';
 import { getExploreLink, shortenTransactionId } from 'utils';
 import { getTokenWeights } from 'utils/token';
+import PriceDigits from 'components/PriceDigits';
+import getFontStyle from 'utils/getFontStyle';
 
 export default function TransactionItem({
   item: {
@@ -82,7 +84,7 @@ export default function TransactionItem({
         </Font>
       </Col>
       <Col span={12} className="align-right height-20">
-        <Font lineHeight={20}>{`${formatPrice(price)}`}</Font>
+        <PriceDigits price={price || 0} className={getFontStyle({ lineHeight: 20 })} />
       </Col>
 
       <Col span={12} className="height-20">

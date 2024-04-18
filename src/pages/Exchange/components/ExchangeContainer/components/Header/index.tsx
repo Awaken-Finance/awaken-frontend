@@ -61,8 +61,9 @@ function Header() {
                   size={16}
                   lineHeight={20}
                   weight="bold"
-                  num={formatPrice(pairInfo.price)}
+                  num={pairInfo.price}
                   useSubfix={false}
+                  isPrice
                   usePrefix={false}
                   status={pairInfo.pricePercentChange24h}
                 />

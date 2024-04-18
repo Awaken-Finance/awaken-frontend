@@ -14,16 +14,12 @@ import Font from 'components/Font';
 
 import { PairItem } from 'types';
 import { FetchParam } from 'types/requeset';
-import {
-  formatPercentage,
-  formatPriceChange,
-  formatPriceByNumberToFix,
-  formatPriceUSDWithSymBol,
-  formatPrice,
-} from 'utils/price';
+import { formatPercentage, formatPriceChange, formatPriceByNumberToFix, formatPriceUSDWithSymBol } from 'utils/price';
 
 import './index.less';
 import BigNumber from 'bignumber.js';
+import PriceDigits from 'components/PriceDigits';
+import getFontStyle from 'utils/getFontStyle';
 
 interface PairListProps {
   dataSource: PairItem[];
@@ -37,7 +33,7 @@ interface PairListProps {
   poolType?: string;
 }
 
-export default function ({ getData, field, order, poolType, ...args }: PairListProps) {
+export default function ({ poolType, ...args }: PairListProps) {
   const { t } = useTranslation();
 
   const callback = useGoSwapPage();
@@ -79,9 +75,7 @@ export default function ({ getData, field, order, poolType, ...args }: PairListP
         align: 'right',
         render: (price: string, record: PairItem) => (
           <div className="price-box">
-            <Font align="right" lineHeight={20}>
-              {formatPrice(record.price)}
-            </Font>
+            <PriceDigits price={record.price} className={getFontStyle({ lineHeight: 20, align: 'right' })} />
             <Font lineHeight={18} size={12} color="two" align="right">
               {formatPriceUSDWithSymBol(record.priceUSD, '≈')}
             </Font>
@@ -192,7 +186,7 @@ export default function ({ getData, field, order, poolType, ...args }: PairListP
         },
       },
     ],
-    [t, field, order],
+    [t],
   );
 
   const emptyStatus = useMemo(() => {

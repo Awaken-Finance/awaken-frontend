@@ -24,7 +24,7 @@ export default function Font({
   subfix = '',
 }: FontProps): JSX.Element {
   const style = useMemo(() => {
-    return clsx('default-font-style', getFontStyle(weight, color, size, lineHeight, align), className);
+    return clsx('default-font-style', getFontStyle({ weight, color, size, lineHeight, align }), className);
   }, [className, weight, color, size, lineHeight, align]);
 
   return <span className={style}>{`${prefix}${children}${subfix}`}</span>;

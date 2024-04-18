@@ -1,9 +1,10 @@
-import React, { useMemo } from 'react';
+import { useMemo } from 'react';
 
 import BigNumber from 'bignumber.js';
 
 import Font, { FontProps } from 'components/Font';
-import { FontColor } from 'utils/getFontStyle';
+import getFontStyle, { FontColor } from 'utils/getFontStyle';
+import PriceDigits from 'components/PriceDigits';
 
 interface FallOrRiseProps extends FontProps {
   num: number | string | BigNumber;
@@ -11,6 +12,7 @@ interface FallOrRiseProps extends FontProps {
   usePrefix?: boolean;
   useSubfix?: boolean;
   status?: number;
+  isPrice?: boolean;
 }
 
 export default function FallOrRise({
@@ -19,6 +21,7 @@ export default function FallOrRise({
   usePrefix = true,
   useSubfix = true,
   status,
+  isPrice,
   ...props
 }: FallOrRiseProps) {
   const style = useMemo((): [string, FontColor] => {
@@ -34,8 +37,14 @@ export default function FallOrRise({
     return ['', 'two'];
   }, [num, status]);
 
-  return (
-    <Font prefix={`${usePrefix ? style[0] : ''}`} subfix={`${useSubfix ? '%' : ''}`} color={style[1]} {...props}>
+  const prefix = useMemo(() => `${usePrefix ? style[0] : ''}`, [style, usePrefix]);
+  const subfix = useMemo(() => `${useSubfix ? '%' : ''}`, [useSubfix]);
+  const color = useMemo(() => style[1], [style]);
+
+  return isPrice ? (
+    <PriceDigits price={num} prefix={prefix} subfix={subfix} className={getFontStyle({ ...props, color })} />
+  ) : (
+    <Font prefix={prefix} subfix={subfix} color={color} {...props}>
       {displayNum || num}
     </Font>
   );

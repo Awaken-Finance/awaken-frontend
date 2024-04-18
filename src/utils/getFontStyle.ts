@@ -19,13 +19,13 @@ export interface FontStyleProps {
   className?: string;
 }
 
-export default function getFontStyle(
-  weight: FontWeight = 'regular',
-  color: FontColor = 'one',
-  size: FontSize = 14,
-  lineHeight: number | undefined,
-  align: Align = 'left',
-): string {
+export default function getFontStyle({
+  weight = 'regular',
+  color = 'one',
+  size = 14,
+  lineHeight,
+  align = 'left',
+}: Omit<FontStyleProps, 'classname'>): string {
   return clsx(
     `font-weight-${weight}`,
     `font-color-${color}`,

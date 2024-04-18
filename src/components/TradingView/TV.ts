@@ -23,13 +23,17 @@ import {
   ThemeName,
   LanguageCode,
   CustomTimezones,
+  IChartingLibraryWidget,
 } from './dts/charting_library';
 import moment from 'moment';
 import { UpdateKlineType } from 'socket/socketType';
 
+// eslint-disable-next-line @typescript-eslint/no-empty-function
+const noop = () => {};
+
 export default class TV {
   interval: string;
-  widgets: any;
+  widgets?: IChartingLibraryWidget;
   socket: any;
   datafeed: any;
   cacheData: any;
@@ -56,7 +60,7 @@ export default class TV {
     Locale?: LanguageCode;
     onReadyCallback: () => void;
   }) {
-    this.widgets = null;
+    this.widgets = undefined;
     this.socket = SocketApi;
     this.datafeed = new Datafeed(this);
     this.interval = localStorage.getItem('tradingview.resolution') || '1D';
@@ -150,23 +154,15 @@ export default class TV {
 
     const studies: any[] = [];
     function createStudy() {
-      let id = thats.activeChart().createStudy('Moving Average', false, false, [5], null, {
-        'Plot.color': 'rgb(150, 95, 196)',
-      });
+      let id = thats.activeChart().createStudy('Moving Average', false, false, [5]);
 
       studies.push(id);
 
-      id = thats.activeChart().createStudy('Moving Average', false, false, [10], null, {
-        'Plot.color': 'rgb(116,149,187)',
-      });
+      id = thats.activeChart().createStudy('Moving Average', false, false, [10]);
       studies.push(id);
-      id = thats.activeChart().createStudy('Moving Average', false, false, [20], null, {
-        'plot.color': 'rgb(58,113,74)',
-      });
+      id = thats.activeChart().createStudy('Moving Average', false, false, [20]);
       studies.push(id);
-      id = thats.activeChart().createStudy('Moving Average', false, false, [30], null, {
-        'plot.color': 'rgb(118,32,99)',
-      });
+      id = thats.activeChart().createStudy('Moving Average', false, false, [30]);
       studies.push(id);
     }
     function toggleStudy(chartType: number) {
@@ -198,7 +194,7 @@ export default class TV {
           active && (active.className = active.className.replace(/(\sactive|active\s)/, ''));
           currentEle.className += ' active';
 
-          thats.activeChart().setResolution(button.resolution, function onReadyCallback() {
+          thats.activeChart().setResolution(button.resolution as any, function onReadyCallback() {
             console.log('chartReady');
           });
           if (button.chartType !== thats.activeChart().chartType()) {
@@ -370,6 +366,7 @@ export default class TV {
 
   subscribe(subscriberUID: string): void {
     const interval = subscriberUID.split('_')[2];
+    console.log(interval);
   }
 
   getKlineData(_d: SKItem | UpdateKlineType) {
@@ -502,12 +499,12 @@ export default class TV {
   }
 
   resetTheme(skin: Theme): void {
-    this.widgets.addCustomCSSFile(`./static/css/tradingview_${skin}.css`);
-    this.widgets.applyOverrides(getOverrides(skin));
-    this.widgets.applyStudiesOverrides(getStudiesOverrides(skin));
+    this.widgets?.addCustomCSSFile(`./static/css/tradingview_${skin}.css`);
+    this.widgets?.applyOverrides(getOverrides(skin));
+    this.widgets?.applyStudiesOverrides(getStudiesOverrides(skin));
   }
 
-  setSymbol(symbolData: PairDataType, callback?: () => void): void {
+  setSymbol(symbolData: PairDataType, callback: () => void = noop): void {
     if (!symbolData) return;
     this.unSubscribe(this.interval);
     const symbol = symbolData?.symbol?.replace('_', '/') ?? '';
@@ -523,13 +520,14 @@ export default class TV {
     this.widgets?.chart && this.widgets?.chart().setSymbol(this.name.toLocaleUpperCase(), callback);
   }
   changeTheme(themeName: ThemeName) {
-    this.widgets && this.widgets.changeTheme(themeName);
+    this.widgets?.changeTheme(themeName);
   }
 
-  setResolution(resolution: ResolutionString, callback?: () => void) {
-    this.widgets.activeChart().setResolution(resolution, callback ?? null);
+  setResolution(resolution: ResolutionString, callback: () => void = noop) {
+    this.widgets?.activeChart().setResolution(resolution, callback);
   }
   startFullscreen(isFullScreen: boolean) {
+    if (!this.widgets) return;
     if (isFullScreen) {
       this.widgets.startFullscreen();
     } else {
