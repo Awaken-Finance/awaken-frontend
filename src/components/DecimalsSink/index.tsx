@@ -13,7 +13,7 @@ export interface IBaseDecimalsSinkProps {
 }
 
 export interface IDecimalsSinkProps extends IBaseDecimalsSinkProps {
-  p: string;
+  p?: string;
   o?: string;
   m?: string;
 }

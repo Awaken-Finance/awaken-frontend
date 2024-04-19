@@ -1,7 +1,7 @@
 import BigNumber from 'bignumber.js';
 import PriceDecimalsSink from 'components/PriceDecimalsSink';
 import { useMobile } from 'utils/isMobile';
-import { formatPrice } from 'utils/price';
+import { formatPrice, showValueWrapper } from 'utils/price';
 import clsx from 'clsx';
 import { CSSProperties } from 'react';
 import { TSize } from 'types';
@@ -17,7 +17,7 @@ export default function PriceDigits({
   size,
   isSink,
 }: {
-  price: BigNumber.Value;
+  price?: BigNumber.Value;
   prefix?: string;
   suffix?: string;
   className?: string;
@@ -32,10 +32,9 @@ export default function PriceDigits({
       {isMobile || isSink ? (
         <PriceDecimalsSink prefix={prefix} suffix={suffix} price={price} className={className} />
       ) : (
-        <span
-          className={clsx('price-digits-inner', size && `price-digits-${size}`, className)}>{`${prefix}${formatPrice(
-          price,
-        )}${suffix}`}</span>
+        <span className={clsx('price-digits-inner', size && `price-digits-${size}`, className)}>
+          {showValueWrapper(price, `${prefix}${formatPrice(price)}${suffix}`)}
+        </span>
       )}
     </span>
   );

@@ -17,7 +17,7 @@ export default function PriceUSDDigits({
   size,
   isSink,
 }: {
-  price: BigNumber.Value;
+  price?: BigNumber.Value;
   prefix?: string;
   suffix?: string;
   className?: string;
@@ -33,7 +33,7 @@ export default function PriceUSDDigits({
         <PriceUSDDecimalsSink prefix={prefix} suffix={suffix} price={price} className={className} />
       ) : (
         <span className={clsx('price-digits-inner', size && `price-digits-${size}`, className)}>
-          {formatPriceUSD(price) ? `${prefix}${formatPriceUSD(price)}${suffix}` : '-'}
+          {typeof price !== 'undefined' ? `${prefix}${formatPriceUSD(price)}${suffix}` : '-'}
         </span>
       )}
     </span>

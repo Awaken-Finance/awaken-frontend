@@ -7,7 +7,7 @@ import getFontStyle, { FontColor } from 'utils/getFontStyle';
 import PriceDigits from 'components/PriceDigits';
 
 interface FallOrRiseProps extends FontProps {
-  num: number | string | BigNumber;
+  num?: number | string | BigNumber;
   displayNum?: string | undefined;
   usePrefix?: boolean;
   useSuffix?: boolean;
@@ -27,7 +27,7 @@ export default function FallOrRise({
   const style = useMemo((): [string, FontColor] => {
     const temp = typeof status !== 'undefined' ? status : num;
 
-    const bigNum = new BigNumber(temp);
+    const bigNum = new BigNumber(temp ?? 0);
     if (bigNum.gt(0)) {
       return ['+', 'rise'];
     }
@@ -38,14 +38,14 @@ export default function FallOrRise({
   }, [num, status]);
 
   const prefix = useMemo(() => `${usePrefix ? style[0] : ''}`, [style, usePrefix]);
-  const suffix = useMemo(() => `${useSuffix ? '%' : ''}`, [useSuffix]);
+  const suffix = useMemo(() => `${useSuffix && num ? '%' : ''}`, [num, useSuffix]);
   const color = useMemo(() => style[1], [style]);
 
   return isPrice ? (
     <PriceDigits price={num} prefix={prefix} suffix={suffix} className={getFontStyle({ ...props, color })} />
   ) : (
     <Font prefix={prefix} suffix={suffix} color={color} {...props}>
-      {displayNum || num}
+      {(displayNum || num) ?? '--'}
     </Font>
   );
 }

@@ -14,6 +14,7 @@ export interface PairProps extends FontStyleProps {
 
 export default function Pair({ symbol, maxLenth, ...props }: PairProps) {
   const text = useMemo(() => {
+    if (!symbol) return '--';
     const symbolStr = typeof symbol === 'string' ? symbol : unifyWTokenSymbol(symbol);
     return stringCut(symbolStr, maxLenth ?? symbolStr.length);
   }, [maxLenth, symbol]);

@@ -72,6 +72,7 @@ export default function ScrollTableList<RecordType>({
     );
   }, [hasMore, dataSource, hideNoMoreOnSinglePage, pageNum, t, nothingMoreMsg]);
 
+  console.log(pageNum === 1 ? loading : false, loading, pageNum, 'pageNum === 1 ? loading : false==');
   return (
     <InfiniteScroll
       useWindow={useWindow}

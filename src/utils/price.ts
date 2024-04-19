@@ -8,9 +8,9 @@ const ONE_BILLION = new BigNumber(1000000000);
 const ONE_TRILLION = new BigNumber(1000000000000);
 
 export function formatPriceUSD(price?: BigNumber.Value, digits = 12): string {
-  if (!isShowUSD()) {
-    return '';
-  }
+  // if (!isShowUSD()) {
+  //   return '';
+  // }
 
   if (!price) {
     return ZERO.toString();
@@ -39,9 +39,9 @@ export function formatPriceUSD(price?: BigNumber.Value, digits = 12): string {
 }
 
 export function formatPriceUSDWithSymBol(price?: BigNumber.Value, prefix = '', suffix = ''): string {
-  if (!isShowUSD()) {
-    return '';
-  }
+  // if (!isShowUSD()) {
+  //   return '-';
+  // }
 
   return `${prefix}$${formatPriceUSD(price, 3)}${suffix}`;
 }
@@ -308,3 +308,12 @@ export function formatTrillion(price?: BigNumber.Value): string {
 
   return `${new BigNumber(price).div(ONE_TRILLION).toFixed(2)}T`;
 }
+
+export const showValueWrapper = <T = any>(
+  originValue?: any,
+  returnValue?: T,
+  defaultValue: any = '--',
+): T | undefined => {
+  if (typeof originValue === 'undefined' || originValue === null) return defaultValue;
+  return returnValue;
+};
