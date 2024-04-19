@@ -30,7 +30,7 @@ export default function DecimalsSink({
 }: IDecimalsSinkProps) {
   return (
     <span style={style} className={clsx('price-sink-wrapper', size && `price-sink-${size}`, className)}>
-      <span className="price-start">{`${prefix}${p}`}</span>
+      {p ? <span className="price-start">{`${prefix}${p}`}</span> : '-'}
       {o && <span className="price-hide-decimals">{o}</span>}
       {m && <span className="price-end">{`${m}${suffix}`}</span>}
     </span>

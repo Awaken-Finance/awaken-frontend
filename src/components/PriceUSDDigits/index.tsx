@@ -32,10 +32,9 @@ export default function PriceUSDDigits({
       {isMobile || isSink ? (
         <PriceUSDDecimalsSink prefix={prefix} suffix={suffix} price={price} className={className} />
       ) : (
-        <span
-          className={clsx('price-digits-inner', size && `price-digits-${size}`, className)}>{`${prefix}${formatPriceUSD(
-          price,
-        )}${suffix}`}</span>
+        <span className={clsx('price-digits-inner', size && `price-digits-${size}`, className)}>
+          {formatPriceUSD(price) ? `${prefix}${formatPriceUSD(price)}${suffix}` : '-'}
+        </span>
       )}
     </span>
   );

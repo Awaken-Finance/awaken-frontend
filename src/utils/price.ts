@@ -40,7 +40,7 @@ export function formatPriceUSD(price?: BigNumber.Value, digits = 12): string {
 
 export function formatPriceUSDWithSymBol(price?: BigNumber.Value, prefix = '', suffix = ''): string {
   if (!isShowUSD()) {
-    return '-';
+    return '';
   }
 
   return `${prefix}$${formatPriceUSD(price, 3)}${suffix}`;
