@@ -10,7 +10,7 @@ interface FallOrRiseProps extends FontProps {
   num: number | string | BigNumber;
   displayNum?: string | undefined;
   usePrefix?: boolean;
-  useSubfix?: boolean;
+  useSuffix?: boolean;
   status?: number;
   isPrice?: boolean;
 }
@@ -19,7 +19,7 @@ export default function FallOrRise({
   num,
   displayNum = undefined,
   usePrefix = true,
-  useSubfix = true,
+  useSuffix = true,
   status,
   isPrice,
   ...props
@@ -38,13 +38,13 @@ export default function FallOrRise({
   }, [num, status]);
 
   const prefix = useMemo(() => `${usePrefix ? style[0] : ''}`, [style, usePrefix]);
-  const subfix = useMemo(() => `${useSubfix ? '%' : ''}`, [useSubfix]);
+  const suffix = useMemo(() => `${useSuffix ? '%' : ''}`, [useSuffix]);
   const color = useMemo(() => style[1], [style]);
 
   return isPrice ? (
-    <PriceDigits price={num} prefix={prefix} subfix={subfix} className={getFontStyle({ ...props, color })} />
+    <PriceDigits price={num} prefix={prefix} suffix={suffix} className={getFontStyle({ ...props, color })} />
   ) : (
-    <Font prefix={prefix} subfix={subfix} color={color} {...props}>
+    <Font prefix={prefix} suffix={suffix} color={color} {...props}>
       {displayNum || num}
     </Font>
   );

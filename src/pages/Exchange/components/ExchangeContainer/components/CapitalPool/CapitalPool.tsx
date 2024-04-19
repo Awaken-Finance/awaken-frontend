@@ -11,9 +11,10 @@ import { Pair } from 'components/Pair';
 
 import { useSwapContext } from 'pages/Exchange/hooks/useSwap';
 import BigNumber from 'bignumber.js';
-import { formatPriceUSDWithSymBol } from 'utils/price';
 
 import './CapitalPool.less';
+import PriceUSDDigits from 'components/PriceUSDDigits';
+import getFontStyle from 'utils/getFontStyle';
 
 function CapitalPool() {
   const { t } = useTranslation();
@@ -74,9 +75,10 @@ function CapitalPool() {
                 <Col span={24}>
                   <Row gutter={[8, 0]} align="middle">
                     <Col>
-                      <Font size={18} lineHeight={24} weight="medium">
-                        {formatPriceUSDWithSymBol(pairInfo?.tvl)}
-                      </Font>
+                      <PriceUSDDigits
+                        className={getFontStyle({ size: 18, lineHeight: 24, weight: 'medium' })}
+                        price={pairInfo?.tvl || 0}
+                      />
                     </Col>
                     <Col>
                       <FallOrRise

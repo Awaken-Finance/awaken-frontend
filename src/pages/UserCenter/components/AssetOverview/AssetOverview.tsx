@@ -12,11 +12,12 @@ import { IconArrowDown, IconCheckPrimary } from 'assets/icons';
 import { Col, Menu, Row } from 'antd';
 // import BigNumber from 'bignumber.js';
 import CommonModal from 'components/CommonModal';
-import { formatPriceUSDWithSymBol } from 'utils/price';
 import isShowUSD from 'utils/isShowUSD';
 import CommonTooltip from 'components/CommonTooltip';
 import './AssetOverview.less';
 import usePriceType from './hooks/usePriceType';
+import getFontStyle from 'utils/getFontStyle';
+import PriceUSDDigits from 'components/PriceUSDDigits';
 
 export function AssetOverview() {
   const { t } = useTranslation();
@@ -87,8 +88,14 @@ export function AssetOverview() {
   }, [isMobile]);
 
   const assetUSD = useMemo(() => {
-    if (!isShowUSD()) return 0;
-    return userAssetHidden ? '******' : formatPriceUSDWithSymBol(assetAll.all, '≈ ');
+    const styleClassName = getFontStyle({ size: 24, lineHeight: 36, weight: 'bold', color: 'two', className: 'price' });
+    if (!isShowUSD()) return <span className={styleClassName}>0</span>;
+
+    return userAssetHidden ? (
+      <span>{'******'}</span>
+    ) : (
+      <PriceUSDDigits prefix="≈ $" className={styleClassName} price={assetAll.all || 0} />
+    );
   }, [assetAll.all, userAssetHidden]);
 
   const handleClick = () => {

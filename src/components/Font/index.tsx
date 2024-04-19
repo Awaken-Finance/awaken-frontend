@@ -9,7 +9,7 @@ export interface FontProps extends FontStyleProps {
   className?: string;
   children?: React.ReactChild | React.ReactNode;
   prefix?: string | SVGAElement | JSX.Element;
-  subfix?: string | SVGAElement | JSX.Element;
+  suffix?: string | SVGAElement | JSX.Element;
 }
 
 export default function Font({
@@ -21,11 +21,11 @@ export default function Font({
   className = '',
   children,
   prefix = '',
-  subfix = '',
+  suffix = '',
 }: FontProps): JSX.Element {
   const style = useMemo(() => {
     return clsx('default-font-style', getFontStyle({ weight, color, size, lineHeight, align }), className);
   }, [className, weight, color, size, lineHeight, align]);
 
-  return <span className={style}>{`${prefix}${children}${subfix}`}</span>;
+  return <span className={style}>{`${prefix}${children}${suffix}`}</span>;
 }

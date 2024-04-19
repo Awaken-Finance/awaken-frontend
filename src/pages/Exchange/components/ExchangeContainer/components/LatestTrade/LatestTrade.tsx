@@ -94,7 +94,7 @@ function LatestTrade() {
               isPrice
               status={record.side === 0 ? 1 : -1}
               usePrefix={false}
-              useSubfix={false}
+              useSuffix={false}
               size={12}
             />
           );

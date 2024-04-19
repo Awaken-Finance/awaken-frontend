@@ -16,14 +16,10 @@ import CommonCard from 'components/CommonCard';
 
 import { unifyWTokenSymbol } from 'utils';
 
-import {
-  formatPriceByNumberToDp,
-  formatPercentage,
-  formatPriceChange,
-  formatPriceUSDWithSymBol,
-  formatPrice,
-} from 'utils/price';
+import { formatPriceByNumberToDp, formatPercentage, formatPriceChange, formatPrice } from 'utils/price';
 import { BigNumber } from 'bignumber.js';
+import PriceUSDDigits from 'components/PriceUSDDigits';
+import getFontStyle from 'utils/getFontStyle';
 
 function Header() {
   const [{ pairInfo }] = useSwapContext();
@@ -62,16 +58,18 @@ function Header() {
                   lineHeight={20}
                   weight="bold"
                   num={pairInfo.price}
-                  useSubfix={false}
+                  useSuffix={false}
                   isPrice
                   usePrefix={false}
                   status={pairInfo.pricePercentChange24h}
                 />
               </Row>
               <Row>
-                <Font size={12} lineHeight={18}>
-                  {formatPriceUSDWithSymBol(pairInfo.priceUSD, '≈')}
-                </Font>
+                <PriceUSDDigits
+                  className={getFontStyle({ size: 12, lineHeight: 18, weight: 'medium' })}
+                  price={pairInfo.priceUSD}
+                  prefix="≈$"
+                />
               </Row>
             </Col>
             <Col>
@@ -83,7 +81,7 @@ function Header() {
               <Row gutter={[8, 0]}>
                 <Col>
                   <FallOrRise
-                    useSubfix={false}
+                    useSuffix={false}
                     lineHeight={20}
                     num={formatPriceByNumberToDp(pairInfo.priceChange24h)}
                   />

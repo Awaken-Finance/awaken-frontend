@@ -15,7 +15,7 @@ export default function FeeRate({ useBg = false, children, className = '', size 
   }, [useBg, className]);
 
   return (
-    <Font size={size} color="primary" subfix="%" className={style} {...props}>
+    <Font size={size} color="primary" suffix="%" className={style} {...props}>
       {children}
     </Font>
   );
