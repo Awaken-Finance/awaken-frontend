@@ -1,6 +1,7 @@
 const tokenWeights: { [key: string]: number } = {
   USDT: 100,
   USDC: 90,
+  DAI: 80,
   ELF: 60,
   ETH: 50,
   BNB: 30,
