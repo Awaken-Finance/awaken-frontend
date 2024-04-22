@@ -103,6 +103,7 @@ export default function MobileList({
       </Row>
       <div className="transaction-list-box">
         <CommonList
+          className="transaction-list-wrapper"
           dataSource={dataSource}
           renderItem={renderItem}
           total={total}

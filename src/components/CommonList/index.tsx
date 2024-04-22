@@ -6,6 +6,7 @@ import clsx from 'clsx';
 import CommonEmpty from 'components/CommonEmpty';
 import { useMobile } from 'utils/isMobile';
 import { useTranslation } from 'react-i18next';
+import { COMMON_LOADING_CONFIG } from 'components/CommonLoading/loading';
 
 import './index.less';
 
@@ -86,7 +87,10 @@ export default function CommonList<T>({
         dataSource={dataSource}
         renderItem={renderItem}
         className={loading ? 'list-items' : ''}
-        loading={pageNum === 1 ? loading : false}
+        loading={{
+          spinning: pageNum === 1 ? loading : false,
+          ...COMMON_LOADING_CONFIG(),
+        }}
       />
 
       {nothingMore}

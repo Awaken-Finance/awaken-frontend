@@ -6,9 +6,9 @@ import { Table, TablePaginationConfig, TableProps } from 'antd';
 import { FetchParam } from 'types/requeset';
 import CommonEmpty from 'components/CommonEmpty';
 import { SortOrder } from 'antd/lib/table/interface';
+import { COMMON_LOADING_CONFIG } from 'components/CommonLoading/loading';
 
 import './index.less';
-import { COMMON_LOADING_CONFIG } from 'components/CommonLoading/loading';
 
 declare type TablePaginationPosition =
   | 'topLeft'
@@ -135,7 +135,7 @@ export default function CommonTable({
         pagination={paginationConfig}
         loading={{
           spinning: loading,
-          ...COMMON_LOADING_CONFIG,
+          ...COMMON_LOADING_CONFIG(),
         }}
         showSorterTooltip={false}
         {...params}
