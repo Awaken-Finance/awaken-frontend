@@ -14,16 +14,14 @@ import Font from 'components/Font';
 
 import { PairItem } from 'types';
 import { FetchParam } from 'types/requeset';
-import {
-  formatPercentage,
-  formatPriceChange,
-  formatPriceByNumberToFix,
-  formatPriceUSDWithSymBol,
-  formatPrice,
-} from 'utils/price';
+import { formatPercentage, formatPriceChange, formatPriceByNumberToFix } from 'utils/price';
 
 import './index.less';
 import BigNumber from 'bignumber.js';
+import PriceDigits from 'components/PriceDigits';
+import getFontStyle from 'utils/getFontStyle';
+import PriceUSDDigits from 'components/PriceUSDDigits';
+import { ZERO } from 'constants/misc';
 
 interface PairListProps {
   dataSource: PairItem[];
@@ -37,7 +35,7 @@ interface PairListProps {
   poolType?: string;
 }
 
-export default function ({ getData, field, order, poolType, ...args }: PairListProps) {
+export default function ({ poolType, ...args }: PairListProps) {
   const { t } = useTranslation();
 
   const callback = useGoSwapPage();
@@ -79,12 +77,13 @@ export default function ({ getData, field, order, poolType, ...args }: PairListP
         align: 'right',
         render: (price: string, record: PairItem) => (
           <div className="price-box">
-            <Font align="right" lineHeight={20}>
-              {formatPrice(record.price)}
-            </Font>
-            <Font lineHeight={18} size={12} color="two" align="right">
-              {formatPriceUSDWithSymBol(record.priceUSD, '≈')}
-            </Font>
+            <PriceDigits price={price} className={getFontStyle({ lineHeight: 20, align: 'right' })} />
+
+            <PriceUSDDigits
+              className={getFontStyle({ size: 12, lineHeight: 18, color: 'two', align: 'right' })}
+              price={record.priceUSD}
+              prefix="≈$"
+            />
           </div>
         ),
       },
@@ -111,9 +110,12 @@ export default function ({ getData, field, order, poolType, ...args }: PairListP
             <Font align="right" lineHeight={20}>
               {formatPriceChange(priceHigh24h, 4)}
             </Font>
-            <Font align="right" lineHeight={18} size={12} color="two">
-              {formatPriceUSDWithSymBol(record.priceHigh24hUSD, '≈')}
-            </Font>
+
+            <PriceUSDDigits
+              className={getFontStyle({ size: 12, lineHeight: 18, color: 'two', align: 'right' })}
+              price={record.priceHigh24hUSD}
+              prefix="≈$"
+            />
           </div>
         ),
       },
@@ -130,9 +132,12 @@ export default function ({ getData, field, order, poolType, ...args }: PairListP
             <Font align="right" lineHeight={20}>
               {formatPriceChange(priceLow24h, 4)}
             </Font>
-            <Font align="right" lineHeight={18} size={12} color="two">
-              {formatPriceUSDWithSymBol(record.priceLow24hUSD, '≈')}
-            </Font>
+
+            <PriceUSDDigits
+              className={getFontStyle({ size: 12, lineHeight: 18, color: 'two', align: 'right' })}
+              price={record.priceHigh24hUSD}
+              prefix="≈$"
+            />
           </div>
         ),
       },
@@ -146,7 +151,10 @@ export default function ({ getData, field, order, poolType, ...args }: PairListP
           new BigNumber(a.volume24h).times(a.priceUSD).gt(new BigNumber(b.volume24h).times(b.priceUSD)) ? 1 : -1,
         // sortOrder: field === 'volume24h' ? order : null,
         render: (volume24h: number, record: PairItem) => (
-          <Font lineHeight={20}>{formatPriceUSDWithSymBol(new BigNumber(volume24h).times(record.priceUSD))}</Font>
+          <PriceUSDDigits
+            className={getFontStyle({ lineHeight: 20 })}
+            price={ZERO.plus(volume24h ?? 0).times(record.priceUSD)}
+          />
         ),
       },
       {
@@ -157,7 +165,7 @@ export default function ({ getData, field, order, poolType, ...args }: PairListP
         key: 'tvl',
         sorter: (a: PairItem, b: PairItem) => (a.tvl > b.tvl ? 1 : -1),
         // sortOrder: field === 'tvl' ? order : null,
-        render: (tvl: number) => <Font lineHeight={20}>{formatPriceUSDWithSymBol(tvl)}</Font>,
+        render: (tvl: number) => <PriceUSDDigits className={getFontStyle({ lineHeight: 20 })} price={tvl} />,
       },
       {
         title: t('LP7D'),
@@ -192,7 +200,7 @@ export default function ({ getData, field, order, poolType, ...args }: PairListP
         },
       },
     ],
-    [t, field, order],
+    [t],
   );
 
   const emptyStatus = useMemo(() => {

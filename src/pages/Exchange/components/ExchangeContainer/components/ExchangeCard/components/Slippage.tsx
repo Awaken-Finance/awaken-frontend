@@ -20,7 +20,7 @@ export default function Slippage({ value }: { value: BigNumber.Value }) {
       <Col>
         <Row gutter={[4, 0]} align="middle">
           <Col>
-            <Font size={isMobile ? 12 : 14} lineHeight={isMobile ? 18 : 20} weight="medium" subfix="%">
+            <Font size={isMobile ? 12 : 14} lineHeight={isMobile ? 18 : 20} weight="medium" suffix="%">
               {new BigNumber(value).dp(2).toString()}
             </Font>
           </Col>

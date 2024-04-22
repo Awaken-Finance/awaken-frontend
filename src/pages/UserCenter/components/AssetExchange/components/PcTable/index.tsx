@@ -9,12 +9,14 @@ import Font from 'components/Font';
 import { CurrencyLogos } from 'components/CurrencyLogo';
 import { Pairs } from 'components/Pair';
 import FeeRate from 'components/FeeRate';
-import { formatLiquidity, formatPercentage, formatPriceUSDWithSymBol, formatTokenAmount } from 'utils/price';
+import { formatLiquidity, formatPercentage, formatTokenAmount } from 'utils/price';
 import ManageLiquidityBtn from 'Buttons/ManageLiquidityBtn';
 import { SortOrder } from 'antd/lib/table/interface';
 import Amount from '../Amount';
 
 import './index.less';
+import PriceUSDDigits from 'components/PriceUSDDigits';
+import getFontStyle from 'utils/getFontStyle';
 
 export default function PcTable({
   dataSource,
@@ -75,7 +77,7 @@ export default function PcTable({
         sorter: true,
         sortOrder: field === 'assetUSD' ? order : null,
         align: 'right',
-        render: (val: number) => <Font lineHeight={24}>{formatPriceUSDWithSymBol(val)}</Font>,
+        render: (val: number) => <PriceUSDDigits className={getFontStyle({ lineHeight: 24 })} price={val} />,
       },
       {
         title: <Amount value={t('amount')}></Amount>,

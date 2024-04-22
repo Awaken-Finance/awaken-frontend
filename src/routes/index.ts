@@ -16,8 +16,9 @@ const AuthComp = lazy(() =>
 
 const UserCenter = lazy(() => import('pages/UserCenter'));
 const Login = lazy(() => import('pages/Login'));
+const Example = lazy(() => import('pages/Example'));
 
-export const routes: RoutesProps[] = [
+const routes: RoutesProps[] = [
   {
     path: '/not-found',
     component: NotFound,
@@ -64,3 +65,14 @@ export const routes: RoutesProps[] = [
     component: Overview,
   },
 ];
+
+const NODE_ENV = process.env.NODE_ENV;
+if (NODE_ENV !== 'production')
+  routes.unshift({
+    path: '/example',
+    exact: true,
+
+    component: Example,
+  });
+
+export { routes };

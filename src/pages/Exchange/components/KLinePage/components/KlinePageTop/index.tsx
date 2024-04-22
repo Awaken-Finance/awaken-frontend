@@ -7,15 +7,11 @@ import FallOrRise from 'components/FallOrRise';
 
 import { PoolItem } from 'types';
 import { unitConverter } from 'utils';
-import {
-  formatPriceByNumberToDp,
-  formatPercentage,
-  formatBalance,
-  formatPriceUSDWithSymBol,
-  formatPrice,
-} from 'utils/price';
+import { formatPriceByNumberToDp, formatPercentage, formatBalance } from 'utils/price';
 
 import './index.less';
+import PriceUSDDigits from 'components/PriceUSDDigits';
+import getFontStyle from 'utils/getFontStyle';
 
 export default ({ pairInfo }: { pairInfo: PoolItem }) => {
   const { t } = useTranslation();
@@ -29,16 +25,19 @@ export default ({ pairInfo }: { pairInfo: PoolItem }) => {
                 size={32}
                 lineHeight={36}
                 weight="bold"
-                num={formatPrice(pairInfo.price)}
-                useSubfix={false}
+                num={pairInfo.price}
+                isPrice
+                useSuffix={false}
                 usePrefix={false}
                 status={pairInfo.pricePercentChange24h}
               />
             </Col>
             <Col span={24}>
-              <Font size={12} lineHeight={18} weight="medium">
-                {formatPriceUSDWithSymBol(pairInfo.priceUSD, '≈')}
-              </Font>
+              <PriceUSDDigits
+                className={getFontStyle({ size: 12, lineHeight: 18, weight: 'medium' })}
+                price={pairInfo.priceUSD}
+                prefix="≈$"
+              />
             </Col>
             <Col span={24}>
               <Row gutter={[8, 0]}>
@@ -46,7 +45,7 @@ export default ({ pairInfo }: { pairInfo: PoolItem }) => {
                   <FallOrRise
                     lineHeight={18}
                     num={formatPriceByNumberToDp(pairInfo.priceChange24h)}
-                    useSubfix={false}
+                    useSuffix={false}
                     size={12}
                   />
                 </Col>

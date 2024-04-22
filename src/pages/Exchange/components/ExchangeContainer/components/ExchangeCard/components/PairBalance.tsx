@@ -8,6 +8,7 @@ import { divDecimals } from 'utils/calculate';
 
 import { Currency } from '@awaken/sdk-core';
 import { useMobile } from 'utils/isMobile';
+import { showValueWrapper } from 'utils/price';
 
 interface PairBalanceProps {
   token?: Currency;
@@ -27,12 +28,12 @@ function PairBalance({ token, balance }: PairBalanceProps) {
       </Col>
       <Col>
         <Font size={isMobile ? 12 : 14} lineHeight={isMobile ? 18 : 20} weight="medium">
-          {unitConverter(divDecimals(balance, token?.decimals))}
+          {showValueWrapper(token?.decimals, unitConverter(divDecimals(balance, token?.decimals)))}
         </Font>
       </Col>
       <Col>
         <Font size={isMobile ? 12 : 14} lineHeight={isMobile ? 18 : 20} color="two">
-          {token?.symbol || ''}
+          {token?.symbol || '--'}
         </Font>
       </Col>
     </Row>

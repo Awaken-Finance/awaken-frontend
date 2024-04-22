@@ -11,14 +11,14 @@ export type MenuItem = {
 };
 export const menuList: MenuItem[] = [
   {
-    key: 'trading',
-    title: 'trading',
-    path: '/trading',
-  },
-  {
     key: 'overview',
     title: 'market',
     path: '/overview',
+  },
+  {
+    key: 'trading',
+    title: 'trading',
+    path: '/trading',
   },
 ];
 export const assetList: MenuItem[] = [

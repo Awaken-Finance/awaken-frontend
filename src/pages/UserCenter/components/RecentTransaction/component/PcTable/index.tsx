@@ -11,19 +11,21 @@ import Font from 'components/Font';
 import { CurrencyLogos } from 'components/CurrencyLogo';
 import { Pairs, Pair } from 'components/Pair';
 import FeeRate from 'components/FeeRate';
-import { formatPercentage, formatPrice, formatPriceChange, formatPriceUSDWithSymBol } from 'utils/price';
+import { formatPercentage, formatPriceChange } from 'utils/price';
 import { RecentTransaction, LiquidityRecord } from '../../../../type';
 import CommonCopy from 'components/CommonCopy';
 import CommonMenu from 'components/CommonMenu';
 import SearchTairByName from 'components/SearchTairByName';
-import { filterSidSource, FilterSidInTable, getSideTitle } from '../FilterSid';
+import { getSideTitle } from '../FilterSid';
 import { FetchParam } from 'types/requeset';
 import { SortOrder } from 'antd/lib/table/interface';
-import { IconFilterPc } from 'assets/icons';
 import { getExploreLink, shortenTransactionId } from 'utils';
 
 import './index.less';
 import { getTokenWeights } from 'utils/token';
+import PriceDigits from 'components/PriceDigits';
+import getFontStyle from 'utils/getFontStyle';
+import PriceUSDDigits from 'components/PriceUSDDigits';
 
 export default function PcTable({
   dataSource,
@@ -126,7 +128,7 @@ export default function PcTable({
         key: 'price',
         dataIndex: 'price',
         align: 'right',
-        render: (val: BigNumber) => <Font lineHeight={24}>{`${formatPrice(val)}`}</Font>,
+        render: (val: BigNumber) => <PriceDigits className={getFontStyle({ lineHeight: 20 })} price={val} />,
       },
       {
         title: t('amount'),
@@ -161,7 +163,7 @@ export default function PcTable({
         align: 'right',
         sorter: true,
         sortOrder: field === 'totalPriceInUsd' ? order : null,
-        render: (val: BigNumber) => <Font lineHeight={24}>{formatPriceUSDWithSymBol(val)}</Font>,
+        render: (val: BigNumber) => <PriceUSDDigits className={getFontStyle({ lineHeight: 24 })} price={val} />,
       },
       {
         title: t('Fee'),

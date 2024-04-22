@@ -231,7 +231,7 @@ export const defaultSymbol = (symbol: string): any => {
     name: symbol.toLocaleUpperCase(),
     timezone: Intl.DateTimeFormat().resolvedOptions().timeZone as CustomTimezones,
     minmov: 1,
-    minmov2: 0,
+    // minmov2: 0,
     pointvalue: 1,
     fractional: false,
     session: '24x7', // set cycle
