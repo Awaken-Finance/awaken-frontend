@@ -75,9 +75,9 @@ export default function ({ poolType, ...args }: PairListProps) {
         sorter: (a: PairItem, b: PairItem) => (a.priceUSD > b.priceUSD ? 1 : -1),
         // sortOrder: field === 'priceUSD' ? order : null,
         align: 'right',
-        render: (price: string, record: PairItem) => (
+        render: (priceUSD: string, record: PairItem) => (
           <div className="price-box">
-            <PriceDigits price={price} className={getFontStyle({ lineHeight: 20, align: 'right' })} />
+            <PriceDigits price={record.price} className={getFontStyle({ lineHeight: 20, align: 'right' })} />
 
             <PriceUSDDigits
               className={getFontStyle({ size: 12, lineHeight: 18, color: 'two', align: 'right' })}
