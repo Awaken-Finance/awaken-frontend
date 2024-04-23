@@ -12,7 +12,7 @@ import FeeRate from 'components/FeeRate';
 import FallOrRise from 'components/FallOrRise';
 import { useGoSwapPage } from 'Buttons/SwapBtn';
 import { SortOrder } from 'antd/lib/table/interface';
-import { formatPercentage, formatPrice, formatPriceByNumberToFix, formatPriceUSDWithSymBol } from 'utils/price';
+import { formatPercentage, formatPriceByNumberToFix } from 'utils/price';
 import SearchTairByName from 'components/SearchTairByName';
 import ScrollTableList from 'components/CommonTable/ScrollTableList';
 import { PairItem } from 'types';
@@ -20,6 +20,9 @@ import { FetchParam } from 'types/requeset';
 
 import './index.less';
 import BigNumber from 'bignumber.js';
+import PriceDigits from 'components/PriceDigits';
+import getFontStyle from 'utils/getFontStyle';
+import PriceUSDDigits from 'components/PriceUSDDigits';
 
 export default function MobilePairList({
   dataSource = [],
@@ -69,9 +72,11 @@ export default function MobilePairList({
                   <FeeRate useBg>{formatPercentage(pairData?.feeRate * 100)}</FeeRate>
                 </Col>
                 <Col span={24}>
-                  <Font lineHeight={18} size={12} color="two">
-                    {formatPriceUSDWithSymBol(new BigNumber(pairData?.volume24h).times(pairData.priceUSD), 'Vol ')}
-                  </Font>
+                  <PriceUSDDigits
+                    className={getFontStyle({ size: 12, lineHeight: 18, color: 'two' })}
+                    price={new BigNumber(pairData?.volume24h).times(pairData.priceUSD)}
+                    prefix="Vol $"
+                  />
                 </Col>
               </Row>
             </Col>
@@ -89,7 +94,7 @@ export default function MobilePairList({
         render: (val: number, record: PairItem) => (
           <Row justify="end">
             <Col span={24}>
-              <Font lineHeight={20}>{formatPrice(record.price)}</Font>
+              <PriceDigits className={getFontStyle({ lineHeight: 20 })} price={record.price} />
             </Col>
             <Col>
               <FallOrRise lineHeight={18} className="fail-or-rise" num={formatPriceByNumberToFix(val)} />

@@ -5,7 +5,7 @@ import { Pairs } from 'components/Pair';
 import Font from 'components/Font';
 import FeeRate from 'components/FeeRate';
 import ManageLiquidityBtn from 'Buttons/ManageLiquidityBtn';
-import { formatLiquidity, formatPercentage, formatPriceUSDWithSymBol, formatTokenAmount } from 'utils/price';
+import { formatLiquidity, formatPercentage, formatTokenAmount } from 'utils/price';
 import CommonList from 'components/CommonList';
 import { useTranslation } from 'react-i18next';
 import { SortOrder } from 'antd/lib/table/interface';
@@ -13,6 +13,8 @@ import { useCallback } from 'react';
 import CommonTooltip from 'components/CommonTooltip';
 
 import './index.less';
+import PriceUSDDigits from 'components/PriceUSDDigits';
+import getFontStyle from 'utils/getFontStyle';
 
 export default function MobileList({
   dataSource = [],
@@ -86,9 +88,7 @@ export default function MobileList({
             </Col>
             <Col span={24} className="col-height-20">
               <Font lineHeight={24}>{`${formatLiquidity(lpTokenAmount ?? 0)}`}</Font>
-              <Font lineHeight={24} color="two">
-                {formatPriceUSDWithSymBol(assetUSD, '≈')}
-              </Font>
+              <PriceUSDDigits prefix="≈" className={getFontStyle({ lineHeight: 24, color: 'two' })} price={assetUSD} />
             </Col>
 
             <Col span={12} className="amount">

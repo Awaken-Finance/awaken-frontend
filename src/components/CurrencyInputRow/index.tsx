@@ -14,9 +14,10 @@ import { Pair } from 'components/Pair';
 import CommonInput from 'components/CommonInput';
 import Font from 'components/Font';
 import { ZERO } from 'constants/misc';
-import { formatPriceUSDWithSymBol } from 'utils/price';
 
 import './styles.less';
+import PriceUSDDigits from 'components/PriceUSDDigits';
+import getFontStyle from 'utils/getFontStyle';
 
 interface Props extends Omit<InputProps, 'onChange'> {
   token?: Currency;
@@ -90,11 +91,16 @@ export default function CurrencyInputRow(props: Props) {
   );
 
   const renderUsd = useMemo(() => {
-    if (value === undefined || value === '') {
-      return '-';
-    }
+    if (value === undefined || value === '')
+      return (
+        <Font size={14} color="two">
+          -
+        </Font>
+      );
 
-    return formatPriceUSDWithSymBol(new BigNumber(value).times(tokenPrice));
+    return (
+      <PriceUSDDigits className={getFontStyle({ size: 14, color: 'two' })} price={ZERO.plus(value).times(tokenPrice)} />
+    );
   }, [value, tokenPrice]);
 
   return (
@@ -114,13 +120,7 @@ export default function CurrencyInputRow(props: Props) {
           ref={inputRef}
         />
       </Col>
-      <Col>
-        {!hideUSD && token && (
-          <Font size={14} color="two">
-            {renderUsd}
-          </Font>
-        )}
-      </Col>
+      <Col>{!hideUSD && token && renderUsd}</Col>
       <Col>
         {!hidBlance && token && (
           <div className="blance-box">

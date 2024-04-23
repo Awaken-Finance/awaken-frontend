@@ -7,13 +7,14 @@ import { getIsReversed } from 'utils/pair';
 import { ONE } from 'constants/misc';
 
 export function useMarketTradeList(tradePairId?: string, maxResultCount?: number) {
-  const [list, setList] = useState<TradeItem[]>([]);
+  const [list, setList] = useState<TradeItem[]>();
 
   const [{ socket }] = useSwapContext();
   const { apiChainId } = useActiveWeb3React();
 
   const receiveRemoveTradeRecord = useCallback((res: { data: { transactionHash: string }[] }) => {
     setList((v) => {
+      if (!v) return v;
       return v.filter(
         ({ transactionHash }) => !res?.data.find((delItem) => delItem.transactionHash === transactionHash),
       );
@@ -37,6 +38,7 @@ export function useMarketTradeList(tradePairId?: string, maxResultCount?: number
       }
       // max is 200
       setList((v) => {
+        if (!v) v = [];
         if (v.length >= 200) {
           v.pop();
           return [rec, ...v];
@@ -57,7 +59,7 @@ export function useMarketTradeList(tradePairId?: string, maxResultCount?: number
   }, [apiChainId, receiveRemoveTradeRecord, socket, tradePairId]);
 
   useEffect(() => {
-    setList([]);
+    setList(undefined);
 
     socket?.on('ReceiveTradeRecords', receiveTradeRecords);
     socket?.on('ReceiveTradeRecord', receiveTradeRecord);
@@ -70,6 +72,7 @@ export function useMarketTradeList(tradePairId?: string, maxResultCount?: number
   }, [apiChainId, maxResultCount, receiveTradeRecord, receiveTradeRecords, socket, tradePairId]);
 
   return useMemo(() => {
+    if (!list) return list;
     return lodash.cloneDeep(list).map((item) => {
       const isReversed = getIsReversed(item.tradePair.token0, item.tradePair.token1);
       if (!isReversed) {
@@ -92,13 +95,14 @@ export function useMarketTradeList(tradePairId?: string, maxResultCount?: number
 }
 
 export function useUserTradList(tradePairId?: string, address?: string, maxResultCount?: number) {
-  const [list, setList] = useState<TradeItem[]>([]);
+  const [list, setList] = useState<TradeItem[]>();
 
   const [{ socket }] = useSwapContext();
   const { apiChainId } = useActiveWeb3React();
 
   const receiveRemovedUserTradeRecord = useCallback((res: { data: { transactionHash: string }[] }) => {
     setList((v) => {
+      if (!v) return v;
       return v.filter(
         ({ transactionHash }) => !res?.data.find((delItem) => delItem.transactionHash === transactionHash),
       );
@@ -134,6 +138,7 @@ export function useUserTradList(tradePairId?: string, address?: string, maxResul
 
       // max is 200
       setList((v) => {
+        if (!v) v = [];
         if (v.length >= 200) {
           v.pop();
           return [rec, ...v];
@@ -145,7 +150,7 @@ export function useUserTradList(tradePairId?: string, address?: string, maxResul
   );
 
   useEffect(() => {
-    setList([]);
+    setList(undefined);
     socket?.on('ReceiveUserTradeRecords', receiveUserTradeRecords);
     socket?.on('ReceiveUserTradeRecord', receiveUserTradeRecord);
     socket?.RequestUserTradeRecord(apiChainId, tradePairId, address, maxResultCount);
@@ -157,6 +162,7 @@ export function useUserTradList(tradePairId?: string, address?: string, maxResul
   }, [apiChainId, socket, tradePairId, address, maxResultCount, receiveUserTradeRecords, receiveUserTradeRecord]);
 
   return useMemo(() => {
+    if (!list) return list;
     return lodash.cloneDeep(list).map((item) => {
       const isReversed = getIsReversed(item.tradePair.token0, item.tradePair.token1);
       if (!isReversed) {

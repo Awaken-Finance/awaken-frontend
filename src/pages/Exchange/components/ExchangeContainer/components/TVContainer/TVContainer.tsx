@@ -50,7 +50,7 @@ const TVContainer = () => {
             />
           </div>
           <div className="mobile-chart-box">
-            <CommonLoading spinning={loading}>
+            <CommonLoading spinning={loading} showBg>
               {chartType === 'original' ? (
                 <TradingView setLoading={setLoading} />
               ) : (
@@ -63,7 +63,7 @@ const TVContainer = () => {
     }
 
     return (
-      <CommonLoading spinning={loading}>
+      <CommonLoading className="td-loading-wrapper" spinning={loading} showBg>
         <CommonMenu
           menus={chartTuple}
           onChange={chartTypeChange}

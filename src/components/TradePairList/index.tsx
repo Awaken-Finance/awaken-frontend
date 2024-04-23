@@ -16,10 +16,11 @@ import { PairItem } from 'types';
 import useSearchPairList from 'pages/Overview/hooks/useSearchPairList';
 import Signalr from 'socket/signalr';
 import { useGoSwapPage } from 'Buttons/SwapBtn';
-import { formatPercentage, formatPrice } from 'utils/price';
+import { formatPercentage } from 'utils/price';
 import { useMobile } from 'utils/isMobile';
 import ScrollTableList from 'components/CommonTable/ScrollTableList';
 import { useWindowSize } from 'react-use';
+import PriceDigits from 'components/PriceDigits';
 
 import './index.less';
 
@@ -114,7 +115,9 @@ export default function TradePairList({
         align: 'right',
         className: !isLargeScreen && !isMobile ? 'small-column-title' : '',
         render: (price: string) =>
-          isLargeScreen || isMobile ? <span className="trade-pair-table-cell">{formatPrice(price)}</span> : null,
+          isLargeScreen || isMobile ? (
+            <PriceDigits size="small" price={price} className="trade-pair-table-cell" />
+          ) : null,
       },
       {
         title: (
@@ -132,7 +135,9 @@ export default function TradePairList({
         render: (change: number, _: PairItem) =>
           !isLargeScreen && !isMobile ? (
             <Col>
-              <div className="trade-pair-table-cell">{formatPrice(_.price)}</div>
+              <div>
+                <PriceDigits className="trade-pair-table-cell" price={_.price} size="small" />
+              </div>
               <FallOrRise lineHeight={18} size={12} num={new BigNumber(change).toFixed(2)} />
             </Col>
           ) : (
@@ -140,7 +145,7 @@ export default function TradePairList({
           ),
       },
     ],
-    [t, pageInfo?.field, pageInfo?.order, pairsLabelWidth, isLargeScreen, isMobile],
+    [t, pairsLabelWidth, isLargeScreen, isMobile],
   );
 
   const emptyStatus = useMemo(() => {

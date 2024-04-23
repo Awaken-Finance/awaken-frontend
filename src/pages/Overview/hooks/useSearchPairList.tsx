@@ -50,22 +50,31 @@ export default function useSearchPairList(
   const [{ list, total }, { getList = () => null }] = usePairList();
 
   const getListBySearch = useCallback(
-    (info: PageInfoParams) => {
-      const params: GetPairListParams = {
-        skipCount: ((info.pageNum as number) - 1) * (info.pageSize as number),
-        sorting: info.order ? `${info.field} ${info.order}` : null,
-        maxResultCount: info.pageSize,
-        searchTokenSymbol: info.searchVal,
-        ...customParams,
-      };
+    async (info: PageInfoParams) => {
+      try {
+        const params: GetPairListParams = {
+          skipCount: ((info.pageNum as number) - 1) * (info.pageSize as number),
+          sorting: info.order ? `${info.field} ${info.order}` : null,
+          maxResultCount: info.pageSize,
+          searchTokenSymbol: info.searchVal,
+          ...customParams,
+        };
+        if (params.skipCount === 0) {
+          setLoading(true);
+        }
 
-      if (['fav', 'other'].includes(info.poolType as string)) {
-        params.tradePairFeature = ['fav', 'other'].findIndex((i: string) => i === info.poolType) + 1;
-      } else {
-        params.tokenSymbol = info.poolType;
+        if (['fav', 'other'].includes(info.poolType as string)) {
+          params.tradePairFeature = ['fav', 'other'].findIndex((i: string) => i === info.poolType) + 1;
+        } else {
+          params.tokenSymbol = info.poolType;
+        }
+
+        return await getList(params);
+      } catch (error) {
+        console.log('getListBySearch', error);
+      } finally {
+        setLoading(false);
       }
-
-      getList(params);
     },
     [getList, customParams],
   );
@@ -73,8 +82,6 @@ export default function useSearchPairList(
   const getData = useCallback(
     (params: FetchParam) => {
       const { page, pageSize = config?.customPageSize, order, field, searchVal, poolType } = params;
-
-      setLoading(true);
 
       // symbol change
       if (poolType && poolType !== pageInfo.current.poolType) {
@@ -194,8 +201,6 @@ export default function useSearchPairList(
     } else {
       setDataSource(list);
     }
-
-    setLoading(false);
   }, [config?.scrollLoad, list]);
 
   useEffect(() => {

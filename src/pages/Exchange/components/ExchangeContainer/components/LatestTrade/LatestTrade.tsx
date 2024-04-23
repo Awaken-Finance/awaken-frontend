@@ -13,8 +13,7 @@ import { CommonTableList } from 'components/CommonTable';
 import FallOrRise from 'components/FallOrRise';
 import CommonCard from 'components/CommonCard';
 import useLoginCheck from 'hooks/useLoginCheck';
-import BigNumber from 'bignumber.js';
-import { formatPrice, formatLiquidity } from 'utils/price';
+import { formatLiquidity } from 'utils/price';
 import { useSwapContext } from 'pages/Exchange/hooks/useSwap';
 
 import './LatestTrade.less';
@@ -92,10 +91,10 @@ function LatestTrade() {
           return (
             <FallOrRise
               num={price}
-              displayNum={formatPrice(new BigNumber(price))}
+              isPrice
               status={record.side === 0 ? 1 : -1}
               usePrefix={false}
-              useSubfix={false}
+              useSuffix={false}
               size={12}
             />
           );
@@ -135,7 +134,8 @@ function LatestTrade() {
     dataSource: dataSource,
     emptyType: 'nodata',
     emptyText: t('noTrades'),
-    scroll: dataSource.length ? { y: 600, x: 0 } : null,
+    scroll: dataSource?.length ? { y: 600, x: 0 } : null,
+    loading: typeof dataSource === 'undefined',
   };
 
   return (

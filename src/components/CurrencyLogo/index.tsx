@@ -57,7 +57,7 @@ export function CurrencyLogo({
   );
 }
 export function CurrencyLogos({
-  tokens = [],
+  tokens = [{ symbol: '-' }, { symbol: '-' }],
   size = 20,
   preview,
   className,
@@ -65,7 +65,7 @@ export function CurrencyLogos({
   className?: string;
   preview?: boolean;
   size?: number;
-  tokens: Array<{
+  tokens?: Array<{
     address?: string;
     src?: string;
     currency?: Currency | null;

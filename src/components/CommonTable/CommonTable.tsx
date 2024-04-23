@@ -6,6 +6,7 @@ import { Table, TablePaginationConfig, TableProps } from 'antd';
 import { FetchParam } from 'types/requeset';
 import CommonEmpty from 'components/CommonEmpty';
 import { SortOrder } from 'antd/lib/table/interface';
+import { COMMON_LOADING_CONFIG } from 'components/CommonLoading/loading';
 
 import './index.less';
 
@@ -132,7 +133,10 @@ export default function CommonTable({
       <Table
         onChange={tableChange}
         pagination={paginationConfig}
-        loading={loading}
+        loading={{
+          spinning: loading,
+          ...COMMON_LOADING_CONFIG(),
+        }}
         showSorterTooltip={false}
         {...params}
         locale={{

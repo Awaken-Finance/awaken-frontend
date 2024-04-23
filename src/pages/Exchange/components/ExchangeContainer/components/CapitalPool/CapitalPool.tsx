@@ -11,9 +11,11 @@ import { Pair } from 'components/Pair';
 
 import { useSwapContext } from 'pages/Exchange/hooks/useSwap';
 import BigNumber from 'bignumber.js';
-import { formatPriceUSDWithSymBol } from 'utils/price';
 
 import './CapitalPool.less';
+import PriceUSDDigits from 'components/PriceUSDDigits';
+import getFontStyle from 'utils/getFontStyle';
+import { showValueWrapper } from 'utils/price';
 
 function CapitalPool() {
   const { t } = useTranslation();
@@ -41,7 +43,9 @@ function CapitalPool() {
               </Row>
             </Col>
             <Col>
-              <Font size={16}>{unitConverter(pairInfo?.valueLocked0, 2)}</Font>
+              <Font size={16}>
+                {showValueWrapper(pairInfo?.valueLocked0, unitConverter(pairInfo?.valueLocked0, 2))}
+              </Font>
             </Col>
           </Row>
         </Col>
@@ -58,7 +62,9 @@ function CapitalPool() {
               </Row>
             </Col>
             <Col>
-              <Font size={16}>{unitConverter(pairInfo?.valueLocked1, 2)}</Font>
+              <Font size={16}>
+                {showValueWrapper(pairInfo?.valueLocked1, unitConverter(pairInfo?.valueLocked1, 2))}
+              </Font>
             </Col>
           </Row>
         </Col>
@@ -74,15 +80,20 @@ function CapitalPool() {
                 <Col span={24}>
                   <Row gutter={[8, 0]} align="middle">
                     <Col>
-                      <Font size={18} lineHeight={24} weight="medium">
-                        {formatPriceUSDWithSymBol(pairInfo?.tvl)}
-                      </Font>
+                      <PriceUSDDigits
+                        className={getFontStyle({ size: 18, lineHeight: 24, weight: 'medium' })}
+                        price={pairInfo?.tvl}
+                      />
                     </Col>
                     <Col>
                       <FallOrRise
                         size={12}
                         lineHeight={18}
-                        num={new BigNumber(pairInfo?.tvlPercentChange24h || 0).toFixed(2)}
+                        num={showValueWrapper(
+                          pairInfo?.tvlPercentChange24h,
+                          new BigNumber(pairInfo?.tvlPercentChange24h || 0).toFixed(2),
+                          null,
+                        )}
                       />
                     </Col>
                   </Row>
@@ -104,7 +115,11 @@ function CapitalPool() {
                       size={18}
                       lineHeight={24}
                       weight="medium"
-                      num={new BigNumber(pairInfo?.feePercent7d || 0).toFixed(2)}
+                      num={showValueWrapper(
+                        pairInfo?.feePercent7d,
+                        new BigNumber(pairInfo?.feePercent7d || 0).toFixed(2),
+                        null,
+                      )}
                     />
                   </Row>
                 </Col>
