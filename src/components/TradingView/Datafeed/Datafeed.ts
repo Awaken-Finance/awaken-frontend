@@ -57,7 +57,6 @@ export default class Datafeed {
       if (this.self.getSymbol) {
         symbolInfo = Object.assign(defaultSymbol(symbolName), this.self.getSymbol());
       }
-      console.log('resolveSymbol22222444222');
 
       try {
         const [pair, feeRate] = symbolName.split(' ');

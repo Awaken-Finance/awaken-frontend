@@ -9,6 +9,7 @@ import { useTranslation } from 'react-i18next';
 import Updater from './hooks/Updater';
 
 import './UserCenter.less';
+import { useMonitorScroll } from 'hooks/useMonitorScroll';
 export function UserCenter({ url }: { url: string }) {
   const { t } = useTranslation();
   const { pathname } = useLocation();
@@ -25,6 +26,8 @@ export function UserCenter({ url }: { url: string }) {
   }, [history, pathname]);
 
   const isMobile = useMobile();
+
+  useMonitorScroll('site-layout-content');
 
   return useMemo(
     () => (

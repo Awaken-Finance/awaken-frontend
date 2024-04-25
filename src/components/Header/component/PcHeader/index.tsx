@@ -4,10 +4,10 @@ import clsx from 'clsx';
 import Network from 'components/Network';
 import { basicModalView } from 'contexts/useModal/actions';
 import { useModalDispatch } from 'contexts/useModal/hooks';
-import { memo, useEffect, useMemo } from 'react';
+import { memo, useMemo } from 'react';
 import LanguageMenu from '../LanguageMenu';
 import NavMenu from '../NavMenu';
-import { NavLink, useHistory, useLocation } from 'react-router-dom';
+import { NavLink, useLocation } from 'react-router-dom';
 import useSelectedKeys from 'components/Header/hooks/useSelectedKeys';
 import { useTranslation } from 'react-i18next';
 import { WebLoginState, useWebLogin } from 'aelf-web-login';
@@ -18,25 +18,14 @@ import useLogin from 'hooks/useLogin';
 
 import './styles.less';
 import Font from 'components/Font';
-
-const listener = () => {
-  const navbar = document.querySelector('.site-header');
-  const content = document.querySelector('.pc-site-content');
-  if (!content || !navbar) return;
-  if (content.getBoundingClientRect().top < 0) {
-    if (navbar.classList.contains('site-header-border')) return;
-    navbar.classList.add('site-header-border');
-  } else {
-    navbar.classList.remove('site-header-border');
-  }
-};
+import { useMonitorScroll } from 'hooks/useMonitorScroll';
 
 function PcHeader() {
   const { selectedKeys } = useSelectedKeys();
   const { loginState } = useWebLogin();
   const pathname = useLocation().pathname;
   const { t } = useTranslation();
-  // const history = useHistory();
+
   const [modalState] = useModal();
   const modalDispatch = useModalDispatch();
   const { toLogin, toSignup } = useLogin();
@@ -45,12 +34,7 @@ function PcHeader() {
     modalDispatch(basicModalView.setAccountModal.actions(!modalState.accountModal));
   };
 
-  useEffect(() => {
-    window.addEventListener('scroll', listener);
-    return () => {
-      window.removeEventListener('scroll', listener);
-    };
-  }, []);
+  useMonitorScroll();
 
   const isOpacity = useMemo(() => {
     return !(
