@@ -4,7 +4,7 @@ import clsx from 'clsx';
 import Network from 'components/Network';
 import { basicModalView } from 'contexts/useModal/actions';
 import { useModalDispatch } from 'contexts/useModal/hooks';
-import { memo, useMemo } from 'react';
+import { memo, useEffect, useMemo } from 'react';
 import LanguageMenu from '../LanguageMenu';
 import NavMenu from '../NavMenu';
 import { NavLink, useHistory, useLocation } from 'react-router-dom';
@@ -19,6 +19,18 @@ import useLogin from 'hooks/useLogin';
 import './styles.less';
 import Font from 'components/Font';
 
+const listener = () => {
+  const navbar = document.querySelector('.site-header');
+  const content = document.querySelector('.pc-site-content');
+  if (!content || !navbar) return;
+  if (content.getBoundingClientRect().top < 0) {
+    if (navbar.classList.contains('site-header-border')) return;
+    navbar.classList.add('site-header-border');
+  } else {
+    navbar.classList.remove('site-header-border');
+  }
+};
+
 function PcHeader() {
   const { selectedKeys } = useSelectedKeys();
   const { loginState } = useWebLogin();
@@ -32,6 +44,13 @@ function PcHeader() {
   const toggleAccountModal = () => {
     modalDispatch(basicModalView.setAccountModal.actions(!modalState.accountModal));
   };
+
+  useEffect(() => {
+    window.addEventListener('scroll', listener);
+    return () => {
+      window.removeEventListener('scroll', listener);
+    };
+  }, []);
 
   const isOpacity = useMemo(() => {
     return !(

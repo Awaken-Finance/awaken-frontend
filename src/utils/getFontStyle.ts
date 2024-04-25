@@ -6,7 +6,7 @@ export type FontColor = 'one' | 'two' | 'three' | 'primary' | 'fall' | 'rise' | 
 
 export type FontSize = 12 | 14 | 16 | 18 | 20 | 24 | 32;
 
-export type LineHeight = 12 | 14 | 16 | 18 | 20 | 22 | 24 | 26 | 28 | 30 | 36 | 48;
+export type LineHeight = 12 | 14 | 16 | 18 | 20 | 22 | 24 | 26 | 28 | 30 | 32 | 36 | 48;
 
 export type Align = 'left' | 'center' | 'right';
 

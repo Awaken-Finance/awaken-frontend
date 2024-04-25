@@ -122,13 +122,13 @@ export default function PcTable({
   }, [t, field, order]);
 
   return (
-    <Row className="pc-table">
-      <Col span={24} className="pc-table-header">
-        <Font weight="bold" lineHeight={48} size={32}>
+    <div className="asset-exchange-pc-table">
+      <div className="pc-table-header">
+        <Font weight="bold" lineHeight={32} size={24}>
           {t('myMarketingMakingLiquidity')}
         </Font>
-      </Col>
-      <Col span={24} className="pc-table-box">
+      </div>
+      <div className="pc-table-box">
         <CommonTable
           onChange={getData}
           total={total}
@@ -141,7 +141,7 @@ export default function PcTable({
           emptyType="nodata"
           className="exchange-table"
         />
-      </Col>
-    </Row>
+      </div>
+    </div>
   );
 }

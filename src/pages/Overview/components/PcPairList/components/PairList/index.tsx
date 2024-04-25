@@ -44,6 +44,7 @@ export default function ({ poolType, ...args }: PairListProps) {
     () => [
       {
         title: t('pairs'),
+        width: 252,
         dataIndex: 'tradePair',
         key: 'tradePair',
         // sorter: true,

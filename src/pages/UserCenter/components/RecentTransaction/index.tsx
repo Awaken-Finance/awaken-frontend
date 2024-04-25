@@ -20,7 +20,9 @@ export default function Transaction() {
 
   const [searchVal, setSearchVal] = useState('');
 
-  const [{ total, list, loading }, { getList = () => null }] = useGetList();
+  const [{ total, list, loading: _loading }, { getList = () => null }] = useGetList();
+  const [isInit, setIsInit] = useState(false);
+  const loading = useMemo(() => !isInit || _loading, [_loading, isInit]);
 
   const { t } = useTranslation();
 
@@ -192,6 +194,7 @@ export default function Transaction() {
 
   useMount(() => {
     getList(pageInfo.current, searchVal, menu);
+    setIsInit(true);
   });
 
   return renderContent();
