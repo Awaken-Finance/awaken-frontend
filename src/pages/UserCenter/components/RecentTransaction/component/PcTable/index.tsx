@@ -213,13 +213,13 @@ export default function PcTable({
   }, [t, menu, field, order, side]);
 
   return (
-    <Row className="pc-table">
-      <Col span={24} className="pc-table-header">
-        <Font weight="bold" lineHeight={48} size={32}>
+    <div className="recent-tx-pc-table">
+      <div className="pc-table-header">
+        <Font weight="bold" lineHeight={32} size={24}>
           {t('recentTransaction')}
         </Font>
-      </Col>
-      <Col span={24}>
+      </div>
+      <div>
         <Row justify="space-between" align="middle" className="pc-table-operate">
           <Col>
             <CommonMenu menus={menuList} onChange={menuChange} value={menu} />
@@ -228,8 +228,8 @@ export default function PcTable({
             <SearchTairByName value={searchVal} onChange={searchChange} />
           </Col>
         </Row>
-      </Col>
-      <Col span={24} className="transation-table-box">
+      </div>
+      <div className="transation-table-box">
         <CommonTable
           onChange={getData}
           total={total}
@@ -242,7 +242,7 @@ export default function PcTable({
           emptyType="nodata"
           className="transation-box"
         />
-      </Col>
-    </Row>
+      </div>
+    </div>
   );
 }

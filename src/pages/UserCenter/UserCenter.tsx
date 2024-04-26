@@ -9,6 +9,7 @@ import { useTranslation } from 'react-i18next';
 import Updater from './hooks/Updater';
 
 import './UserCenter.less';
+import { useMonitorScroll } from 'hooks/useMonitorScroll';
 export function UserCenter({ url }: { url: string }) {
   const { t } = useTranslation();
   const { pathname } = useLocation();
@@ -26,6 +27,8 @@ export function UserCenter({ url }: { url: string }) {
 
   const isMobile = useMobile();
 
+  useMonitorScroll('site-layout-content');
+
   return useMemo(
     () => (
       <Layout className={clsx('user-center-layout', isMobile && 'user-center-mobile-layout')}>
@@ -41,9 +44,9 @@ export function UserCenter({ url }: { url: string }) {
           </Layout.Header>
         ) : (
           <Layout.Sider trigger={null} theme={'light'} className="site-layout-nav">
-            <Menu mode="inline" selectedKeys={[defaultKeys]} inlineIndent={20}>
+            <Menu mode="inline" selectedKeys={[defaultKeys]}>
               {routeMap.map((route) => (
-                <Menu.Item key={route.path}>
+                <Menu.Item className="site-layout-nav-item-pc" key={route.path}>
                   <NavLink to={url + (route.path.slice(1) ? route.path : '')} style={{ textTransform: 'capitalize' }}>
                     {t(route.menuItem || route.path.slice(1))}
                   </NavLink>

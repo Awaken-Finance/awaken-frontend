@@ -5,7 +5,7 @@ import { CHAIN_INFO as tDVV_TEST3 } from 'constants/platform/aelf-tdvv-test3';
 import { PORTKEY_SERVICE } from './portkeyonConfig';
 
 const API_ENV = process.env.REACT_APP_API_ENV;
-const APPNAME = 'awaken.finance';
+export const APPNAME = 'awaken.finance';
 
 let CHAIN_ID = tDVV.chainId,
   NETWORK = 'MAIN',

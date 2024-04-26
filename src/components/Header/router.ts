@@ -8,12 +8,14 @@ export type MenuItem = {
   title: string;
   path: string;
   onlyMobile?: boolean;
+  isHome?: boolean;
 };
 export const menuList: MenuItem[] = [
   {
     key: 'overview',
     title: 'market',
     path: '/overview',
+    isHome: true,
   },
   {
     key: 'trading',

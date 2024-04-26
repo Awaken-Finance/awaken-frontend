@@ -7,7 +7,7 @@ import { useModalDispatch } from 'contexts/useModal/hooks';
 import { memo, useMemo } from 'react';
 import LanguageMenu from '../LanguageMenu';
 import NavMenu from '../NavMenu';
-import { NavLink, useHistory, useLocation } from 'react-router-dom';
+import { NavLink, useLocation } from 'react-router-dom';
 import useSelectedKeys from 'components/Header/hooks/useSelectedKeys';
 import { useTranslation } from 'react-i18next';
 import { WebLoginState, useWebLogin } from 'aelf-web-login';
@@ -18,13 +18,15 @@ import useLogin from 'hooks/useLogin';
 
 import './styles.less';
 import Font from 'components/Font';
+import { useMonitorScroll } from 'hooks/useMonitorScroll';
+import { useIsPortkeySDK } from 'hooks/useIsPortkeySDK';
 
 function PcHeader() {
   const { selectedKeys } = useSelectedKeys();
   const { loginState } = useWebLogin();
   const pathname = useLocation().pathname;
   const { t } = useTranslation();
-  // const history = useHistory();
+
   const [modalState] = useModal();
   const modalDispatch = useModalDispatch();
   const { toLogin, toSignup } = useLogin();
@@ -32,6 +34,8 @@ function PcHeader() {
   const toggleAccountModal = () => {
     modalDispatch(basicModalView.setAccountModal.actions(!modalState.accountModal));
   };
+
+  useMonitorScroll();
 
   const isOpacity = useMemo(() => {
     return !(
@@ -41,6 +45,8 @@ function PcHeader() {
       selectedKeys[0] === 'unMatched'
     );
   }, [selectedKeys, pathname]);
+
+  const isPortkeySDK = useIsPortkeySDK();
 
   const renderLoginPart = () => {
     if (loginState === WebLoginState.logined) {
@@ -61,15 +67,21 @@ function PcHeader() {
     return (
       <>
         <Col>
-          <CommonButton className="signup-btn" type="text" style={{ fontWeight: '600' }} onClick={toLogin}>
-            {t('Log In')}
+          <CommonButton
+            className="signup-btn"
+            style={{ fontWeight: '600' }}
+            type={isPortkeySDK ? 'primary' : 'text'}
+            onClick={toLogin}>
+            {t(isPortkeySDK ? 'Unlock' : 'Log In')}
           </CommonButton>
         </Col>
-        <Col>
-          <CommonButton className="signup-btn" style={{ fontWeight: '600' }} type="primary" onClick={toSignup}>
-            {t('Sign Up')}
-          </CommonButton>
-        </Col>
+        {!isPortkeySDK && (
+          <Col>
+            <CommonButton className="signup-btn" style={{ fontWeight: '600' }} type="primary" onClick={toSignup}>
+              {t('Sign Up')}
+            </CommonButton>
+          </Col>
+        )}
       </>
     );
   };
