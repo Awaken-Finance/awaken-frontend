@@ -19,6 +19,7 @@ import useLogin from 'hooks/useLogin';
 import './styles.less';
 import Font from 'components/Font';
 import { useMonitorScroll } from 'hooks/useMonitorScroll';
+import { useIsPortkeySDK } from 'hooks/useIsPortkeySDK';
 
 function PcHeader() {
   const { selectedKeys } = useSelectedKeys();
@@ -45,6 +46,8 @@ function PcHeader() {
     );
   }, [selectedKeys, pathname]);
 
+  const isPortkeySDK = useIsPortkeySDK();
+
   const renderLoginPart = () => {
     if (loginState === WebLoginState.logined) {
       return (
@@ -64,15 +67,21 @@ function PcHeader() {
     return (
       <>
         <Col>
-          <CommonButton className="signup-btn" type="text" style={{ fontWeight: '600' }} onClick={toLogin}>
-            {t('Log In')}
+          <CommonButton
+            className="signup-btn"
+            style={{ fontWeight: '600' }}
+            type={isPortkeySDK ? 'primary' : 'text'}
+            onClick={toLogin}>
+            {t(isPortkeySDK ? 'Unlock' : 'Log In')}
           </CommonButton>
         </Col>
-        <Col>
-          <CommonButton className="signup-btn" style={{ fontWeight: '600' }} type="primary" onClick={toSignup}>
-            {t('Sign Up')}
-          </CommonButton>
-        </Col>
+        {!isPortkeySDK && (
+          <Col>
+            <CommonButton className="signup-btn" style={{ fontWeight: '600' }} type="primary" onClick={toSignup}>
+              {t('Sign Up')}
+            </CommonButton>
+          </Col>
+        )}
       </>
     );
   };

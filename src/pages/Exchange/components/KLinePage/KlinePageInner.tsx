@@ -43,10 +43,10 @@ export default function KLinePageInner({ changeTrade }: { changeTrade?: (type?: 
       <CommonCard title={null} className="operate-bottom-wrapper kline-operate-bottom-wrapper">
         <Row align="middle" gutter={[10, 0]}>
           <Col span={12}>
-            <SellBtn checkAuth={false} onClick={() => changeTrade?.('buy')} />
+            <SellBtn checkAuth={false} onClick={() => changeTrade?.('buy')} isFixState />
           </Col>
           <Col span={12}>
-            <SellBtn checkAuth={false} sell onClick={() => changeTrade?.('sell')} />
+            <SellBtn checkAuth={false} sell onClick={() => changeTrade?.('sell')} isFixState />
           </Col>
         </Row>
       </CommonCard>

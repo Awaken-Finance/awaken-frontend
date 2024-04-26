@@ -3,6 +3,13 @@ import clsx from 'clsx';
 export type FontWeight = 'regular' | 'medium' | 'bold';
 
 export type FontColor = 'one' | 'two' | 'three' | 'primary' | 'fall' | 'rise' | 'secondary';
+// one: --ant-black-font-color-1 #E5E8EF
+// two: --ant-black-font-color-2 #9BA0B0
+// three: --ant-black-font-color-3 #5C6170
+// primary: --ant-primary-font-color #5685FF
+// fall: --ant-fall-font-color #FF496A
+// rise: --ant-rise-font-color #2AED9B
+// secondary: --ant-secondary-color #FFC736
 
 export type FontSize = 12 | 14 | 16 | 18 | 20 | 24 | 32;
 
