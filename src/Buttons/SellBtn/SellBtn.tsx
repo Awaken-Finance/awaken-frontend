@@ -132,32 +132,33 @@ export default function SellBtn({
   const { loginState } = useWebLogin();
   const isPortkeySDK = useIsPortkeySDK();
 
+  const isLogin = useMemo(() => loginState === WebLoginState.logined, [loginState]);
+
   const btnTxt = useMemo(() => {
-    if (loginState === WebLoginState.logined || isFixState)
-      return sell ? `${t('sell')} ${symbolA}` : `${t('buy')} ${symbolA}`;
+    if (isLogin || isFixState) return sell ? `${t('sell')} ${symbolA}` : `${t('buy')} ${symbolA}`;
     if (isPortkeySDK) return sell ? t('Unlock to Sell') : t('Unlock to Buy');
     return sell ? t('Log In to Sell') : t('Log In to Buy');
-  }, [loginState, isFixState, sell, t, symbolA, isPortkeySDK]);
+  }, [isLogin, isFixState, sell, t, symbolA, isPortkeySDK]);
 
   const style = useMemo(() => {
-    if (loginState === WebLoginState.logined || isFixState)
+    if (isLogin || isFixState)
       return clsx('trading-button', {
         'trading-sell-button': sell,
         'trading-buy-button': !sell,
       });
     return clsx('trading-button', 'ant-btn-default');
-  }, [isFixState, loginState, sell]);
+  }, [isFixState, isLogin, sell]);
   return (
     <AuthBtn
       loading={loading}
-      disabled={disabled}
+      disabled={isLogin && disabled}
       className={style}
       onClick={onClick}
       checkAuth={checkAuth}
       size="large"
       block
       type="primary">
-      <Font size={16} weight="medium" color={loginState === WebLoginState.logined || isFixState ? 'one' : 'primary'}>
+      <Font size={16} weight="medium" color={isLogin || isFixState ? 'one' : 'primary'}>
         {btnTxt}
       </Font>
     </AuthBtn>
