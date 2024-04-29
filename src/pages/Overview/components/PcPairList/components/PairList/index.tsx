@@ -136,7 +136,7 @@ export default function ({ poolType, ...args }: PairListProps) {
 
             <PriceUSDDigits
               className={getFontStyle({ size: 12, lineHeight: 18, color: 'two', align: 'right' })}
-              price={record.priceHigh24hUSD}
+              price={record.priceLow24hUSD}
               prefix="≈$"
             />
           </div>
