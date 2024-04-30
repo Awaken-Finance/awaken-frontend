@@ -70,7 +70,7 @@ function LatestTrade() {
             side: record.side,
             token0Amount: record.token0Amount,
             token1Amount: record.token1Amount,
-            feeRate: record.tradePair.feeRate,
+            feeRate: record.tradePair.feeRate || pairInfo?.feeRate,
           });
           return (
             <FallOrRise
@@ -94,7 +94,7 @@ function LatestTrade() {
           const amount = getRealToken0Amount({
             side: record.side,
             value: token0Amount,
-            feeRate: record.tradePair.feeRate,
+            feeRate: record.tradePair.feeRate || pairInfo?.feeRate,
             decimals: record.tradePair.token0.decimals,
           });
           return <span className="last-trade-table-cell">{formatLiquidity(amount)}</span>;
@@ -111,7 +111,7 @@ function LatestTrade() {
         ),
       },
     ];
-  }, [t, pairInfo?.token0?.symbol, pairInfo?.token1.symbol]);
+  }, [t, pairInfo?.token1.symbol, pairInfo?.token0?.symbol, pairInfo?.feeRate]);
 
   const tableProps: Record<string, any> = {
     columns: columns,

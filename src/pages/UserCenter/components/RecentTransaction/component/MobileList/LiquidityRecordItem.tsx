@@ -7,7 +7,6 @@ import Font from 'components/Font';
 import { Pair, Pairs } from 'components/Pair';
 import FeeRate from 'components/FeeRate';
 import { formatPercentage, formatPriceChange } from 'utils/price';
-import BigNumber from 'bignumber.js';
 import CommonCopy from 'components/CommonCopy';
 
 import './index.less';
