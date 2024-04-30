@@ -174,7 +174,7 @@ export default function RightCard({
       if (val) {
         const amountValue = getAmountByInput(
           rate,
-          BigNumber.min(new BigNumber(val), maxTotal),
+          BigNumber.min(new BigNumber(val)),
           divDecimals(reserves?.[getCurrencyAddress(tokenB)], tokenB?.decimals),
           divDecimals(reserves?.[getCurrencyAddress(tokenA)], tokenA?.decimals),
         );
@@ -185,7 +185,7 @@ export default function RightCard({
       setTotal(val);
       setProgressValue(0);
     },
-    [maxTotal, rate, reserves, tokenA, tokenB],
+    [rate, reserves, tokenA, tokenB],
   );
 
   const sliderAmount = useCallback(
