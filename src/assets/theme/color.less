@@ -1,20 +1,20 @@
 @import './customer.theme.less';
 body {
   // primary color
-  --ant-primary-color: #477BFF;
-  --ant-primary-4: #477BFF;
-  --ant-primary-5: #477BFF;
+  --ant-primary-color: #477bff;
+  --ant-primary-4: #477bff;
+  --ant-primary-5: #477bff;
   // primary color 16%
   --ant-primary-color-percent-16: rgb(71 123 255 / 16%);
 
   // secondary color
-  --ant-secondary-color: #FFC736;
+  --ant-secondary-color: #ffc736;
 
   // rise color
-  --ant-rise-color: #1BC57D;
+  --ant-rise-color: #1bc57d;
 
   // fall color
-  --ant-fall-color: #E43555;
+  --ant-fall-color: #e43555;
   --ant-primary-disabled-color: @primary-disabled-color;
   --ant-input-placeholder-color: @input-placeholder-color;
   --ant-border-color-base: @border-color-base;
@@ -101,40 +101,40 @@ body {
   --ant-primary-font-color: @primary-font-color;
 
   // black font
-  --ant-black-font-color-1: #E5E8EF;
-  --ant-black-font-color-2: #9BA0B0;
-  --ant-black-font-color-3: #5C6170;
+  --ant-black-font-color-1: #e5e8ef;
+  --ant-black-font-color-2: #9ba0b0;
+  --ant-black-font-color-3: #5c6170;
 
   // fall font
-  --ant-rise-font-color: #2AED9B;
+  --ant-rise-font-color: #2aed9b;
   // rise font
-  --ant-fall-font-color: #FF496A;
+  --ant-fall-font-color: #ff496a;
 
   // body bg
   --ant-body-bg-color: #101217;
-  --ant-sidebar-bg-color: #181B23;
+  --ant-sidebar-bg-color: #181b23;
   // K line
-  --ant-k-line-bg-color: #181B23;
+  --ant-k-line-bg-color: #181b23;
   // input bg
   --ant-input-bg-color: #131620;
   // container bg
-  --ant-container-bg-color: #1E212B;
-  --ant-container-bg-color-2: #2A2E3A;
+  --ant-container-bg-color: #1e212b;
+  --ant-container-bg-color-2: #2a2e3a;
   // title bg
-  --ant-title-bg-color: #2A2E3A;
+  --ant-title-bg-color: #2a2e3a;
   // alert bg
-  --ant-alert-bg-color: #484E60;
-  // border 
-  --ant-border-color: #5685FF;
+  --ant-alert-bg-color: #484e60;
+  // border
+  --ant-border-color: #5685ff;
   // gray color
   --ant-gray-color: #343948;
-  
+
   //
   --ant-button-gray-color: #343948;
-  --ant-button-ghost-border-color: #393D47;
-  --ant-button-gray-hover-color: #484E60;
-  --ant-primary-button-hover: #477BFF;
-  --ant-primary-button-clicked: #477BFF;
+  --ant-button-ghost-border-color: #393d47;
+  --ant-button-gray-hover-color: #484e60;
+  --ant-primary-button-hover: #477bff;
+  --ant-primary-button-clicked: #477bff;
   //
   --ant-slider1-color: @slider1-color;
   --ant-switch1-color: @switch1-color;
@@ -144,8 +144,8 @@ body {
   --ant-fail-input: @fail-input;
 
   // btn hover
-  --ant-primary-color-hover: #477BFF;
-  --ant-list-item-color-hover: #2A2E3A;
+  --ant-primary-color-hover: #477bff;
+  --ant-list-item-color-hover: #2a2e3a;
 
   // portkey theme
   --portkey-ui-text-primary: #e5e8ef;
@@ -181,7 +181,7 @@ body {
   --portkey-ui-font-4: var(--ant-primary-color);
 
   .aelf-web-login.aelf-extra-wallets .web2-header .title {
-    color: var(--ant-black-font-color-2) ;
+    color: var(--ant-black-font-color-2);
     margin-top: 24px;
     font-size: 14px;
     font-style: normal;
@@ -194,17 +194,24 @@ body {
   }
 
   .aelf-web-login.aelf-extra-wallets .web2-content .plugin-entry {
-    background-color: var(--portkey-ui-default-btn-bg) ;
+    background-color: var(--portkey-ui-default-btn-bg);
     border: none;
   }
 
   .aelf-web-login.aelf-extra-wallets .web2-content .plugin-entry .name {
-    color: var(--ant-black-font-color-1) ;
+    color: var(--ant-black-font-color-1);
+  }
+
+  .portkey-ui-unlock-input {
+    background-color: var(--portkey-ui-default-bg) !important;
+    .portkey-ant-input {
+      background-color: var(--portkey-ui-default-bg) !important;
+    }
   }
 }
 
 .set-allowance-wrapper .set-allowance-body {
-  background-color: #2A2E3A;
+  background-color: #2a2e3a;
   margin: 0 24px;
   border-radius: 4px;
   padding: 24px;
@@ -219,7 +226,7 @@ body {
   width: 100%;
   overflow: hidden;
   text-overflow: ellipsis;
-  border: 1px solid #393D47;
+  border: 1px solid #393d47;
   margin: 0 24px;
 }
 
@@ -228,4 +235,3 @@ body {
   --ant-down-color: @down2-color;
   --ant-slider1-color: @slider2-color;
 }
-
