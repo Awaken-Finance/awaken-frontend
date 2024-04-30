@@ -48,7 +48,6 @@ export function formatPriceUSDWithSymBol(price?: BigNumber.Value, prefix = '', s
 
 export function formatPriceUSDSplit(price: BigNumber.Value) {
   const bigNum = new BigNumber(price);
-  console.log(price, bigNum, 'bigNum==');
   if (bigNum.isNaN()) return { p: '0' };
 
   if (bigNum.gte(0.1)) return { p: formatPriceUSD(price, 3) };
