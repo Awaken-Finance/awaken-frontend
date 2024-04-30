@@ -4,9 +4,6 @@ import { useWebLogin } from 'aelf-web-login';
 import { useMarketTradeList, useUserTradList } from 'pages/Exchange/hooks/useLatestList';
 import { TradeItem } from 'socket/socketType';
 import { useTranslation } from 'react-i18next';
-import { useMobile } from 'utils/isMobile';
-import { useWindowSize } from 'react-use';
-
 import { ColumnType } from 'antd/lib/table';
 import CommonMenu from 'components/CommonMenu';
 import { CommonTableList } from 'components/CommonTable';
@@ -17,6 +14,7 @@ import { formatLiquidity } from 'utils/price';
 import { useSwapContext } from 'pages/Exchange/hooks/useSwap';
 
 import './LatestTrade.less';
+import { getRealPrice, getRealToken0Amount } from 'utils/calculate';
 
 const menus = [
   {
@@ -32,11 +30,6 @@ const menus = [
 function LatestTrade() {
   const { t } = useTranslation();
   const { wallet } = useWebLogin();
-
-  const isMobile = useMobile();
-
-  const { width } = useWindowSize();
-
   const [{ pairInfo }] = useSwapContext();
 
   const marketList = useMarketTradeList(pairInfo?.id, 200);
@@ -65,29 +58,20 @@ function LatestTrade() {
     },
   );
 
-  const priceLabelWidth = useMemo(() => {
-    if (isMobile) {
-      return 108;
-    }
-    if (width > 1919) {
-      return 170;
-    }
-    if (width > 1679 && width < 1920) {
-      return 155;
-    }
-    if (width < 1680) {
-      return 100;
-    }
-  }, [width, isMobile]);
-
   const columns = useMemo<ColumnType<TradeItem>[]>(() => {
-    const defaultColumnx: ColumnType<TradeItem>[] = [
+    return [
       {
         title: `${t('price')}(${pairInfo?.token1.symbol || ''})`,
         dataIndex: 'price',
         key: 'price',
-        width: priceLabelWidth,
-        render: (price: string, record: TradeItem) => {
+        width: 96,
+        render: (_price: string, record: TradeItem) => {
+          const price = getRealPrice({
+            side: record.side,
+            token0Amount: record.token0Amount,
+            token1Amount: record.token1Amount,
+            feeRate: record.tradePair.feeRate,
+          });
           return (
             <FallOrRise
               num={price}
@@ -104,29 +88,29 @@ function LatestTrade() {
         title: `${t('amount')}(${pairInfo?.token0?.symbol || ''})`,
         dataIndex: 'token0Amount',
         key: 'token0Amount',
-        width: isMobile ? 'auto' : 90,
+        width: 110,
         align: 'right',
-        render: (token0Amount: string) => (
-          <span className="last-trade-table-cell">{formatLiquidity(token0Amount)}</span>
-        ),
+        render: (token0Amount: string, record: TradeItem) => {
+          const amount = getRealToken0Amount({
+            side: record.side,
+            value: token0Amount,
+            feeRate: record.tradePair.feeRate,
+          });
+          return <span className="last-trade-table-cell">{formatLiquidity(amount)}</span>;
+        },
       },
       {
-        title: t('time'),
+        title: `${t('time')}`,
         dataIndex: 'timestamp',
         key: 'timestamp',
+        width: 80,
         align: 'right',
         render: (timestamp: string) => (
           <span className="last-trade-table-cell">{moment(timestamp).format('HH:mm:ss')}</span>
         ),
       },
     ];
-
-    if (isMobile) {
-      defaultColumnx.pop();
-    }
-
-    return defaultColumnx;
-  }, [t, pairInfo?.token0?.symbol, pairInfo?.token1.symbol, priceLabelWidth, isMobile]);
+  }, [t, pairInfo?.token0?.symbol, pairInfo?.token1.symbol]);
 
   const tableProps: Record<string, any> = {
     columns: columns,

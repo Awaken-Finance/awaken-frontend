@@ -7,15 +7,18 @@ import Font from 'components/Font';
 import { Pair, Pairs } from 'components/Pair';
 import FeeRate from 'components/FeeRate';
 import { formatPercentage, formatPriceChange } from 'utils/price';
-import BigNumber from 'bignumber.js';
 import CommonCopy from 'components/CommonCopy';
 
 import './index.less';
-import { getExploreLink, shortenTransactionId } from 'utils';
+import { getExploreLink } from 'utils';
 import { getTokenWeights } from 'utils/token';
 import PriceDigits from 'components/PriceDigits';
 import getFontStyle from 'utils/getFontStyle';
 import PriceUSDDigits from 'components/PriceUSDDigits';
+import { useMemo } from 'react';
+import { getRealPrice, getRealToken0Amount, getRealToken1Amount } from 'utils/calculate';
+import { ZERO } from 'constants/misc';
+import { stringMidShort } from 'utils/string';
 
 export default function TransactionItem({
   item: {
@@ -34,6 +37,56 @@ export default function TransactionItem({
   item: RecentTransaction;
 }) {
   const { t } = useTranslation();
+  const isBuy = useMemo(() => {
+    const isRevert =
+      // trade pair sort
+      getTokenWeights(tradePair.token0.symbol) > getTokenWeights(tradePair.token1.symbol) &&
+      // contract sort
+      tradePair.token0.symbol < tradePair.token1.symbol;
+    return Boolean(Number(side === 0) ^ Number(isRevert));
+  }, [side, tradePair.token0.symbol, tradePair.token1.symbol]);
+
+  const realPrice = useMemo(
+    () =>
+      getRealPrice({
+        side,
+        token0Amount,
+        token1Amount,
+        feeRate: tradePair.feeRate,
+      }),
+    [side, token0Amount, token1Amount, tradePair.feeRate],
+  );
+
+  const realToken0Amount = useMemo(
+    () =>
+      getRealToken0Amount({
+        side,
+        value: token0Amount,
+        feeRate: tradePair.feeRate,
+      }),
+    [side, token0Amount, tradePair.feeRate],
+  );
+
+  const realToken1Amount = useMemo(
+    () =>
+      getRealToken1Amount({
+        side,
+        value: token1Amount,
+        feeRate: tradePair.feeRate,
+      }),
+    [side, token1Amount, tradePair.feeRate],
+  );
+
+  const realTotalValue = useMemo(
+    () =>
+      getRealToken1Amount({
+        side,
+        value: totalPriceInUsd,
+        feeRate: tradePair.feeRate,
+      }),
+    [side, totalPriceInUsd, tradePair.feeRate],
+  );
+
   return (
     <Row className="transaction-list-item" gutter={[0, 8]}>
       <Col span={24}>
@@ -54,26 +107,8 @@ export default function TransactionItem({
             </Font>
           </Col>
           <Col span={24} className="height-20">
-            <Font
-              lineHeight={20}
-              color={
-                getTokenWeights(tradePair.token0.symbol) > getTokenWeights(tradePair.token1.symbol) &&
-                tradePair.token0.symbol < tradePair.token1.symbol
-                  ? side === 0
-                    ? 'fall'
-                    : 'rise'
-                  : side === 0
-                  ? 'rise'
-                  : 'fall'
-              }>
-              {getTokenWeights(tradePair.token0.symbol) > getTokenWeights(tradePair.token1.symbol) &&
-              tradePair.token0.symbol < tradePair.token1.symbol
-                ? side === 0
-                  ? t('sell')
-                  : t('buy')
-                : side === 0
-                ? t('buy')
-                : t('sell')}
+            <Font lineHeight={20} color={isBuy ? 'rise' : 'fall'}>
+              {isBuy ? t('buy') : t('sell')}
             </Font>
           </Col>
         </Row>
@@ -85,7 +120,7 @@ export default function TransactionItem({
         </Font>
       </Col>
       <Col span={12} className="align-right height-20">
-        <PriceDigits price={price || 0} className={getFontStyle({ lineHeight: 20 })} />
+        <PriceDigits price={realPrice} className={getFontStyle({ lineHeight: 20 })} />
       </Col>
 
       <Col span={12} className="height-20">
@@ -94,7 +129,7 @@ export default function TransactionItem({
         </Font>
       </Col>
       <Col span={12} className="align-right height-20">
-        <Font lineHeight={20}>{formatPriceChange(token0Amount)}</Font>
+        <Font lineHeight={20}>{formatPriceChange(realToken0Amount)}</Font>
         &nbsp;
         <Pair lineHeight={20} symbol={tradePair?.token0?.symbol} />
       </Col>
@@ -105,7 +140,7 @@ export default function TransactionItem({
         </Font>
       </Col>
       <Col span={12} className="align-right height-20">
-        <Font lineHeight={20}>{`${formatPriceChange(token1Amount)}`}</Font>
+        <Font lineHeight={20}>{`${formatPriceChange(realToken1Amount)}`}</Font>
         &nbsp;
         <Pair lineHeight={20} symbol={tradePair?.token1?.symbol} />
       </Col>
@@ -116,7 +151,16 @@ export default function TransactionItem({
         </Font>
       </Col>
       <Col span={12} className="align-right height-20">
-        <PriceUSDDigits className={getFontStyle({ lineHeight: 24 })} price={totalPriceInUsd ?? 0} />,
+        <PriceUSDDigits className={getFontStyle({ lineHeight: 24 })} price={realTotalValue} />,
+      </Col>
+
+      <Col span={12} className="height-20">
+        <Font lineHeight={20} color="two">
+          {t('Average Price')}
+        </Font>
+      </Col>
+      <Col span={12} className="align-right height-20">
+        <PriceDigits price={price} className={getFontStyle({ lineHeight: 20 })} />
       </Col>
 
       <Col span={12} className="height-20">
@@ -125,7 +169,11 @@ export default function TransactionItem({
         </Font>
       </Col>
       <Col span={12} className="align-right height-20">
-        <Font lineHeight={20}>{new BigNumber(totalFee ?? 0).dp(8)}</Font>
+        <Font lineHeight={20}>
+          {`-${ZERO.plus(totalFee ?? 0)
+            .dp(8)
+            .toFixed()}`}
+        </Font>
         &nbsp;
         <Pair lineHeight={20} symbol={tradePair?.[side === 0 ? 'token1' : 'token0']?.symbol} />
       </Col>
@@ -136,7 +184,9 @@ export default function TransactionItem({
         </Font>
       </Col>
       <Col span={12} className="align-right height-20">
-        <Font lineHeight={20}>{new BigNumber(transactionFee ?? 0).dp(8)}</Font>
+        <Font lineHeight={20}>{`-${ZERO.plus(transactionFee ?? 0)
+          .dp(8)
+          .toFixed()}`}</Font>
         &nbsp;
         <Pair lineHeight={20} symbol={'ELF'} />
       </Col>
@@ -153,7 +203,7 @@ export default function TransactionItem({
               target="_blank"
               href={getExploreLink(transactionHash || '', 'transaction')}
               style={{ wordBreak: 'break-all' }}>
-              {shortenTransactionId(transactionHash || '')}
+              {stringMidShort(transactionHash || '', 8)}
             </a>
           </Col>
           <Col>

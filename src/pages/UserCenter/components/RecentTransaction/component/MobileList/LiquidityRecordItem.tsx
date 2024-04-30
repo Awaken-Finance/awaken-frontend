@@ -11,7 +11,9 @@ import BigNumber from 'bignumber.js';
 import CommonCopy from 'components/CommonCopy';
 
 import './index.less';
-import { getExploreLink, shortenTransactionId } from 'utils';
+import { getExploreLink } from 'utils';
+import { stringMidShort } from 'utils/string';
+import { ZERO } from 'constants/misc';
 
 export default function LiquidityRecordItem({
   item: { tradePair, timestamp, token0Amount, token1Amount, transactionFee, transactionHash },
@@ -69,7 +71,9 @@ export default function LiquidityRecordItem({
         </Font>
       </Col>
       <Col span={12} className="align-right height-20">
-        <Font lineHeight={20}>{new BigNumber(transactionFee ?? 0).dp(8)}</Font>
+        <Font lineHeight={20}>{`-${ZERO.plus(transactionFee ?? 0)
+          .dp(8)
+          .toFixed()}`}</Font>
         &nbsp;
         <Pair lineHeight={20} symbol={'ELF'} />
       </Col>
@@ -86,7 +90,7 @@ export default function LiquidityRecordItem({
               target="_blank"
               href={getExploreLink(transactionHash || '', 'transaction')}
               style={{ wordBreak: 'break-all' }}>
-              {shortenTransactionId(transactionHash || '')}
+              {stringMidShort(transactionHash || '', 8)}
             </a>
           </Col>
           <Col>

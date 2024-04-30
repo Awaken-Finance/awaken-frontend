@@ -42,6 +42,7 @@ export interface TradeItem {
   token1Amount: string;
   timestamp: number;
   transactionHash: string;
+  totalFee?: number;
   tradePair: {
     token0: {
       address: string;
