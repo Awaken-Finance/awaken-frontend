@@ -95,6 +95,7 @@ function LatestTrade() {
             side: record.side,
             value: token0Amount,
             feeRate: record.tradePair.feeRate,
+            decimals: record.tradePair.token0.decimals,
           });
           return <span className="last-trade-table-cell">{formatLiquidity(amount)}</span>;
         },

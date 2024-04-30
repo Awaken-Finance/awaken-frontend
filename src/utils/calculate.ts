@@ -64,16 +64,18 @@ export type TGetRealToken0AmountParams = {
   side?: number;
   value?: string | number;
   feeRate?: string | number;
+  decimals?: number;
 };
-export const getRealToken0Amount = ({ side, value = 0, feeRate = 0 }: TGetRealToken0AmountParams) => {
-  return side === 0 ? value : ZERO.plus(value).multipliedBy(ONE.minus(feeRate)).toFixed();
+export const getRealToken0Amount = ({ side, value = 0, feeRate = 0, decimals = 8 }: TGetRealToken0AmountParams) => {
+  return side === 0 ? value : ZERO.plus(value).multipliedBy(ONE.minus(feeRate)).dp(decimals).toFixed();
 };
 
 export type TGetRealToken1AmountParams = {
   side?: number;
   value?: string | number;
   feeRate?: string | number;
+  decimals?: number;
 };
-export const getRealToken1Amount = ({ side, value = 0, feeRate = 0 }: TGetRealToken1AmountParams) => {
-  return side === 1 ? value : ZERO.plus(value).multipliedBy(ONE.minus(feeRate)).toFixed();
+export const getRealToken1Amount = ({ side, value = 0, feeRate = 0, decimals = 8 }: TGetRealToken1AmountParams) => {
+  return side === 1 ? value : ZERO.plus(value).multipliedBy(ONE.minus(feeRate)).dp(decimals).toFixed();
 };
