@@ -19,13 +19,16 @@ import SearchTairByName from 'components/SearchTairByName';
 import { getSideTitle } from '../FilterSid';
 import { FetchParam } from 'types/requeset';
 import { SortOrder } from 'antd/lib/table/interface';
-import { getExploreLink, shortenTransactionId } from 'utils';
+import { getExploreLink } from 'utils';
 
 import './index.less';
 import { getTokenWeights } from 'utils/token';
 import PriceDigits from 'components/PriceDigits';
 import getFontStyle from 'utils/getFontStyle';
 import PriceUSDDigits from 'components/PriceUSDDigits';
+import { getRealPrice, getRealToken0Amount, getRealToken1Amount } from 'utils/calculate';
+import { ZERO } from 'constants/misc';
+import { stringMidShort } from 'utils/string';
 
 export default function PcTable({
   dataSource,
@@ -61,155 +64,213 @@ export default function PcTable({
   const { t } = useTranslation();
 
   const columns = useMemo<ColumnsType<RecentTransaction | LiquidityRecord>>(() => {
-    const list: ColumnsType<RecentTransaction | LiquidityRecord> = [
+    const isAll = menu === 'all';
+
+    const columnList: ColumnsType<RecentTransaction | LiquidityRecord> = [
       {
         title: t('timestamp'),
+        width: 94,
         key: 'timestamp',
         dataIndex: 'timestamp',
         sorter: true,
         sortOrder: field === 'timestamp' ? order : null,
-        render: (val: string) => <Font lineHeight={24}>{moment(val).format('YYYY-MM-DD HH:mm:ss')}</Font>,
+        render: (val: string) => (
+          <Font lineHeight={20} size={12}>
+            {moment(val).format('YYYY-MM-DD HH:mm:ss')}
+          </Font>
+        ),
       },
       {
         title: t('pairs'),
         key: 'tradePair',
         dataIndex: 'tradePair',
         sorter: true,
+        width: 212,
+        align: 'left',
         sortOrder: field === 'tradePair' ? order : null,
         render: (tradePair: TradePair) => (
-          <Row gutter={[8, 0]} align="middle">
-            <Col>
-              <CurrencyLogos size={24} tokens={[tradePair.token0, tradePair.token1]} />
-            </Col>
-            <Col>
-              <Pairs tokenA={tradePair?.token0?.symbol} tokenB={tradePair?.token1} lineHeight={24} weight="medium" />
-            </Col>
-            <Col>
+          <div className="pair-area">
+            <div className="pair-logo-wrap">
+              <CurrencyLogos size={16} tokens={[tradePair.token0, tradePair.token1]} />
+            </div>
+            <div className="pair-label-wrap">
+              <Pairs tokenA={tradePair?.token0} tokenB={tradePair?.token1} lineHeight={20} size={14} weight="medium" />
+            </div>
+            <div>
               <FeeRate useBg>{formatPercentage(tradePair?.feeRate * 100)}</FeeRate>
-            </Col>
-          </Row>
+            </div>
+          </div>
         ),
       },
       {
         title: t(getSideTitle(side)),
         key: 'side',
+        width: 42,
         dataIndex: 'side',
+        align: 'left',
         // filteredValue: [side],
         // filters: filterSidSource,
         // filterMultiple: false,
         // filterIcon: () => <IconFilterPc />,
         // filterDropdown: (props: any) => <FilterSidInTable {...props} />,
-        render: (val: number, record: RecentTransaction) => (
-          <Font
-            lineHeight={24}
-            color={
-              getTokenWeights(record.tradePair.token0.symbol) > getTokenWeights(record.tradePair.token1.symbol) &&
-              record.tradePair.token0.symbol < record.tradePair.token1.symbol
-                ? val === 0
-                  ? 'fall'
-                  : 'rise'
-                : val === 0
-                ? 'rise'
-                : 'fall'
-            }>
-            {getTokenWeights(record.tradePair.token0.symbol) > getTokenWeights(record.tradePair.token1.symbol) &&
-            record.tradePair.token0.symbol < record.tradePair.token1.symbol
-              ? val === 0
-                ? t('sell')
-                : t('buy')
-              : val === 0
-              ? t('buy')
-              : t('sell')}
-          </Font>
-        ),
+        render: (side: number, record: RecentTransaction) => {
+          const isRevert =
+            // trade pair sort
+            getTokenWeights(record.tradePair.token0.symbol) > getTokenWeights(record.tradePair.token1.symbol) &&
+            // contract sort
+            record.tradePair.token0.symbol < record.tradePair.token1.symbol;
+          const isBuy = Boolean(Number(side === 0) ^ Number(isRevert));
+          return (
+            <Font lineHeight={20} size={14} color={isBuy ? 'rise' : 'fall'}>
+              {isBuy ? t('buy') : t('sell')}
+            </Font>
+          );
+        },
       },
       {
         title: t('price'),
         key: 'price',
         dataIndex: 'price',
-        align: 'right',
-        render: (val: BigNumber) => <PriceDigits className={getFontStyle({ lineHeight: 20 })} price={val} />,
+        align: 'left',
+        width: 116,
+        render: (_val: BigNumber, record: RecentTransaction) => {
+          const price = getRealPrice({
+            side: record.side,
+            token0Amount: record.token0Amount,
+            token1Amount: record.token1Amount,
+            feeRate: record.tradePair.feeRate,
+          });
+          return <PriceDigits className={getFontStyle({ lineHeight: 20 })} price={price} />;
+        },
       },
       {
         title: t('amount'),
         key: 'token0Amount',
         dataIndex: 'token0Amount',
-        align: 'right',
-        render: (val: number, record: RecentTransaction) => (
-          <>
-            <Font lineHeight={24}>{formatPriceChange(val)}</Font>
-            &nbsp;
-            <Pair lineHeight={24} symbol={record?.tradePair?.token0?.symbol} />
-          </>
-        ),
+        width: 132,
+        align: 'left',
+        render: (token0Amount: number, record: RecentTransaction) => {
+          const amount = getRealToken0Amount({
+            side: record.side,
+            value: token0Amount,
+            feeRate: record.tradePair.feeRate,
+          });
+          return (
+            <>
+              <Font lineHeight={20} size={14}>
+                {formatPriceChange(isAll ? amount : token0Amount)}
+              </Font>
+              &nbsp;
+              <Pair lineHeight={20} size={14} symbol={record?.tradePair?.token0?.symbol} />
+            </>
+          );
+        },
       },
       {
-        title: menu !== 'all' ? t('amount') : t('total'),
+        title: isAll ? t('total') : t('amount'),
         key: 'token1Amount',
         dataIndex: 'token1Amount',
-        align: 'right',
-        render: (val: number, record: RecentTransaction) => (
-          <>
-            <Font lineHeight={24}>{formatPriceChange(val)}</Font>
-            &nbsp;
-            <Pair lineHeight={24} symbol={record?.tradePair?.token1?.symbol} />
-          </>
-        ),
+        align: 'left',
+        width: 132,
+        render: (token1Amount: number, record: RecentTransaction) => {
+          const amount = getRealToken1Amount({
+            side: record.side,
+            value: token1Amount,
+            feeRate: record.tradePair.feeRate,
+          });
+          return (
+            <>
+              <Font lineHeight={24}>{formatPriceChange(isAll ? amount : token1Amount)}</Font>
+              &nbsp;
+              <Pair lineHeight={24} symbol={record?.tradePair?.token1?.symbol} />
+            </>
+          );
+        },
       },
       {
         title: t('TotalValue'),
         key: 'totalPriceInUsd',
         dataIndex: 'totalPriceInUsd',
-        align: 'right',
-        sorter: true,
-        sortOrder: field === 'totalPriceInUsd' ? order : null,
-        render: (val: BigNumber) => <PriceUSDDigits className={getFontStyle({ lineHeight: 24 })} price={val} />,
+        align: 'left',
+        // sorter: true,
+        width: 116,
+        // sortOrder: field === 'realTotalPriceInUsd' ? order : null,
+        render: (_val: number, record: RecentTransaction) => {
+          const amount = getRealToken1Amount({
+            side: record.side,
+            value: record.totalPriceInUsd,
+            feeRate: record.tradePair.feeRate,
+          });
+          return <PriceUSDDigits className={getFontStyle({ lineHeight: 24 })} price={amount} />;
+        },
       },
       {
-        title: t('Fee'),
-        key: 'totalFee',
-        dataIndex: 'totalFee',
-        align: 'right',
-        render: (val: number, record: RecentTransaction) => (
+        title: t('Average Price'),
+        key: 'averagePrice',
+        dataIndex: 'price',
+        align: 'left',
+        width: 116,
+        render: (val: BigNumber) => <PriceDigits className={getFontStyle({ lineHeight: 20 })} price={val} />,
+      },
+      {
+        title: (
           <>
-            <Font lineHeight={24}>{new BigNumber(val).dp(8)}</Font>&nbsp;
-            <Pair lineHeight={24} symbol={record?.tradePair?.[record.side === 0 ? 'token1' : 'token0']?.symbol} />
+            {isAll && <div>{t('Fee')}</div>}
+            <div>{t('transactionFee')}</div>
           </>
         ),
-      },
-      {
-        title: t('transactionFee'),
-        key: 'transactionFee',
-        dataIndex: 'transactionFee',
-        align: 'right',
-        render: (val: number) => <Font lineHeight={24}>{`${new BigNumber(val).dp(8)} ELF`}</Font>,
+        key: 'totalFee',
+        dataIndex: 'totalFee',
+        align: 'left',
+        width: 114,
+        render: (val: number, record: RecentTransaction) => {
+          const transactionFee = ZERO.plus(record.transactionFee || 0)
+            .dp(8)
+            .toFixed();
+          return (
+            <>
+              {isAll && (
+                <div>
+                  <Font lineHeight={20} size={12}>{`-${ZERO.plus(val).dp(8).toFixed()}`}</Font>&nbsp;
+                  <Pair
+                    lineHeight={20}
+                    size={12}
+                    symbol={record?.tradePair?.[record.side === 0 ? 'token1' : 'token0']?.symbol}
+                  />
+                </div>
+              )}
+              <Font lineHeight={20} size={12}>
+                {`-${transactionFee} ELF`}
+              </Font>
+            </>
+          );
+        },
       },
       {
         title: t('transactionID'),
         key: 'transactionHash',
         dataIndex: 'transactionHash',
         align: 'right',
+        width: 110,
         render: (val: string) => (
-          <Row>
-            <Col flex={1}>
-              <a target="_blank" href={getExploreLink(val, 'transaction')} style={{ wordBreak: 'break-all' }}>
-                {shortenTransactionId(val)}
+          <div className="transaction-hash-wrap">
+            <div className="transaction-hash-label">
+              <a target="_blank" href={getExploreLink(val, 'transaction')} className="transaction-hash-link">
+                {stringMidShort(val)}
               </a>
-            </Col>
-            <Col flex={'32px'}>
-              <CommonCopy copyInfo="" copyValue={val} className="copy-address" />
-            </Col>
-          </Row>
+            </div>
+            <CommonCopy copyInfo="" copyValue={val} className="copy-address" />
+          </div>
         ),
       },
     ];
 
-    if (menu !== 'all') {
-      list.splice(6, 2);
-      list.splice(2, 2);
+    if (!isAll) {
+      columnList.splice(6, 2);
+      columnList.splice(2, 2);
     }
 
-    return list;
+    return columnList;
   }, [t, menu, field, order, side]);
 
   return (
@@ -229,7 +290,7 @@ export default function PcTable({
           </Col>
         </Row>
       </div>
-      <div className="transation-table-box">
+      <div className="transaction-table-box">
         <CommonTable
           onChange={getData}
           total={total}
@@ -240,7 +301,7 @@ export default function PcTable({
           pageSize={pageSize}
           pageNum={pageNum}
           emptyType="nodata"
-          className="transation-box"
+          className="transaction-box"
         />
       </div>
     </div>
