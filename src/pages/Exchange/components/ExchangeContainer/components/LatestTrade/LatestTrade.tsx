@@ -85,7 +85,7 @@ function LatestTrade() {
         },
       },
       {
-        title: `${t('amount')}`,
+        title: `${t('amount')}(${pairInfo?.token0?.symbol || ''})`,
         dataIndex: 'token0Amount',
         key: 'token0Amount',
         width: 110,
@@ -96,11 +96,7 @@ function LatestTrade() {
             value: token0Amount,
             feeRate: record.tradePair.feeRate,
           });
-          return (
-            <span className="last-trade-table-cell">
-              {formatLiquidity(amount)} {pairInfo?.token0?.symbol}
-            </span>
-          );
+          return <span className="last-trade-table-cell">{formatLiquidity(amount)}</span>;
         },
       },
       {
