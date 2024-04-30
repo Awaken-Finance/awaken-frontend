@@ -582,6 +582,7 @@
     "RecentTransactionRemove": "移除流動性",
 
     "TotalValue": "總價值",
+    "Average Price": "平均價格",
     "Fee": "DEX手續費",
     "transactionID": "交易ID",
     "pooled": "池中代幣數量",

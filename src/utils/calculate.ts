@@ -1,5 +1,5 @@
 import BigNumber from 'bignumber.js';
-import { ZERO, VALUE_B, VALUE_M, VALUE_T } from 'constants/misc';
+import { ZERO, VALUE_B, VALUE_M, VALUE_T, ONE } from 'constants/misc';
 export function timesDecimals(a?: BigNumber.Value, decimals?: string | number) {
   if (!a) return ZERO;
   const bigA = BigNumber.isBigNumber(a) ? a : new BigNumber(a || '');
@@ -44,3 +44,36 @@ export function valueToUSD(input: BigNumber.Value): BigNumber.Value {
 
   return bgInput.toFormat(2);
 }
+
+export type TGetRealPriceParams = {
+  side?: number;
+  token0Amount?: string | number;
+  token1Amount?: string | number;
+  feeRate?: string | number;
+};
+export const getRealPrice = ({ side, token0Amount = 0, token1Amount = 0, feeRate = 0 }: TGetRealPriceParams) => {
+  const average = ZERO.plus(token1Amount).div(token0Amount);
+  if (side === 0) {
+    return average.div(ONE.plus(feeRate)).toFixed();
+  } else {
+    return average.multipliedBy(ONE.plus(feeRate)).toFixed();
+  }
+};
+
+export type TGetRealToken0AmountParams = {
+  side?: number;
+  value?: string | number;
+  feeRate?: string | number;
+};
+export const getRealToken0Amount = ({ side, value = 0, feeRate = 0 }: TGetRealToken0AmountParams) => {
+  return side === 0 ? value : ZERO.plus(value).multipliedBy(ONE.minus(feeRate)).toFixed();
+};
+
+export type TGetRealToken1AmountParams = {
+  side?: number;
+  value?: string | number;
+  feeRate?: string | number;
+};
+export const getRealToken1Amount = ({ side, value = 0, feeRate = 0 }: TGetRealToken1AmountParams) => {
+  return side === 1 ? value : ZERO.plus(value).multipliedBy(ONE.minus(feeRate)).toFixed();
+};

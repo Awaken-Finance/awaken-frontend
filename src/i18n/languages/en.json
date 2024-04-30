@@ -585,6 +585,7 @@
     "RecentTransactionRemove": "Removes",
 
     "TotalValue": "Total Value",
+    "Average Price": "Average Price",
     "Fee": "DEX Fee",
     "transactionID": "Transaction ID",
     "pooled": "Pooled Tokens",
