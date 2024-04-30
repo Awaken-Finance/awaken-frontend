@@ -13,7 +13,7 @@ import BigNumber from 'bignumber.js';
 
 interface ManageLiquidityBtnProps {
   children?: React.ReactChild | null;
-  pair: PairItem | PoolItem;
+  pair?: PairItem | PoolItem | null;
   useBtn?: boolean;
   lpType?: 'add' | 'remove';
   btnText?: string;
@@ -30,16 +30,17 @@ export default function ManageLiquidityBtn({
   const isMobile = useMobile();
   const history = useHistory();
 
-  const pairInfoStr = `${pair.token0?.symbol}_${pair.token1?.symbol}_${new BigNumber(pair.feeRate ?? 0).times(100)}`;
+  const pairInfoStr = `${pair?.token0?.symbol}_${pair?.token1?.symbol}_${new BigNumber(pair?.feeRate ?? 0).times(100)}`;
 
   const routePath = `/liquidity/${pairInfoStr}/${lpType}`;
 
   const gotoManageLiquidity = useCallback(
     (e: MouseEvent) => {
       e.stopPropagation();
+      if (!pair) return;
       history.push(routePath);
     },
-    [history, routePath],
+    [history, pair, routePath],
   );
 
   const onClick = useLoginCheck(

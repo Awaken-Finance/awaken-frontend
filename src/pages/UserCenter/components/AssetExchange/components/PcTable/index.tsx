@@ -9,12 +9,14 @@ import Font from 'components/Font';
 import { CurrencyLogos } from 'components/CurrencyLogo';
 import { Pairs } from 'components/Pair';
 import FeeRate from 'components/FeeRate';
-import { formatLiquidity, formatPercentage, formatPriceUSDWithSymBol, formatTokenAmount } from 'utils/price';
+import { formatLiquidity, formatPercentage, formatTokenAmount } from 'utils/price';
 import ManageLiquidityBtn from 'Buttons/ManageLiquidityBtn';
 import { SortOrder } from 'antd/lib/table/interface';
 import Amount from '../Amount';
 
 import './index.less';
+import PriceUSDDigits from 'components/PriceUSDDigits';
+import getFontStyle from 'utils/getFontStyle';
 
 export default function PcTable({
   dataSource,
@@ -75,7 +77,7 @@ export default function PcTable({
         sorter: true,
         sortOrder: field === 'assetUSD' ? order : null,
         align: 'right',
-        render: (val: number) => <Font lineHeight={24}>{formatPriceUSDWithSymBol(val)}</Font>,
+        render: (val: number) => <PriceUSDDigits className={getFontStyle({ lineHeight: 24 })} price={val} />,
       },
       {
         title: <Amount value={t('amount')}></Amount>,
@@ -120,13 +122,13 @@ export default function PcTable({
   }, [t, field, order]);
 
   return (
-    <Row className="pc-table">
-      <Col span={24} className="pc-table-header">
-        <Font weight="bold" lineHeight={48} size={32}>
+    <div className="asset-exchange-pc-table">
+      <div className="pc-table-header">
+        <Font weight="bold" lineHeight={32} size={24}>
           {t('myMarketingMakingLiquidity')}
         </Font>
-      </Col>
-      <Col span={24} className="pc-table-box">
+      </div>
+      <div className="pc-table-box">
         <CommonTable
           onChange={getData}
           total={total}
@@ -139,7 +141,7 @@ export default function PcTable({
           emptyType="nodata"
           className="exchange-table"
         />
-      </Col>
-    </Row>
+      </div>
+    </div>
   );
 }

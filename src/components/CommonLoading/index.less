@@ -1,15 +1,25 @@
 .common-loading {
   width: 100%;
   height: 100%;
-  & > div > .ant-spin{
+  & .ant-spin {
     max-height: unset;
     background-color: var(--ant-container-bg-color);
   }
+
   & .ant-spin-container {
     height: 100%;
   }
+  .ant-spin-container::after {
+    background: transparent !important;
+  }
   & .ant-spin-blur {
     opacity: 0;
+    transition: none;
+  }
+
+  .ant-spin-dot {
+    height: auto;
+    top: 200px;
   }
 }
 

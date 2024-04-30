@@ -3,20 +3,9 @@
   position: sticky;
   top: 0;
   z-index: 100;
-  min-width: 1440PX;
-  width: 100%;
-
-  // @media screen and (max-width: 1920PX) {
-  //   width: 100vw;
-  // }
-
-  // @media screen and (max-width: 1680PX) {
-  //   width: 100vw;
-  // }
-  
-  // @media screen and (max-width: 1440PX) {
-  //   width: 100vw;
-  // }
+  min-width: 1440px;
+  left: 0;
+  right: 0;
 
   &.ant-layout-header {
     padding: 0 20px 0 24px;
@@ -28,9 +17,7 @@
   .menu-logo {
     width: 105px;
     height: 28px;
-    margin-right: 20px;
-    position: relative;
-    margin-top: 20px;
+    margin-top: 10px;
   }
 
   .ant-menu {
@@ -57,20 +44,31 @@
     }
   }
 
-  .header-right {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    gap: 5px;
+  // .assets-btn {
+  //   font-weight: 600;
+  // }
 
-    .assets-btn {
-      font-weight: 600;
-    }
+  .signup-btn {
+    width: 80px;
+    height: 32px;
+  }
 
-    .signup-btn {
-      width: 80px;
-      height: 28px;
-      margin-right: 6px;
+  .my-btn {
+    height: 32px;
+    padding: 0 12px;
+    &-content {
+      display: flex;
+      align-items: center;
+      &-font {
+        margin: 0 6px;
+      }
+      &-icon {
+        font-size: 9px;
+      }
     }
   }
+}
+
+.site-header-border {
+  border-bottom: 1px solid #393d47;
 }

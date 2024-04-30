@@ -1,12 +1,16 @@
-.pc-table {
+.recent-tx-pc-table {
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+
   .ant-table-filter-trigger {
     margin: 0;
     padding: 6px 8px;
   }
-  &-header {
-    padding: 20px 0 32px;
+  .pc-table-header {
+    padding: 12px 0 16px;
   }
-  &-operate {
+  .pc-table-operate {
     height: 64px;
     padding: 0 24px;
     background-color: var(--ant-container-bg-color);
@@ -20,12 +24,18 @@
     background-color: var(--ant-gray-color);
     margin: 0 8px;
   }
+  .transation-table-box {
+    border-radius: 8px;
+    flex: 1;
+    background-color: #1e212b;
+  }
+
   .copy-address {
     .common-copy-content {
       max-width: 140px;
-      overflow:hidden;
-      text-overflow:ellipsis;
-      white-space:nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
     }
   }
 }

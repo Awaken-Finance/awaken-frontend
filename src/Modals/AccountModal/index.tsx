@@ -17,7 +17,7 @@ import AccountInfo from './AccountInfo';
 import CommonButton from 'components/CommonButton';
 import SwitchWallets from './SwitchWallets';
 import Font from 'components/Font';
-import { IconArrowDown, IconArrowUp, IconClose } from 'assets/icons';
+import { IconArrowDown, IconArrowRight, IconArrowUp, IconClose } from 'assets/icons';
 import { TableEmptyData } from 'assets/images';
 import MyTokenList from './MyTokenList';
 import { matchPath, useHistory } from 'react-router-dom';
@@ -26,6 +26,7 @@ import { detectDiscoverProvider, detectNightElf } from 'aelf-web-login';
 import { useTranslation } from 'react-i18next';
 import { routes } from 'routes';
 import querystring from 'query-string';
+import { NavLink } from 'react-router-dom';
 
 import './styles.less';
 
@@ -217,17 +218,26 @@ function AccountModal() {
       onCancel={onClose}>
       <Carousel ref={corousel} dots={false} autoplay={false} swipe={false}>
         <div className="account-content">
-          <AccountInfo onClickLogout={onClickLogout} />
-          {!isMobile && (
-            <CommonButton className="switch-wallet-btn" type="ghost" onClick={toSwitchWallet}>
-              {t('SwitchWallet')}
-            </CommonButton>
-          )}
-          <Row style={{ marginTop: isMobile ? '20px' : 0 }}>
+          <AccountInfo onClickLogout={onClickLogout} onClickSwitchWallet={toSwitchWallet} />
+          <div className="account-content-list">
+            <NavLink to="/user-center/exchange" className="account-content-item" onClick={onClose}>
+              <Font weight="bold" lineHeight={24} size={16}>
+                {t('myMarketingMakingLiquidity')}
+              </Font>
+              <IconArrowRight />
+            </NavLink>
+            <NavLink to="/user-center/transaction" className="account-content-item" onClick={onClose}>
+              <Font weight="bold" lineHeight={24} size={16}>
+                {t('recentTransaction')}
+              </Font>
+              <IconArrowRight />
+            </NavLink>
+          </div>
+          <div className="account-content-title">
             <Font size={16} weight="medium">
               {t('tokens')}
             </Font>
-          </Row>
+          </div>
           {isEmpty ? renderEmpty() : renderTokenList()}
         </div>
         <div className="account-switch">

@@ -18,6 +18,7 @@ import clsx from 'clsx';
 import CommonModal from 'components/CommonModal';
 
 import './styles.less';
+import { useIsPortkeySDK } from 'hooks/useIsPortkeySDK';
 
 function MobileHeader() {
   const { t } = useTranslation();
@@ -52,11 +53,13 @@ function MobileHeader() {
     [changeLanguage],
   );
 
+  const isPortkeySDK = useIsPortkeySDK();
+
   const renderLoginPart = () => {
     if (loginState === WebLoginState.logined) {
       return (
         <>
-          <CommonButton type="text" icon={<IconAssets />} onClick={() => history.push('/user-center')} />
+          {/* <CommonButton type="text" icon={<IconAssets />} onClick={() => history.push('/user-center/exchange')} /> */}
           <CommonButton type="text" icon={<IconUser />} onClick={toggleAccountModal} />
         </>
       );
@@ -64,7 +67,7 @@ function MobileHeader() {
     return (
       <>
         <CommonButton className="signup-btn" type="primary" style={{ fontWeight: '600' }} onClick={toLogin}>
-          {t('Log In')}
+          {t(isPortkeySDK ? 'Unlock' : 'Log In')}
         </CommonButton>
         {/* <CommonButton className="signup-btn" type="primary" onClick={toSignup}>
           {t('Sign Up')}
@@ -118,22 +121,24 @@ function MobileHeader() {
           <div className="login-buttons">
             <CommonButton
               className="login-btn"
-              type="text"
+              type={isPortkeySDK ? 'primary' : 'default'}
               onClick={() => {
                 onClose();
                 toLogin();
               }}>
-              {t('Log In')}
+              {t(isPortkeySDK ? 'Unlock' : 'Log In')}
             </CommonButton>
-            <CommonButton
-              className="signup-btn"
-              type="primary"
-              onClick={() => {
-                onClose();
-                toSignup();
-              }}>
-              {t('Sign Up')}
-            </CommonButton>
+            {!isPortkeySDK && (
+              <CommonButton
+                className="signup-btn"
+                type="primary"
+                onClick={() => {
+                  onClose();
+                  toSignup();
+                }}>
+                {t('Sign Up')}
+              </CommonButton>
+            )}
           </div>
         )}
         <NavMenu onPageChange={onClose} />

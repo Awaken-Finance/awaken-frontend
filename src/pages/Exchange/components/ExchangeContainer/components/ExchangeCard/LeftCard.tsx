@@ -153,19 +153,17 @@ export default function LeftCard({
       if (val) {
         const totalValue = getAmountByInput(
           rate,
-          BigNumber.min(new BigNumber(val), maxAmount),
+          new BigNumber(val),
           divDecimals(reserves?.[getCurrencyAddress(tokenA)], tokenA?.decimals),
           divDecimals(reserves?.[getCurrencyAddress(tokenB)], tokenB?.decimals),
         );
-
         totalStr = bigNumberToUPString(totalValue, tokenB?.decimals);
       }
-
       setTotal(totalStr);
       setAmount(val);
       setProgressValue(0);
     },
-    [maxAmount, rate, reserves, tokenA, tokenB],
+    [rate, reserves, tokenA, tokenB],
   );
 
   const inputTotal = useCallback(

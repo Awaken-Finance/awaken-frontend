@@ -18,9 +18,9 @@ export default function Pairs({ tokenA, tokenB, delimiter = '/', ...props }: Pai
 
   return (
     <span className="pairs">
-      <Pair symbol={tokens[0]} {...props} />
+      <Pair symbol={tokens[0] ?? '---'} {...props} />
       <Font {...props}>{delimiter}</Font>
-      <Pair symbol={tokens[1]} {...props} />
+      <Pair symbol={tokens[1] ?? '---'} {...props} />
     </span>
   );
 }

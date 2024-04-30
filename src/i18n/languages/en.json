@@ -412,6 +412,10 @@
     "sell": "Sell",
     "Buy": "Buy",
     "Sell": "Sell",
+    "Log In to Buy": "Log In to Buy",
+    "Log In to Sell": "Log In to Sell",
+    "Unlock to Buy": "Unlock to Buy",
+    "Unlock to Sell": "Unlock to Sell",
     "recently": "Recently",
     "swapFees": "Swap fees({{symbol}})",
     "pairNotExist": "The trading pair doesn't exist.",
@@ -502,6 +506,7 @@
     "Token Symbol": "Token Symbol",
     "Log In": "Log In",
     "Sign Up": "Sign Up",
+    "Unlock": "Unlock",
     "pools": "Pools",
     "24ValForELF": "24h Volume(ELF)",
     "LP7D": "LP Reward APR (7D)",
@@ -598,6 +603,7 @@
     "Failed to log in using NightELF. Please try it again": "Failed to log in. Please try again.",
     "Original": "Original",
     "Depth": "Depth",
-    "ensuring that you approve an adequate amount": "Insufficient {{symbol}} allowance. Please try again, ensuring that you approve an adequate amount, {{amount}} {{symbol}}, as the allowance."
+    "ensuring that you approve an adequate amount": "Insufficient {{symbol}} allowance. Please try again, ensuring that you approve an adequate amount, {{amount}} {{symbol}}, as the allowance.",
+    "My": "My"
   }
 }

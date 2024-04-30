@@ -1,5 +1,5 @@
 import { Layout, Row, Col } from 'antd';
-import { IconLogo } from 'assets/icons';
+import { IconArrowDown, IconLogo } from 'assets/icons';
 import clsx from 'clsx';
 import Network from 'components/Network';
 import { basicModalView } from 'contexts/useModal/actions';
@@ -7,7 +7,7 @@ import { useModalDispatch } from 'contexts/useModal/hooks';
 import { memo, useMemo } from 'react';
 import LanguageMenu from '../LanguageMenu';
 import NavMenu from '../NavMenu';
-import { NavLink, useHistory, useLocation } from 'react-router-dom';
+import { NavLink, useLocation } from 'react-router-dom';
 import useSelectedKeys from 'components/Header/hooks/useSelectedKeys';
 import { useTranslation } from 'react-i18next';
 import { WebLoginState, useWebLogin } from 'aelf-web-login';
@@ -17,13 +17,16 @@ import { IconUser } from 'assets/icons';
 import useLogin from 'hooks/useLogin';
 
 import './styles.less';
+import Font from 'components/Font';
+import { useMonitorScroll } from 'hooks/useMonitorScroll';
+import { useIsPortkeySDK } from 'hooks/useIsPortkeySDK';
 
 function PcHeader() {
   const { selectedKeys } = useSelectedKeys();
   const { loginState } = useWebLogin();
   const pathname = useLocation().pathname;
   const { t } = useTranslation();
-  const history = useHistory();
+
   const [modalState] = useModal();
   const modalDispatch = useModalDispatch();
   const { toLogin, toSignup } = useLogin();
@@ -31,6 +34,8 @@ function PcHeader() {
   const toggleAccountModal = () => {
     modalDispatch(basicModalView.setAccountModal.actions(!modalState.accountModal));
   };
+
+  useMonitorScroll();
 
   const isOpacity = useMemo(() => {
     return !(
@@ -41,36 +46,50 @@ function PcHeader() {
     );
   }, [selectedKeys, pathname]);
 
+  const isPortkeySDK = useIsPortkeySDK();
+
   const renderLoginPart = () => {
     if (loginState === WebLoginState.logined) {
       return (
-        <>
-          <CommonButton
-            type="text"
-            style={{ fontSize: 16, fontWeight: '600' }}
-            onClick={() => history.push('/user-center')}>
-            {t('Assets')}
+        <Col>
+          <CommonButton onClick={toggleAccountModal} className="my-btn">
+            <div className="my-btn-content">
+              <IconUser />
+              <Font size={14} className="my-btn-content-font">
+                {t('My')}
+              </Font>
+              <IconArrowDown className="my-btn-content-icon" />
+            </div>
           </CommonButton>
-          <CommonButton type="text" icon={<IconUser />} onClick={toggleAccountModal} />
-        </>
+        </Col>
       );
     }
     return (
       <>
-        <CommonButton className="login-btn" type="text" style={{ fontWeight: '600' }} onClick={toLogin}>
-          {t('Log In')}
-        </CommonButton>
-        <CommonButton className="signup-btn" style={{ fontWeight: '600' }} type="primary" onClick={toSignup}>
-          {t('Sign Up')}
-        </CommonButton>
+        <Col>
+          <CommonButton
+            className="signup-btn"
+            style={{ fontWeight: '600' }}
+            type={isPortkeySDK ? 'primary' : 'text'}
+            onClick={toLogin}>
+            {t(isPortkeySDK ? 'Unlock' : 'Log In')}
+          </CommonButton>
+        </Col>
+        {!isPortkeySDK && (
+          <Col>
+            <CommonButton className="signup-btn" style={{ fontWeight: '600' }} type="primary" onClick={toSignup}>
+              {t('Sign Up')}
+            </CommonButton>
+          </Col>
+        )}
       </>
     );
   };
 
   return (
     <Layout.Header className={clsx('site-header', isOpacity && 'opacity-header')}>
-      <Row>
-        <Col flex="146px">
+      <Row align="middle" gutter={[20, 0]}>
+        <Col>
           <NavLink to={'/'}>
             <IconLogo className="menu-logo" />
           </NavLink>
@@ -78,10 +97,16 @@ function PcHeader() {
         <Col flex="1">
           <NavMenu />
         </Col>
-        <Col className="header-right">
-          <Network overlayClassName="network-wrap-pc" />
-          {renderLoginPart()}
-          <LanguageMenu />
+        <Col>
+          <Row align="middle" gutter={[16, 0]}>
+            <Col>
+              <Network />
+            </Col>
+            {renderLoginPart()}
+            <Col>
+              <LanguageMenu />
+            </Col>
+          </Row>
         </Col>
       </Row>
     </Layout.Header>

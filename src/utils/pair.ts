@@ -64,10 +64,11 @@ export const getPairReversed = (_pair: PairItem) => {
   pair.priceHigh24hUSD = ZERO.plus(pair.priceHigh24h).times(_pair.priceUSD).toNumber();
   pair.priceLow24hUSD = ZERO.plus(pair.priceLow24h).times(_pair.priceUSD).toNumber();
 
-  pair.priceChange24h = ZERO.minus(_pair.pricePercentChange24h).div(_pair.price).toNumber();
+  pair.priceChange24h = ZERO.minus(_pair.pricePercentChange24h).div(100).div(_pair.price).toNumber();
 
   pair.pricePercentChange24h = ZERO.minus(_pair.pricePercentChange24h)
-    .div(new BigNumber(_pair.pricePercentChange24h).plus(1))
+    .div(new BigNumber(_pair.pricePercentChange24h).plus(100))
+    .times(100)
     .toNumber();
 
   pair.volume24h = _pair.tradeValue24h;

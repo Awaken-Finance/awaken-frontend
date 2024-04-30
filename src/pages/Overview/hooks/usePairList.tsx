@@ -18,7 +18,7 @@ export default function usePairList() {
   const {
     data,
     loading,
-    run: getData,
+    runAsync: getData,
   } = useRequest(
     async (params: GetPairListParams) => {
       if (isCAWallet) {
@@ -41,7 +41,7 @@ export default function usePairList() {
   );
 
   const getList = useCallback(
-    (params: GetPairListParams): void => {
+    (params: GetPairListParams) => {
       if (params.tradePairFeature === 1 && !isCAWallet) {
         getLocalFavs.current = true;
         params.tokenSymbol = '';
@@ -53,7 +53,7 @@ export default function usePairList() {
       params.chainId = apiChainId;
       params.address = wallet?.address;
 
-      getData(params);
+      return getData(params);
     },
     [apiChainId, favlist, getData, isCAWallet, wallet?.address],
   );

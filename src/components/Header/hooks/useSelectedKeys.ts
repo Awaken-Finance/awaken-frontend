@@ -11,12 +11,7 @@ const useSelectedKeys = () => {
 
   const selectedKeys = useMemo(() => {
     const page = menuList.find((item) => {
-      // if (item.path === '/') {
-      //   if (pathname.startsWith('/trading')) {
-      //     return true;
-      //   }
-      //   return pathname === '/';
-      // }
+      if (item.isHome && pathname === '/') return true;
       return pathname.includes(item.path);
     })?.key;
     return [page || 'unmatched'];

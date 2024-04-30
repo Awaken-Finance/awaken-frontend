@@ -9,6 +9,11 @@ import {
 import { defaultSymbol, INTERVAL } from '../chartConfig';
 import DataUpdater from './DataUpdater';
 import moment from 'moment';
+import { getTradePairsListOrigin } from 'pages/Overview/apis/getPairList';
+import { DEFAULT_CHAIN_INFO } from 'constants/index';
+import { ZERO } from 'constants/misc';
+import { getPriceScale } from 'utils/price';
+import { timesDecimals } from 'utils/calculate';
 
 /** JS API **/
 
@@ -41,24 +46,42 @@ export default class Datafeed {
     };
   };
 
-  resolveSymbol(
+  async resolveSymbol(
     symbolName: string,
     onSymbolResolvedCallback: (data: any) => void,
     onResolveErrorCallback: (data: any) => void,
   ) {
-    return new Promise((resolve) => {
+    console.log('resolveSymbol', this.self.pairData.chainId, symbolName);
+    try {
       let symbolInfo = defaultSymbol(symbolName);
       if (this.self.getSymbol) {
         symbolInfo = Object.assign(defaultSymbol(symbolName), this.self.getSymbol());
       }
-      resolve(symbolInfo);
-    })
-      .then(function (data) {
-        return onSymbolResolvedCallback(data);
-      })
-      .catch(function (err) {
-        return onResolveErrorCallback(err);
-      });
+
+      try {
+        const [pair, feeRate] = symbolName.split(' ');
+        const [token0, token1] = pair.split('/');
+        const params: any = {
+          token0Symbol: token0,
+          token1Symbol: token1,
+          chainId: this.self.pairData?.chainId || DEFAULT_CHAIN_INFO.CHAIN_INFO.chainId,
+        };
+        const _feeRate = ZERO.plus(feeRate.replace('%', '')).div(100);
+        if (!_feeRate.isNaN()) params.feeRate = _feeRate.toNumber();
+
+        const result = await getTradePairsListOrigin(params);
+        const price = result?.items[0].price ?? 0;
+        const digits = getPriceScale(price, 12);
+
+        symbolInfo.pricescale = timesDecimals(1, digits).toNumber();
+      } catch (error) {
+        console.log(error, 'getTradePairsListOrigin==');
+      }
+
+      onSymbolResolvedCallback(symbolInfo);
+    } catch (error) {
+      onResolveErrorCallback(error);
+    }
   }
 
   /**

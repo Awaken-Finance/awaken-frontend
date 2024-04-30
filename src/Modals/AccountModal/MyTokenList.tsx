@@ -2,13 +2,14 @@ import { Col, Row } from 'antd';
 import { CurrencyLogo } from 'components/CurrencyLogo';
 import Font from 'components/Font';
 import useChainId from 'hooks/useChainId';
-import { formatPriceUSDWithSymBol } from 'utils/price';
 import { getConfig } from 'aelf-web-login';
 import { useMemo } from 'react';
 import BigNumber from 'bignumber.js';
 import { getELFChainTokenURL } from 'utils';
 
 import './MyTokenList.less';
+import PriceUSDDigits from 'components/PriceUSDDigits';
+import getFontStyle from 'utils/getFontStyle';
 
 type TokenInfoItem = {
   symbol: string;
@@ -52,9 +53,7 @@ export function TokenItem({ data }: { data: TokenInfoItem }) {
           </Font>
         </div>
         <div className="price-usd">
-          <Font size={12} color="two">
-            {formatPriceUSDWithSymBol(data.priceInUsd)}
-          </Font>
+          <PriceUSDDigits className={getFontStyle({ size: 12, color: 'two' })} price={data.priceInUsd} />
         </div>
       </Col>
     </Row>

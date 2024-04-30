@@ -407,6 +407,10 @@
     "Buy": "买",
     "sell": "卖出",
     "Sell": "卖",
+    "Log In to Buy": "登录即可买入",
+    "Log In to Sell": "登录即可卖出",
+    "Unlock to Buy": "解锁即可买入",
+    "Unlock to Sell": "解锁即可卖出",
     "recently": "最近",
     "swapFees": "手续费({{symbol}})",
     "pairNotExist": "交易对不存在",
@@ -496,6 +500,7 @@
     "Token Symbol": "代币符号",
     "Log In": "登陆",
     "Sign Up": "注册",
+    "Unlock": "解锁",
     "pools": "交易池",
 
     "Assets": "资产",

@@ -42,6 +42,8 @@ export function CollectionBtnInList({
     useCallback(
       async (e: MouseEvent) => {
         e.stopPropagation();
+        if (!id) return;
+
         setFavs({ id, favId, isFav });
       },
       [id, favId, isFav, setFavs],

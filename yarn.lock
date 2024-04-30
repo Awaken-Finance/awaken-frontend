@@ -4924,32 +4924,10 @@ aelf-bridge@^0.0.10:
     socket.io-client "^2.3.0"
     uuid "^3.3.3"
 
-aelf-sdk@^3.2.44:
-  version "3.2.44"
-  resolved "https://registry.npmjs.org/aelf-sdk/-/aelf-sdk-3.2.44.tgz#7f97d330711cf41c1ca4271f921a99130fcd1ea9"
-  integrity sha512-R/MD0z98LDv1GitTqhOWMmQTm7YLg9KsqOVjr3l0NWkq1KxgPGBfd2wlvg/jhhPgCsYJ91mQbAxkJU7kQRmHPA==
-  dependencies:
-    "@aelfqueen/protobufjs" "^6.8.9"
-    "@babel/runtime" "^7.4.5"
-    assert "^2.0.0"
-    bignumber.js "^9.0.0"
-    bip39 "^3.0.2"
-    browserify-cipher "^1.0.1"
-    bs58 "^4.0.1"
-    buffer "^5.2.1"
-    crypto-js "^3.1.9-1"
-    elliptic "^6.4.1"
-    hdkey "^1.1.1"
-    js-sha256 "^0.9.0"
-    query-string "5.1.1"
-    randombytes "^2.1.0"
-    scryptsy "^2.1.0"
-    xmlhttprequest "^1.8.0"
-
-aelf-sdk@^3.3.0:
-  version "3.3.0"
-  resolved "https://registry.yarnpkg.com/aelf-sdk/-/aelf-sdk-3.3.0.tgz#39e4479ddb1ae471bab1c4cb306ee73e651479c2"
-  integrity sha512-C2dQea+RXuv5tPaZUR01Pn5vAyJ9zfsuCAVkL3e5+7OfbiTxtRa37iTfOZe4u3T8IqxZRr7R1Lm+q3RmCYXFHg==
+aelf-sdk@^3.3.0, aelf-sdk@^3.4.8:
+  version "3.4.8"
+  resolved "https://registry.npmjs.org/aelf-sdk/-/aelf-sdk-3.4.8.tgz#4651246f23bedc4947e6ac5997be1d72ec9345ec"
+  integrity sha512-1AnfBcwfDg4q3ex+x1dM1BWlOEKxPDB0ht3J0HwOa1FmI05p0ScHSK7QMlTr1bv83PQZdKgCc9Qs1bip+xxcgQ==
   dependencies:
     "@aelfqueen/protobufjs" "^6.8.9"
     "@aws-crypto/sha256-js" "^5.0.0"
@@ -4957,10 +4935,11 @@ aelf-sdk@^3.3.0:
     assert "^2.0.0"
     bignumber.js "^9.0.0"
     bip39 "^3.0.2"
+    bn.js "^5.2.1"
     browserify-cipher "^1.0.1"
     bs58 "^4.0.1"
     buffer "^5.2.1"
-    crypto-js "^3.1.9-1"
+    crypto-js "^4.2.0"
     elliptic "^6.4.1"
     hdkey "^1.1.1"
     query-string "5.1.1"
@@ -4968,10 +4947,10 @@ aelf-sdk@^3.3.0:
     scryptsy "^2.1.0"
     xmlhttprequest "^1.8.0"
 
-aelf-web-login@2.0.1-beta.2:
-  version "2.0.1-beta.2"
-  resolved "https://registry.yarnpkg.com/aelf-web-login/-/aelf-web-login-2.0.1-beta.2.tgz#c50641d0cd7d771823c5f461d345a132e80ca619"
-  integrity sha512-TI5Yxw7Q4cc3JFbKoxLrSiFtCZqPokM0dwoGfx3bgaM5QGwitLcah537DyAdugah5oVNobrkg1zvUbGJZBBHgw==
+aelf-web-login@2.0.1-beta.4:
+  version "2.0.1-beta.4"
+  resolved "https://registry.yarnpkg.com/aelf-web-login/-/aelf-web-login-2.0.1-beta.4.tgz#f28b04681932c8ebba7b55d170695d4030051b73"
+  integrity sha512-MlNtRxmwlo0zoatXSUMaBji1VPnORC5fm5llVpvLJZ+0cG8UtMWxc0q9tj1I2ttSuP3I06YgjhI3A2GXXaH4Vw==
   dependencies:
     "@aelf-react/core" "^0.1.19"
     "@portkey/detect-provider" "2.0.0-alpha.5"
@@ -6933,10 +6912,10 @@ crypto-browserify@^3.12.0:
     randombytes "^2.0.0"
     randomfill "^1.0.3"
 
-crypto-js@^3.1.9-1:
-  version "3.3.0"
-  resolved "https://registry.npmmirror.com/crypto-js/-/crypto-js-3.3.0.tgz#846dd1cce2f68aacfa156c8578f926a609b7976b"
-  integrity sha512-DIT51nX0dCfKltpRiXV+/TVZq+Qq2NgF4644+K7Ttnla7zEzqc+kjJyiB96BHNyUTBxyjzRcZYpUdZa+QAqi6Q==
+crypto-js@^4.2.0:
+  version "4.2.0"
+  resolved "https://registry.npmjs.org/crypto-js/-/crypto-js-4.2.0.tgz#4d931639ecdfd12ff80e8186dba6af2c2e856631"
+  integrity sha512-KALDyEYgpY+Rlob/iriUtjV6d5Eq+Y191A5g4UqLAi8CyGP9N1+FdVbkc1SxKc2r4YAYqG8JzO2KGL+AizD70Q==
 
 crypto-random-string@^2.0.0:
   version "2.0.0"
@@ -11012,11 +10991,6 @@ js-cookie@^2.2.1, js-cookie@^2.x.x:
   version "2.2.1"
   resolved "https://registry.npmmirror.com/js-cookie/-/js-cookie-2.2.1.tgz#69e106dc5d5806894562902aa5baec3744e9b2b8"
   integrity sha512-HvdH2LzI/EAZcUwA8+0nKNtWHqS+ZmijLA30RwZA0bo7ToCckjK5MkGhjED9KoRcXO6BaGI3I9UIzSA1FKFPOQ==
-
-js-sha256@^0.9.0:
-  version "0.9.0"
-  resolved "https://registry.npmmirror.com/js-sha256/-/js-sha256-0.9.0.tgz#0b89ac166583e91ef9123644bd3c5334ce9d0966"
-  integrity sha512-sga3MHh9sgQN2+pJ9VYZ+1LPwXOxuBJBA5nrR5/ofPfuiJBE2hnjsaN8se8JznOmGLN2p49Pe5U/ttafcs/apA==
 
 js-sha3@0.8.0:
   version "0.8.0"

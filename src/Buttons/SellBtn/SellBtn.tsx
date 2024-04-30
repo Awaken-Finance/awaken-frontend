@@ -18,6 +18,8 @@ import { ChainConstants } from 'constants/ChainConstants';
 import AuthBtn from 'Buttons/AuthBtn';
 
 import './index.less';
+import { WebLoginState, useWebLogin } from 'aelf-web-login';
+import { useIsPortkeySDK } from 'hooks/useIsPortkeySDK';
 
 interface SellBtnProps {
   sell?: boolean;
@@ -124,30 +126,39 @@ export default function SellBtn({
   loading = false,
   checkAuth,
   onClick,
-}: Omit<SellBtnProps, 'amountBN' | 'rate' | 'tokenA' | 'tokenB' | 'onTradeSuccess'>) {
+  isFixState = false,
+}: Omit<SellBtnProps, 'amountBN' | 'rate' | 'tokenA' | 'tokenB' | 'onTradeSuccess'> & { isFixState?: boolean }) {
   const { t } = useTranslation();
+  const { loginState } = useWebLogin();
+  const isPortkeySDK = useIsPortkeySDK();
+
+  const isLogin = useMemo(() => loginState === WebLoginState.logined, [loginState]);
 
   const btnTxt = useMemo(() => {
-    return sell ? `${t('sell')} ${symbolA}` : `${t('buy')} ${symbolA}`;
-  }, [t, sell, symbolA]);
+    if (isLogin || isFixState) return sell ? `${t('sell')} ${symbolA}` : `${t('buy')} ${symbolA}`;
+    if (isPortkeySDK) return sell ? t('Unlock to Sell') : t('Unlock to Buy');
+    return sell ? t('Log In to Sell') : t('Log In to Buy');
+  }, [isLogin, isFixState, sell, t, symbolA, isPortkeySDK]);
 
   const style = useMemo(() => {
-    return clsx('trading-button', {
-      'trading-sell-button': sell,
-      'trading-buy-button': !sell,
-    });
-  }, [sell]);
+    if (isLogin || isFixState)
+      return clsx('trading-button', {
+        'trading-sell-button': sell,
+        'trading-buy-button': !sell,
+      });
+    return clsx('trading-button', 'ant-btn-default');
+  }, [isFixState, isLogin, sell]);
   return (
     <AuthBtn
       loading={loading}
-      disabled={disabled}
+      disabled={isLogin && disabled}
       className={style}
       onClick={onClick}
       checkAuth={checkAuth}
       size="large"
       block
       type="primary">
-      <Font size={16} weight="medium">
+      <Font size={16} weight="medium" color={isLogin || isFixState ? 'one' : 'primary'}>
         {btnTxt}
       </Font>
     </AuthBtn>
