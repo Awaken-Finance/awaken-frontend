@@ -154,6 +154,7 @@ export default function PcTable({
             side: record.side,
             value: token0Amount,
             feeRate: record.tradePair.feeRate,
+            decimals: record.tradePair.token0.decimals,
           });
           return (
             <>
@@ -177,6 +178,7 @@ export default function PcTable({
             side: record.side,
             value: token1Amount,
             feeRate: record.tradePair.feeRate,
+            decimals: record.tradePair.token1.decimals,
           });
           return (
             <>

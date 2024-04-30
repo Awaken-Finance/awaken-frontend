@@ -63,8 +63,9 @@ export default function TransactionItem({
         side,
         value: token0Amount,
         feeRate: tradePair.feeRate,
+        decimals: tradePair.token0.decimals,
       }),
-    [side, token0Amount, tradePair.feeRate],
+    [side, token0Amount, tradePair.feeRate, tradePair.token0.decimals],
   );
 
   const realToken1Amount = useMemo(
@@ -73,8 +74,9 @@ export default function TransactionItem({
         side,
         value: token1Amount,
         feeRate: tradePair.feeRate,
+        decimals: tradePair.token1.decimals,
       }),
-    [side, token1Amount, tradePair.feeRate],
+    [side, token1Amount, tradePair.feeRate, tradePair.token1.decimals],
   );
 
   const realTotalValue = useMemo(
