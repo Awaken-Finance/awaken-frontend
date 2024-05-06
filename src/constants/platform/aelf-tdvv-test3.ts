@@ -6,7 +6,7 @@ import { LendingTokens } from 'types';
 export const CHAIN_INFO = {
   chainId: 'tDVV',
   exploreUrl: 'http://192.168.66.241:8000/swagger/index.html?',
-  rpcUrl: 'http://192.168.66.241:8000',
+  rpcUrl: 'http://192.168.67.128:8000',
 };
 export const LOGIN_INFO = {
   chainId: 'tDVV',
@@ -19,13 +19,6 @@ export const LOGIN_INFO = {
         contractName: 'Token contract',
         description: 'You can transfer, approve, get balance, etc.',
         github: 'https://github.com/AElfProject/AElf/blob/dev/protobuf/token_contract.proto',
-      },
-      {
-        chainId: 'AELF',
-        contractAddress: 'ZaLtsjGhzZ2KP9UEm4ABN3XgMT8DgV8q6BQJgpKHuyrfwit4c',
-        contractName: 'IDO contract',
-        description: 'You can invest, etc.',
-        github: '-',
       },
     ],
   },
@@ -80,20 +73,20 @@ export const ENS_REGISTRAR_ADDRESSES = '';
 
 // swap router swap
 export const ROUTER: { [key: string]: string } = {
-  [SupportedSwapRate.percent_0_05]: '2ehL4dYS4GpQj5moL8nEVsUP1uSSyCzGK16X7o1mC4jCPGLGeT',
-  [SupportedSwapRate.percent_0_3]: 'GZs6wyPDfz3vdEmgVd3FyrQfaWSXo9uRvc7Fbp5KSLKwMAANd',
-  [SupportedSwapRate.percent_1]: 'AZBBDe2asKTPNPN6n3b4wn6P6nMMDQS5yXQ2yhyjGodr7Qqwe',
-  [SupportedSwapRate.percent_3]: '25CkLPA8qwDRGQci2kFg77i6pZXVivvX4DHW78i1B7rPHdBkoK',
-  [SupportedSwapRate.percent_5]: 'JvDB3rguLJtpFsovre8udJeXJLhsV1EPScGz2u1FFneahjBQm',
+  [SupportedSwapRate.percent_0_05]: '2YkKkNZKCcsfUsGwCfJ6wyTx5NYLgpCg1stBuRT4z5ep3psXNG',
+  [SupportedSwapRate.percent_0_3]: 'buePNjhmHckfZn9D8GTL1wq6JgA8K24SeTWnjCNcrz6Sf1FDh',
+  [SupportedSwapRate.percent_1]: '2wRDbyVF28VBQoSPgdSEFaL4x7CaXz8TCBujYhgWc9qTMxBE3n',
+  [SupportedSwapRate.percent_3]: '2iNerrufZ7rQsj5Ea6Rpbi9G4GMNyTMNe9CBhBUocE9JHnUYJC',
+  [SupportedSwapRate.percent_5]: '2LsUPSKq6A2GqKQoncWTqfNSsM14dGSkKsYoSy2u8go8ZdohCx',
 };
 
 // swap factory token
 export const FACTORY: { [key: string]: string } = {
-  [SupportedSwapRate.percent_0_05]: '2vPUxuRhLPwsqposUSqHvch7Z3wwKFLS22x9QxrwhFwR12R5iM',
-  [SupportedSwapRate.percent_0_3]: 'jvhrvLGJ29ZzoLSQyUmKGL51NNvYjaHDqcuCpF481139mdxd2',
-  [SupportedSwapRate.percent_1]: 'hg7hFigUZ6W3gLreo1bGnpAQTQpGsidueYBScVpzPAi81A2AA',
-  [SupportedSwapRate.percent_3]: 'hyiwdsbDnyoG1uZiw2JabQ4tLiWT6yAuDfNBFbHhCZwAqU1os',
-  [SupportedSwapRate.percent_5]: '2AJXAXSwyHbKTHQhKFiaYozakUUQDeh3xrHW9FGi3vYDMBjtiS',
+  [SupportedSwapRate.percent_0_05]: '2onFLTnPEiZrXGomzJ8g74cBre2cJuHrn1yBJF3P6Xu9K5Gbth',
+  [SupportedSwapRate.percent_0_3]: 'buePNjhmHckfZn9D8GTL1wq6JgA8K24SeTWnjCNcrz6Sf1FDh',
+  [SupportedSwapRate.percent_1]: '2F5McxHg7fAqVjDX97v79j4drsMq442rArChpBii8TWuRb8ZnK',
+  [SupportedSwapRate.percent_3]: '8XmxcaQGCRzrfP4ij3C6SR4nDbHkYBnKJxcAoWPtFofvtmahL',
+  [SupportedSwapRate.percent_5]: 'zif9un2sHyRFwFfZbpmWM9bqHi5eeCc1fHyeQ7Bvn5b92Sx9N',
 };
 // for farm
 export const FARM_USDT = '0x3C4b091C21a67B2097366ae167050aC42dcc90A4';

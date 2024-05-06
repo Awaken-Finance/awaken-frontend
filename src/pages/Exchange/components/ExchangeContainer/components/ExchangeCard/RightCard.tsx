@@ -305,6 +305,7 @@ export default function RightCard({
           onTradeSuccess={() => {
             setAmount('');
             setTotal('');
+            setProgressValue(0);
             getReserves();
           }}
         />

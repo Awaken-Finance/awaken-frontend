@@ -20,8 +20,8 @@ const testNetApi = {
 };
 
 const testApi = {
-  nodeApi: 'http://192.168.67.216:5006',
-  webApi: 'http://192.168.67.216:5006',
+  nodeApi: 'http://192.168.67.146:5006',
+  webApi: 'http://192.168.67.146:5006',
   cmsApi: 'http://192.168.67.216:3106', // test2
   farmApi: 'http://192.168.66.55:8900/',
   portkeyApi: 'http://192.168.66.203:5001',
@@ -30,13 +30,13 @@ const testApi = {
 };
 
 const localApi = {
-  nodeApi: 'http://192.168.67.216:5006',
-  webApi: 'http://192.168.67.216:5006',
+  nodeApi: 'http://192.168.67.146:5006',
+  webApi: 'http://192.168.67.146:5006',
   cmsApi: 'http://192.168.66.62:3106', // test2
-  farmApi: 'http://192.168.66.55:8900/',
-  portkeyApi: 'http://192.168.66.203:5001',
+  farmApi: 'http://192.168.67.146:5006',
+  portkeyApi: 'https://did-portkey-test.portkey.finance',
   portkeyAuthApi: 'https://auth-portkey-test.portkey.finance',
-  portkeyIndexer: 'http://192.168.66.203:8083',
+  portkeyIndexer: 'https://dapp-portkey-test.portkey.finance',
 };
 
 if (apiEnv === 'preview') {
