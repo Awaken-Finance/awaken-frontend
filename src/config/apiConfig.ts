@@ -7,11 +7,11 @@ export type ApiConfig = {
 
 const apiConfig: { [key: string]: ApiConfig } = {
   local: {
-    socket: 'http://192.168.67.216:5006',
+    socket: 'http://192.168.67.146:5006',
     explorer: 'http://192.168.66.216:8000/swagger/index.html?',
   },
   test: {
-    socket: 'http://192.168.67.216:5006',
+    socket: 'http://192.168.67.146:5006',
     explorer: 'http://192.168.66.216:8000/swagger/index.html?',
   },
   preview: {

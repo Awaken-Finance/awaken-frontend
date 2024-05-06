@@ -113,7 +113,7 @@ export const PROD_CHAIN: { [key: number]: string } = {
   [SupportedChainId.MAINNET]: 'Ethereum',
   [SupportedChainId.BSC_MAINNET]: 'BSC Mainnet',
 };
-// TODO 测试数据
+
 export const API_CHAINID: { [chainId in CHAIN_ID_TYPE]: string } = {
   [SupportedChainId.MAINNET]: '39fe4c85-b8d1-fe5e-a765-1bfdfc86ac7e',
   [SupportedChainId.KOVAN]: 'a0d24361-4c65-11ec-8a36-0e839de1b313',

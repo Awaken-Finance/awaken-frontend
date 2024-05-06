@@ -88,7 +88,11 @@ export default function MobileList({
             </Col>
             <Col span={24} className="col-height-20">
               <Font lineHeight={24}>{`${formatLiquidity(lpTokenAmount ?? 0)}`}</Font>
-              <PriceUSDDigits prefix="≈" className={getFontStyle({ lineHeight: 24, color: 'two' })} price={assetUSD} />
+              <PriceUSDDigits
+                prefix=" ≈$"
+                className={getFontStyle({ lineHeight: 24, color: 'two' })}
+                price={assetUSD}
+              />
             </Col>
 
             <Col span={12} className="amount">

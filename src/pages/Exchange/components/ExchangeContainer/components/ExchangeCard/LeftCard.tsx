@@ -303,6 +303,7 @@ export default function LeftCard({
             setAmount('');
             setTotal('');
             getReserves();
+            setProgressValue(0);
           }}
         />
       </Col>

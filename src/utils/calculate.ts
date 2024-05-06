@@ -54,9 +54,9 @@ export type TGetRealPriceParams = {
 export const getRealPrice = ({ side, token0Amount = 0, token1Amount = 0, feeRate = 0 }: TGetRealPriceParams) => {
   const average = ZERO.plus(token1Amount).div(token0Amount);
   if (side === 0) {
-    return average.div(ONE.plus(feeRate)).toFixed();
+    return average.multipliedBy(ONE.minus(feeRate)).toFixed();
   } else {
-    return average.multipliedBy(ONE.plus(feeRate)).toFixed();
+    return average.div(ONE.minus(feeRate)).toFixed();
   }
 };
 
