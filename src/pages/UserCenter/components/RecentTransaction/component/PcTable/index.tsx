@@ -114,12 +114,12 @@ export default function PcTable({
         // filterIcon: () => <IconFilterPc />,
         // filterDropdown: (props: any) => <FilterSidInTable {...props} />,
         render: (side: number, record: RecentTransaction) => {
-          const isRevert =
+          const isReverse =
             // trade pair sort
             getTokenWeights(record.tradePair.token0.symbol) > getTokenWeights(record.tradePair.token1.symbol) &&
             // contract sort
             record.tradePair.token0.symbol < record.tradePair.token1.symbol;
-          const isBuy = Boolean(Number(side === 0) ^ Number(isRevert));
+          const isBuy = Boolean(Number(side === 0) ^ Number(isReverse));
           return (
             <Font lineHeight={20} size={14} color={isBuy ? 'rise' : 'fall'}>
               {isBuy ? t('buy') : t('sell')}

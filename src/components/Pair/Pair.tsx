@@ -9,15 +9,15 @@ import { FontStyleProps } from 'utils/getFontStyle';
 
 export interface PairProps extends FontStyleProps {
   symbol?: TokenInfo | string;
-  maxLenth?: number;
+  maxLength?: number;
 }
 
-export default function Pair({ symbol, maxLenth, ...props }: PairProps) {
+export default function Pair({ symbol, maxLength, ...props }: PairProps) {
   const text = useMemo(() => {
     if (!symbol) return '--';
     const symbolStr = typeof symbol === 'string' ? symbol : unifyWTokenSymbol(symbol);
-    return stringCut(symbolStr, maxLenth ?? symbolStr.length);
-  }, [maxLenth, symbol]);
+    return stringCut(symbolStr, maxLength ?? symbolStr.length);
+  }, [maxLength, symbol]);
 
   return <Font {...props}>{text}</Font>;
 }

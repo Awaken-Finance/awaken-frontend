@@ -38,12 +38,12 @@ export default function TransactionItem({
 }) {
   const { t } = useTranslation();
   const isBuy = useMemo(() => {
-    const isRevert =
+    const isReverse =
       // trade pair sort
       getTokenWeights(tradePair.token0.symbol) > getTokenWeights(tradePair.token1.symbol) &&
       // contract sort
       tradePair.token0.symbol < tradePair.token1.symbol;
-    return Boolean(Number(side === 0) ^ Number(isRevert));
+    return Boolean(Number(side === 0) ^ Number(isReverse));
   }, [side, tradePair.token0.symbol, tradePair.token1.symbol]);
 
   const realPrice = useMemo(
