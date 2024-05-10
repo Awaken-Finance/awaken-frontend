@@ -27,9 +27,11 @@ export default function SelectTokenButton({ token, setToken, className, ...props
   const renderContent = () => {
     if (!token) {
       return (
-        <Font size={16} lineHeight={24}>
-          {t('selectAToken')}
-        </Font>
+        <div className="select-token-btn-label-wrap">
+          <Font size={16} lineHeight={24} weight="bold" align="left">
+            {t('selectAToken')}
+          </Font>
+        </div>
       );
     }
 
