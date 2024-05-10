@@ -31,7 +31,7 @@ export default function Header({ openTradePair }: { openKlinePage?: () => void; 
           weight="bold"
           tokenA={pairInfo.token0}
           tokenB={pairInfo.token1}
-          maxLenth={10}
+          maxLength={10}
         />
         <FeeRate useBg className="mobile-header-feeRate">
           {formatPercentage(new BigNumber(pairInfo?.feeRate ?? 0).times(100))}

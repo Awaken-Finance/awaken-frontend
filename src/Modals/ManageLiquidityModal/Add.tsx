@@ -26,6 +26,7 @@ import { PairInfo } from 'contexts/useModal/actions';
 import { divDecimals } from 'utils/calculate';
 import BigNumber from 'bignumber.js';
 import { isZeroDecimalsNFT } from 'utils/NFT';
+import clsx from 'clsx';
 
 export default function Add({ pairInfo }: { pairInfo: PairInfo }) {
   const { t } = useTranslation();
@@ -73,7 +74,7 @@ export default function Add({ pairInfo }: { pairInfo: PairInfo }) {
     },
     [onChange, rightToken],
   );
-  const [buttonTitle, buttonDisabled] = checkAddButtonStatus({
+  const [buttonTitle, buttonDisabled, buttonError] = checkAddButtonStatus({
     t,
     leftToken,
     rightToken,
@@ -248,7 +249,7 @@ export default function Add({ pairInfo }: { pairInfo: PairInfo }) {
                 appoveState.rightApproveRequired
               }
               onClick={() => setConfirmVisible(true)}
-              className="comfirm-btn">
+              className={clsx(['confirm-btn', buttonError && 'supply-button-error'])}>
               {t(`${buttonTitle}`)}
             </CommonButton>
           </Col>

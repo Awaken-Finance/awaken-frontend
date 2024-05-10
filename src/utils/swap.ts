@@ -290,16 +290,19 @@ export function checkAddButtonStatus({
   const leftBalance = divDecimals(currencyBalances?.[getCurrencyAddress(leftToken)], leftToken?.decimals);
   const rightBalance = divDecimals(currencyBalances?.[getCurrencyAddress(rightToken)], rightToken?.decimals);
   let text = pairAddress ? 'addLiquiditySupply' : 'addPairs',
-    disabled = false;
+    disabled = false,
+    error = false;
   if (!leftToken || !rightToken) {
     text = 'selectAToken';
     disabled = true;
   } else if (leftInput && leftBalance.lt(leftInput)) {
     text = t('insufficientBalance', { symbol: leftToken.symbol });
     disabled = true;
+    error = true;
   } else if (rightInput && rightBalance.lt(rightInput)) {
     text = t('insufficientBalance', { symbol: rightToken.symbol });
     disabled = true;
+    error = true;
   } else if (
     !leftInput ||
     !rightInput ||
@@ -311,7 +314,7 @@ export function checkAddButtonStatus({
     text = 'enterAmount';
     disabled = true;
   }
-  return [text, disabled];
+  return [text, disabled, error];
 }
 
 export function checkRemoveButtonStatus({

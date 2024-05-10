@@ -16,6 +16,14 @@ export const SupportedSwapRateMap: {
   '0.05': SupportedSwapRate.percent_5,
 };
 
+export const SupportedSwapRateTipMap = {
+  [SupportedSwapRate.percent_0_05]: 'percent_0_05Tip',
+  [SupportedSwapRate.percent_1]: 'percent_1Tip',
+  [SupportedSwapRate.percent_0_3]: 'percent_0_3Tip',
+  [SupportedSwapRate.percent_3]: 'percent_3Tip',
+  [SupportedSwapRate.percent_5]: 'percent_5Tip',
+};
+
 export type SupportedSwapRateIndex = keyof typeof SupportedSwapRate;
 
 export enum SupportedSwapRateKeys {

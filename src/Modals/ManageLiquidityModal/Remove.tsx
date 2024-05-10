@@ -265,7 +265,7 @@ export default function Remove({ pairInfo }: { pairInfo: PairInfo }) {
           loading={loading}
           disabled={!!buttonDisabled}
           onClick={() => setRemoveConfirmVisible(true)}
-          className="comfirm-btn">
+          className="confirm-btn">
           {t(`${buttonTitle}`)}
         </CommonButton>
       </Col>

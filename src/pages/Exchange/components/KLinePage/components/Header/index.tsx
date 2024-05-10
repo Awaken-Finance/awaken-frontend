@@ -26,7 +26,7 @@ export default ({ pairInfo, onClose }: { pairInfo: PoolItem; onClose: () => void
             weight="bold"
             tokenA={pairInfo.token0}
             tokenB={pairInfo.token1}
-            maxLenth={10}
+            maxLength={10}
           />
           <FeeRate useBg className="kline-header-feeRate">
             {formatPercentage(pairInfo?.feeRate * 100)}

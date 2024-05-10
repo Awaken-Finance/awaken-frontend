@@ -10,9 +10,12 @@ import { useAElfContract } from 'contexts/useAElfContract/hooks';
 import { getTokensOrderByASCLL } from 'utils/token';
 export function usePairs(t1?: Currency, t2?: Currency): [Pairs | undefined, () => void] {
   const factoryContracts = useFactoryContracts();
-  const [pairs, setPairs] = useAsyncState<Pairs>();
+  const [pairs, setPairs] = useAsyncState<Pairs | undefined>();
   const getPairs = useCallback(async () => {
-    if (!t1 || !t2) return;
+    if (!t1 || !t2) {
+      setPairs(undefined);
+      return;
+    }
     const obj: { [k: string]: string } = {};
     const factoryList = Object.entries(factoryContracts);
     const p = factoryList.map(([, contracts]) => {
