@@ -44,7 +44,7 @@ export default function SelectTokenButton({ token, setToken, className, ...props
             className="select-token-tooltip"
             title={token?.symbol}
             buttonTitle={t('ok')}> */}
-          <Pair className="select-token-pair" symbol={token?.symbol} size={16} lineHeight={16} weight="medium" />
+          <Pair className="select-token-pair" symbol={token?.symbol} size={16} lineHeight={24} weight="medium" />
           {/* </CommonTooltip> */}
         </Col>
       </Row>
@@ -53,7 +53,7 @@ export default function SelectTokenButton({ token, setToken, className, ...props
 
   return (
     <CommonButton
-      type={token ? 'default' : 'primary'}
+      type={token ? 'ghost' : 'primary'}
       className={clsx('select-token-btn', className)}
       onClick={onClick}
       {...props}>

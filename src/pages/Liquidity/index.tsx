@@ -79,9 +79,10 @@ export default function ManageLiquidity() {
       zIndex={20}
       transitionName="custom"
       wrapClassName="manage-liquidity-modal-wrap"
+      width={isMobile ? '100%' : '640px'}
       title={
         <>
-          <Font size={16} weight="medium">
+          <Font size={isMobile ? 16 : 20} weight="medium" lineHeight={24}>
             {title}
           </Font>
           <SettingFee className="manage-liquidity-setting" />

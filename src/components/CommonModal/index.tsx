@@ -2,7 +2,7 @@ import { useMemo } from 'react';
 import { Modal, ModalProps, Drawer, DrawerProps } from 'antd';
 import clsx from 'clsx';
 import { useMobile } from 'utils/isMobile';
-import Font from 'components/Font';
+import Font, { FontProps } from 'components/Font';
 import { IconArrowLeft2, IconClose } from 'assets/icons';
 import CommonButton from 'components/CommonButton';
 
@@ -15,6 +15,10 @@ interface CommonModalProps extends ModalProps, DrawerProps {
   showType?: 'modal' | 'drawer' | '';
   closeOnLogin?: boolean;
   getContainer?: string | HTMLElement | (() => HTMLElement) | false;
+  titleFontProps?: {
+    size: FontProps['size'];
+    lineHeight: FontProps['lineHeight'];
+  };
 }
 
 export default function CommonModal({
@@ -31,6 +35,7 @@ export default function CommonModal({
   closable = false,
   showType = '',
   getContainer,
+  titleFontProps,
   ...props
 }: CommonModalProps) {
   const isMobile = useMobile();
@@ -42,7 +47,7 @@ export default function CommonModal({
 
     if (typeof title === 'string') {
       titleDom = (
-        <Font size={16} weight="medium">
+        <Font size={16} weight="medium" {...titleFontProps}>
           {title}
         </Font>
       );
@@ -69,7 +74,7 @@ export default function CommonModal({
         )}
       </>
     );
-  }, [title, onCancel, showBackIcon, closable, leftCallBack]);
+  }, [title, showBackIcon, leftCallBack, onCancel, closable, titleFontProps]);
 
   const renderContent = () => {
     if (showType === 'modal') {

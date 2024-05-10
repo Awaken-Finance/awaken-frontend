@@ -19,6 +19,7 @@ import PriceAdnLiquidityPool from 'components/PriceAndLiquidityPool';
 import CommonButton from 'components/CommonButton';
 import { useRouterContract } from 'hooks/useContract';
 import ApproveButtonsRow, { ApproveButtonsRowState } from 'Buttons/ApproveBtn/ApproveButtonsRow';
+import clsx from 'clsx';
 
 export default function CreatePair({ onCancel }: { onCancel: () => void }) {
   const { t } = useTranslation();
@@ -44,7 +45,7 @@ export default function CreatePair({ onCancel }: { onCancel: () => void }) {
   const tokens = useTokens(leftToken, rightToken);
 
   const [inputs, onChange, clearInputs] = useAddLiquidityInputs(reserves, tokens);
-  const [appoveState, setApproveState] = useState<ApproveButtonsRowState>({
+  const [approveState, setApproveState] = useState<ApproveButtonsRowState>({
     leftApproved: false,
     rightApproved: false,
     leftApproveRequired: false,
@@ -68,7 +69,7 @@ export default function CreatePair({ onCancel }: { onCancel: () => void }) {
     },
     [onChange, rightToken],
   );
-  const [buttonTitle, buttonDisabled] = useMemo(() => {
+  const [buttonTitle, buttonDisabled, buttonError] = useMemo(() => {
     return checkAddButtonStatus({
       t,
       leftToken,
@@ -139,10 +140,10 @@ export default function CreatePair({ onCancel }: { onCancel: () => void }) {
             <Font lineHeight={20}>{t('selectPair')}</Font>
           </Col>
           <Col span={12}>
-            <SelectTokenButton token={leftToken} setToken={setLeftToken} />
+            <SelectTokenButton size="large" token={leftToken} setToken={setLeftToken} />
           </Col>
           <Col span={12}>
-            <SelectTokenButton token={rightToken} setToken={setRightToken} />
+            <SelectTokenButton size="large" token={rightToken} setToken={setRightToken} />
           </Col>
         </Row>
       </Col>
@@ -196,13 +197,14 @@ export default function CreatePair({ onCancel }: { onCancel: () => void }) {
             size="large"
             disabled={
               !!buttonDisabled ||
-              !appoveState.leftApproved ||
-              !appoveState.rightApproved ||
-              appoveState.leftApproveRequired ||
-              appoveState.rightApproveRequired
+              !approveState.leftApproved ||
+              !approveState.rightApproved ||
+              approveState.leftApproveRequired ||
+              approveState.rightApproveRequired
             }
             loading={loading}
             style={{ width: '100%' }}
+            className={clsx(buttonError && 'create-cb-button-error')}
             ellipsis
             onClick={createCb}>
             {t(`${buttonTitle}`)}

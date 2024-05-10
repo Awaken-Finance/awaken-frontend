@@ -31,7 +31,11 @@ export default function CreatePairPage() {
       transitionName="custom"
       title={t('addPairs')}
       size="large"
-      width={isMobile ? '100%' : '480px'}
+      width={isMobile ? '100%' : '640px'}
+      titleFontProps={{
+        size: isMobile ? 16 : 20,
+        lineHeight: 24,
+      }}
       height={height}
       onCancel={onCancel}>
       <CreatePair onCancel={onCancel} />
