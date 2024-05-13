@@ -10,6 +10,7 @@ import { getELFChainTokenURL } from 'utils';
 import './MyTokenList.less';
 import PriceUSDDigits from 'components/PriceUSDDigits';
 import getFontStyle from 'utils/getFontStyle';
+import { formatSymbol } from 'utils/token';
 
 type TokenInfoItem = {
   symbol: string;
@@ -37,7 +38,7 @@ export function TokenItem({ data }: { data: TokenInfoItem }) {
       <Col flex={'auto'}>
         <div className="symbol">
           <Font size={16} color="one" weight="medium">
-            {data.symbol}
+            {formatSymbol(data.symbol)}
           </Font>
         </div>
         <div className="chain">

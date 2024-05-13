@@ -17,6 +17,7 @@ import Amount from '../Amount';
 import './index.less';
 import PriceUSDDigits from 'components/PriceUSDDigits';
 import getFontStyle from 'utils/getFontStyle';
+import { formatSymbol } from 'utils/token';
 
 export default function PcTable({
   dataSource,
@@ -85,9 +86,9 @@ export default function PcTable({
         dataIndex: 'token0Amount',
         align: 'right',
         render: (val: number, record) => (
-          <Font lineHeight={24}>{`${formatTokenAmount(val, record.tradePair.token0.decimals)} ${
-            record.tradePair.token0.symbol
-          }`}</Font>
+          <Font lineHeight={24}>{`${formatTokenAmount(val, record.tradePair.token0.decimals)} ${formatSymbol(
+            record.tradePair.token0.symbol,
+          )}`}</Font>
         ),
       },
       {
@@ -96,9 +97,9 @@ export default function PcTable({
         dataIndex: 'token1Amount',
         align: 'right',
         render: (val: number, record) => (
-          <Font lineHeight={24}>{`${formatTokenAmount(val, record.tradePair.token1.decimals)} ${
-            record.tradePair.token1.symbol
-          }`}</Font>
+          <Font lineHeight={24}>{`${formatTokenAmount(val, record.tradePair.token1.decimals)} ${formatSymbol(
+            record.tradePair.token1.symbol,
+          )}`}</Font>
         ),
       },
       {

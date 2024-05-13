@@ -74,8 +74,9 @@ export default function TradePairList({
     }
   }, [width, isMobile]);
 
-  const columns: ColumnsType<PairItem> = useMemo(
-    () => [
+  const columns: ColumnsType<PairItem> = useMemo(() => {
+    const isMiddle = !isLargeScreen && !isMobile;
+    let _list: ColumnsType<PairItem> = [
       {
         title: t('pairs'),
         dataIndex: 'tradePair',
@@ -107,22 +108,25 @@ export default function TradePairList({
       },
       {
         title: t('price'),
-        width: !isLargeScreen && !isMobile ? 0 : 'auto',
+        width: isMiddle ? 0 : 'auto',
         dataIndex: 'price',
         key: 'price',
         sorter: (a: PairItem, b: PairItem) => (a.price > b.price ? 1 : -1),
         // sortOrder: pageInfo?.field === 'price' ? pageInfo?.order : null,
         align: 'right',
-        className: !isLargeScreen && !isMobile ? 'small-column-title' : '',
+        className: isMiddle ? 'small-column-title' : '',
         render: (price: string) =>
-          isLargeScreen || isMobile ? (
-            <PriceDigits size="small" price={price} className="trade-pair-table-cell" />
-          ) : null,
+          isMiddle ? null : <PriceDigits size="small" price={price} className="trade-pair-table-cell" />,
       },
       {
         title: (
           <div>
-            {!isLargeScreen && !isMobile && <span className="trade-pair-table-column-slash">/</span>}
+            {isMiddle && (
+              <>
+                {t('price')}
+                <span className="trade-pair-table-column-slash">/</span>
+              </>
+            )}
             {t('change%')}
           </div>
         ),
@@ -133,7 +137,7 @@ export default function TradePairList({
         sorter: (a: PairItem, b: PairItem) => (a.pricePercentChange24h > b.pricePercentChange24h ? 1 : -1),
         // sortOrder: pageInfo?.field === 'pricePercentChange24h' ? pageInfo?.order : null,
         render: (change: number, _: PairItem) =>
-          !isLargeScreen && !isMobile ? (
+          isMiddle ? (
             <Col>
               <div>
                 <PriceDigits className="trade-pair-table-cell" price={_.price} size="small" />
@@ -144,9 +148,14 @@ export default function TradePairList({
             <FallOrRise lineHeight={18} size={12} num={new BigNumber(change).toFixed(2)} />
           ),
       },
-    ],
-    [t, pairsLabelWidth, isLargeScreen, isMobile],
-  );
+    ];
+
+    if (isMiddle) {
+      _list = _list.filter((item) => item.key !== 'price');
+    }
+
+    return _list;
+  }, [t, pairsLabelWidth, isLargeScreen, isMobile]);
 
   const emptyStatus = useMemo(() => {
     if (pageInfo?.poolType === 'fav') {

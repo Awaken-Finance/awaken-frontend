@@ -15,6 +15,7 @@ import CommonTooltip from 'components/CommonTooltip';
 import './index.less';
 import PriceUSDDigits from 'components/PriceUSDDigits';
 import getFontStyle from 'utils/getFontStyle';
+import { formatSymbol } from 'utils/token';
 
 export default function MobileList({
   dataSource = [],
@@ -120,14 +121,14 @@ export default function MobileList({
               </Row>
             </Col>
             <Col span={12} className="col-height-20">
-              <Font lineHeight={20}>{`${formatTokenAmount(token0Amount ?? 0, tradePair.token0.decimals)} ${
-                tradePair.token0.symbol
-              }`}</Font>
+              <Font lineHeight={20}>{`${formatTokenAmount(token0Amount ?? 0, tradePair.token0.decimals)} ${formatSymbol(
+                tradePair.token0.symbol,
+              )}`}</Font>
             </Col>
             <Col span={12} className="col-height-20">
-              <Font lineHeight={20}>{`${formatTokenAmount(token1Amount ?? 0, tradePair.token1.decimals)} ${
-                tradePair.token1.symbol
-              }`}</Font>
+              <Font lineHeight={20}>{`${formatTokenAmount(token1Amount ?? 0, tradePair.token1.decimals)} ${formatSymbol(
+                tradePair.token1.symbol,
+              )}`}</Font>
             </Col>
           </Row>
         )}

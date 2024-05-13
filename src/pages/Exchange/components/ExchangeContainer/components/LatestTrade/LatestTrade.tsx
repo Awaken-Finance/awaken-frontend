@@ -15,6 +15,7 @@ import { useSwapContext } from 'pages/Exchange/hooks/useSwap';
 
 import './LatestTrade.less';
 import { getRealPrice, getRealToken0Amount } from 'utils/calculate';
+import { formatSymbol } from 'utils/token';
 
 const menus = [
   {
@@ -85,7 +86,7 @@ function LatestTrade() {
         },
       },
       {
-        title: `${t('amount')}(${pairInfo?.token0?.symbol || ''})`,
+        title: `${t('amount')}(${formatSymbol(pairInfo?.token0?.symbol)})`,
         dataIndex: 'token0Amount',
         key: 'token0Amount',
         width: 110,

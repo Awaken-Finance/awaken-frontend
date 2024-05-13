@@ -27,6 +27,7 @@ import {
 } from './dts/charting_library';
 import moment from 'moment';
 import { UpdateKlineType } from 'socket/socketType';
+import { getTVSymbolName } from 'utils/token';
 
 // eslint-disable-next-line @typescript-eslint/no-empty-function
 const noop = () => {};
@@ -66,7 +67,7 @@ export default class TV {
     this.interval = localStorage.getItem('tradingview.resolution') || '1D';
     this.cacheData = {};
     this.pairData = pairData;
-    this.name = `${pairData?.symbol?.replace('_', '/') || ''} ${pairData.feeRate ?? ''}`;
+    this.name = `${getTVSymbolName(pairData?.symbol)} ${pairData.feeRate ?? ''}`;
     this.prePairData = { [this.name]: { ...pairData } };
     this.lastTime = 0;
     this.getBarTimer = null;
@@ -507,7 +508,7 @@ export default class TV {
   setSymbol(symbolData: PairDataType, callback: () => void = noop): void {
     if (!symbolData) return;
     this.unSubscribe(this.interval);
-    const symbol = symbolData?.symbol?.replace('_', '/') ?? '';
+    const symbol = getTVSymbolName(symbolData?.symbol);
     this.name = `${symbol} ${symbolData.feeRate ?? ''}`;
     this.prePairData = {
       ...this.prePairData,
