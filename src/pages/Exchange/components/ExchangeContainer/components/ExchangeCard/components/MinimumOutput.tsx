@@ -8,6 +8,7 @@ import { useMemo } from 'react';
 import { ZERO } from 'constants/misc';
 import { Currency } from '@awaken/sdk-core';
 import { bigNumberToString } from 'utils/swap';
+import { formatSymbol } from 'utils/token';
 
 export default function MinimumOutput({
   value,
@@ -44,7 +45,7 @@ export default function MinimumOutput({
           </Col>
           <Col>
             <Font color="two" size={isMobile ? 12 : 14} lineHeight={isMobile ? 18 : 20}>
-              {token?.symbol || ''}
+              {formatSymbol(token?.symbol) || ''}
             </Font>
           </Col>
         </Row>

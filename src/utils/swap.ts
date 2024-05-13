@@ -23,6 +23,7 @@ import { isElfChainSymbol } from './aelfUtils';
 import { getLog } from './protoUtils';
 import getTransactionId, { getLogs } from './contractResult';
 import { formatSwapError } from './formatError';
+import { formatSymbol } from './token';
 export const getDeadline = (): number | PBTimestamp => {
   const deadline = new BigNumber(JSON.parse(localStorage.getItem(storages.userExpiration) || ''));
   const seconds =
@@ -253,8 +254,8 @@ export async function swapSuccess({
       {
         message: t('swapSuccess'),
         description: t('swapSuccessDescription', {
-          token1: `${divDecimals(amountIn, tokenB?.decimals).dp(8).toFixed()} ${symbolIn}`,
-          token2: `${divDecimals(amountOut, tokenA?.decimals).dp(8).toFixed()} ${symbolOut}`,
+          token1: `${divDecimals(amountIn, tokenB?.decimals).dp(8).toFixed()} ${formatSymbol(symbolIn)}`,
+          token2: `${divDecimals(amountOut, tokenA?.decimals).dp(8).toFixed()} ${formatSymbol(symbolOut)}`,
         }),
         txId: transactionId,
       },
@@ -296,11 +297,11 @@ export function checkAddButtonStatus({
     text = 'selectAToken';
     disabled = true;
   } else if (leftInput && leftBalance.lt(leftInput)) {
-    text = t('insufficientBalance', { symbol: leftToken.symbol });
+    text = t('insufficientBalance', { symbol: formatSymbol(leftToken.symbol) });
     disabled = true;
     error = true;
   } else if (rightInput && rightBalance.lt(rightInput)) {
-    text = t('insufficientBalance', { symbol: rightToken.symbol });
+    text = t('insufficientBalance', { symbol: formatSymbol(rightToken.symbol) });
     disabled = true;
     error = true;
   } else if (

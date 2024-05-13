@@ -10,6 +10,7 @@ import { Currency } from '@awaken/sdk-core';
 import { useMobile } from 'utils/isMobile';
 import { showValueWrapper } from 'utils/price';
 import { WebLoginState, useWebLogin } from 'aelf-web-login';
+import { formatSymbol } from 'utils/token';
 
 interface PairBalanceProps {
   token?: Currency;
@@ -38,7 +39,7 @@ function PairBalance({ token, balance }: PairBalanceProps) {
       </Col>
       <Col>
         <Font size={isMobile ? 12 : 14} lineHeight={isMobile ? 18 : 20} color="two">
-          {token?.symbol || '--'}
+          {formatSymbol(token?.symbol) || '--'}
         </Font>
       </Col>
     </Row>

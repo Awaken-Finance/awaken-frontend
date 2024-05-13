@@ -33,6 +33,7 @@ import { ZERO } from 'constants/misc';
 import { useMobile } from 'utils/isMobile';
 import CommonBlockProgress from 'components/CommonBlockProgress';
 import { isZeroDecimalsNFT } from 'utils/NFT';
+import { formatSymbol } from 'utils/token';
 
 export default function RightCard({
   tokenA,
@@ -118,7 +119,7 @@ export default function RightCard({
 
     if (bigInput.gt(maxAmount)) {
       return {
-        text: `Max amount ${bigNumberToString(maxAmount, tokenA?.decimals)} ${tokenA?.symbol}`,
+        text: `Max amount ${bigNumberToString(maxAmount, tokenA?.decimals)} ${formatSymbol(tokenA?.symbol)}`,
         error: true,
       };
     }
@@ -136,7 +137,7 @@ export default function RightCard({
 
     if (bigTotal.gt(maxPool)) {
       return {
-        text: `Max output ${bigNumberToString(maxPool, tokenB?.decimals)} ${tokenB?.symbol}`,
+        text: `Max output ${bigNumberToString(maxPool, tokenB?.decimals)} ${formatSymbol(tokenB?.symbol)}`,
         error: true,
       };
     }

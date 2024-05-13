@@ -6,12 +6,13 @@ import Font from 'components/Font';
 import FallOrRise from 'components/FallOrRise';
 
 import { PoolItem } from 'types';
-import { unitConverter } from 'utils';
-import { formatPriceByNumberToDp, formatPercentage, formatBalance } from 'utils/price';
+import { unifyWTokenSymbol, unitConverter } from 'utils';
+import { formatPriceByNumberToDp, formatPercentage, formatBalance, showValueWrapper } from 'utils/price';
 
 import './index.less';
 import PriceUSDDigits from 'components/PriceUSDDigits';
 import getFontStyle from 'utils/getFontStyle';
+import { formatSymbol } from 'utils/token';
 
 export default ({ pairInfo }: { pairInfo: PoolItem }) => {
   const { t } = useTranslation();
@@ -65,7 +66,9 @@ export default ({ pairInfo }: { pairInfo: PoolItem }) => {
             </Col>
             <Col span={12} className="text-right">
               <Font lineHeight={18} size={12} color="two" className="font-two-line" align="right">
-                {`${t('vol24H')} ${pairInfo?.token0?.symbol ? '(' + pairInfo.token0.symbol + ')' : ''}`}
+                {`${t('vol24H')}(${formatSymbol(
+                  showValueWrapper(pairInfo?.token0?.symbol, unifyWTokenSymbol(pairInfo?.token0)),
+                )})`}
               </Font>
             </Col>
             <Col span={12}>
@@ -87,7 +90,9 @@ export default ({ pairInfo }: { pairInfo: PoolItem }) => {
             </Col>
             <Col span={12} className="text-right">
               <Font lineHeight={18} size={12} color="two" className="font-two-line" align="right">
-                {`${t('vol24H')} ${pairInfo?.token1?.symbol ? '(' + pairInfo.token1.symbol + ')' : ''}`}
+                {`${t('amount24H')}(${formatSymbol(
+                  showValueWrapper(pairInfo?.token1?.symbol, unifyWTokenSymbol(pairInfo?.token1)),
+                )})`}
               </Font>
             </Col>
             <Col span={12}>

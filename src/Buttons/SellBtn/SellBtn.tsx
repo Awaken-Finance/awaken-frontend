@@ -20,6 +20,7 @@ import AuthBtn from 'Buttons/AuthBtn';
 import './index.less';
 import { WebLoginState, useWebLogin } from 'aelf-web-login';
 import { useIsPortkeySDK } from 'hooks/useIsPortkeySDK';
+import { formatSymbol } from 'utils/token';
 
 interface SellBtnProps {
   sell?: boolean;
@@ -135,7 +136,8 @@ export default function SellBtn({
   const isLogin = useMemo(() => loginState === WebLoginState.logined, [loginState]);
 
   const btnTxt = useMemo(() => {
-    if (isLogin || isFixState) return sell ? `${t('sell')} ${symbolA}` : `${t('buy')} ${symbolA}`;
+    const symbolStr = formatSymbol(symbolA);
+    if (isLogin || isFixState) return sell ? `${t('sell')} ${symbolStr}` : `${t('buy')} ${symbolStr}`;
     if (isPortkeySDK) return sell ? t('Unlock to Sell') : t('Unlock to Buy');
     return sell ? t('Log In to Sell') : t('Log In to Buy');
   }, [isLogin, isFixState, sell, t, symbolA, isPortkeySDK]);

@@ -26,4 +26,8 @@ export enum REQ_CODE {
   Success = 1,
 }
 
+export const SYMBOL_FORMAT_MAP: Record<string, string> = {
+  'SGR-1': 'SGR',
+};
+
 // export const LANG_MAX_VALUE = LANG_MAX.toFixed();
