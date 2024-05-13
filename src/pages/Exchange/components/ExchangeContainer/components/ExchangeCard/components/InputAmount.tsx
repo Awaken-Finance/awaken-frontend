@@ -11,6 +11,7 @@ import CommonInput from 'components/CommonInput';
 import CommonTooltip from 'components/CommonTooltip';
 
 import './index.less';
+import { formatSymbol } from 'utils/token';
 
 function InputAmount({
   onChange = () => null,
@@ -64,7 +65,7 @@ function InputAmount({
             {t(type)}
           </Font>
         }
-        suffix={<Font lineHeight={30}>{token?.symbol || ''}</Font>}
+        suffix={<Font lineHeight={30}>{formatSymbol(token?.symbol) || ''}</Font>}
         textAlign="right"
         onFocus={onFocus}
         onChange={(e) => {

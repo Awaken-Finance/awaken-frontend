@@ -33,6 +33,7 @@ import { ZERO } from 'constants/misc';
 import { useMobile } from 'utils/isMobile';
 import CommonBlockProgress from 'components/CommonBlockProgress';
 import { isZeroDecimalsNFT } from 'utils/NFT';
+import { formatSymbol } from 'utils/token';
 
 export default function LeftCard({
   tokenA,
@@ -120,7 +121,7 @@ export default function LeftCard({
 
     if (bigInput.gt(maxPool)) {
       return {
-        text: `Max output ${bigNumberToString(maxPool, tokenA?.decimals)} ${tokenA?.symbol}`,
+        text: `Max output ${bigNumberToString(maxPool, tokenA?.decimals)} ${formatSymbol(tokenA?.symbol)}`,
         error: true,
       };
     }
@@ -136,7 +137,7 @@ export default function LeftCard({
 
     if (bigTotal.gt(maxTotal)) {
       return {
-        text: `Max amount ${bigNumberToString(maxTotal, tokenB?.decimals)} ${tokenB?.symbol}`,
+        text: `Max amount ${bigNumberToString(maxTotal, tokenB?.decimals)} ${formatSymbol(tokenB?.symbol)}`,
         error: true,
       };
     }

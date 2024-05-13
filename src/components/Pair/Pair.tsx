@@ -6,6 +6,7 @@ import { TokenInfo } from 'types';
 import Font from 'components/Font';
 import { stringCut } from 'utils/string';
 import { FontStyleProps } from 'utils/getFontStyle';
+import { formatSymbol } from 'utils/token';
 
 export interface PairProps extends FontStyleProps {
   symbol?: TokenInfo | string;
@@ -15,7 +16,9 @@ export interface PairProps extends FontStyleProps {
 export default function Pair({ symbol, maxLength, ...props }: PairProps) {
   const text = useMemo(() => {
     if (!symbol) return '--';
-    const symbolStr = typeof symbol === 'string' ? symbol : unifyWTokenSymbol(symbol);
+    let symbolStr = typeof symbol === 'string' ? symbol : unifyWTokenSymbol(symbol);
+    symbolStr = formatSymbol(symbolStr);
+
     return stringCut(symbolStr, maxLength ?? symbolStr.length);
   }, [maxLength, symbol]);
 

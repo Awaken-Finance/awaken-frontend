@@ -25,6 +25,7 @@ import {
 import PriceUSDDigits from 'components/PriceUSDDigits';
 import getFontStyle from 'utils/getFontStyle';
 import { ZERO } from 'constants/misc';
+import { formatSymbol } from 'utils/token';
 
 function Header() {
   const [{ pairInfo }] = useSwapContext();
@@ -114,7 +115,9 @@ function Header() {
         <div className="trade-header-item">
           <Row>
             <Font lineHeight={18} size={12} color="two">
-              {`${t('vol24H')}${'(' + (pairInfo?.token0?.symbol ? unifyWTokenSymbol(pairInfo.token0) : '--') + ')'}`}
+              {`${t('vol24H')}(${formatSymbol(
+                showValueWrapper(pairInfo?.token0?.symbol, unifyWTokenSymbol(pairInfo?.token0)),
+              )})`}
             </Font>
           </Row>
           <Row>
@@ -124,9 +127,9 @@ function Header() {
         <div className="trade-header-item">
           <Row>
             <Font lineHeight={18} size={12} color="two">
-              {`${t('amount24H')}${
-                '(' + showValueWrapper(pairInfo?.token1?.symbol, unifyWTokenSymbol(pairInfo?.token1)) + ')'
-              }`}
+              {`${t('amount24H')}(${formatSymbol(
+                showValueWrapper(pairInfo?.token1?.symbol, unifyWTokenSymbol(pairInfo?.token1)),
+              )})`}
             </Font>
           </Row>
           <Row>

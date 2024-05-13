@@ -8,6 +8,7 @@ import useAllowanceAndApprove from 'hooks/useApprove';
 import { useEffect, useMemo } from 'react';
 import { divDecimals, timesDecimals } from 'utils/calculate';
 import { useTranslation } from 'react-i18next';
+import { formatSymbol } from 'utils/token';
 
 export type ApproveBtnProps = Omit<CommonButtonProps, 'onClick'> & {
   symbol?: string;
@@ -101,7 +102,7 @@ export default function ApproveBtn({
 
   return (
     <AuthBtn {...props} disabled={buttonDisabled} loading={approving || checkingAllowance} onClick={onClickApprove}>
-      {`${t(buttonText)} ${symbol}`}
+      {`${t(buttonText)} ${formatSymbol(symbol)}`}
     </AuthBtn>
   );
 }

@@ -14,6 +14,7 @@ import { useTokenContract } from 'hooks/useContract';
 
 import CommonEmpty from 'components/CommonEmpty';
 import { useMobile } from 'utils/isMobile';
+import { formatSymbol } from 'utils/token';
 
 export default function ManageTokens() {
   const { t } = useTranslation();
@@ -34,9 +35,9 @@ export default function ManageTokens() {
   const isMobile = useMobile();
 
   const searchTokenInfo = useCallback(
-    async (query: string) => {
+    async (query = '') => {
       if (!tokenContract) return;
-      const tokenInfo = await tokenContract.callViewMethod('GetTokenInfo', [query]);
+      const tokenInfo = await tokenContract.callViewMethod('GetTokenInfo', [query.toLocaleUpperCase()]);
       if (!tokenInfo) {
         setSearchTokenInfo(undefined);
         return;
@@ -132,7 +133,7 @@ export default function ManageTokens() {
                         <Col className="token-name">
                           <Row>
                             <Font color="one" size={16} lineHeight={24} weight={'medium'}>
-                              {item.symbol}
+                              {formatSymbol(item.symbol)}
                             </Font>
                           </Row>
                           <Row>
