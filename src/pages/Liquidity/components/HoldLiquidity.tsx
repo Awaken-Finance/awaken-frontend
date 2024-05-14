@@ -12,7 +12,7 @@ import { formatPercentage, formatTokenAmount } from 'utils/price';
 import { getCurrencyAddress, getLPDecimals } from 'utils/swap';
 import { ZERO } from 'constants/misc';
 
-import './styles.less';
+import '../styles.less';
 import useLPBalances from 'hooks/useLPBalances';
 import { Reserves } from 'types/swap';
 import { useMemo } from 'react';

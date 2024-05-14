@@ -26,22 +26,22 @@ import CommonTooltip from 'components/CommonTooltip';
 
 import CommonButton from 'components/CommonButton';
 import { useRouterContract } from 'hooks/useContract';
-import { PooledTokensModal, RemoveConfirmModal } from './RemoveConfirmModals';
+import { RemoveConfirmModal } from './RemoveConfirmModals';
 import useAllowanceAndApprove from 'hooks/useApprove';
 import BigNumber from 'bignumber.js';
 import useLPSymbol from 'hooks/useLPSymbol';
 import { useMobile } from 'utils/isMobile';
 import { PairInfo } from 'contexts/useModal/actions';
 
-import './styles.less';
 import CommonBlockProgress from 'components/CommonBlockProgress';
 import { formatTokenAmount } from 'utils/price';
+
+import '../styles.less';
 
 export default function Remove({ pairInfo }: { pairInfo: PairInfo }) {
   const { t } = useTranslation();
   const isMobile = useMobile();
   const { account } = useActiveWeb3React();
-  const [pooledTokensVisible, setPooledTokensVisible] = useState<boolean>(false);
   const [removeConfirmVisible, setRemoveConfirmVisible] = useState<boolean>(false);
 
   const [loading, setLoading] = useState(false);
@@ -207,7 +207,7 @@ export default function Remove({ pairInfo }: { pairInfo: PairInfo }) {
                 </Font>
               </Col>
               <Col>
-                <CommonTooltip onClick={() => isMobile && setPooledTokensVisible(true)} title={t('tokensTips')} />
+                <CommonTooltip title={t('tokensTips')} headerDesc={t('pooledTokens')} buttonTitle={t('ok')} />
               </Col>
             </Row>
           </Col>
@@ -269,7 +269,6 @@ export default function Remove({ pairInfo }: { pairInfo: PairInfo }) {
           {t(`${buttonTitle}`)}
         </CommonButton>
       </Col>
-      <PooledTokensModal visible={pooledTokensVisible} onClose={() => setPooledTokensVisible(false)} />
       <RemoveConfirmModal
         visible={removeConfirmVisible}
         onClose={() => setRemoveConfirmVisible(false)}
