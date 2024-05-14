@@ -42,7 +42,7 @@ function successToExplorer(
           </Col>
           <Col>
             <Copy copyValue={props.txId}>
-              <a target="_blank" href={explorerHref} rel="noreferrer">
+              <a target="_blank" className="notification-notice-common-tx-link" href={explorerHref} rel="noreferrer">
                 {shortenTransactionId(props.txId || '')}
               </a>
             </Copy>
