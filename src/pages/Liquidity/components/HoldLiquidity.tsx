@@ -89,7 +89,7 @@ export default function HoldLiquidity({
               </Row>
             </Col>
             <Col>
-              <Font lineHeight={24} size={16} weight="medium">
+              <Font lineHeight={24} size={14} weight="medium">
                 {lpUnit}
               </Font>
             </Col>
@@ -107,7 +107,7 @@ export default function HoldLiquidity({
                   />
                 </Col>
                 <Col>
-                  <Font lineHeight={24} size={16} weight="medium">
+                  <Font lineHeight={24} size={14} weight="medium">
                     {formatTokenAmount(leftLPBalance, leftToken?.decimals)}
                   </Font>
                 </Col>
@@ -123,7 +123,7 @@ export default function HoldLiquidity({
                   />
                 </Col>
                 <Col>
-                  <Font lineHeight={24} size={16} weight="medium">
+                  <Font lineHeight={24} size={14} weight="medium">
                     {formatTokenAmount(rightLPBalance, rightToken?.decimals)}
                   </Font>
                 </Col>
@@ -137,7 +137,7 @@ export default function HoldLiquidity({
                   </Font>
                 </Col>
                 <Col>
-                  <Font lineHeight={20} weight="medium">{`${formatPercentage(new BigNumber(rate))}%`}</Font>
+                  <Font lineHeight={20} size={14} weight="medium">{`${formatPercentage(new BigNumber(rate))}%`}</Font>
                 </Col>
               </Row>
             </Col>
