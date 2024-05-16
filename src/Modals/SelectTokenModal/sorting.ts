@@ -1,6 +1,8 @@
 import { Token } from 'types';
 import BigNumber from 'bignumber.js';
 import { useMemo } from 'react';
+import { divDecimals } from 'utils/calculate';
+import { TOKEN_SORT_MAP, ZERO } from 'constants/misc';
 // compare two token amounts with highest one coming first
 function balanceComparator(balanceA?: BigNumber, balanceB?: BigNumber) {
   if (balanceA && balanceB) {
@@ -20,9 +22,14 @@ function getTokenComparator(balances: {
     // 1 = b is first
 
     // sort by balances
-    const balanceA = balances[tokenA.address];
-    const balanceB = balances[tokenB.address];
-
+    const valueA = balances[tokenA.address] || ZERO;
+    const balanceA = !valueA.isNaN()
+      ? divDecimals(valueA, tokenA.decimals)
+      : ZERO.plus(TOKEN_SORT_MAP[tokenA.symbol] || 0);
+    const valueB = balances[tokenB.address] || ZERO;
+    const balanceB = !valueB.isNaN()
+      ? divDecimals(valueB, tokenB.decimals)
+      : ZERO.plus(TOKEN_SORT_MAP[tokenB.symbol] || 0);
     const balanceComp = balanceComparator(balanceA, balanceB);
     if (balanceComp !== 0) return balanceComp;
 

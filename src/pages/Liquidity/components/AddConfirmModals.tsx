@@ -17,7 +17,7 @@ import { PairsAndLogos } from 'components/PariAndLogo';
 import { unitConverter } from 'utils';
 import { ChainConstants } from 'constants/ChainConstants';
 import { useMemo } from 'react';
-import { isZeroDecimalsNFT } from 'utils/NFT';
+import { LP_DECIMALS } from 'constants/misc';
 
 export function AddConfirmModal({
   tokenA,
@@ -50,17 +50,14 @@ export function AddConfirmModal({
   const routerAddress = ChainConstants.constants.ROUTER[rate];
   const { reserves, totalSupply } = usePair(pairAddress, routerAddress);
 
-  const lp = useMemo(() => {
-    if (isZeroDecimalsNFT(tokenA?.decimals)) {
-      return getLiquidity(tokenAValue, timesDecimals(reserves?.[getCurrencyAddress(tokenA)], 8), totalSupply).toFixed();
-    }
-
-    if (isZeroDecimalsNFT(tokenB?.decimals)) {
-      return getLiquidity(tokenBValue, timesDecimals(reserves?.[getCurrencyAddress(tokenB)], 8), totalSupply).toFixed();
-    }
-
-    return getLiquidity(tokenAValue, reserves?.[getCurrencyAddress(tokenA)], totalSupply).toFixed();
-  }, [reserves, tokenA, tokenAValue, tokenB, tokenBValue, totalSupply]);
+  const lp = useMemo(
+    () =>
+      divDecimals(
+        getLiquidity(timesDecimals(tokenAValue, tokenA?.decimals), reserves?.[getCurrencyAddress(tokenA)], totalSupply),
+        LP_DECIMALS,
+      ).toFixed(),
+    [reserves, tokenA, tokenAValue, totalSupply],
+  );
 
   const [{ userSlippageTolerance }] = useUserSettings();
 
