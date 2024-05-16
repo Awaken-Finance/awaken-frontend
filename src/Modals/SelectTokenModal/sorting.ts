@@ -23,13 +23,15 @@ function getTokenComparator(balances: {
 
     // sort by balances
     const valueA = balances[tokenA.address] || ZERO;
-    const balanceA = !valueA.isNaN()
-      ? divDecimals(valueA, tokenA.decimals)
-      : ZERO.plus(TOKEN_SORT_MAP[tokenA.symbol] || 0);
+    const balanceA =
+      valueA.isNaN() || TOKEN_SORT_MAP[tokenA.symbol]
+        ? ZERO.plus(TOKEN_SORT_MAP[tokenA.symbol] || 0)
+        : divDecimals(valueA, tokenA.decimals);
     const valueB = balances[tokenB.address] || ZERO;
-    const balanceB = !valueB.isNaN()
-      ? divDecimals(valueB, tokenB.decimals)
-      : ZERO.plus(TOKEN_SORT_MAP[tokenB.symbol] || 0);
+    const balanceB =
+      valueB.isNaN() || TOKEN_SORT_MAP[tokenB.symbol]
+        ? ZERO.plus(TOKEN_SORT_MAP[tokenB.symbol] || 0)
+        : divDecimals(valueB, tokenB.decimals);
     const balanceComp = balanceComparator(balanceA, balanceB);
     if (balanceComp !== 0) return balanceComp;
 
