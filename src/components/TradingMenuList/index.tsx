@@ -20,7 +20,7 @@ import './index.less';
 import 'swiper/css';
 import { IconArrowRight, IconArrowLeft } from 'assets/icons';
 
-interface TradingMeunListProps {
+interface TradingMenuListProps {
   onChange?: (params: FetchParam, symbolList?: string[], pinned_tokens?: PinnedToken[]) => void;
   onTokenListChange?: (selectToken: PinnedToken, pinned_tokens?: PinnedToken[]) => void;
   className?: string;
@@ -32,12 +32,12 @@ const defaultMeunList = [
   { tokenId: 'other', symbol: 'other' },
 ];
 
-export default function TradingMeunList({
+export default function TradingMenuList({
   onChange,
   className = '',
   source = 'trading',
   onTokenListChange = () => null,
-}: TradingMeunListProps) {
+}: TradingMenuListProps) {
   const { t } = useTranslation();
   const isMobile = useMobile();
   const { chainId } = useActiveWeb3React();
@@ -173,7 +173,7 @@ export default function TradingMeunList({
       }}
       spaceBetween={spaceBetween}
       slidesPerView="auto"
-      className={clsx('trade-meun-list', className, isShowLeft && 'is-show-left-arrow')}>
+      className={clsx('trade-menu-list', className, isShowLeft && 'is-show-left-arrow')}>
       {isShowLeft && <SwiperButtonPrev />}
       {renderMeun}
       {isShowRight && <SwiperButtonNext />}
