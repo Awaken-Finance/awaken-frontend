@@ -12,7 +12,6 @@ export default function Modals() {
       <AccountModal />
       {/* <WalletModal /> */}
       {/* <CreatePairModal /> */}
-      {/* <ManageLiquidityModal /> */}
       <TransactionSettingsModal />
       <SelectTokenModal />
       {/* <ManageModal /> */}

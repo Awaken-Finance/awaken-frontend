@@ -18,7 +18,7 @@ export const VALUE_T = new BigNumber(1000000000);
 
 export const isNanOrZero = (val: any) => new BigNumber(val).isNaN() || new BigNumber(val).eq(0);
 
-// export const LANG_MAX = new BigNumber('9223372036854774784');
+export const LANG_MAX = new BigNumber('9223372036854774784');
 
 export enum REQ_CODE {
   UserDenied = -1,
@@ -30,4 +30,10 @@ export const SYMBOL_FORMAT_MAP: Record<string, string> = {
   'SGR-1': 'SGR',
 };
 
-// export const LANG_MAX_VALUE = LANG_MAX.toFixed();
+export const LP_DECIMALS = 8;
+export const LANG_MAX_VALUE = LANG_MAX.toFixed();
+
+export const TOKEN_SORT_MAP: Record<string, string> = {
+  ELF: LANG_MAX.toFixed(),
+  USDT: LANG_MAX.minus(1).toFixed(),
+};

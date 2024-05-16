@@ -5,6 +5,7 @@ import { useCallback, useMemo } from 'react';
 import { useHistory } from 'react-router-dom';
 import './index.less';
 import { useMobile } from 'utils/isMobile';
+import { CommonPanelPage } from 'components/CommonPanelPage';
 
 export default function CreatePairPage() {
   const { t } = useTranslation();
@@ -21,24 +22,8 @@ export default function CreatePairPage() {
   }, [isMobile]);
 
   return (
-    <CommonModal
-      wrapClassName="create-pair-wrap"
-      className="create-pair-wrap"
-      visible={true}
-      closable={false}
-      keyboard={false}
-      mask={false}
-      transitionName="custom"
-      title={t('addPairs')}
-      size="large"
-      width={isMobile ? '100%' : '640px'}
-      titleFontProps={{
-        size: isMobile ? 16 : 20,
-        lineHeight: 24,
-      }}
-      height={height}
-      onCancel={onCancel}>
+    <CommonPanelPage className="create-pair-wrap" title={t('addPairs')} onCancel={onCancel}>
       <CreatePair onCancel={onCancel} />
-    </CommonModal>
+    </CommonPanelPage>
   );
 }

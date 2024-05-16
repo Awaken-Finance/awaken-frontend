@@ -20,7 +20,7 @@ const AWAKEN_LIST_MAP: { [key: string]: string } = {
 
 const AWAKEN_TOKEN_LIST_URL = AWAKEN_LIST_MAP[API_ENV || 'main'];
 
-function useRemoateTokenList() {
+function useRemoteTokenList() {
   return useSWR(AWAKEN_TOKEN_LIST_URL, (url: string) => fetch(url).then((res) => res.json()));
 }
 
@@ -40,7 +40,7 @@ export function useAllTokenList() {
     }
   }, [chainId]);
 
-  const { data: remoteTokenList } = useRemoateTokenList();
+  const { data: remoteTokenList } = useRemoteTokenList();
 
   const combinedTokenList = useMemo(() => {
     if (!remoteTokenList || !remoteTokenList.tokens || remoteTokenList.tokens.length === 0) {
@@ -55,9 +55,7 @@ export function useAllTokenList() {
       tokens.push(new ELFChainToken(chainId, token.address, token.decimals, token.symbol, token.name));
     });
     userAddedTokens.forEach((token) => {
-      if (tokens.find((t) => t.symbol === token.symbol)) {
-        return;
-      }
+      if (tokens.find((t) => t.symbol === token.symbol)) return;
       tokens.push(token);
     });
     tokens.sort((a, b) => a.symbol.localeCompare(b.symbol));

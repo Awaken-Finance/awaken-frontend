@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next';
 
 import CreatePairBtn from 'Buttons/CreatePairBtn';
 import { CollectionBtnInList } from 'Buttons/CollectionBtn';
-import TradingMeunList from 'components/TradingMeunList';
+import TradingMenuList from 'components/TradingMenuList';
 import Font from 'components/Font';
 import { Pairs } from 'components/Pair';
 import FeeRate from 'components/FeeRate';
@@ -127,7 +127,7 @@ export default function MobilePairList({
         />
       </Col>
       <Col span={24} className="mobile-pari-list-menu-box">
-        <TradingMeunList onChange={getData} className="mobile-pari-list-menu" source="market" />
+        <TradingMenuList onChange={getData} className="mobile-pari-list-menu" source="market" />
       </Col>
       <Col span={24}>
         <ScrollTableList
