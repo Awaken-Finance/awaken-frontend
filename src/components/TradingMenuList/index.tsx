@@ -81,7 +81,7 @@ export default function TradingMenuList({
     return list;
   }, [pinned_tokens]);
 
-  const renderMeun = useMemo(() => {
+  const renderMenu = useMemo(() => {
     return menuList.map(({ tokenId, symbol }) => {
       if (tokenId === 'fav') {
         return (
@@ -175,7 +175,7 @@ export default function TradingMenuList({
       slidesPerView="auto"
       className={clsx('trade-menu-list', className, isShowLeft && 'is-show-left-arrow')}>
       {isShowLeft && <SwiperButtonPrev />}
-      {renderMeun}
+      {renderMenu}
       {isShowRight && <SwiperButtonNext />}
     </Swiper>
   );
