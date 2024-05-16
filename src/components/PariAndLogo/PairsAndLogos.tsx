@@ -21,7 +21,6 @@ interface PairsAndLogosProps {
 }
 
 export default function PairsAndLogos({ gutter = [4, 8], logos, pairs }: PairsAndLogosProps) {
-  console.log('logos: ', logos);
   return (
     <Row gutter={gutter} align="middle">
       <Col>

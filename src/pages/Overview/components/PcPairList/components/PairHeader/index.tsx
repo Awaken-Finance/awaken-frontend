@@ -1,6 +1,6 @@
 import CreatePairBtn from 'Buttons/CreatePairBtn';
 import SearchTairByName from 'components/SearchTairByName';
-import TradingMeunList from 'components/TradingMeunList';
+import TradingMenuList from 'components/TradingMenuList';
 
 import { FetchParam } from 'types/requeset';
 
@@ -15,7 +15,7 @@ export default function PairHeader({
 }) {
   return (
     <div className="flex justify-between title-menu">
-      <TradingMeunList onChange={getData} source="market" />
+      <TradingMenuList onChange={getData} source="market" />
       <div className="menu-right">
         <div className="search">
           <SearchTairByName value={searchVal} onChange={(searchVal) => getData({ searchVal })} />

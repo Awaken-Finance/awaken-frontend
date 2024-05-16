@@ -6,7 +6,7 @@ import clsx from 'clsx';
 import { ColumnsType } from 'antd/lib/table/interface';
 
 import SearchTairByName from 'components/SearchTairByName';
-import TradingMeunList from 'components/TradingMeunList';
+import TradingMenuList from 'components/TradingMenuList';
 import { CollectionBtnInList } from 'Buttons/CollectionBtn';
 import FallOrRise from 'components/FallOrRise';
 import CommonCard from 'components/CommonCard';
@@ -181,7 +181,7 @@ export default function TradePairList({
           />
         </Col>
         <Col className="tard-meun" span={24}>
-          <TradingMeunList className="tard-meun-list" onChange={getData} source="trade" />
+          <TradingMenuList className="tard-meun-list" onChange={getData} source="trade" />
         </Col>
         <Col
           style={{ height: height, overflowY: 'auto' }}

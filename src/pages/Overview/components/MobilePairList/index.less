@@ -1,19 +1,19 @@
 .mobile-pari-list {
   background-color: var(--ant-container-bg-color);
-  &-top {
+  .mobile-pari-list-top {
     padding-top: 16px;
     position: sticky;
     top: 0;
     z-index: 10;
     background-color: var(--ant-container-bg-color);
   }
-  &-title {
+  .mobile-pari-list-title {
     padding-left: 16px;
   }
-  &-btn {
+  .mobile-pari-list-btn {
     padding-right: 16px;
   }
-  &-search {
+  .mobile-pari-list-search {
     margin-top: 12px;
     padding: 0 16px;
     &-input {
@@ -22,19 +22,21 @@
       padding-left: 8px;
     }
   }
-  &-menu {
+  .mobile-pari-list-menu {
     font-size: 14px;
     height: 44px;
-    padding: 8px 16px 0;
+    padding: 0 16px;
+    margin-top: 8px;
     border-bottom: 1px solid #393d47;
-    &-box {
-      position: sticky;
-      top: 44px;
-      z-index: calc(2 + 1);
-      background-color: var(--ant-container-bg-color);
-    }
   }
-  &-collect {
+  .mobile-pari-list-menu-box {
+    position: sticky;
+    top: 44px;
+    z-index: calc(2 + 1);
+    background-color: var(--ant-container-bg-color);
+  }
+
+  .mobile-pari-list-collect {
     margin-top: -2px;
   }
 

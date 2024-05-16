@@ -19,7 +19,6 @@ import { useDebounceFn, useRequest } from 'ahooks';
 import { useRouterContract } from 'hooks/useContract';
 import CommonButton from 'components/CommonButton';
 
-import './styles.less';
 import ApproveButtonsRow, { ApproveButtonsRowState } from 'Buttons/ApproveBtn/ApproveButtonsRow';
 import { AddConfirmModal } from './AddConfirmModals';
 import { PairInfo } from 'contexts/useModal/actions';
@@ -28,12 +27,12 @@ import BigNumber from 'bignumber.js';
 import { isZeroDecimalsNFT } from 'utils/NFT';
 import clsx from 'clsx';
 
+import '../styles.less';
+
 export default function Add({ pairInfo }: { pairInfo: PairInfo }) {
   const { t } = useTranslation();
   const { account } = useActiveWeb3React();
   const [confirmVisible, setConfirmVisible] = useState<boolean>(false);
-
-  console.log('pairInfo: ', pairInfo);
 
   const { tokenA, tokenB, feeRate } = pairInfo || {};
   const rate = feeRate ? SupportedSwapRateMap[feeRate] : SupportedSwapRate.percent_0_05;

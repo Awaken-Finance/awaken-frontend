@@ -13,34 +13,6 @@ import { divDecimals } from 'utils/calculate';
 import { useUserSettings } from 'contexts/useUserSettings';
 import { parseUserSlippageTolerance } from 'utils/swap';
 
-export function PooledTokensModal({ visible, onClose }: { visible: boolean; onClose: () => void }) {
-  const { t } = useTranslation();
-  return (
-    <CommonModal
-      showType="modal"
-      className="pooled-tokens-modal"
-      showBackIcon={false}
-      visible={visible}
-      onCancel={onClose}
-      width={'320px'}
-      centered
-      closable
-      onClose={onClose}
-      title={t('pooledTokens')}>
-      <Row className="title">
-        <Font size={14} color="one">
-          {t('tokensTips')}
-        </Font>
-      </Row>
-      <Row>
-        <CommonButton type="primary" block onClick={onClose} size="middle">
-          OK
-        </CommonButton>
-      </Row>
-    </CommonModal>
-  );
-}
-
 export function RemoveConfirmModal({
   tokenA,
   tokenB,

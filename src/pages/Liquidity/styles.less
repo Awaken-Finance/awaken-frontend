@@ -1,6 +1,21 @@
+.manage-liquidity-page {
+  .manage-liquidity-setting {
+    position: absolute;
+    right: 28px;
+    top: calc(50% - 1px);
+    transform: translateY(-44%);
+    background-color: var(--ant-container-bg-color);
+  }
+}
+
+.mobile-site-content {
+  .manage-liquidity-setting {
+    right: 12px;
+  }
+}
+
 .remove-modal-box,
 .add-modal-box {
-  border-radius: 8px;
   &-input {
     padding: 16px 12px;
     border-radius: 4px;
@@ -61,26 +76,6 @@
   }
 }
 
-.ant-modal-header {
-  .manage-liquidity-setting.ant-btn.setting-fee-btn {
-    position: absolute;
-    right: 20px;
-    top: calc(50% - 1px);
-    transform: translateY(-44%);
-    background-color: var(--ant-container-bg-color);
-  }
-}
-
-.ant-drawer-header {
-  .manage-liquidity-setting.ant-btn.setting-fee-btn {
-    position: absolute;
-    right: 12px;
-    top: calc(50% - 1px);
-    transform: translateY(-44%);
-    background-color: var(--ant-container-bg-color);
-  }
-}
-
 .pooled-tokens-modal {
   .title {
     padding-bottom: 24px;
@@ -115,24 +110,6 @@
   }
 }
 
-.pc-site-content {
-  .manage-liquidity-modal-wrap {
-    pointer-events: none;
-    .common-modal {
-      .ant-modal-header {
-        border: none;
-        padding: 0 32px;
-
-        .back-icon-btn {
-          left: 32px;
-        }
-      }
-      .ant-modal-body {
-        padding: 16px 32px 32px;
-      }
-    }
-  }
-}
 .liq-confirm-modal-m {
   border-radius: 8px;
   .ant-modal-body {

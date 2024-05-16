@@ -22,7 +22,7 @@ export default function Header({ openTradePair }: { openKlinePage?: () => void; 
   return (
     <Row className="mobile-header" wrap={false}>
       <Col>
-        <CommonButton type="text" icon={<IconSwitchPair />} onClick={openTradePair} />
+        <CommonButton className="switch-pair-button" type="text" icon={<IconSwitchPair />} onClick={openTradePair} />
       </Col>
       <Col flex={1} className="symbol">
         <Pairs

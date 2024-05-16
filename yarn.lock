@@ -149,9 +149,9 @@
     tslib "^2.3.0"
     zen-observable-ts "^1.2.5"
 
-"@awaken/default-token-list@git+https://github.com/Awaken-Finance/default-token-list.git#a1b8b2b39b53b114573da4f690f4543eae8824ff":
-  version "2.0.2"
-  resolved "git+https://github.com/Awaken-Finance/default-token-list.git#a1b8b2b39b53b114573da4f690f4543eae8824ff"
+"@awaken/default-token-list@git+https://github.com/Awaken-Finance/default-token-list.git#44fe53bcf4262f52b563e77152de4d2a0f29d670":
+  version "2.0.3"
+  resolved "git+https://github.com/Awaken-Finance/default-token-list.git#44fe53bcf4262f52b563e77152de4d2a0f29d670"
   dependencies:
     axios "^0.27.2"
 

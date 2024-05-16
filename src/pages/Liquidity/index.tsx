@@ -1,10 +1,7 @@
 import SettingFee from 'Buttons/SettingFeeBtn';
-import Add from 'Modals/ManageLiquidityModal/Add';
-import Remove from 'Modals/ManageLiquidityModal/Remove';
-import CommonModal from 'components/CommonModal';
-import Font from 'components/Font';
+import Add from './components/Add';
+import Remove from './components/Remove';
 import { useTranslation } from 'react-i18next';
-import '../../Modals/ManageLiquidityModal/styles.less';
 import { matchPath, useHistory, useLocation, useRouteMatch } from 'react-router-dom';
 import { useCallback, useMemo } from 'react';
 import useCurrentPair from './useCurrentPair';
@@ -13,14 +10,14 @@ import { PairInfo } from 'contexts/useModal/actions';
 import { getCurrency } from 'utils/swap';
 import useChainId from 'hooks/useChainId';
 import CommonEmpty from 'components/CommonEmpty';
-import { useMobile } from 'utils/isMobile';
+import { CommonPanelPage } from 'components/CommonPanelPage';
+import './styles.less';
 
 export default function ManageLiquidity() {
   const { t } = useTranslation();
   const history = useHistory();
   const { chainId } = useChainId();
   const { pathname } = useLocation();
-  const isMobile = useMobile();
 
   const match = useRouteMatch<{ pair: string }>('/liquidity/:pair/:action');
   const { pair } = match?.params || {};
@@ -48,11 +45,6 @@ export default function ManageLiquidity() {
     return t(isAdd ? 'addLiquidity' : 'removeLiquidity');
   }, [isAdd, t]);
 
-  const height = useMemo(() => {
-    if (!isMobile) return '654px';
-    return 'calc(100% - 48px)';
-  }, [isMobile]);
-
   const onCancel = useCallback(() => {
     history.go(-1);
   }, [history]);
@@ -70,26 +62,12 @@ export default function ManageLiquidity() {
   }
 
   return (
-    <CommonModal
-      height={height}
-      visible={true}
-      closable={false}
-      mask={false}
-      maskClosable={false}
-      zIndex={20}
-      transitionName="custom"
-      wrapClassName="manage-liquidity-modal-wrap"
-      width={isMobile ? '100%' : '640px'}
-      title={
-        <>
-          <Font size={isMobile ? 16 : 20} weight="medium" lineHeight={24}>
-            {title}
-          </Font>
-          <SettingFee className="manage-liquidity-setting" />
-        </>
-      }
-      onCancel={onCancel}>
+    <CommonPanelPage
+      className="manage-liquidity-page"
+      title={title}
+      onCancel={onCancel}
+      extraTitle={<SettingFee className="manage-liquidity-setting" />}>
       {isAdd ? <Add pairInfo={pairInfo} /> : <Remove pairInfo={pairInfo} />}
-    </CommonModal>
+    </CommonPanelPage>
   );
 }
