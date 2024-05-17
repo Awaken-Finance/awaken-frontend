@@ -4,6 +4,7 @@ import { useHistory } from 'react-router-dom';
 import './Login.less';
 import { useMobile } from 'utils/isMobile';
 import useQuery from 'hooks/useQuery';
+import { sleep } from 'utils';
 // import { message } from 'antd';
 
 export default function Login() {
@@ -23,22 +24,30 @@ export default function Login() {
       : 'visible';
   }, [isPreparing, loginState]);
 
+  const [isInit, setIsInit] = useState(false);
   useEffect(() => {
     if (loginState === WebLoginState.initial) {
-      if (tryLogin) {
+      if (!isInit) {
+        sleep(500).then(() => {
+          setIsInit(true);
+        });
+      }
+      if (isInit && tryLogin) {
         setTryLogin(false);
         login();
       }
     } else if (loginState === WebLoginState.lock) {
       history.replace('/');
+      login();
     } else if (loginState === WebLoginState.logined) {
       history.replace(redirect);
     }
-  }, [history, login, loginState, redirect, tryLogin]);
+  }, [history, isInit, login, loginState, redirect, tryLogin]);
 
   // useWebLoginEvent(WebLoginEvents.LOGIN_ERROR, (error) => {
   //   message.error(error.message);
   // });
+  if (!isInit) return <></>;
 
   return (
     <div className="page-login">
