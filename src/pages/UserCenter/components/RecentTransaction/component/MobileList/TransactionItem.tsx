@@ -16,7 +16,7 @@ import PriceDigits from 'components/PriceDigits';
 import getFontStyle from 'utils/getFontStyle';
 import PriceUSDDigits from 'components/PriceUSDDigits';
 import { useMemo } from 'react';
-import { getRealPrice, getRealToken0Amount, getRealToken1Amount } from 'utils/calculate';
+import { getRealPrice } from 'utils/calculate';
 import { ZERO } from 'constants/misc';
 import { stringMidShort } from 'utils/string';
 
@@ -55,38 +55,6 @@ export default function TransactionItem({
         feeRate: tradePair.feeRate,
       }),
     [side, token0Amount, token1Amount, tradePair.feeRate],
-  );
-
-  const realToken0Amount = useMemo(
-    () =>
-      getRealToken0Amount({
-        side,
-        value: token0Amount,
-        feeRate: tradePair.feeRate,
-        decimals: tradePair.token0.decimals,
-      }),
-    [side, token0Amount, tradePair.feeRate, tradePair.token0.decimals],
-  );
-
-  const realToken1Amount = useMemo(
-    () =>
-      getRealToken1Amount({
-        side,
-        value: token1Amount,
-        feeRate: tradePair.feeRate,
-        decimals: tradePair.token1.decimals,
-      }),
-    [side, token1Amount, tradePair.feeRate, tradePair.token1.decimals],
-  );
-
-  const realTotalValue = useMemo(
-    () =>
-      getRealToken1Amount({
-        side,
-        value: totalPriceInUsd,
-        feeRate: tradePair.feeRate,
-      }),
-    [side, totalPriceInUsd, tradePair.feeRate],
   );
 
   return (
@@ -131,7 +99,7 @@ export default function TransactionItem({
         </Font>
       </Col>
       <Col span={12} className="align-right height-20">
-        <Font lineHeight={20}>{formatPriceChange(realToken0Amount)}</Font>
+        <Font lineHeight={20}>{formatPriceChange(token0Amount)}</Font>
         &nbsp;
         <Pair lineHeight={20} symbol={tradePair?.token0?.symbol} />
       </Col>
@@ -142,7 +110,7 @@ export default function TransactionItem({
         </Font>
       </Col>
       <Col span={12} className="align-right height-20">
-        <Font lineHeight={20}>{`${formatPriceChange(realToken1Amount)}`}</Font>
+        <Font lineHeight={20}>{`${formatPriceChange(token1Amount)}`}</Font>
         &nbsp;
         <Pair lineHeight={20} symbol={tradePair?.token1?.symbol} />
       </Col>
@@ -153,7 +121,7 @@ export default function TransactionItem({
         </Font>
       </Col>
       <Col span={12} className="align-right height-20">
-        <PriceUSDDigits className={getFontStyle({ lineHeight: 24 })} price={realTotalValue} />,
+        <PriceUSDDigits className={getFontStyle({ lineHeight: 24 })} price={totalPriceInUsd} />,
       </Col>
 
       <Col span={12} className="height-20">

@@ -26,7 +26,7 @@ import { getTokenWeights } from 'utils/token';
 import PriceDigits from 'components/PriceDigits';
 import getFontStyle from 'utils/getFontStyle';
 import PriceUSDDigits from 'components/PriceUSDDigits';
-import { getRealPrice, getRealToken0Amount, getRealToken1Amount } from 'utils/calculate';
+import { getRealPrice } from 'utils/calculate';
 import { ZERO } from 'constants/misc';
 import { stringMidShort } from 'utils/string';
 
@@ -150,16 +150,10 @@ export default function PcTable({
         width: 132,
         align: 'left',
         render: (token0Amount: number, record: RecentTransaction) => {
-          const amount = getRealToken0Amount({
-            side: record.side,
-            value: token0Amount,
-            feeRate: record.tradePair.feeRate,
-            decimals: record.tradePair.token0.decimals,
-          });
           return (
             <>
               <Font lineHeight={20} size={14}>
-                {formatPriceChange(isAll ? amount : token0Amount)}
+                {formatPriceChange(token0Amount)}
               </Font>
               &nbsp;
               <Pair lineHeight={20} size={14} symbol={record?.tradePair?.token0?.symbol} />
@@ -174,15 +168,9 @@ export default function PcTable({
         align: 'left',
         width: 132,
         render: (token1Amount: number, record: RecentTransaction) => {
-          const amount = getRealToken1Amount({
-            side: record.side,
-            value: token1Amount,
-            feeRate: record.tradePair.feeRate,
-            decimals: record.tradePair.token1.decimals,
-          });
           return (
             <>
-              <Font lineHeight={24}>{formatPriceChange(isAll ? amount : token1Amount)}</Font>
+              <Font lineHeight={24}>{formatPriceChange(token1Amount)}</Font>
               &nbsp;
               <Pair lineHeight={24} symbol={record?.tradePair?.token1?.symbol} />
             </>
@@ -197,13 +185,8 @@ export default function PcTable({
         // sorter: true,
         width: 116,
         // sortOrder: field === 'realTotalPriceInUsd' ? order : null,
-        render: (_val: number, record: RecentTransaction) => {
-          const amount = getRealToken1Amount({
-            side: record.side,
-            value: record.totalPriceInUsd,
-            feeRate: record.tradePair.feeRate,
-          });
-          return <PriceUSDDigits className={getFontStyle({ lineHeight: 24 })} price={amount} />;
+        render: (_val: number) => {
+          return <PriceUSDDigits className={getFontStyle({ lineHeight: 24 })} price={_val} />;
         },
       },
       {
