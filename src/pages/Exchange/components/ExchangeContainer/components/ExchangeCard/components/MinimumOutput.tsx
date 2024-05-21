@@ -13,7 +13,6 @@ import { formatSymbol } from 'utils/token';
 export default function MinimumOutput({
   value,
   token,
-  maxValue,
 }: {
   value?: BigNumber.Value;
   token?: Currency;
@@ -24,10 +23,9 @@ export default function MinimumOutput({
 
   const valStr = useMemo(() => {
     const bigVal = new BigNumber(value ?? ZERO);
-    const bigMaxVal = new BigNumber(maxValue ?? ZERO).dp(token?.decimals ?? 18);
 
-    return bigNumberToString(BigNumber.min(bigVal, bigMaxVal), token?.decimals);
-  }, [value, maxValue, token?.decimals]);
+    return bigNumberToString(bigVal, token?.decimals);
+  }, [value, token?.decimals]);
 
   return (
     <Row justify="space-between">

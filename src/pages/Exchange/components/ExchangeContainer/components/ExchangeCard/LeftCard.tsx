@@ -283,7 +283,7 @@ export default function LeftCard({
             <TransactionFee onChange={(val) => setTransactionFee(val)} />
           </Col>
           <Col span={24}>
-            <MinimumOutput value={amountOutMin} token={tokenA} maxValue={maxAmount} />
+            <MinimumOutput value={amountOutMin} token={tokenA} />
           </Col>
           <Col span={24}>
             <PriceImpact value={priceImpact} />

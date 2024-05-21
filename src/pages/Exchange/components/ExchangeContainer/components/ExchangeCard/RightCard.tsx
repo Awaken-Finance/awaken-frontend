@@ -285,7 +285,7 @@ export default function RightCard({
             <TransactionFee onChange={(val) => setTransactionFee(val)} />
           </Col>
           <Col span={24}>
-            <MinimumOutput value={amountOutMin} token={tokenB} maxValue={maxTotal} />
+            <MinimumOutput value={amountOutMin} token={tokenB} />
           </Col>
           <Col span={24}>
             <PriceImpact value={priceImpact} />
