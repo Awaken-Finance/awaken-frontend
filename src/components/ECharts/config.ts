@@ -2,6 +2,7 @@ import BigNumber from 'bignumber.js';
 import { EChartOption, EChartsResponsiveOption } from 'echarts';
 import { TFunction } from 'react-i18next';
 import { formatPrice, formatTokenAmount } from 'utils/price';
+import { formatSymbol } from 'utils/token';
 const DepthGrid = {
   containLabel: true,
   top: '60px',
@@ -61,13 +62,13 @@ const DepthTooltip: (pairInfo: any, t: TFunction<'translation'>, isMobile: boole
         </div>
         <div class="item token">
           <span>
-            ${pairInfo?.token0?.symbol} ${t('amount')}
+            ${formatSymbol(pairInfo?.token0?.symbol)} ${t('amount')}
           </span>
           <span>${formatTokenAmount(token0Volume)}</span>
         </div>
         <div class="item token">
           <span>
-            ${pairInfo?.token1?.symbol} ${t('amount')}
+            ${formatSymbol(pairInfo?.token1?.symbol)} ${t('amount')}
           </span>
           <span>${formatTokenAmount(token1Volume)}</span>
         </div>
