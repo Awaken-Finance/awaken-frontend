@@ -1,4 +1,4 @@
-import BigNumber from 'bignumber.js';
+import { ZERO } from 'constants/misc';
 import { EChartOption, EChartsResponsiveOption } from 'echarts';
 import { TFunction } from 'react-i18next';
 import { formatPrice, formatTokenAmount } from 'utils/price';
@@ -56,11 +56,11 @@ const DepthTooltip: (pairInfo: any, t: TFunction<'translation'>, isMobile: boole
         </div>
         <div class="item changes">
           <div>${t('change')}</div>
-          <div class="${
-            new BigNumber(changes).isZero() ? '' : changes > 0 ? 'font-color-fall' : 'font-color-rise'
-          }">${new BigNumber(changes || '0.00').abs()}%</div>
+          <div>${ZERO.plus(changes).isZero() ? '' : changes > 0 ? '+' : '-'}${ZERO.plus(changes || '0.00').abs()}%</div>
         </div>
-        <div class="item token">
+        <div class="item token ${
+          ZERO.plus(changes).isZero() ? '' : changes > 0 ? 'font-color-fall' : 'font-color-rise'
+        }">
           <span>
             ${formatSymbol(pairInfo?.token0?.symbol)} ${t('amount')}
           </span>
@@ -102,7 +102,7 @@ const DepthOption: (isMobile: boolean) => EChartOption | EChartsResponsiveOption
       fontSize: 12,
       lineHeight: 14,
       formatter: (value: string) => {
-        return formatTokenAmount(new BigNumber(value));
+        return formatTokenAmount(ZERO.plus(value));
       },
     },
   },
