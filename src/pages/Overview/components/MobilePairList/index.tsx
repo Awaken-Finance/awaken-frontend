@@ -56,7 +56,7 @@ export default function MobilePairList({
         title: t('pair/24hVol'),
         dataIndex: 'priceUSD',
         key: 'priceUSD',
-        width: '50%',
+        width: '60%',
         align: 'left',
         render: (id: string, pairData: PairItem) => (
           <Row wrap={false}>
@@ -64,21 +64,21 @@ export default function MobilePairList({
               <CollectionBtnInList favId={pairData?.favId} id={pairData?.id} isFav={pairData.isFav} />
             </Col>
             <Col flex={1}>
-              <Row gutter={[8, 0]} align="middle">
-                <Col>
+              <Row gutter={[8, 0]} align="top" wrap={false}>
+                <Col className="mobile-pair-list-pairs-wrap">
                   <Pairs tokenA={pairData.token0} tokenB={pairData.token1} />
                 </Col>
                 <Col>
                   <FeeRate useBg>{formatPercentage(pairData?.feeRate * 100)}</FeeRate>
                 </Col>
-                <Col span={24}>
-                  <PriceUSDDigits
-                    className={getFontStyle({ size: 12, lineHeight: 18, color: 'two' })}
-                    price={new BigNumber(pairData?.volume24h).times(pairData.priceUSD)}
-                    prefix="Vol $"
-                  />
-                </Col>
               </Row>
+              <Col span={24}>
+                <PriceUSDDigits
+                  className={getFontStyle({ size: 12, lineHeight: 18, color: 'two' })}
+                  price={new BigNumber(pairData?.volume24h).times(pairData.priceUSD)}
+                  prefix="Vol $"
+                />
+              </Col>
             </Col>
           </Row>
         ),

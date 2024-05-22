@@ -4,13 +4,13 @@ import Font from 'components/Font';
 import useChainId from 'hooks/useChainId';
 import { getConfig } from 'aelf-web-login';
 import { useMemo } from 'react';
-import BigNumber from 'bignumber.js';
 import { getELFChainTokenURL } from 'utils';
 
 import './MyTokenList.less';
 import PriceUSDDigits from 'components/PriceUSDDigits';
 import getFontStyle from 'utils/getFontStyle';
 import { formatSymbol } from 'utils/token';
+import { ZERO } from 'constants/misc';
 
 type TokenInfoItem = {
   symbol: string;
@@ -31,8 +31,8 @@ export function TokenItem({ data }: { data: TokenInfoItem }) {
   }, [data.symbol]);
 
   return (
-    <Row className="my-token-item" justify="center">
-      <Col flex={'24px'} className="icon-col">
+    <Row className="my-token-item" align={'middle'} justify="center" wrap={false}>
+      <Col className="icon-col">
         <CurrencyLogo src={src} symbol={data.symbol} size={24} />
       </Col>
       <Col flex={'auto'}>
@@ -47,10 +47,10 @@ export function TokenItem({ data }: { data: TokenInfoItem }) {
           </Font>
         </div>
       </Col>
-      <Col flex={'auto'} className="balance-col">
+      <Col className="balance-col">
         <div className="balance">
           <Font size={16} color="one">
-            {new BigNumber(data.amount).dp(8)}
+            {ZERO.plus(data.amount).dp(8)}
           </Font>
         </div>
         <div className="price-usd">

@@ -60,28 +60,28 @@ export default function TransactionItem({
   return (
     <Row className="transaction-list-item" gutter={[0, 8]}>
       <Col span={24}>
-        <Row justify="space-between">
-          <Col>
-            <Row gutter={[8, 0]} align="middle">
-              <Col className="height-20">
+        <Row justify="space-between" wrap={false}>
+          <Col flex={'1'}>
+            <Row gutter={[8, 0]} align="top" wrap={false}>
+              <Col className="transaction-list-item-pairs-wrap">
                 <Pairs tokenA={tradePair?.token0?.symbol} tokenB={tradePair?.token1} lineHeight={20} weight="medium" />
               </Col>
-              <Col className="height-20">
+              <Col>
                 <FeeRate useBg>{formatPercentage(tradePair?.feeRate * 100)}</FeeRate>
               </Col>
             </Row>
           </Col>
-          <Col className="align-right">
-            <Font color="two" lineHeight={20}>
+          <Col flex={'1'} className="align-right">
+            <Font color="two" size={12} lineHeight={20}>
               {moment(timestamp).format('YYYY-MM-DD HH:mm:ss')}
             </Font>
           </Col>
-          <Col span={24} className="height-20">
-            <Font lineHeight={20} color={isBuy ? 'rise' : 'fall'}>
-              {isBuy ? t('buy') : t('sell')}
-            </Font>
-          </Col>
         </Row>
+        <Col span={24} className="font-size-0">
+          <Font lineHeight={20} color={isBuy ? 'rise' : 'fall'}>
+            {isBuy ? t('buy') : t('sell')}
+          </Font>
+        </Col>
       </Col>
 
       <Col span={12} className="height-20">
