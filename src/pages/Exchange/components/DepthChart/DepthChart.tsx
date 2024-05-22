@@ -18,7 +18,8 @@ export default function DepthChart({ setLoading = () => null }: { setLoading?: D
       return [[], []];
     }
 
-    const data = getDepthChartData(pairInfo.price, pairInfo.valueLocked0, pairInfo.valueLocked1, pairInfo.feeRate);
+    const feeRatePercent = pairInfo.feeRate * 100;
+    const data = getDepthChartData(pairInfo.price, pairInfo.valueLocked0, pairInfo.valueLocked1, feeRatePercent);
 
     if (!data) {
       return [[], []];
