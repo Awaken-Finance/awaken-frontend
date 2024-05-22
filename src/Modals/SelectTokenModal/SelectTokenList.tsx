@@ -2,12 +2,10 @@ import clsx from 'clsx';
 import { useCallback, useMemo, useState } from 'react';
 import useDebounce from 'hooks/useDebounce';
 import { filterTokens, useSortedTokensByQuery } from 'utils/filtering';
-import { useAllTokenBalances } from 'hooks/wallet';
 import CurrencyRow from './CurrencyRow';
 import { useTokenComparator } from './sorting';
 import { useTranslation } from 'react-i18next';
 import { Token } from 'types';
-import { getCurrencyAddress } from 'utils/swap';
 import { useMobile } from 'utils/isMobile';
 
 import SearchInput from 'components/SearchInput';
@@ -17,6 +15,7 @@ import Font from 'components/Font';
 import CommonList from 'components/CommonList';
 import { useAllTokenList } from 'hooks/tokenList';
 import './styles.less';
+import { ZERO } from 'constants/misc';
 
 export default function SelectTokenList({ onClickManageTokens }: { onClickManageTokens: () => void }) {
   const { t } = useTranslation();
@@ -24,11 +23,10 @@ export default function SelectTokenList({ onClickManageTokens }: { onClickManage
   const allTokens = useAllTokenList();
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [invertSearchOrder] = useState<boolean>(false);
-  const balances = useAllTokenBalances();
 
   const debouncedQuery = useDebounce(searchQuery, 200);
 
-  const tokenComparator = useTokenComparator(invertSearchOrder, balances);
+  const tokenComparator = useTokenComparator(invertSearchOrder, {});
 
   const filteredTokens: Token[] = useMemo(() => {
     return filterTokens(allTokens, debouncedQuery);
@@ -55,7 +53,7 @@ export default function SelectTokenList({ onClickManageTokens }: { onClickManage
           className={clsx('select-token-list', !isMobile && filteredSortedTokens.length > 9 && 'token-list-large')}
           dataSource={filteredSortedTokens}
           renderItem={(item: any) => (
-            <CurrencyRow key={item.address} currency={item} balance={balances[getCurrencyAddress(item)] || 0} />
+            <CurrencyRow key={item.address} currency={item} balance={ZERO} isBalanceShow={false} />
           )}
           loading={false}
           pageNum={1}

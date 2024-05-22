@@ -11,7 +11,12 @@ import Font from 'components/Font';
 import { useMemo } from 'react';
 import { divDecimals } from 'utils/calculate';
 
-export default function CurrencyRow({ currency, balance }: { currency: Currency; balance?: BigNumber }) {
+export interface ICurrencyRowProps {
+  currency: Currency;
+  balance?: BigNumber;
+  isBalanceShow?: boolean;
+}
+export default function CurrencyRow({ currency, balance, isBalanceShow = true }: ICurrencyRowProps) {
   const [{ tokenCallBack, selectedToken }, { dispatch }] = useModal();
   const isSelected = isEqCurrency(selectedToken, currency);
 
@@ -39,11 +44,13 @@ export default function CurrencyRow({ currency, balance }: { currency: Currency;
               </Col>
             </Row>
           </Col>
-          <Col>
-            <Font lineHeight={24} size={16}>
-              {displayBalance}
-            </Font>
-          </Col>
+          {isBalanceShow && (
+            <Col>
+              <Font lineHeight={24} size={16}>
+                {displayBalance}
+              </Font>
+            </Col>
+          )}
         </Row>
       </Col>
     </List.Item>
