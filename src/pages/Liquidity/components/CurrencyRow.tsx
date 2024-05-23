@@ -6,7 +6,15 @@ import { Pair } from 'components/Pair';
 import { getELFChainTokenURL } from 'utils';
 import { formatLiquidity } from 'utils/price';
 
-export default function CurrencyRow({ token, value }: { token: Currency; value: string }) {
+export default function CurrencyRow({
+  token,
+  value,
+  isSuffixShow = true,
+}: {
+  token: Currency;
+  value: string;
+  isSuffixShow?: boolean;
+}) {
   return (
     <Row gutter={[2, 0]} align="middle">
       <Col flex={'25px'}>
@@ -20,9 +28,11 @@ export default function CurrencyRow({ token, value }: { token: Currency; value: 
           {formatLiquidity(value, token.decimals)}
         </Font>
       </Col>
-      <Col>
-        <Pair symbol={token?.symbol} color="two" />
-      </Col>
+      {isSuffixShow && (
+        <Col>
+          <Pair symbol={token?.symbol} color="two" />
+        </Col>
+      )}
     </Row>
   );
 }

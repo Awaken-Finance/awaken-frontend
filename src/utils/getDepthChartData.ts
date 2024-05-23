@@ -1,5 +1,4 @@
 import BigNumber from 'bignumber.js';
-import { ONE } from 'constants/misc';
 import { getAmountOut } from './swap';
 export interface DetailInfo {
   changes: string;
@@ -64,7 +63,6 @@ export default function getDepthChartData(
   let downPrice = currentPrice;
   const token0Arr = [];
   const token1Arr = [];
-  const fees = new BigNumber(percentFeeRate).div(100).plus(ONE);
 
   const UpScale = new BigNumber(currentPrice).times(0.5).div(500).toNumber();
   while (i < 500) {
@@ -77,7 +75,7 @@ export default function getDepthChartData(
     ).toFixed();
     token0Arr.push({
       a: token0VolumeUp,
-      p: new BigNumber(upPrice).times(fees).toFixed(),
+      p: `${upPrice}`,
       detail: {
         changes: new BigNumber(upPrice).minus(currentPrice).div(currentPrice).times(100).toFixed(2),
         token0Volume: token0VolumeUp,
@@ -96,7 +94,7 @@ export default function getDepthChartData(
 
     token1Arr.push({
       a: token0VolumeDown,
-      p: new BigNumber(downPrice).times(fees).toFixed(),
+      p: `${downPrice}`,
       changes: new BigNumber(downPrice).minus(currentPrice).div(currentPrice).times(100).toFixed(2),
       detail: {
         changes: new BigNumber(downPrice).minus(currentPrice).div(currentPrice).times(100).toFixed(2),

@@ -5,6 +5,7 @@ import Pair from './Pair';
 import Font from 'components/Font';
 import { TokenInfo } from 'types';
 import { getPairsOrderByTokenWeights } from 'utils/pair';
+import './index.less';
 
 export interface PairsProps extends FontStyleProps {
   tokenA?: TokenInfo | string;

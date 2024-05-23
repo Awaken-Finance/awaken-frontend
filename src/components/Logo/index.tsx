@@ -1,5 +1,5 @@
 import { Image, ImageProps } from 'antd';
-import { memo, useEffect, useState } from 'react';
+import { memo, useEffect, useMemo, useState } from 'react';
 import { defaultLogo } from 'assets/images';
 import './index.less';
 const fallback = defaultLogo;
@@ -11,22 +11,27 @@ type LogoProps = {
 
 const BAD_SRCS: { [src: string]: true } = {};
 
-type LogoLoadState = 'loading' | 'success' | 'error';
+interface IFirstLetterProps {
+  size?: number;
+  value?: string;
+}
+const FirstLetter = ({ size = 20, value }: IFirstLetterProps) => {
+  const firstLetter = useMemo(() => value?.charAt(0) || '', [value]);
+  const fontSize = useMemo(() => `${Math.floor(size * 0.75)}px`, [size]);
 
+  return (
+    <div className="first-letter" style={{ width: size, height: size, fontSize }}>
+      {firstLetter}
+    </div>
+  );
+};
+
+type LogoLoadState = 'loading' | 'success' | 'error';
 const Logo = (props: ImageProps & LogoProps) => {
   const { size = 20, preview = false, srcs, symbol } = props;
   const [, refresh] = useState<number>(0);
   const src: string | undefined = srcs.find((s) => !BAD_SRCS[s]);
-  const firstLetter = symbol?.charAt(0) || '';
   const [logoState, setLogoState] = useState<LogoLoadState>('loading');
-
-  function FirstLetter() {
-    return (
-      <div className="first-letter" style={{ width: size, height: size }}>
-        {firstLetter}
-      </div>
-    );
-  }
 
   useEffect(() => {
     if (!src) return;
@@ -59,7 +64,7 @@ const Logo = (props: ImageProps & LogoProps) => {
       }}
     />
   ) : (
-    <FirstLetter />
+    <FirstLetter size={size} value={symbol} />
   );
 };
 

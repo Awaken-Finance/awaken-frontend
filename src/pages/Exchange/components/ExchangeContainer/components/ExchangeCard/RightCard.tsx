@@ -72,24 +72,24 @@ export default function RightCard({
     return divDecimals(balance, tokenA?.decimals);
   }, [balance, tokenA, transactionFee]);
 
-  const maxTotal = useMemo(() => {
-    const val = BigNumber.min(
-      maxAmount,
-      getAmountByInput(
-        rate,
-        minimumAmountOut(divDecimals(reserves?.[getCurrencyAddress(tokenB)], tokenB?.decimals), userSlippageTolerance),
-        divDecimals(reserves?.[getCurrencyAddress(tokenB)], tokenB?.decimals),
-        divDecimals(reserves?.[getCurrencyAddress(tokenA)], tokenA?.decimals),
-      ),
-    );
+  // const maxTotal = useMemo(() => {
+  //   const val = BigNumber.min(
+  //     maxAmount,
+  //     getAmountByInput(
+  //       rate,
+  //       minimumAmountOut(divDecimals(reserves?.[getCurrencyAddress(tokenB)], tokenB?.decimals), userSlippageTolerance),
+  //       divDecimals(reserves?.[getCurrencyAddress(tokenB)], tokenB?.decimals),
+  //       divDecimals(reserves?.[getCurrencyAddress(tokenA)], tokenA?.decimals),
+  //     ),
+  //   );
 
-    return getAmountOut(
-      rate,
-      val,
-      divDecimals(reserves?.[getCurrencyAddress(tokenA)], tokenA?.decimals),
-      divDecimals(reserves?.[getCurrencyAddress(tokenB)], tokenB?.decimals),
-    ).dp(tokenB?.decimals ?? 8);
-  }, [tokenA, reserves, maxAmount, userSlippageTolerance, rate, tokenB]);
+  //   return getAmountOut(
+  //     rate,
+  //     val,
+  //     divDecimals(reserves?.[getCurrencyAddress(tokenA)], tokenA?.decimals),
+  //     divDecimals(reserves?.[getCurrencyAddress(tokenB)], tokenB?.decimals),
+  //   ).dp(tokenB?.decimals ?? 8);
+  // }, [tokenA, reserves, maxAmount, userSlippageTolerance, rate, tokenB]);
 
   const [progressValue, setProgressValue] = useState(0);
   const sliderValue = useMemo(() => +inputToSide(amount, maxAmount).toFixed(0), [amount, maxAmount]);
@@ -285,7 +285,7 @@ export default function RightCard({
             <TransactionFee onChange={(val) => setTransactionFee(val)} />
           </Col>
           <Col span={24}>
-            <MinimumOutput value={amountOutMin} token={tokenB} maxValue={maxTotal} />
+            <MinimumOutput value={amountOutMin} token={tokenB} />
           </Col>
           <Col span={24}>
             <PriceImpact value={priceImpact} />

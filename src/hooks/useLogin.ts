@@ -1,6 +1,7 @@
 import { WebLoginState, useWebLogin } from 'aelf-web-login';
 import { useHistory } from 'react-router-dom';
 import { isNightElfApp, isPortkeyAppWithDiscover } from 'utils/isApp';
+import { useIsPortkeySDK } from './useIsPortkeySDK';
 
 export function appendRedirect(path: string, redirect: string | undefined = undefined) {
   const { pathname } = window.location;
@@ -18,8 +19,13 @@ export function appendRedirect(path: string, redirect: string | undefined = unde
 export default function useLogin(redirect: string | undefined = undefined) {
   const { loginState, login } = useWebLogin();
   const history = useHistory();
+  const isPortkeySDK = useIsPortkeySDK();
 
   const toLogin = () => {
+    if (isPortkeySDK) {
+      login();
+      return;
+    }
     if (loginState === WebLoginState.initial || loginState === WebLoginState.logining) {
       if (isPortkeyAppWithDiscover() || isNightElfApp()) {
         login();
