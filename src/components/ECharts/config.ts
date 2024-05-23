@@ -1,7 +1,8 @@
-import BigNumber from 'bignumber.js';
+import { ZERO } from 'constants/misc';
 import { EChartOption, EChartsResponsiveOption } from 'echarts';
 import { TFunction } from 'react-i18next';
 import { formatPrice, formatTokenAmount } from 'utils/price';
+import { formatSymbol } from 'utils/token';
 const DepthGrid = {
   containLabel: true,
   top: '60px',
@@ -55,19 +56,19 @@ const DepthTooltip: (pairInfo: any, t: TFunction<'translation'>, isMobile: boole
         </div>
         <div class="item changes">
           <div>${t('change')}</div>
-          <div class="${
-            new BigNumber(changes).isZero() ? '' : changes > 0 ? 'font-color-fall' : 'font-color-rise'
-          }">${new BigNumber(changes || '0.00').abs()}%</div>
+          <div>${ZERO.plus(changes).isZero() ? '' : changes > 0 ? '+' : '-'}${ZERO.plus(changes || '0.00').abs()}%</div>
         </div>
-        <div class="item token">
+        <div class="item token ${
+          ZERO.plus(changes).isZero() ? '' : changes > 0 ? 'font-color-fall' : 'font-color-rise'
+        }">
           <span>
-            ${pairInfo?.token0?.symbol} ${t('amount')}
+            ${formatSymbol(pairInfo?.token0?.symbol)} ${t('amount')}
           </span>
           <span>${formatTokenAmount(token0Volume)}</span>
         </div>
         <div class="item token">
           <span>
-            ${pairInfo?.token1?.symbol} ${t('amount')}
+            ${formatSymbol(pairInfo?.token1?.symbol)} ${t('amount')}
           </span>
           <span>${formatTokenAmount(token1Volume)}</span>
         </div>
@@ -101,7 +102,7 @@ const DepthOption: (isMobile: boolean) => EChartOption | EChartsResponsiveOption
       fontSize: 12,
       lineHeight: 14,
       formatter: (value: string) => {
-        return formatTokenAmount(new BigNumber(value));
+        return formatTokenAmount(ZERO.plus(value));
       },
     },
   },

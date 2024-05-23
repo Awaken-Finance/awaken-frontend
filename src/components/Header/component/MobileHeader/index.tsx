@@ -9,7 +9,7 @@ import { LOCAL_LANGUAGE } from 'i18n/config';
 import { useLanguage } from 'i18n';
 import { useTranslation } from 'react-i18next';
 import CommonButton from 'components/CommonButton';
-import { IconAssets, IconCheckPrimary, IconClose, IconMenu, IconUser } from 'assets/icons';
+import { IconCheckPrimary, IconClose, IconMenu, IconUser } from 'assets/icons';
 import { useModal } from 'contexts/useModal';
 import { WebLoginState, useWebLogin } from 'aelf-web-login';
 import { useHistory, useLocation } from 'react-router-dom';

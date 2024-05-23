@@ -14,7 +14,7 @@ import { formatLiquidity } from 'utils/price';
 import { useSwapContext } from 'pages/Exchange/hooks/useSwap';
 
 import './LatestTrade.less';
-import { getRealPrice, getRealToken0Amount } from 'utils/calculate';
+import { getRealPrice } from 'utils/calculate';
 import { formatSymbol } from 'utils/token';
 
 const menus = [
@@ -91,14 +91,8 @@ function LatestTrade() {
         key: 'token0Amount',
         width: 110,
         align: 'right',
-        render: (token0Amount: string, record: TradeItem) => {
-          const amount = getRealToken0Amount({
-            side: record.side,
-            value: token0Amount,
-            feeRate: record.tradePair.feeRate || pairInfo?.feeRate,
-            decimals: record.tradePair.token0.decimals,
-          });
-          return <span className="last-trade-table-cell">{formatLiquidity(amount)}</span>;
+        render: (token0Amount: string) => {
+          return <span className="last-trade-table-cell">{formatLiquidity(token0Amount)}</span>;
         },
       },
       {

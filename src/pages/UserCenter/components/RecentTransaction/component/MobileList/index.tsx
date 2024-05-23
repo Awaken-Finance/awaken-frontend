@@ -1,16 +1,12 @@
-import { useCallback, useState } from 'react';
+import { useCallback } from 'react';
 import { Row, Col } from 'antd';
 import { RecentTransaction, LiquidityRecord } from 'pages/UserCenter/type';
 import CommonMenu from 'components/CommonMenu';
-import { IconFilter } from 'assets/icons';
-import Filter from '../FilterSid';
 import TransactionItem from './TransactionItem';
 import LiquidityRecordItem from './LiquidityRecordItem';
 import CommonList from 'components/CommonList';
 import { SortOrder } from 'antd/lib/table/interface';
-
 import './index.less';
-import useOutSideClick from 'hooks/useOutSIdeClick';
 
 export default function MobileList({
   dataSource = [],
@@ -39,26 +35,24 @@ export default function MobileList({
   menu?: string | number;
   menuList: any[];
 }) {
-  const [sidVisible, setSidVisible] = useState(false);
-
-  const ref = useOutSideClick(
-    useCallback(() => {
-      setSidVisible(false);
-    }, []),
-  );
-
-  const sidChange = (val: number) => {
-    setSidVisible(false);
-    getData({
-      page: pageNum,
-      pageSize,
-      field,
-      order,
-      filter: {
-        side: [val],
-      },
-    });
-  };
+  // const [sidVisible, setSidVisible] = useState(false);
+  // const ref = useOutSideClick(
+  //   useCallback(() => {
+  //     setSidVisible(false);
+  //   }, []),
+  // );
+  // const sidChange = (val: number) => {
+  //   setSidVisible(false);
+  //   getData({
+  //     page: pageNum,
+  //     pageSize,
+  //     field,
+  //     order,
+  //     filter: {
+  //       side: [val],
+  //     },
+  //   });
+  // };
 
   const fetchList = useCallback(
     () =>

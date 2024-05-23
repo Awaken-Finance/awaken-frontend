@@ -91,7 +91,7 @@ export default function TradePairList({
                 <CollectionBtnInList favId={pairData?.favId} id={pairData?.id} isFav={pairData.isFav} />
               </Col>
               <Col>
-                <Row gutter={[4, 0]} align="middle">
+                <Row gutter={[4, 0]} align="top" wrap={false}>
                   <Col className="pair-name">
                     <Pairs lineHeight={18} size={12} tokenA={pairData.token0} tokenB={pairData.token1} />
                   </Col>

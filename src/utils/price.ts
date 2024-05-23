@@ -1,6 +1,5 @@
 import BigNumber from 'bignumber.js';
 import { ONE, ZERO } from 'constants/misc';
-import isShowUSD from './isShowUSD';
 
 const ONE_THOUSAND = new BigNumber(1000);
 const ONE_MILLION = new BigNumber(1000000);
@@ -76,11 +75,11 @@ export function formatPrice(price?: BigNumber.Value, digits = 12): string {
     return bigNum.dp(2).toString();
   }
 
-  if (bigNum.gte(1)) {
+  if (bigNum.gte(0.0001)) {
     return bigNum.dp(4).toString();
   }
 
-  return bigNum.dp(digits).precision(4).toString();
+  return bigNum.precision(4).dp(digits).toString();
 }
 
 const OMIT_ZERO_DIGITS = 6;
@@ -183,11 +182,11 @@ export function formatPriceChange(price?: BigNumber.Value, digits = 12): string 
     return bigNum.dp(2).toString();
   }
 
-  if (bigNum.gte(1)) {
+  if (bigNum.gte(0.0001)) {
     return bigNum.dp(4).toString();
   }
 
-  return bigNum.dp(digits).toString();
+  return bigNum.precision(4).dp(digits).toString();
 }
 
 export function formatPriceChangeSD(price?: BigNumber.Value, digits = 12): string {

@@ -12,6 +12,15 @@
   .manage-liquidity-setting {
     right: 12px;
   }
+  .remove-modal-box {
+    .remove-modal-box-input {
+      .remove-input {
+        .remove-input-suffix {
+          max-width: 150px;
+        }
+      }
+    }
+  }
 }
 
 .remove-modal-box,
@@ -27,7 +36,31 @@
     .remove-input {
       padding: 0;
       line-height: 24px;
-      height: 24px;
+      height: auto;
+      .remove-input-logo-wrap {
+        height: 24px;
+        display: flex;
+        align-items: center;
+
+        .currency-logo {
+          line-height: 20PX;
+        }
+      }
+
+      .remove-input-suffix {
+        max-width: 250px;
+      }
+      .remove-input-pairs-wrap {
+        .pairs {
+          max-height: 48px;
+          overflow: hidden;
+          /* stylelint-disable-next-line value-no-vendor-prefix */
+          display: -webkit-box;
+          -webkit-box-orient: vertical;
+          -webkit-line-clamp: 2;
+          color: var(--ant-black-font-color-1);
+        }
+      }
     }
 
     .remove-input.ant-input-affix-wrapper {

@@ -56,7 +56,7 @@ export default function ({ poolType, ...args }: PairListProps) {
               <Col className="pari-list-collect">
                 <CollectionBtnInList favId={pairData.favId} id={pairData.id} isFav={pairData.isFav} />
               </Col>
-              <Row gutter={[4, 0]}>
+              <Row gutter={[4, 0]} wrap={false}>
                 <Col>
                   <Pairs tokenA={pairData.token0} tokenB={pairData.token1} />
                 </Col>
@@ -82,7 +82,7 @@ export default function ({ poolType, ...args }: PairListProps) {
 
             <PriceUSDDigits
               className={getFontStyle({ size: 12, lineHeight: 18, color: 'two', align: 'right' })}
-              price={record.priceUSD}
+              price={priceUSD}
               prefix="≈$"
             />
           </div>
@@ -109,7 +109,7 @@ export default function ({ poolType, ...args }: PairListProps) {
         render: (priceHigh24h: number, record: PairItem) => (
           <div className="price-box">
             <Font align="right" lineHeight={20}>
-              {formatPriceChange(priceHigh24h, 4)}
+              {formatPriceChange(priceHigh24h)}
             </Font>
 
             <PriceUSDDigits
@@ -131,7 +131,7 @@ export default function ({ poolType, ...args }: PairListProps) {
         render: (priceLow24h: number, record: PairItem) => (
           <div className="price-box">
             <Font align="right" lineHeight={20}>
-              {formatPriceChange(priceLow24h, 4)}
+              {formatPriceChange(priceLow24h)}
             </Font>
 
             <PriceUSDDigits

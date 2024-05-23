@@ -16,7 +16,7 @@ import PriceDigits from 'components/PriceDigits';
 import getFontStyle from 'utils/getFontStyle';
 import PriceUSDDigits from 'components/PriceUSDDigits';
 import { useMemo } from 'react';
-import { getRealPrice, getRealToken0Amount, getRealToken1Amount } from 'utils/calculate';
+import { getRealPrice } from 'utils/calculate';
 import { ZERO } from 'constants/misc';
 import { stringMidShort } from 'utils/string';
 
@@ -57,63 +57,31 @@ export default function TransactionItem({
     [side, token0Amount, token1Amount, tradePair.feeRate],
   );
 
-  const realToken0Amount = useMemo(
-    () =>
-      getRealToken0Amount({
-        side,
-        value: token0Amount,
-        feeRate: tradePair.feeRate,
-        decimals: tradePair.token0.decimals,
-      }),
-    [side, token0Amount, tradePair.feeRate, tradePair.token0.decimals],
-  );
-
-  const realToken1Amount = useMemo(
-    () =>
-      getRealToken1Amount({
-        side,
-        value: token1Amount,
-        feeRate: tradePair.feeRate,
-        decimals: tradePair.token1.decimals,
-      }),
-    [side, token1Amount, tradePair.feeRate, tradePair.token1.decimals],
-  );
-
-  const realTotalValue = useMemo(
-    () =>
-      getRealToken1Amount({
-        side,
-        value: totalPriceInUsd,
-        feeRate: tradePair.feeRate,
-      }),
-    [side, totalPriceInUsd, tradePair.feeRate],
-  );
-
   return (
     <Row className="transaction-list-item" gutter={[0, 8]}>
       <Col span={24}>
-        <Row justify="space-between">
-          <Col>
-            <Row gutter={[8, 0]} align="middle">
-              <Col className="height-20">
+        <Row justify="space-between" wrap={false}>
+          <Col flex={'1'}>
+            <Row gutter={[8, 0]} align="top" wrap={false}>
+              <Col className="transaction-list-item-pairs-wrap">
                 <Pairs tokenA={tradePair?.token0?.symbol} tokenB={tradePair?.token1} lineHeight={20} weight="medium" />
               </Col>
-              <Col className="height-20">
+              <Col>
                 <FeeRate useBg>{formatPercentage(tradePair?.feeRate * 100)}</FeeRate>
               </Col>
             </Row>
           </Col>
-          <Col className="align-right">
-            <Font color="two" lineHeight={20}>
+          <Col flex={'1'} className="align-right">
+            <Font color="two" size={12} lineHeight={20}>
               {moment(timestamp).format('YYYY-MM-DD HH:mm:ss')}
             </Font>
           </Col>
-          <Col span={24} className="height-20">
-            <Font lineHeight={20} color={isBuy ? 'rise' : 'fall'}>
-              {isBuy ? t('buy') : t('sell')}
-            </Font>
-          </Col>
         </Row>
+        <Col span={24} className="font-size-0">
+          <Font lineHeight={20} color={isBuy ? 'rise' : 'fall'}>
+            {isBuy ? t('buy') : t('sell')}
+          </Font>
+        </Col>
       </Col>
 
       <Col span={12} className="height-20">
@@ -131,7 +99,7 @@ export default function TransactionItem({
         </Font>
       </Col>
       <Col span={12} className="align-right height-20">
-        <Font lineHeight={20}>{formatPriceChange(realToken0Amount)}</Font>
+        <Font lineHeight={20}>{formatPriceChange(token0Amount)}</Font>
         &nbsp;
         <Pair lineHeight={20} symbol={tradePair?.token0?.symbol} />
       </Col>
@@ -142,7 +110,7 @@ export default function TransactionItem({
         </Font>
       </Col>
       <Col span={12} className="align-right height-20">
-        <Font lineHeight={20}>{`${formatPriceChange(realToken1Amount)}`}</Font>
+        <Font lineHeight={20}>{`${formatPriceChange(token1Amount)}`}</Font>
         &nbsp;
         <Pair lineHeight={20} symbol={tradePair?.token1?.symbol} />
       </Col>
@@ -153,7 +121,7 @@ export default function TransactionItem({
         </Font>
       </Col>
       <Col span={12} className="align-right height-20">
-        <PriceUSDDigits className={getFontStyle({ lineHeight: 24 })} price={realTotalValue} />,
+        <PriceUSDDigits className={getFontStyle({ lineHeight: 24 })} price={totalPriceInUsd} />,
       </Col>
 
       <Col span={12} className="height-20">
