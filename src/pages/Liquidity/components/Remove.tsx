@@ -159,14 +159,14 @@ export default function Remove({ pairInfo }: { pairInfo: PairInfo }) {
               value={tmpInput?.lp || inputs?.lp}
               placeholder="0.00"
               suffix={
-                <Row gutter={[6, 0]}>
-                  <Col>
-                    <CurrencyLogos size={24} tokens={[{ currency: leftToken }, { currency: rightToken }]} />
+                <Row className="remove-input-suffix" gutter={[6, 0]} wrap={false} align={'top'}>
+                  <Col className="remove-input-logo-wrap">
+                    <CurrencyLogos size={20} tokens={[{ currency: leftToken }, { currency: rightToken }]} />
                   </Col>
-                  <Col>
+                  <Col className="remove-input-pairs-wrap">
                     <Pairs
                       lineHeight={24}
-                      size={20}
+                      size={16}
                       weight="medium"
                       tokenA={leftToken?.symbol}
                       tokenB={rightToken?.symbol}
