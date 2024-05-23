@@ -53,8 +53,8 @@ export function RemoveConfirmModal({
       centered>
       <Row>
         <Col className="sub-row-container" flex={1}>
-          <CurrencyRow token={tokenA} value={tokenAValue} />
-          <CurrencyRow token={tokenB} value={tokenBValue} />
+          <CurrencyRow token={tokenA} value={tokenAValue} isSuffixShow={false} />
+          <CurrencyRow token={tokenB} value={tokenBValue} isSuffixShow={false} />
         </Col>
       </Row>
       <Row>
