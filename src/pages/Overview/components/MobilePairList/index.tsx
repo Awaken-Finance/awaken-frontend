@@ -65,7 +65,7 @@ export default function MobilePairList({
             </Col>
             <Col flex={1}>
               <Row gutter={[8, 0]} align="top" wrap={false}>
-                <Col className="mobile-pair-list-pairs-wrap">
+                <Col>
                   <Pairs tokenA={pairData.token0} tokenB={pairData.token1} />
                 </Col>
                 <Col>

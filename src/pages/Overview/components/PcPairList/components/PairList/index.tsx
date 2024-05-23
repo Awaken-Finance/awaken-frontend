@@ -57,7 +57,7 @@ export default function ({ poolType, ...args }: PairListProps) {
                 <CollectionBtnInList favId={pairData.favId} id={pairData.id} isFav={pairData.isFav} />
               </Col>
               <Row gutter={[4, 0]} wrap={false}>
-                <Col className="pair-list-token-wrap">
+                <Col>
                   <Pairs tokenA={pairData.token0} tokenB={pairData.token1} />
                 </Col>
                 <Col>
