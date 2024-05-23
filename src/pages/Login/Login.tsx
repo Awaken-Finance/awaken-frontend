@@ -47,7 +47,6 @@ export default function Login() {
   // useWebLoginEvent(WebLoginEvents.LOGIN_ERROR, (error) => {
   //   message.error(error.message);
   // });
-  if (!isInit) return <></>;
 
   return (
     <div className="page-login">
