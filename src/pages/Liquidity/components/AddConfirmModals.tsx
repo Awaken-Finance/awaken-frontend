@@ -122,8 +122,8 @@ export function AddConfirmModal({
               {t('Deposited')}
             </Font>
           </Row>
-          <CurrencyRow token={tokenA} value={tokenAValue} />
-          <CurrencyRow token={tokenB} value={tokenBValue} />
+          <CurrencyRow token={tokenA} value={tokenAValue} isSuffixShow={false} />
+          <CurrencyRow token={tokenB} value={tokenBValue} isSuffixShow={false} />
         </Col>
       </Row>
       <Row>
