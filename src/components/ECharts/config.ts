@@ -122,10 +122,10 @@ const DepthOption: (isMobile: boolean) => EChartOption | EChartsResponsiveOption
       fontSize: 12,
       lineHeight: 14,
       interval: (index: number) => {
-        if (isMobile && [250, 500, 750].includes(index)) {
+        if (isMobile && [250, 499, 750].includes(index)) {
           return true;
         }
-        if (!isMobile && [166, 332, 500, 666, 832].includes(index)) {
+        if (!isMobile && [166, 332, 499, 666, 832].includes(index)) {
           return true;
         }
 
