@@ -65,38 +65,39 @@ export default function LeftCard({
 
   const [showZeroInputTips, setShowZeroInputTips] = useState(false);
 
-  const maxTotal = useMemo(() => {
+  const maxBalanceTotal = useMemo(() => {
     if (tokenB?.symbol === 'ELF' && balance?.gt(transactionFee)) {
       return divDecimals(balance?.minus(transactionFee), tokenB?.decimals);
     }
     return divDecimals(balance, tokenB?.decimals);
   }, [balance, tokenB, transactionFee]);
 
-  const maxAmount = useMemo(() => {
-    const val = BigNumber.min(
-      maxTotal,
-      getAmountByInput(
-        rate,
-        minimumAmountOut(divDecimals(reserves?.[getCurrencyAddress(tokenA)], tokenA?.decimals), userSlippageTolerance),
-        divDecimals(reserves?.[getCurrencyAddress(tokenA)], tokenA?.decimals),
-        divDecimals(reserves?.[getCurrencyAddress(tokenB)], tokenB?.decimals),
-      ),
-    );
+  const maxReserveAmount = useMemo(
+    () =>
+      minimumAmountOut(divDecimals(reserves?.[getCurrencyAddress(tokenA)], tokenA?.decimals), userSlippageTolerance),
+    [reserves, tokenA, userSlippageTolerance],
+  );
 
-    return getAmountOut(
+  const maxAmount = useMemo(() => {
+    const maxBalanceAmount = getAmountOut(
       rate,
-      val,
+      maxBalanceTotal,
       divDecimals(reserves?.[getCurrencyAddress(tokenB)], tokenB?.decimals),
       divDecimals(reserves?.[getCurrencyAddress(tokenA)], tokenA?.decimals),
-    ).dp(tokenB?.decimals ?? 8);
-  }, [tokenA, reserves, maxTotal, userSlippageTolerance, rate, tokenB]);
+    );
+
+    return BigNumber.min(maxBalanceAmount, maxReserveAmount).dp(tokenB?.decimals ?? 8);
+  }, [rate, maxBalanceTotal, reserves, tokenB, tokenA, maxReserveAmount]);
 
   const [progressValue, setProgressValue] = useState(0);
   const sliderValue = useMemo(() => {
     return +inputToSide(amount, maxAmount).toFixed(0);
   }, [amount, maxAmount]);
 
-  const amountOutMin = minimumAmountOut(new BigNumber(amount), userSlippageTolerance);
+  const amountOutMin = useMemo(
+    () => BigNumber.min(minimumAmountOut(new BigNumber(amount), userSlippageTolerance), maxReserveAmount),
+    [amount, maxReserveAmount, userSlippageTolerance],
+  );
 
   const priceImpact = useMemo(() => {
     return getPriceImpactWithBuy(
@@ -135,9 +136,9 @@ export default function LeftCard({
   const totalError = useMemo(() => {
     const bigTotal = new BigNumber(total);
 
-    if (bigTotal.gt(maxTotal)) {
+    if (bigTotal.gt(maxBalanceTotal)) {
       return {
-        text: `Max amount ${bigNumberToString(maxTotal, tokenB?.decimals)} ${formatSymbol(tokenB?.symbol)}`,
+        text: `Max amount ${bigNumberToString(maxBalanceTotal, tokenB?.decimals)} ${formatSymbol(tokenB?.symbol)}`,
         error: true,
       };
     }
@@ -146,7 +147,7 @@ export default function LeftCard({
       text: '',
       error: false,
     };
-  }, [maxTotal, tokenB?.decimals, tokenB?.symbol, total]);
+  }, [maxBalanceTotal, tokenB?.decimals, tokenB?.symbol, total]);
 
   const inputAmount = useCallback(
     (val: string) => {
@@ -154,7 +155,7 @@ export default function LeftCard({
       if (val) {
         const totalValue = getAmountByInput(
           rate,
-          new BigNumber(val),
+          BigNumber.min(new BigNumber(val), maxReserveAmount),
           divDecimals(reserves?.[getCurrencyAddress(tokenA)], tokenA?.decimals),
           divDecimals(reserves?.[getCurrencyAddress(tokenB)], tokenB?.decimals),
         );
@@ -164,7 +165,7 @@ export default function LeftCard({
       setAmount(val);
       setProgressValue(0);
     },
-    [rate, reserves, tokenA, tokenB],
+    [maxReserveAmount, rate, reserves, tokenA, tokenB],
   );
 
   const inputTotal = useCallback(
