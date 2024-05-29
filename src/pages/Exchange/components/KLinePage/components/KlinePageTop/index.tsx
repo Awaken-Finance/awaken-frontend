@@ -65,7 +65,7 @@ export default ({ pairInfo }: { pairInfo: PoolItem }) => {
               </Font>
             </Col>
             <Col span={12} className="text-right">
-              <Font lineHeight={18} size={12} color="two" className="font-two-line" align="right">
+              <Font lineHeight={18} size={12} color="two" className="font-two-line word-break-all" align="right">
                 {`${t('vol24H')}(${formatSymbol(
                   showValueWrapper(pairInfo?.token0?.symbol, unifyWTokenSymbol(pairInfo?.token0)),
                 )})`}
@@ -89,7 +89,7 @@ export default ({ pairInfo }: { pairInfo: PoolItem }) => {
               </Font>
             </Col>
             <Col span={12} className="text-right">
-              <Font lineHeight={18} size={12} color="two" className="font-two-line" align="right">
+              <Font lineHeight={18} size={12} color="two" className="font-two-line word-break-all" align="right">
                 {`${t('amount24H')}(${formatSymbol(
                   showValueWrapper(pairInfo?.token1?.symbol, unifyWTokenSymbol(pairInfo?.token1)),
                 )})`}
