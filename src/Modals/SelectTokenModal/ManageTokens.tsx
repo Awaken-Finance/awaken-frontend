@@ -37,6 +37,11 @@ export default function ManageTokens() {
   const searchTokenInfo = useCallback(
     async (query = '') => {
       if (!tokenContract) return;
+      if (!query) {
+        setSearchTokenInfo(undefined);
+        return;
+      }
+
       const tokenInfo = await tokenContract.callViewMethod('GetTokenInfo', [query.toLocaleUpperCase()]);
       if (!tokenInfo) {
         setSearchTokenInfo(undefined);
