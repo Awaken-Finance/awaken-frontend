@@ -6,6 +6,7 @@ import { ReactComponent as IconLogout } from './icon-logout.svg';
 import { ReactComponent as IconCheckPrimary } from './icon-check-primary.svg';
 import { ReactComponent as IconWalletElf } from './icon-wallet-elf.svg';
 import { ReactComponent as IconWalletPortkey } from './icon-wallet-portkey.svg';
+import { ReactComponent as IconWalletSDK } from './icon-wallet-sdk.svg';
 import { ReactComponent as IconCopy } from './icon-copy.svg';
 import { ReactComponent as IconNotificationCopy } from './icon-notification-copy.svg';
 import { ReactComponent as IconAssets } from './icon-assets.svg';
@@ -47,6 +48,7 @@ export {
   IconCheckPrimary,
   IconWalletElf,
   IconWalletPortkey,
+  IconWalletSDK,
   IconCopy,
   IconAssets,
   IconMenu,
