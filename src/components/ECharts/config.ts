@@ -61,13 +61,13 @@ const DepthTooltip: (pairInfo: any, t: TFunction<'translation'>, isMobile: boole
         <div class="item token ${
           ZERO.plus(changes).isZero() ? '' : changes > 0 ? 'font-color-fall' : 'font-color-rise'
         }">
-          <span>
+          <span class="token-amount-label">
             ${formatSymbol(pairInfo?.token0?.symbol)} ${t('amount')}
           </span>
           <span>${formatTokenAmount(token0Volume)}</span>
         </div>
         <div class="item token">
-          <span>
+          <span class="token-amount-label">
             ${formatSymbol(pairInfo?.token1?.symbol)} ${t('amount')}
           </span>
           <span>${formatTokenAmount(token1Volume)}</span>
