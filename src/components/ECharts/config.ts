@@ -61,13 +61,13 @@ const DepthTooltip: (pairInfo: any, t: TFunction<'translation'>, isMobile: boole
         <div class="item token ${
           ZERO.plus(changes).isZero() ? '' : changes > 0 ? 'font-color-fall' : 'font-color-rise'
         }">
-          <span>
+          <span class="token-amount-label">
             ${formatSymbol(pairInfo?.token0?.symbol)} ${t('amount')}
           </span>
           <span>${formatTokenAmount(token0Volume)}</span>
         </div>
         <div class="item token">
-          <span>
+          <span class="token-amount-label">
             ${formatSymbol(pairInfo?.token1?.symbol)} ${t('amount')}
           </span>
           <span>${formatTokenAmount(token1Volume)}</span>
@@ -122,10 +122,10 @@ const DepthOption: (isMobile: boolean) => EChartOption | EChartsResponsiveOption
       fontSize: 12,
       lineHeight: 14,
       interval: (index: number) => {
-        if (isMobile && [250, 500, 750].includes(index)) {
+        if (isMobile && [250, 499, 750].includes(index)) {
           return true;
         }
-        if (!isMobile && [166, 332, 500, 666, 832].includes(index)) {
+        if (!isMobile && [166, 332, 499, 666, 832].includes(index)) {
           return true;
         }
 

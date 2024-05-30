@@ -20,29 +20,28 @@ export default function Header({ openTradePair }: { openKlinePage?: () => void; 
   }
 
   return (
-    <Row className="mobile-header" wrap={false}>
+    <Row className="mobile-header" wrap={false} align={'middle'}>
       <Col>
         <CommonButton className="switch-pair-button" type="text" icon={<IconSwitchPair />} onClick={openTradePair} />
       </Col>
       <Col flex={1} className="symbol">
-        <Pairs
-          size={20}
-          lineHeight={30}
-          weight="bold"
-          tokenA={pairInfo.token0}
-          tokenB={pairInfo.token1}
-          maxLength={10}
-        />
-        <FeeRate useBg className="mobile-header-feeRate">
-          {formatPercentage(new BigNumber(pairInfo?.feeRate ?? 0).times(100))}
-        </FeeRate>
+        <Row wrap={false} align={'top'}>
+          <Col flex={1}>
+            <Row wrap={false}>
+              <Pairs size={20} lineHeight={24} weight="bold" tokenA={pairInfo.token0} tokenB={pairInfo.token1} />
+              <FeeRate useBg className="mobile-header-feeRate">
+                {formatPercentage(new BigNumber(pairInfo?.feeRate ?? 0).times(100))}
+              </FeeRate>
+            </Row>
+          </Col>
+          <Col>
+            <CollectionBtnInList isFav={pairInfo?.isFav} favId={pairInfo?.favId} id={pairInfo?.id} />
+          </Col>
+        </Row>
       </Col>
       {/* <Col className="add-button">
         <ManageLiquidityBtn useBtn pair={pairInfo} />
       </Col> */}
-      <Col>
-        <CollectionBtnInList isFav={pairInfo?.isFav} favId={pairInfo?.favId} id={pairInfo?.id} />
-      </Col>
     </Row>
   );
 }

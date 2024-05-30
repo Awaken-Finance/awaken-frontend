@@ -65,36 +65,26 @@ export default function RightCard({
 
   const [transactionFee, setTransactionFee] = useState<BigNumber.Value>(0);
 
-  const maxAmount = useMemo(() => {
+  const maxBalanceAmount = useMemo(() => {
     if (tokenA?.symbol === 'ELF' && balance?.gt(transactionFee)) {
       return divDecimals(balance?.minus(transactionFee), tokenA?.decimals);
     }
     return divDecimals(balance, tokenA?.decimals);
   }, [balance, tokenA, transactionFee]);
 
-  // const maxTotal = useMemo(() => {
-  //   const val = BigNumber.min(
-  //     maxAmount,
-  //     getAmountByInput(
-  //       rate,
-  //       minimumAmountOut(divDecimals(reserves?.[getCurrencyAddress(tokenB)], tokenB?.decimals), userSlippageTolerance),
-  //       divDecimals(reserves?.[getCurrencyAddress(tokenB)], tokenB?.decimals),
-  //       divDecimals(reserves?.[getCurrencyAddress(tokenA)], tokenA?.decimals),
-  //     ),
-  //   );
-
-  //   return getAmountOut(
-  //     rate,
-  //     val,
-  //     divDecimals(reserves?.[getCurrencyAddress(tokenA)], tokenA?.decimals),
-  //     divDecimals(reserves?.[getCurrencyAddress(tokenB)], tokenB?.decimals),
-  //   ).dp(tokenB?.decimals ?? 8);
-  // }, [tokenA, reserves, maxAmount, userSlippageTolerance, rate, tokenB]);
+  const maxReserveTotal = useMemo(
+    () =>
+      minimumAmountOut(divDecimals(reserves?.[getCurrencyAddress(tokenB)], tokenB?.decimals), userSlippageTolerance),
+    [reserves, tokenB, userSlippageTolerance],
+  );
 
   const [progressValue, setProgressValue] = useState(0);
-  const sliderValue = useMemo(() => +inputToSide(amount, maxAmount).toFixed(0), [amount, maxAmount]);
+  const sliderValue = useMemo(() => +inputToSide(amount, maxBalanceAmount).toFixed(0), [amount, maxBalanceAmount]);
 
-  const amountOutMin = minimumAmountOut(new BigNumber(total), userSlippageTolerance);
+  const amountOutMin = useMemo(
+    () => BigNumber.min(minimumAmountOut(new BigNumber(total), userSlippageTolerance), maxReserveTotal),
+    [maxReserveTotal, total, userSlippageTolerance],
+  );
 
   const priceImpact = useMemo(
     () =>
@@ -117,9 +107,9 @@ export default function RightCard({
       };
     }
 
-    if (bigInput.gt(maxAmount)) {
+    if (bigInput.gt(maxBalanceAmount)) {
       return {
-        text: `Max amount ${bigNumberToString(maxAmount, tokenA?.decimals)} ${formatSymbol(tokenA?.symbol)}`,
+        text: `Max amount ${bigNumberToString(maxBalanceAmount, tokenA?.decimals)} ${formatSymbol(tokenA?.symbol)}`,
         error: true,
       };
     }
@@ -128,7 +118,7 @@ export default function RightCard({
       text: '',
       error: false,
     };
-  }, [amount, maxAmount, showZeroInputTips, tokenA?.decimals, tokenA?.symbol]);
+  }, [amount, maxBalanceAmount, showZeroInputTips, tokenA?.decimals, tokenA?.symbol]);
 
   const totalError = useMemo(() => {
     const bigTotal = new BigNumber(total);
@@ -175,7 +165,7 @@ export default function RightCard({
       if (val) {
         const amountValue = getAmountByInput(
           rate,
-          BigNumber.min(new BigNumber(val)),
+          BigNumber.min(new BigNumber(val), maxReserveTotal),
           divDecimals(reserves?.[getCurrencyAddress(tokenB)], tokenB?.decimals),
           divDecimals(reserves?.[getCurrencyAddress(tokenA)], tokenA?.decimals),
         );
@@ -186,7 +176,7 @@ export default function RightCard({
       setTotal(val);
       setProgressValue(0);
     },
-    [rate, reserves, tokenA, tokenB],
+    [maxReserveTotal, rate, reserves, tokenA, tokenB],
   );
 
   const sliderAmount = useCallback(
@@ -198,7 +188,7 @@ export default function RightCard({
         return;
       }
 
-      const newAmount = sideToInput(val, maxAmount);
+      const newAmount = sideToInput(val, maxBalanceAmount);
       const newAmountStr = bigNumberToString(newAmount, tokenA?.decimals);
       const newTotal = getAmountOut(
         rate,
@@ -212,7 +202,7 @@ export default function RightCard({
       setAmount(newAmountStr);
       setProgressValue(newAmount.isNaN() || newAmount.lte(0) ? 0 : val);
     },
-    [maxAmount, tokenA, rate, reserves, tokenB],
+    [maxBalanceAmount, tokenA, rate, reserves, tokenB],
   );
 
   const onClickSellBtn = () => {

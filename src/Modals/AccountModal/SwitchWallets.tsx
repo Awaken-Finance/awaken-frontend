@@ -1,7 +1,7 @@
 import { SwitchWalletType, useMultiWallets } from 'aelf-web-login';
 import { Row, Col } from 'antd';
 import Font from 'components/Font';
-import { IconBack, IconCheckPrimary, IconWalletElf, IconWalletPortkey } from 'assets/icons';
+import { IconBack, IconCheckPrimary, IconWalletElf, IconWalletPortkey, IconWalletSDK } from 'assets/icons';
 import { useTranslation } from 'react-i18next';
 
 export default function SwitchWallets({
@@ -17,7 +17,7 @@ export default function SwitchWallets({
     {
       type: 'portkey',
       text: 'Portkey SDK',
-      Icon: IconWalletPortkey,
+      Icon: IconWalletSDK,
     },
     {
       type: 'discover',
