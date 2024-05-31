@@ -1,3 +1,9 @@
+<p align="center">
+    <img width="200" src= "./logo.svg" style="border-radius: 8px;"/>
+</p>
+
+<h1 align="center">Awaken</h1>
+
 # Lint CodeBase
 
 [![GitHub Super-Linter](https://github.com/Awaken-Finance/awaken-frontend/workflows/Lint%20Code%20Base/badge.svg)](https://github.com/marketplace/actions/super-linter)
