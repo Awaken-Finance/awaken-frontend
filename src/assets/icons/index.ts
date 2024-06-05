@@ -38,6 +38,9 @@ import { ReactComponent as IconLogo } from './icon-logo.svg';
 import { ReactComponent as LoadingBg } from './loading-bg.svg';
 import { ReactComponent as IconQuestionHover } from './icon-question-hover.svg';
 import { ReactComponent as IconSwitch } from './icon-switch.svg';
+import { ReactComponent as IconDiscord } from './icon-discord.svg';
+import { ReactComponent as IconTelegram } from './icon-telegram.svg';
+import { ReactComponent as IconX } from './icon-X.svg';
 
 export {
   IconClose,
@@ -80,4 +83,7 @@ export {
   LoadingBg,
   IconQuestionHover,
   IconSwitch,
+  IconDiscord,
+  IconTelegram,
+  IconX,
 };
