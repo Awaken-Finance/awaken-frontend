@@ -6,8 +6,6 @@ import { useMobile } from 'utils/isMobile';
 import useSearchPairList from './hooks/useSearchPairList';
 import { useOVContext } from './hooks/useOverview';
 
-import './Overview.less';
-
 const Overview = () => {
   const isMobile = useMobile();
 
