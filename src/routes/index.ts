@@ -1,4 +1,5 @@
 import NotFound from 'pages/NotFound';
+import { Swap } from 'pages/Swap';
 import { lazy } from 'react';
 import { RoutesProps } from 'types';
 import { sleep } from 'utils';
@@ -59,6 +60,10 @@ const routes: RoutesProps[] = [
   {
     path: '/trading/:pair?',
     component: Exchange,
+  },
+  {
+    path: '/Swap',
+    component: Swap,
   },
   {
     path: '/',
