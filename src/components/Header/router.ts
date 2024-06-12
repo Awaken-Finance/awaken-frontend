@@ -24,7 +24,7 @@ export const menuList: MenuItem[] = [
   },
   {
     key: 'swap',
-    title: 'swap',
+    title: 'Swap',
     path: '/swap',
   },
 ];

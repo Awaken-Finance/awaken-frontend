@@ -1,9 +1,25 @@
 .swap-input-row {
-  padding: 16px 12px;
-  border-radius: 4px;
+  padding: 20px 12px;
+  border-radius: 6px;
   background-color: var(--ant-input-bg-color);
   border: 1px solid var(--ant-input-bg-color);
   transition: border-color 0.2s;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+
+  .swap-input-price-wrap {
+    margin-right: 8px;
+  }
+
+  .swap-input-row-footer {
+    height: 22px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+
   .swap-input.ant-input-affix-wrapper {
     padding: 0;
   }
@@ -30,11 +46,14 @@
       font-size: 30px !important;
       color: var(--ant-black-font-color-3);
     }
+    .select-token-pair {
+      width: auto;
+    }
   }
-  .blance-box {
+  .balance-box {
     display: flex;
     .max-btn {
-      width: 40px;
+      width: 45px;
       height: 20px;
       margin-left: 8px;
       color: var(--ant-primary-color);
@@ -46,6 +65,14 @@
       align-items: center;
       justify-content: center;
       font-weight: 500;
+    }
+  }
+}
+
+.mobile-site-content {
+  .swap-input-row {
+    .swap-input-row-footer {
+      height: 20px;
     }
   }
 }

@@ -239,15 +239,25 @@ export async function swapSuccess({
   tokenB,
   tokenA,
   t,
+  isSwap = false,
 }: {
   result: SwapResult;
   tokenA?: Currency;
   tokenB?: Currency;
   t: TFunction<'translation'>;
+  isSwap?: boolean;
 }) {
   const Logs = getLogs(result);
   const log = getLog(Logs, 'Swap');
-  const { amountIn, amountOut, symbolIn, symbolOut } = log[0];
+
+  const { amountIn, symbolIn } = log[0];
+  let { amountOut, symbolOut } = log[0];
+  if (isSwap) {
+    const lastLog = log[log.length - 1];
+    amountOut = lastLog.amountOut;
+    symbolOut = lastLog.symbolOut;
+  }
+
   try {
     const transactionId = getTransactionId(result);
     notification.successToExplorer(
@@ -443,6 +453,7 @@ export function getPriceImpactSeverity(priceImpact?: string | BigNumber) {
 }
 
 export function minimumAmountOut(outputAmount: BigNumber, slippageTolerance = DEFAULT_SLIPPAGE_TOLERANCE) {
+  if (slippageTolerance === '') slippageTolerance = DEFAULT_SLIPPAGE_TOLERANCE;
   return outputAmount.times(ONE.div(ONE.plus(slippageTolerance)));
 }
 export function sortLPSymbol(symbol: string) {

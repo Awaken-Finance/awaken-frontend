@@ -4,16 +4,21 @@ import { basicModalView } from 'contexts/useModal/actions';
 import CommonButton from 'components/CommonButton';
 import Font from 'components/Font';
 import './index.less';
-import { ReactNode } from 'react';
+import { ReactNode, useMemo } from 'react';
 
 export default function Tooltip({ buttonTitle, content }: { buttonTitle?: ReactNode; content?: ReactNode }) {
   const [, { dispatch }] = useModal();
+  const isStr = useMemo(() => typeof content === 'string', [content]);
   return (
     <Row gutter={[0, 24]}>
       <Col span={24}>
-        <Font lineHeight={20} size={14} className="content">
-          {content}
-        </Font>
+        {isStr ? (
+          <Font lineHeight={20} size={14} className="content">
+            {content}
+          </Font>
+        ) : (
+          content
+        )}
       </Col>
       <CommonButton
         className="tooltip-modal-btn"

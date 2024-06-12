@@ -4,13 +4,17 @@ import Font from 'components/Font';
 import { useMemo } from 'react';
 import { TokenInfo } from 'types';
 import { CurrencyLogo, CurrencyLogos } from 'components/CurrencyLogo';
+import { useTranslation } from 'react-i18next';
 import { ZERO } from 'constants/misc';
+import { useMobile } from 'utils/isMobile';
 
 export type TSwapOrderRoutingProps = {
   route?: TPairRoute;
 };
 
 export const SwapOrderRouting = ({ route }: TSwapOrderRoutingProps) => {
+  const isMobile = useMobile();
+  const { t } = useTranslation();
   const tokenList = useMemo(() => {
     if (!route) return [];
     const _list: Array<TokenInfo[]> = [];
@@ -37,11 +41,13 @@ export const SwapOrderRouting = ({ route }: TSwapOrderRoutingProps) => {
   if (!route) return <></>;
   return (
     <div className="swap-order-routing">
-      <div>
-        <Font size={12} lineHeight={14}>
-          Order Routing
-        </Font>
-      </div>
+      {!isMobile && (
+        <div className="swap-order-header">
+          <Font size={12} lineHeight={14}>
+            {t('Order Routing')}
+          </Font>
+        </div>
+      )}
 
       <div className="swap-order-content">
         {firstToken && (

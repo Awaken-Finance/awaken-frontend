@@ -611,6 +611,8 @@
     "Original": "Original",
     "Depth": "Depth",
     "ensuring that you approve an adequate amount": "Insufficient {{symbol}} allowance. Please try again, ensuring that you approve an adequate amount, {{amount}} {{symbol}}, as the allowance.",
-    "My": "My"
+    "My": "My",
+
+    "Swap": "Swap"
   }
 }

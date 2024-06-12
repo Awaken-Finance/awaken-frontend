@@ -55,6 +55,7 @@ export type modalState = {
     title?: ReactNode;
     buttonTitle?: ReactNode;
     headerDesc?: ReactNode;
+    width?: string | number;
   };
 
   synchronizedAccountInfoModal: boolean;
