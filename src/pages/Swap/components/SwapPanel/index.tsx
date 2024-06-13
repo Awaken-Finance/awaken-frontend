@@ -480,8 +480,7 @@ export const SwapPanel = () => {
       const originFeeRate = result.routeInfo.route.feeRate;
       const feeRate = result.routeInfo.route.feeRate;
       if (path.join('_') !== originPath.join('_') || feeRate !== originFeeRate) {
-        // TODO: 200 add invalid warning
-        console.log('⭐️⭐️⭐️⭐️⭐️⭐️');
+        //  route change
         return;
       }
 
