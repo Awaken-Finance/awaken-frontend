@@ -48,6 +48,11 @@ const routes: RoutesProps[] = [
     authComp: AuthComp,
   },
   {
+    path: '/create-pair/:pair',
+    component: CreatePair,
+    authComp: AuthComp,
+  },
+  {
     path: '/liquidity/:pair/add',
     component: ManageLiquidity,
     authComp: AuthComp,

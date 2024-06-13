@@ -613,6 +613,7 @@
     "ensuring that you approve an adequate amount": "Insufficient {{symbol}} allowance. Please try again, ensuring that you approve an adequate amount, {{amount}} {{symbol}}, as the allowance.",
     "My": "My",
 
-    "Swap": "Swap"
+    "Swap": "Swap",
+    "SwapNotSupportedContent": "The {{symbolIn}} and {{symbolOut}} you selected are not directly or indirectly supported by the liquidity pool. You can create this trading pair liquidity pool yourself. Do you want to create it?"
   }
 }

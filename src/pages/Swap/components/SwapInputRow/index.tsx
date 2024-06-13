@@ -104,7 +104,12 @@ export default function SwapInputRow(props: Props) {
 
   const onMax = useCallback(() => {
     if (token?.symbol === 'ELF' && gasFee && balance) {
-      setValue(divDecimals(balance.minus(gasFee), token?.decimals).toFixed() || '');
+      const _valueBN = balance.minus(gasFee);
+      if (_valueBN.lte(ZERO)) {
+        setValue('0');
+        return;
+      }
+      setValue(divDecimals(_valueBN, token?.decimals).toFixed() || '');
       return;
     }
     setValue(divDecimals(balance || ZERO, token?.decimals).toFixed() || '');

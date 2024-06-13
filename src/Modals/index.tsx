@@ -5,6 +5,7 @@ import TransactionSettingsModal from './TransactionSettingsModal';
 import TooltipModal from './TooltipModal';
 import ExpertModeModal from './ExpertModeModal';
 import SynchronizedAccountInfoModal from './SynchronizedAccountInfoModal';
+import SwapNotSupportedModal from './SwapNotSupportedModal';
 export default function Modals() {
   return (
     <>
@@ -19,6 +20,7 @@ export default function Modals() {
       <TooltipModal />
       <ExpertModeModal />
       <SynchronizedAccountInfoModal />
+      <SwapNotSupportedModal />
     </>
   );
 }

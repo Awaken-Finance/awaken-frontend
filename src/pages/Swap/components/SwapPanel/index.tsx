@@ -37,6 +37,8 @@ import './styles.less';
 import { useTokenPrice } from 'contexts/useTokenPrice/hooks';
 import { formatSymbol } from 'utils/token';
 import { useEffectOnce } from 'react-use';
+import { useModalDispatch } from 'contexts/useModal/hooks';
+import { basicModalView } from 'contexts/useModal/actions';
 
 export type TSwapInfo = {
   tokenIn?: Currency;
@@ -87,11 +89,13 @@ export const SwapPanel = () => {
     setIsPriceReverse(false);
   }, []);
 
+  const [isRouteEmpty, setIsRouteEmpty] = useState(false);
   const executeCb = useCallback(
     async (isRefreshTokenValue = true) => {
       const { tokenIn, tokenOut } = swapInfoRef.current;
       if (!tokenIn || !tokenOut) return;
 
+      setIsRouteEmpty(false);
       try {
         const routeList = await getRouteList({
           startSymbol: tokenIn.symbol,
@@ -104,6 +108,9 @@ export const SwapPanel = () => {
         ) {
           console.log('executeCb: to exceed the time limit');
           return undefined;
+        }
+        if (!routeList || routeList.length === 0) {
+          setIsRouteEmpty(true);
         }
         routeListRef.current = routeList;
         console.log('routeList', routeList);
@@ -189,6 +196,12 @@ export const SwapPanel = () => {
           valueIn: '',
           valueOut: '',
         }));
+        setOptimumRouteInfo(undefined);
+        return;
+      }
+
+      if ((isFocusValueIn && ZERO.eq(valueIn)) || (!isFocusValueIn && ZERO.eq(valueOut))) {
+        setIsInvalidParis(false);
         setOptimumRouteInfo(undefined);
         return;
       }
@@ -297,6 +310,7 @@ export const SwapPanel = () => {
   const onTokenChange = useCallback(async () => {
     resetIsPriceReverse();
     setOptimumRouteInfo(undefined);
+    setIsRouteEmpty(false);
     await sleep(100);
     registerTimer();
   }, [registerTimer, resetIsPriceReverse]);
@@ -403,6 +417,7 @@ export const SwapPanel = () => {
     if (loginState !== WebLoginState.logined) return { label: t('connectWallet'), fontColor: 'primary', active: true };
     const { tokenIn, tokenOut, isFocusValueIn, valueIn } = swapInfo;
     if (!tokenIn || !tokenOut) return { label: t('selectAToken'), fontColor: 'two' };
+    if (isRouteEmpty) return { label: t('Go To Create'), active: true, type: 'primary' };
     if (isFocusValueIn && !valueIn) return { label: t('Enter an amount'), fontColor: 'two' };
     if (isInvalidParis) return { label: t('Insufficient liquidity for this trade'), className: 'swap-btn-error' };
     if (isExceedBalance)
@@ -416,7 +431,7 @@ export const SwapPanel = () => {
       label: t('Swap'),
       type: 'primary',
     };
-  }, [isExceedBalance, isInvalidParis, loginState, swapInfo, t]);
+  }, [isExceedBalance, isInvalidParis, isRouteEmpty, loginState, swapInfo, t]);
 
   const routeContract = useRouterContract(SupportedSwapRateMap[optimumRouteInfo?.route?.feeRate || '']);
   const { account } = useActiveWeb3React();
@@ -428,9 +443,23 @@ export const SwapPanel = () => {
     routeContract?.address,
   );
   const [isSwapping, setIsSwapping] = useState(false);
+
+  const modalDispatch = useModalDispatch();
   const onSwapClick = useCallback(async () => {
     const { tokenIn, tokenOut, valueIn, valueOut } = swapInfo;
-    if (!optimumRouteInfo || !tokenIn || !tokenOut || !valueIn || !valueOut) return;
+    if (!tokenIn || !tokenOut) return;
+
+    if (isRouteEmpty) {
+      modalDispatch(
+        basicModalView.setSwapNotSupported.actions({
+          tokenIn,
+          tokenOut,
+        }),
+      );
+      return;
+    }
+
+    if (!optimumRouteInfo || !valueIn || !valueOut) return;
 
     const { route } = optimumRouteInfo;
     const routeSymbolIn = route.rawPath?.[0]?.symbol;
@@ -512,6 +541,8 @@ export const SwapPanel = () => {
     account,
     approve,
     checkAllowance,
+    isRouteEmpty,
+    modalDispatch,
     optimumRouteInfo,
     registerTimer,
     routeContract,
