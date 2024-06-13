@@ -7,7 +7,7 @@ import { getContractAmountOut, getRouteInfoWithValueIn, getRouteInfoWithValueOut
 import Font from 'components/Font';
 import { ChainConstants } from 'constants/ChainConstants';
 import { Currency } from '@awaken/sdk-core';
-import { useCurrencyBalances } from 'hooks/useBalances';
+import { useCurrencyBalancesV2 } from 'hooks/useBalances';
 import { bigNumberToUPString, getCurrencyAddress, minimumAmountOut, parseUserSlippageTolerance } from 'utils/swap';
 import SwapSelectTokenButton from '../SwapSelectTokenButton';
 import SwapInputRow from '../SwapInputRow';
@@ -75,7 +75,7 @@ export const SwapPanel = () => {
   });
   const swapInfoRef = useRef(swapInfo);
   swapInfoRef.current = swapInfo;
-  const currencyBalances = useCurrencyBalances([swapInfo.tokenIn, swapInfo.tokenOut]);
+  const currencyBalances = useCurrencyBalancesV2([swapInfo.tokenIn, swapInfo.tokenOut]);
   const refreshTokenValueRef = useRef<typeof refreshTokenValue>();
 
   const routeListRef = useRef<TPairRoute[]>();
