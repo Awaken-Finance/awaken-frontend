@@ -26,7 +26,7 @@ import { getTokenWeights } from 'utils/token';
 import PriceDigits from 'components/PriceDigits';
 import getFontStyle from 'utils/getFontStyle';
 import PriceUSDDigits from 'components/PriceUSDDigits';
-import { getRealPrice, getRealPriceWithDexFee } from 'utils/calculate';
+import { getRealPriceWithDexFee } from 'utils/calculate';
 import { ZERO } from 'constants/misc';
 import { stringMidShort } from 'utils/string';
 
