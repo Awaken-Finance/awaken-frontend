@@ -13,6 +13,7 @@ import { SwapOrderRouting } from '../SwapOrderRouting';
 import { CurrencyLogos } from 'components/CurrencyLogo';
 import { Currency } from '@awaken/sdk-core';
 import { TSwapInfo } from '../SwapPanel';
+import { formatSymbol } from 'utils/token';
 
 export type TSwapRouteInfoProps = {
   swapInfo: TSwapInfo;
@@ -28,7 +29,7 @@ export const SwapRouteInfo = ({ swapInfo, routeInfo, gasFee }: TSwapRouteInfoPro
     const { valueOut, tokenOut } = swapInfo;
     if (!valueOut || !tokenOut) return '-';
     const _value = bigNumberToString(minimumAmountOut(ZERO.plus(valueOut), userSlippageTolerance), tokenOut.decimals);
-    return `${_value} ${tokenOut.symbol}`;
+    return `${_value} ${formatSymbol(tokenOut.symbol)}`;
   }, [swapInfo, userSlippageTolerance]);
 
   const priceImpact = useMemo(() => {

@@ -106,7 +106,8 @@ export const getRouteInfoWithValueOut = (routeList: TPairRoute[], valueOut: stri
         return null;
       }
 
-      const totalValue = getAmountByInput(rate, _input, _token0Amount, _token1Amount);
+      const totalValueOriginBN = getAmountByInput(rate, _input, _token0Amount, _token1Amount);
+      const totalValue = totalValueOriginBN.dp(_token1.decimals, BigNumber.ROUND_UP);
 
       recordList.push({
         tokenIn: _token1,

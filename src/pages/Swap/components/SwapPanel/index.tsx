@@ -484,6 +484,7 @@ export const SwapPanel = () => {
       }
 
       const valueInAmountBN = timesDecimals(valueIn, tokenIn.decimals);
+      const valueOutAmountBN = timesDecimals(valueOut, tokenOut.decimals);
       const valueInAmount = valueInAmountBN.toFixed();
       const allowance = await checkAllowance();
       if (valueInAmountBN.gt(allowance)) {
@@ -496,8 +497,15 @@ export const SwapPanel = () => {
       if (!amountOutAmount) return;
 
       console.log('amountOutAmount', amountOutAmount);
-      const amountOutAmountBN = ZERO.plus(amountOutAmount);
-      const amountMinOutAmountBN = minimumAmountOut(amountOutAmountBN, userSlippageTolerance);
+      const amountMinOutAmountBN = minimumAmountOut(valueOutAmountBN, userSlippageTolerance);
+
+      if (amountMinOutAmountBN.gt(amountOutAmount)) {
+        setSwapInfo((pre) => ({
+          ...pre,
+          valueOut: divDecimals(amountOutAmount, tokenOut.decimals).toFixed(),
+        }));
+        return;
+      }
 
       console.log('onSwap', {
         account,
