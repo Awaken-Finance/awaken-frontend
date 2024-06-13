@@ -317,14 +317,25 @@ export const SwapPanel = () => {
 
   const setTokenIn = useCallback(
     async (tokenIn) => {
-      setSwapInfo((pre) => ({
-        ...pre,
-        tokenIn,
-        tokenOut: pre.tokenOut?.symbol === tokenIn.symbol ? pre.tokenIn : pre.tokenOut,
-        isFocusValueIn: true,
-        valueIn: '',
-        valueOut: '',
-      }));
+      setSwapInfo((pre) => {
+        const isSwitch = pre.tokenOut?.symbol === tokenIn.symbol;
+        if (!isSwitch)
+          return {
+            ...pre,
+            tokenIn,
+            isFocusValueIn: true,
+            valueIn: '',
+            valueOut: '',
+          };
+        return {
+          ...pre,
+          tokenIn,
+          tokenOut: pre.tokenIn,
+          isFocusValueIn: !pre.isFocusValueIn,
+          valueOut: pre.isFocusValueIn ? pre.valueIn : '',
+          valueIn: pre.isFocusValueIn ? '' : pre.valueOut,
+        };
+      });
       onTokenChange();
     },
     [onTokenChange],
@@ -332,13 +343,25 @@ export const SwapPanel = () => {
 
   const setTokenOut = useCallback(
     async (tokenOut) => {
-      setSwapInfo((pre) => ({
-        ...pre,
-        tokenOut,
-        tokenIn: pre.tokenIn?.symbol === tokenOut.symbol ? pre.tokenOut : pre.tokenIn,
-        isFocusValueIn: true,
-        valueOut: '',
-      }));
+      setSwapInfo((pre) => {
+        const isSwitch = pre.tokenIn?.symbol === tokenOut.symbol;
+        if (!isSwitch)
+          return {
+            ...pre,
+            tokenOut,
+            isFocusValueIn: true,
+            valueOut: '',
+          };
+
+        return {
+          ...pre,
+          tokenOut,
+          tokenIn: pre.tokenOut,
+          isFocusValueIn: !pre.isFocusValueIn,
+          valueOut: pre.isFocusValueIn ? pre.valueIn : '',
+          valueIn: pre.isFocusValueIn ? '' : pre.valueOut,
+        };
+      });
       onTokenChange();
     },
     [onTokenChange],
@@ -349,9 +372,9 @@ export const SwapPanel = () => {
       ...pre,
       tokenIn: pre.tokenOut,
       tokenOut: pre.tokenIn,
-      isFocusValueIn: true,
-      valueOut: '',
-      valueIn: '',
+      isFocusValueIn: !pre.isFocusValueIn,
+      valueOut: pre.isFocusValueIn ? pre.valueIn : '',
+      valueIn: pre.isFocusValueIn ? '' : pre.valueOut,
     }));
     onTokenChange();
   }, [onTokenChange]);
