@@ -623,6 +623,7 @@
     "DEX fees belong to liquidity providers and are already included in the current quote.": "DEX手續費歸屬流動性提供者，並已計入當前報價。",
     "Txn Fee are the miner fees paid in order for transactions to proceed": "交易費是為了進行交易而支付的礦工費。",
     "Order Routing": "訂單路由",
-    "Awaken's order routing selects the swap path with the lowest comprehensive cost to complete the transaction and increase the amount you receive.": "Awaken的訂單路由選擇綜合費用最低的兌換路徑來完成交易，增加你的得到金額。"
+    "Awaken's order routing selects the swap path with the lowest comprehensive cost to complete the transaction and increase the amount you receive.": "Awaken的訂單路由選擇綜合費用最低的兌換路徑來完成交易，增加你的得到金額。",
+    "Enter an amount": "輸入數量"
   }
 }

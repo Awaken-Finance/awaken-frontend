@@ -62,8 +62,8 @@ export const SwapOrderRouting = ({ route }: TSwapOrderRoutingProps) => {
         )}
 
         {tokenList.map((item, idx) => (
-          <div className="swap-order-route-info">
-            <CurrencyLogos key={idx} size={16} tokens={item} isSortToken={false} />
+          <div className="swap-order-route-info" key={idx}>
+            <CurrencyLogos size={16} tokens={item} isSortToken={false} />
             <Font size={12} lineHeight={14}>
               {feeRate}
             </Font>
