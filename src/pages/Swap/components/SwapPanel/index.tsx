@@ -415,10 +415,12 @@ export const SwapPanel = () => {
     type?: 'primary';
   }>(() => {
     if (loginState !== WebLoginState.logined) return { label: t('connectWallet'), fontColor: 'primary', active: true };
-    const { tokenIn, tokenOut, isFocusValueIn, valueIn } = swapInfo;
+    const { tokenIn, tokenOut, isFocusValueIn, valueIn, valueOut } = swapInfo;
     if (!tokenIn || !tokenOut) return { label: t('selectAToken'), fontColor: 'two' };
     if (isRouteEmpty) return { label: t('Go To Create'), active: true, type: 'primary' };
-    if (isFocusValueIn && !valueIn) return { label: t('Enter an amount'), fontColor: 'two' };
+    if (isFocusValueIn && (!valueIn || ZERO.eq(valueIn))) return { label: t('Enter an amount'), fontColor: 'two' };
+    if (!isFocusValueIn && (!valueOut || ZERO.eq(valueOut))) return { label: t('Enter an amount'), fontColor: 'two' };
+
     if (isInvalidParis) return { label: t('Insufficient liquidity for this trade'), className: 'swap-btn-error' };
     if (isExceedBalance)
       return {
