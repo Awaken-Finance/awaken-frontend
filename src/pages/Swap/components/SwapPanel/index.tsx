@@ -80,9 +80,6 @@ export const SwapPanel = () => {
 
   const routeListRef = useRef<TPairRoute[]>();
   const [optimumRouteInfo, setOptimumRouteInfo] = useState<TSwapRouteInfo>();
-  useEffect(() => {
-    console.log('optimumRouteInfo', optimumRouteInfo);
-  }, [optimumRouteInfo]);
 
   const [isPriceReverse, setIsPriceReverse] = useState(false);
   const resetIsPriceReverse = useCallback(() => {
@@ -625,7 +622,14 @@ export const SwapPanel = () => {
         token={swapInfo.tokenIn}
         showMax={true}
         gasFee={gasFee}
-        suffix={<SwapSelectTokenButton size="middle" token={swapInfo.tokenIn} setToken={setTokenIn} />}
+        suffix={
+          <SwapSelectTokenButton
+            className="swap-select-token-btn"
+            size="middle"
+            token={swapInfo.tokenIn}
+            setToken={setTokenIn}
+          />
+        }
       />
       <div className="swap-token-switch-wrap">
         <div className="swap-token-switch-btn" onClick={switchToken}>
@@ -639,7 +643,14 @@ export const SwapPanel = () => {
         onChange={setValueOut}
         balance={currencyBalances?.[getCurrencyAddress(swapInfo.tokenOut)]}
         token={swapInfo.tokenOut}
-        suffix={<SwapSelectTokenButton size="middle" token={swapInfo.tokenOut} setToken={setTokenOut} />}
+        suffix={
+          <SwapSelectTokenButton
+            className="swap-select-token-btn"
+            size="middle"
+            token={swapInfo.tokenOut}
+            setToken={setTokenOut}
+          />
+        }
         usdSuffix={
           <>
             {usdImpactInfo && (
