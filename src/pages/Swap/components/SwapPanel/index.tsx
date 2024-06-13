@@ -36,6 +36,7 @@ import { SwapRouteInfo } from '../SwapRouteInfo';
 import './styles.less';
 import { useTokenPrice } from 'contexts/useTokenPrice/hooks';
 import { formatSymbol } from 'utils/token';
+import { useEffectOnce } from 'react-use';
 
 export type TSwapInfo = {
   tokenIn?: Currency;
@@ -63,8 +64,8 @@ export const SwapPanel = () => {
   const { data: gasFee = 0 } = useRequest(getTransactionFee);
 
   const [swapInfo, setSwapInfo] = useState<TSwapInfo>({
-    tokenIn: ChainConstants.constants.COMMON_BASES[0],
-    tokenOut: undefined,
+    tokenIn: ChainConstants.constants.COMMON_BASES[2],
+    tokenOut: ChainConstants.constants.COMMON_BASES[0],
 
     valueIn: '',
     valueOut: '',
@@ -264,6 +265,12 @@ export const SwapPanel = () => {
       swapCircleProcessRef.current?.start();
     }, 30 * 1000);
   }, [clearTimer]);
+
+  useEffectOnce(() => {
+    const { tokenIn, tokenOut } = swapInfo;
+    if (!tokenIn || !tokenOut) return;
+    registerTimer();
+  });
 
   const setValueIn = useCallback(
     async (value) => {

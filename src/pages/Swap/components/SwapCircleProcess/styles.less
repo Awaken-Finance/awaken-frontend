@@ -11,7 +11,7 @@
     border-top-color: transparent;
     border-right-color: transparent;
     transform: rotate(45deg);
-    z-index: 20;
+    z-index: 2;
   }
   .swap-circle-right {
     position: absolute;
@@ -32,7 +32,7 @@
     border: 2px solid #393d47;
     border-top-color: transparent;
     border-right-color: transparent;
-    z-index: 10;
+    z-index: 1;
     transform: rotate(45deg);
   }
 }
@@ -49,19 +49,19 @@
 @keyframes swap-rotate-fill {
   0% {
     transform: rotate(45deg);
-    z-index: 10;
+    z-index: 1;
   }
   50% {
     transform: rotate(225deg); /* 45deg + 360deg */
-    z-index: 10;
+    z-index: 1;
   }
   50.1% {
     transform: rotate(225deg); /* 45deg + 360deg */
-    z-index: 30;
+    z-index: 3;
   }
   100% {
     transform: rotate(405deg); /* 45deg + 360deg */
-    z-index: 30;
+    z-index: 3;
   }
 }
 
