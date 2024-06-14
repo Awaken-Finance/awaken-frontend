@@ -6,8 +6,35 @@
     height: 16px;
   }
 
+  .route-empty-warning {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    .route-empty-warning-icon-wrap {
+      height: 20px;
+      display: flex;
+      align-items: center;
+    }
+    .route-empty-warning-icon {
+      margin-right: 4px;
+      display: flex;
+      background-image: url('../../../../assets/icons/icon-notification-warning.svg');
+      width: 16px;
+      height: 16px;
+      background-size: 100% 100%;
+    }
+  }
+
+  .swap-input-out-row {
+    margin-bottom: 10px;
+    overflow: hidden;
+  }
+
+  .swap-btn-wrap {
+    padding-top: 30px;
+  }
+
   .swap-btn {
-    margin-top: 40px;
     width: 100%;
 
     &.swap-btn-error {

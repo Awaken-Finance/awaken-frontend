@@ -627,6 +627,7 @@
     "Enter an amount": "輸入數量",
     "SwapNotSupportedContent": "您選擇的{{symbolIn}}代幣和{{symbolOut}}代幣，當前流動性池不支援兌換。您可以自行建立該交易對流動性池。你想創建它嗎？",
     "Go To Create": "前往創建",
-    "Swap is not supported": "不支援兌換"
+    "Swap is not supported": "不支援兌換",
+    "The current transaction is not supported, You can create the pair yourself.": "當前交易不支援，您可以自己創建該交易對。"
   }
 }
