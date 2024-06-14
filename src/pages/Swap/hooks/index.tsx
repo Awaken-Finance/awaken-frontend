@@ -2,6 +2,7 @@ import { useCallback } from 'react';
 import { getPairPathApi } from '../utils';
 import { TPairRoute, TPairRoutePath } from '../types';
 import { useGetPairSyncRecords } from 'graphqlServer';
+import { DEFAULT_CHAIN } from 'constants/index';
 
 export const useGetRouteList = () => {
   const getPairSyncRecords = useGetPairSyncRecords();
@@ -21,7 +22,7 @@ export const useGetRouteList = () => {
       const pairAddressList = Object.keys(routePathMap);
       const pairRecordList = await getPairSyncRecords({
         dto: {
-          chainId: 'tDVW',
+          chainId: DEFAULT_CHAIN,
           pairAddresses: pairAddressList,
         },
       });

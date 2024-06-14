@@ -125,7 +125,7 @@ export default function CurrencyInputRow(props: Props) {
         {!hidBlance && token && (
           <div className="blance-box">
             <Font size={14} color="two" lineHeight={20}>
-              {`${t('balance')}：${unitConverter(displayBalance, 8)}`}
+              {`${t('balance')}: ${unitConverter(displayBalance, 8)}`}
             </Font>
             {showMax && (
               <div className="max-btn" onClick={maxCallback}>

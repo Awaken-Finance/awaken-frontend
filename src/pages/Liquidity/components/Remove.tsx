@@ -58,8 +58,6 @@ export default function Remove({ pairInfo }: { pairInfo: PairInfo }) {
   const [bs] = useBalances(pairAddress, undefined, rate);
   const lpBalance = bs[0];
 
-  console.log('lpBalance: ', lpBalance, pairAddress);
-
   const showLpBalance = divDecimals(lpBalance, getLPDecimals());
 
   const min = useRef<BigNumber>(divDecimals('1', getLPDecimals()));
@@ -179,7 +177,7 @@ export default function Remove({ pairInfo }: { pairInfo: PairInfo }) {
           </Col>
           <Col>
             <Font lineHeight={14} size={12} color="two">
-              {`${t('lp')}：${lpBalanceText}`}
+              {`${t('lp')}: ${lpBalanceText}`}
             </Font>
           </Col>
         </Row>
