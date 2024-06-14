@@ -22,6 +22,11 @@ export const menuList: MenuItem[] = [
     title: 'trading',
     path: '/trading',
   },
+  {
+    key: 'swap',
+    title: 'Swap',
+    path: '/swap',
+  },
 ];
 export const assetList: MenuItem[] = [
   {

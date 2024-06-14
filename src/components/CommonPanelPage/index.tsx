@@ -13,21 +13,32 @@ export interface ICommonPanelPageProps {
   title?: string;
   extraTitle?: React.ReactNode;
   onCancel?: () => void;
+  isCancelHide?: boolean;
 }
 
-export const CommonPanelPage = ({ className, children, title = '', onCancel, extraTitle }: ICommonPanelPageProps) => {
+export const CommonPanelPage = ({
+  className,
+  children,
+  title = '',
+  onCancel,
+  extraTitle,
+  isCancelHide = false,
+}: ICommonPanelPageProps) => {
   const isMobile = useMobile();
 
   return (
     <div className={clsx(['common-panel-page', className])}>
       <div className="common-panel-page-body">
         <div className="common-panel-page-header">
-          <CommonButton
-            className="common-panel-page-header-back"
-            type="text"
-            icon={<IconArrowLeft2 />}
-            onClick={onCancel}
-          />
+          {!isCancelHide && (
+            <CommonButton
+              className="common-panel-page-header-back"
+              type="text"
+              icon={<IconArrowLeft2 />}
+              onClick={onCancel}
+            />
+          )}
+
           <Font size={isMobile ? 16 : 20} lineHeight={24} weight="medium">
             {title}
           </Font>

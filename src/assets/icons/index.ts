@@ -16,6 +16,7 @@ import { ReactComponent as IconArrowLeft } from './icon-arrow-left.svg';
 import { ReactComponent as IconArrowLeft2 } from './icon-arrow-left2.svg';
 import { ReactComponent as IconArrowUp } from './icon-arrow-up.svg';
 import { ReactComponent as IconArrowDown } from './icon-arrow-down.svg';
+import { ReactComponent as IconArrowDown2 } from './icon-arrow-down2.svg';
 import { ReactComponent as IconLogoutWarn } from './icon-logout-warn.svg';
 import { ReactComponent as IconSearch } from './icon-search.svg';
 import { ReactComponent as TconSetFee } from './icon-set-fee.svg';
@@ -41,6 +42,9 @@ import { ReactComponent as IconSwitch } from './icon-switch.svg';
 import { ReactComponent as IconDiscord } from './icon-discord.svg';
 import { ReactComponent as IconTelegram } from './icon-telegram.svg';
 import { ReactComponent as IconX } from './icon-X.svg';
+import { ReactComponent as IconSwapDefault } from './icon-swap-default.svg';
+import { ReactComponent as IconSwapHover } from './icon-swap-hover.svg';
+import { ReactComponent as IconPriceSwitch } from './icon-price-switch.svg';
 
 export {
   IconClose,
@@ -60,6 +64,7 @@ export {
   IconArrowLeft2,
   IconArrowUp,
   IconArrowDown,
+  IconArrowDown2,
   IconLogoutWarn,
   IconSearch,
   TconSetFee,
@@ -86,4 +91,7 @@ export {
   IconDiscord,
   IconTelegram,
   IconX,
+  IconSwapDefault,
+  IconSwapHover,
+  IconPriceSwitch,
 };

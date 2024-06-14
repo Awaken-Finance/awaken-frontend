@@ -18,6 +18,7 @@ export const API_LIST = {
   GET_IDO_INFORMATION: '/api/app/ido/public-offerings',
   GET_TRANSACTION_FEE: '/api/app/transaction-fee',
   SET_FAVS: '/api/app/favs',
+  GET_PAIR_PATH: '/api/app/token-paths',
 };
 
 const LENDING_API_LIST = {

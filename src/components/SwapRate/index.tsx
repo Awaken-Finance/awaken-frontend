@@ -137,7 +137,7 @@ export default function SwapRate({
       </Col>
       <Col span={24}>
         {rowList.map((row, idx) => (
-          <Row className={idx !== 0 ? 'swap-rate-row-gap' : undefined} gutter={[8, 0]} wrap={false}>
+          <Row key={idx} className={idx !== 0 ? 'swap-rate-row-gap' : undefined} gutter={[8, 0]} wrap={false}>
             {row.map(([k, address]) => {
               return (
                 <RateRow

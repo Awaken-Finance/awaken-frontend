@@ -21,6 +21,11 @@ export function useUserSettings(): [State, Actions] {
   return useContext(UserSettingsContext);
 }
 
+export const useUserSlippageTolerance = () => {
+  const [{ userSlippageTolerance }] = useUserSettings();
+  return useMemo(() => userSlippageTolerance || DEFAULT_SLIPPAGE_TOLERANCE, [userSlippageTolerance]);
+};
+
 export default function Provider({ children }: { children: React.ReactNode }) {
   const [userSlippageTolerance, setUserSlippageTolerance] = useLocalStorage<State['userSlippageTolerance']>(
     storages.userSlippageTolerance,

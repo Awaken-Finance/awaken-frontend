@@ -20,14 +20,33 @@ import CommonButton from 'components/CommonButton';
 import { useRouterContract } from 'hooks/useContract';
 import ApproveButtonsRow, { ApproveButtonsRowState } from 'Buttons/ApproveBtn/ApproveButtonsRow';
 import clsx from 'clsx';
+import { useAllTokenList } from 'hooks/tokenList';
+import { useRouteMatch } from 'react-router-dom';
+import { getPairsLogoOrderByTokenWeights } from 'utils/pair';
+import { Currency } from '@awaken/sdk-core';
 
 export default function CreatePair({ onCancel }: { onCancel: () => void }) {
   const { t } = useTranslation();
+  const match = useRouteMatch<{ pair: string }>('/create-pair/:pair');
+  const { pair } = match?.params || {};
+  const allTokens = useAllTokenList();
+  const defaultPair = useMemo(() => {
+    if (!pair) return;
+    const symbolList = pair.split('_');
+    if (symbolList.length !== 2) return;
+    const tokenList = symbolList
+      .map((symbol) => allTokens.find((item) => item.symbol === symbol))
+      .filter((item) => !!item) as Currency[];
+    if (tokenList.length !== 2) return;
+
+    return getPairsLogoOrderByTokenWeights(tokenList) as Currency[];
+  }, [allTokens, pair]);
 
   const { account } = useActiveWeb3React();
 
   const { leftToken, rightToken, setRightToken, setLeftToken } = useSelectPair(
-    ChainConstants.constants.COMMON_BASES[0],
+    defaultPair?.[0] || ChainConstants.constants.COMMON_BASES[0],
+    defaultPair?.[1],
   );
 
   const currencyBalances = useCurrencyBalances([leftToken, rightToken]);

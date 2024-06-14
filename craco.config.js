@@ -6,23 +6,23 @@ const TerserPlugin = require('terser-webpack-plugin');
 const webpack = require('webpack');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
-const WebpackBar = require("webpackbar");
-const SpeedMeasurePlugin = require("speed-measure-webpack-plugin");
+const WebpackBar = require('webpackbar');
+const SpeedMeasurePlugin = require('speed-measure-webpack-plugin');
 const path = require('path');
 
 const NODE_ENV = process.env.NODE_ENV;
 
 const smp = new SpeedMeasurePlugin();
 
-console.log('NODE_ENV: ', NODE_ENV)
+console.log('NODE_ENV: ', NODE_ENV);
 
 const cracoWebpackConfig = {
   alias: {
     '@sashimiswap/compound-js': '@sashimiswap/compound-js/dist/browser/compound.min.js',
   },
   configure: (webpackConfig, arg) => {
-    console.log('webpackConfig: ', webpackConfig.module.rules.oneOf)
-    webpackConfig.devtool = webpackConfig.mode === "production" ? false : 'source-map';
+    console.log('webpackConfig: ', webpackConfig.module.rules.oneOf);
+    webpackConfig.devtool = webpackConfig.mode === 'production' ? false : 'source-map';
     webpackConfig.module.rules = [
       ...webpackConfig.module.rules,
       {
@@ -76,43 +76,39 @@ const cracoWebpackConfig = {
             name: 'chunk-assets',
             priority: 10,
             test: /\.(png|svg|jpg|jpeg|gif)$/,
-            reuseExistingChunk: true
+            reuseExistingChunk: true,
           },
 
           antd: {
             name: 'chunk-antd',
             priority: 20,
             test: /[\\/]node_modules[\\/]_?@?ant*/,
-            reuseExistingChunk: true
-          }, 
+            reuseExistingChunk: true,
+          },
 
           commons: {
             name: 'chunk-commons',
             minChunks: 3,
             priority: 5,
-            reuseExistingChunk: true
+            reuseExistingChunk: true,
           },
 
           lib: {
             test(module) {
-              return (
-                module.size() > 160000 &&
-                /node_modules[/\\]/.test(module.nameForCondition() || '')
-              )
+              return module.size() > 160000 && /node_modules[/\\]/.test(module.nameForCondition() || '');
             },
             name(module) {
               const packageNameArr = module.context.match(/[\\/]node_modules[\\/](.*?)([\\/]|$)/);
               const packageName = packageNameArr ? packageNameArr[1] : '';
-              return `chunk-lib.${packageName.replace("@", "")}`;
+              return `chunk-lib.${packageName.replace('@', '')}`;
             },
             priority: 10,
             minChunks: 1,
             reuseExistingChunk: true,
           },
-        }
-      }
-    }
-
+        },
+      },
+    };
 
     if (NODE_ENV === 'development') {
       webpackConfig.optimization = {};
@@ -126,7 +122,7 @@ const plugins = [
   new webpack.ProvidePlugin({
     Buffer: ['buffer', 'Buffer'],
   }),
-  new WebpackBar()
+  new WebpackBar(),
 ];
 
 if (NODE_ENV === 'production') {
@@ -204,6 +200,11 @@ module.exports = {
       },
       '/AElfIndexer_DApp/PortKeyIndexerCASchema': {
         target: activeApi.portkeyIndexer,
+        changeOrigin: true,
+        secure: false,
+      },
+      '/AElfIndexer_Swap/SwapIndexerSchema': {
+        target: activeApi.awakenIndexer,
         changeOrigin: true,
         secure: false,
       },

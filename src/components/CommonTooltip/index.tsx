@@ -20,6 +20,7 @@ export default function CommonTooltip({
   arrowPointAtCenter = true,
   align,
   placement = 'topLeft',
+  width,
   ...props
 }: TooltipProps & {
   onClick?: () => void;
@@ -28,6 +29,7 @@ export default function CommonTooltip({
   useTooltip?: boolean;
   headerDesc?: ReactNode;
   visible?: boolean;
+  width?: string | number;
 }) {
   const modalDispatch = useModalDispatch();
   const isMobile = useMobile();
@@ -60,12 +62,13 @@ export default function CommonTooltip({
 
     modalDispatch(
       basicModalView.setTooltipModal.actions({
+        width,
         title,
         headerDesc,
         buttonTitle,
       }),
     );
-  }, [isMobile, useTooltip, onClick, modalDispatch, title, headerDesc, buttonTitle]);
+  }, [isMobile, useTooltip, onClick, modalDispatch, width, title, headerDesc, buttonTitle]);
 
   const renderAlign = useMemo(() => {
     if (align) {

@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction, useCallback, useEffect, useRef, useState } from 'react';
+import { DependencyList, Dispatch, SetStateAction, useCallback, useEffect, useRef, useState } from 'react';
 import isDeepEqual from 'react-use/lib/misc/isDeepEqual';
 
 /**
@@ -66,4 +66,16 @@ function depsAreSame(oldDeps: any[], deps: any[]): boolean {
     if (oldDeps[i] !== deps[i]) return false;
   }
   return true;
+}
+
+export function useReturnLastCallback<T extends (...args: any[]) => any>(callback: T, deps: DependencyList) {
+  const last = useRef<number>(0);
+  return useCallback(async (...args: any) => {
+    ++last.current;
+    const id = last.current;
+    const req = await callback(...args);
+    if (last.current !== id) throw new Error('Not the latest request');
+    return req;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, deps);
 }
