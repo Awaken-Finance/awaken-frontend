@@ -59,8 +59,8 @@ const COMMON_BASES_LIST = [
     decimals: 8,
   },
   {
-    name: 'USDTE',
-    symbol: 'USDTE',
+    name: 'USDT',
+    symbol: 'USDT',
     decimals: 6,
   },
 ];

@@ -55,7 +55,7 @@ export const SwapRouteInfo = ({ swapInfo, routeInfo, gasFee }: TSwapRouteInfoPro
     return `${ZERO.plus(valueIn)
       .times(ONE.minus(ONE.minus(feeRate).pow(pathLength)))
       .dp(tokenIn.decimals)
-      .toFixed()} ${tokenIn.symbol}`;
+      .toFixed()} ${formatSymbol(tokenIn.symbol)}`;
   }, [routeInfo, swapInfo]);
 
   const gasFeeValue = useMemo(() => {
