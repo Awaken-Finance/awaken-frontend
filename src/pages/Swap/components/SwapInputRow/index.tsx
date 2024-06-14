@@ -144,7 +144,7 @@ export default function SwapInputRow(props: Props) {
           {!hidBlance && (
             <div className="balance-box">
               <Font size={isMobile ? 12 : 14} color="two" lineHeight={20}>
-                {`${t('balance')}：${displayBalance}`}
+                {`${t('balance')}: ${displayBalance}`}
               </Font>
               {showMax && (
                 <div className="max-btn" onClick={onMax}>
