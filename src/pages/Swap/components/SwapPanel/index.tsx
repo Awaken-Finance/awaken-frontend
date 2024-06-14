@@ -456,7 +456,7 @@ export const SwapPanel = () => {
       label: t('Swap'),
       type: 'primary',
     };
-  }, [isExceedBalance, isInvalidParis, isRouteEmpty, loginState, swapInfo, t]);
+  }, [isExceedBalance, isInvalidParis, isPortkeySDK, isRouteEmpty, loginState, swapInfo, t]);
 
   const routeContract = useRouterContract(SupportedSwapRateMap[optimumRouteInfo?.route?.feeRate || '']);
   const { account } = useActiveWeb3React();
@@ -642,6 +642,7 @@ export const SwapPanel = () => {
         </div>
       </div>
       <SwapInputRow
+        className="swap-input-out-row"
         title={t('Receive')}
         value={swapInfo.valueOut}
         onChange={setValueOut}
@@ -667,17 +668,30 @@ export const SwapPanel = () => {
         }
       />
 
-      <AuthBtn
-        loading={isSwapping}
-        type={swapBtnInfo.type}
-        size="large"
-        className={clsx('swap-btn', swapBtnInfo.className)}
-        onClick={onSwapClick}
-        disabled={!swapBtnInfo.active}>
-        <Font size={16} color={swapBtnInfo.fontColor}>
-          {swapBtnInfo.label}
-        </Font>
-      </AuthBtn>
+      {isRouteEmpty && (
+        <div className="route-empty-warning">
+          <div className="route-empty-warning-icon-wrap">
+            <span className="route-empty-warning-icon" />
+          </div>
+          <Font color="two" lineHeight={20}>
+            {t('The current transaction is not supported, You can create the pair yourself.')}
+          </Font>
+        </div>
+      )}
+
+      <div className="swap-btn-wrap">
+        <AuthBtn
+          loading={isSwapping}
+          type={swapBtnInfo.type}
+          size="large"
+          className={clsx('swap-btn', swapBtnInfo.className)}
+          onClick={onSwapClick}
+          disabled={!swapBtnInfo.active}>
+          <Font size={16} color={swapBtnInfo.fontColor}>
+            {swapBtnInfo.label}
+          </Font>
+        </AuthBtn>
+      </div>
 
       {isExtraInfoShow && (
         <>

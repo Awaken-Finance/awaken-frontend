@@ -18,6 +18,7 @@ import PriceUSDDigits from 'components/PriceUSDDigits';
 import getFontStyle from 'utils/getFontStyle';
 import { useMobile } from 'utils/isMobile';
 import { WebLoginState, useWebLogin } from 'aelf-web-login';
+import clsx from 'clsx';
 
 interface Props extends Omit<InputProps, 'onChange'> {
   token?: Currency;
@@ -33,6 +34,7 @@ interface Props extends Omit<InputProps, 'onChange'> {
   gasFee?: string | number;
   title?: string;
   usdSuffix?: React.ReactNode;
+  className?: string;
 }
 export default function SwapInputRow(props: Props) {
   const {
@@ -49,6 +51,7 @@ export default function SwapInputRow(props: Props) {
     gasFee,
     title = '',
     usdSuffix,
+    className,
   } = props;
   const { t } = useTranslation();
   const isMobile = useMobile();
@@ -119,7 +122,7 @@ export default function SwapInputRow(props: Props) {
   }, [balance, gasFee, setValue, token?.decimals, token?.symbol]);
 
   return (
-    <div className="swap-input-row" onClick={() => inputRef.current?.focus()}>
+    <div className={clsx('swap-input-row', className)} onClick={() => inputRef.current?.focus()}>
       <Font color="two" lineHeight={22} size={14}>
         {title}
       </Font>
