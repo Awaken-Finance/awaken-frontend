@@ -39,6 +39,7 @@ import { formatSymbol } from 'utils/token';
 import { useEffectOnce } from 'react-use';
 import { useModalDispatch } from 'contexts/useModal/hooks';
 import { basicModalView } from 'contexts/useModal/actions';
+import { useIsPortkeySDK } from 'hooks/useIsPortkeySDK';
 
 export type TSwapInfo = {
   tokenIn?: Currency;
@@ -427,6 +428,7 @@ export const SwapPanel = () => {
   }, [currencyBalances, gasFee, swapInfo]);
 
   const { loginState } = useWebLogin();
+  const isPortkeySDK = useIsPortkeySDK();
   const swapBtnInfo = useMemo<{
     active?: boolean;
     label: string;
@@ -434,7 +436,8 @@ export const SwapPanel = () => {
     fontColor?: FontColor;
     type?: 'primary';
   }>(() => {
-    if (loginState !== WebLoginState.logined) return { label: t('connectWallet'), fontColor: 'primary', active: true };
+    if (loginState !== WebLoginState.logined)
+      return { label: t(isPortkeySDK ? 'Unlock' : 'connectWallet'), fontColor: 'primary', active: true };
     const { tokenIn, tokenOut, isFocusValueIn, valueIn, valueOut } = swapInfo;
     if (!tokenIn || !tokenOut) return { label: t('selectAToken'), fontColor: 'two' };
     if (isRouteEmpty) return { label: t('Go To Create'), active: true, type: 'primary' };
