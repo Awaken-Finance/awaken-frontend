@@ -61,6 +61,7 @@ export function CurrencyLogos({
   size = 20,
   preview,
   className,
+  isSortToken = true,
 }: {
   className?: string;
   preview?: boolean;
@@ -71,7 +72,13 @@ export function CurrencyLogos({
     currency?: Currency | null;
     symbol?: string;
   }>;
+  isSortToken?: boolean;
 }) {
+  const tokenList = useMemo(() => {
+    if (!isSortToken) return tokens;
+    return getPairsLogoOrderByTokenWeights(tokens);
+  }, [isSortToken, tokens]);
+
   return (
     <div
       className={clsx('currency-logo', className)}
@@ -80,7 +87,7 @@ export function CurrencyLogos({
 
         maxHeight: tokens.length === 1 ? size : `${Math.ceil(size * tokens.length - size / 4)}px`,
       }}>
-      {getPairsLogoOrderByTokenWeights(tokens).map((i, k) => {
+      {tokenList.map((i, k) => {
         const { currency, address, src, symbol } = i || {};
         return (
           <CurrencyLogo

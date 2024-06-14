@@ -256,6 +256,7 @@ type SwapProps = {
   tokenB?: Currency;
   amountIn: BigNumber;
   amountOutMin: BigNumber;
+  path?: string[];
   t: TFunction<'translation'>;
 };
 
@@ -266,6 +267,7 @@ export const onSwap: (param: SwapProps) => Promise<boolean | any> = async ({
   routerContract,
   tokenA,
   tokenB,
+  path,
   t,
 }) => {
   if (amountOutMin.lt(1)) amountOutMin = ZERO.plus(1);
@@ -277,8 +279,12 @@ export const onSwap: (param: SwapProps) => Promise<boolean | any> = async ({
     };
 
   const contract = routerContract;
+  const isSwap = !!path;
 
-  if (tokenA?.isNative) {
+  if (isSwap) {
+    methodName = 'swapExactTokensForTokens';
+    args = [bigNumberToWeb3Input(amountIn), bigNumberToWeb3Input(amountOutMin), path, account, getDeadline(), getCID()];
+  } else if (tokenA?.isNative) {
     methodName = 'swapExactTokensForETH';
     args = [
       bigNumberToWeb3Input(amountIn),
@@ -319,7 +325,7 @@ export const onSwap: (param: SwapProps) => Promise<boolean | any> = async ({
       if (isUserDenied(result.error.message)) return REQ_CODE.UserDenied;
       return REQ_CODE.Fail;
     }
-    swapSuccess({ tokenB, tokenA, result, t });
+    swapSuccess({ tokenB, tokenA, result, t, isSwap });
     return REQ_CODE.Success;
   } catch (error: any) {
     formatSwapError(error, {

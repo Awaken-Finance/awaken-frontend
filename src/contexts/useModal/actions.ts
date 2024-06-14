@@ -17,6 +17,7 @@ const modalActions = {
   setExpertModeModal: 'SET_EXPERT_MODE_MODAL',
   destroy: 'DESTROY',
   setSynchronizedAccountInfoModal: 'SET_SYNCHRONIZED_ACCOUNT_MODAL',
+  setSwapNotSupported: 'SET_SWAP_NOT_SUPPORTED_MODAL',
 };
 
 export type PairInfo = {
@@ -55,8 +56,12 @@ export type modalState = {
     title?: ReactNode;
     buttonTitle?: ReactNode;
     headerDesc?: ReactNode;
+    width?: string | number;
   };
-
+  swapNotSupportedModal?: {
+    tokenIn: Currency;
+    tokenOut: Currency;
+  };
   synchronizedAccountInfoModal: boolean;
 };
 
@@ -150,6 +155,14 @@ export const basicModalView = {
     actions: (ToolTip?: modalState['ToolTip']) => {
       return basicActions(modalActions['setTooltipModal'], {
         ToolTip,
+      });
+    },
+  },
+  setSwapNotSupported: {
+    type: modalActions['setSwapNotSupported'],
+    actions: (swapNotSupportedModal?: modalState['swapNotSupportedModal']) => {
+      return basicActions(modalActions['setSwapNotSupported'], {
+        swapNotSupportedModal,
       });
     },
   },

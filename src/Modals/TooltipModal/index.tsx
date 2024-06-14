@@ -8,10 +8,10 @@ import './index.less';
 
 export default function TooltipModal() {
   const [{ ToolTip }, { dispatch }] = useModal();
-  const { headerDesc, title, buttonTitle } = ToolTip || {};
+  const { headerDesc, title, buttonTitle, width } = ToolTip || {};
   return (
     <CommonModal
-      width="320px"
+      width={width || '320px'}
       showType="modal"
       centered={true}
       closable

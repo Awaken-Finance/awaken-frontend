@@ -26,7 +26,7 @@ import { getTokenWeights } from 'utils/token';
 import PriceDigits from 'components/PriceDigits';
 import getFontStyle from 'utils/getFontStyle';
 import PriceUSDDigits from 'components/PriceUSDDigits';
-import { getRealPrice } from 'utils/calculate';
+import { getRealPriceWithDexFee } from 'utils/calculate';
 import { ZERO } from 'constants/misc';
 import { stringMidShort } from 'utils/string';
 
@@ -88,13 +88,20 @@ export default function PcTable({
         width: 212,
         align: 'left',
         sortOrder: field === 'tradePair' ? order : null,
-        render: (tradePair: TradePair) => (
+        render: (tradePair: TradePair, record: RecentTransaction) => (
           <div className="pair-area">
             <div className="pair-logo-wrap">
-              <CurrencyLogos size={16} tokens={[tradePair.token0, tradePair.token1]} />
+              <CurrencyLogos isSortToken={record.side !== 2} size={16} tokens={[tradePair.token0, tradePair.token1]} />
             </div>
             <div className="pair-label-wrap">
-              <Pairs tokenA={tradePair?.token0} tokenB={tradePair?.token1} lineHeight={20} size={14} weight="medium" />
+              <Pairs
+                isAutoOrder={record.side !== 2}
+                tokenA={tradePair?.token0}
+                tokenB={tradePair?.token1}
+                lineHeight={20}
+                size={14}
+                weight="medium"
+              />
             </div>
             <div>
               <FeeRate useBg>{formatPercentage(tradePair?.feeRate * 100)}</FeeRate>
@@ -114,6 +121,13 @@ export default function PcTable({
         // filterIcon: () => <IconFilterPc />,
         // filterDropdown: (props: any) => <FilterSidInTable {...props} />,
         render: (side: number, record: RecentTransaction) => {
+          if (side === 2) {
+            return (
+              <Font lineHeight={20} size={14}>
+                {t('Swap')}
+              </Font>
+            );
+          }
           const isReverse =
             // trade pair sort
             getTokenWeights(record.tradePair.token0.symbol) > getTokenWeights(record.tradePair.token1.symbol) &&
@@ -134,11 +148,11 @@ export default function PcTable({
         align: 'left',
         width: 116,
         render: (_val: BigNumber, record: RecentTransaction) => {
-          const price = getRealPrice({
+          const price = getRealPriceWithDexFee({
             side: record.side,
             token0Amount: record.token0Amount,
             token1Amount: record.token1Amount,
-            feeRate: record.tradePair.feeRate,
+            dexFee: record.totalFee,
           });
           return <PriceDigits className={getFontStyle({ lineHeight: 20 })} price={price} />;
         },

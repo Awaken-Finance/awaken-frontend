@@ -1,0 +1,44 @@
+.swap-order-routing {
+  width: 100%;
+
+  .swap-order-header {
+    margin-bottom: 18px;
+  }
+
+  .swap-order-content {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    position: relative;
+    align-items: center;
+
+    .swap-order-token-icon {
+      font-size: 0;
+      z-index: 1;
+    }
+
+    .currency-logo {
+      line-height: 16px;
+    }
+
+    .swap-order-route-info {
+      padding: 2px 6px;
+      border-radius: 4px;
+      display: flex;
+      flex-direction: row;
+      gap: 4px;
+      background-color: #343948;
+      align-items: center;
+      z-index: 1;
+    }
+
+    .swap-order-dot-line {
+      position: absolute;
+      top: 50%;
+      border-top: 3px dotted #393d47;
+      width: 100%;
+      transform: translate3d(0, -50%, 0);
+      z-index: 0;
+    }
+  }
+}

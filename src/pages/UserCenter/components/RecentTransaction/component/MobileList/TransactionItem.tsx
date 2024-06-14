@@ -13,10 +13,10 @@ import './index.less';
 import { getExploreLink } from 'utils';
 import { getTokenWeights } from 'utils/token';
 import PriceDigits from 'components/PriceDigits';
-import getFontStyle from 'utils/getFontStyle';
+import getFontStyle, { FontColor } from 'utils/getFontStyle';
 import PriceUSDDigits from 'components/PriceUSDDigits';
 import { useMemo } from 'react';
-import { getRealPrice } from 'utils/calculate';
+import { getRealPriceWithDexFee } from 'utils/calculate';
 import { ZERO } from 'constants/misc';
 import { stringMidShort } from 'utils/string';
 
@@ -37,24 +37,42 @@ export default function TransactionItem({
   item: RecentTransaction;
 }) {
   const { t } = useTranslation();
-  const isBuy = useMemo(() => {
+  const sideInfo = useMemo<{
+    label: string;
+    fontColor?: FontColor;
+  }>(() => {
+    if (side === 2)
+      return {
+        label: t('Swap'),
+      };
     const isReverse =
       // trade pair sort
       getTokenWeights(tradePair.token0.symbol) > getTokenWeights(tradePair.token1.symbol) &&
       // contract sort
       tradePair.token0.symbol < tradePair.token1.symbol;
-    return Boolean(Number(side === 0) ^ Number(isReverse));
-  }, [side, tradePair.token0.symbol, tradePair.token1.symbol]);
+    const isBuy = Boolean(Number(side === 0) ^ Number(isReverse));
+    if (isBuy) {
+      return {
+        label: t('buy'),
+        fontColor: 'rise',
+      };
+    } else {
+      return {
+        label: t('sell'),
+        fontColor: 'fall',
+      };
+    }
+  }, [side, t, tradePair.token0.symbol, tradePair.token1.symbol]);
 
   const realPrice = useMemo(
     () =>
-      getRealPrice({
+      getRealPriceWithDexFee({
         side,
         token0Amount,
         token1Amount,
-        feeRate: tradePair.feeRate,
+        dexFee: totalFee,
       }),
-    [side, token0Amount, token1Amount, tradePair.feeRate],
+    [side, token0Amount, token1Amount, totalFee],
   );
 
   return (
@@ -64,7 +82,13 @@ export default function TransactionItem({
           <Col flex={'1'}>
             <Row gutter={[8, 0]} align="top" wrap={false}>
               <Col className="transaction-list-item-pairs-wrap">
-                <Pairs tokenA={tradePair?.token0?.symbol} tokenB={tradePair?.token1} lineHeight={20} weight="medium" />
+                <Pairs
+                  tokenA={tradePair?.token0?.symbol}
+                  tokenB={tradePair?.token1}
+                  isAutoOrder={side !== 2}
+                  lineHeight={20}
+                  weight="medium"
+                />
               </Col>
               <Col>
                 <FeeRate useBg>{formatPercentage(tradePair?.feeRate * 100)}</FeeRate>
@@ -78,8 +102,8 @@ export default function TransactionItem({
           </Col>
         </Row>
         <Col span={24} className="font-size-0">
-          <Font lineHeight={20} color={isBuy ? 'rise' : 'fall'}>
-            {isBuy ? t('buy') : t('sell')}
+          <Font lineHeight={20} color={sideInfo.fontColor}>
+            {sideInfo.label}
           </Font>
         </Col>
       </Col>

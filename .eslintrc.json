@@ -20,7 +20,13 @@
     "react/react-in-jsx-scope": 0,
     "@typescript-eslint/ban-types": 0,
     "@typescript-eslint/no-explicit-any": 0,
-    "no-unsafe-optional-chaining": "warn"
+    "no-unsafe-optional-chaining": "warn",
+    "react-hooks/exhaustive-deps": [
+      "warn",
+      {
+        "additionalHooks": "^use(ReturnLastCallback)$"
+      }
+    ]
   },
   "env": {
     "browser": true,
