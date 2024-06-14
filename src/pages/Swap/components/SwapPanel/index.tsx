@@ -625,6 +625,7 @@ export const SwapPanel = () => {
         suffix={
           <SwapSelectTokenButton
             className="swap-select-token-btn"
+            type="default"
             size="middle"
             token={swapInfo.tokenIn}
             setToken={setTokenIn}
@@ -646,6 +647,7 @@ export const SwapPanel = () => {
         suffix={
           <SwapSelectTokenButton
             className="swap-select-token-btn"
+            type="default"
             size="middle"
             token={swapInfo.tokenOut}
             setToken={setTokenOut}
