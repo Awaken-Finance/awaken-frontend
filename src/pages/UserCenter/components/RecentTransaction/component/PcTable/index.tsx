@@ -85,7 +85,7 @@ export default function PcTable({
         key: 'tradePair',
         dataIndex: 'tradePair',
         sorter: true,
-        width: 212,
+        width: 214,
         align: 'left',
         sortOrder: field === 'tradePair' ? order : null,
         render: (tradePair: TradePair, record: RecentTransaction) => (
@@ -112,7 +112,7 @@ export default function PcTable({
       {
         title: t(getSideTitle(side)),
         key: 'side',
-        width: 42,
+        width: 50,
         dataIndex: 'side',
         align: 'left',
         // filteredValue: [side],
