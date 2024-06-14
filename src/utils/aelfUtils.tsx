@@ -54,35 +54,57 @@ export function getBlockHeight() {
 export function getSerializedDataFromLog(log: any) {
   return AElf.pbUtils.getSerializedDataFromLog(log);
 }
-export async function getTxResult(TransactionId: string, reGetCount = 0): Promise<any> {
-  const txFun = getAElf().chain.getTxResult;
-  const txResult = await txFun(TransactionId);
-  console.log(txResult, TransactionId, 'compBalanceMetadata====txResult');
 
-  if (txResult.error && txResult.errorMessage) {
-    throw Error(txResult.errorMessage.message || txResult.errorMessage.Message);
+class TXError extends Error {
+  public TransactionId?: string;
+  public transactionId?: string;
+  constructor(message: string, id?: string) {
+    super(message);
+    this.TransactionId = id;
+    this.transactionId = id;
+  }
+}
+
+export function handleContractErrorMessage(error?: any) {
+  if (typeof error === 'string') return error;
+  if (error?.message) return error.message;
+  if (error.Error) {
+    return error.Error.Details || error.Error.Message || error.Error;
+  }
+  return `Transaction: ${error.Status}`;
+}
+
+export async function getTxResult(TransactionId: string, reGetCount = 0, notExistedReGetCount = 0): Promise<any> {
+  const txFun = getAElf().chain.getTxResult;
+  let txResult;
+  try {
+    txResult = await txFun(TransactionId);
+  } catch (error) {
+    throw new TXError(handleContractErrorMessage(error), TransactionId);
+  }
+  if (txResult?.error && txResult?.errorMessage) {
+    throw new TXError(txResult.errorMessage.message || txResult.errorMessage.Message, TransactionId);
   }
   const result = txResult?.result || txResult;
-
-  if (!result) {
-    throw Error('Can not get transaction result.');
+  if (!result) throw new TXError('Can not get transaction result.', TransactionId);
+  const lowerCaseStatus = result.Status.toLowerCase();
+  if (lowerCaseStatus === 'notexisted') {
+    if (notExistedReGetCount > 5) throw new TXError(result.Error || `Transaction: ${result.Status}`, TransactionId);
+    await sleep(1000);
+    notExistedReGetCount++;
+    reGetCount++;
+    return getTxResult(TransactionId, reGetCount, notExistedReGetCount);
   }
-
-  if (result.Status.toLowerCase() === 'pending') {
-    if (reGetCount > 20) {
-      return TransactionId;
-    }
+  if (lowerCaseStatus === 'pending' || lowerCaseStatus === 'pending_validation') {
+    if (reGetCount > 20) throw new TXError(result.Error || `Transaction: ${result.Status}`, TransactionId);
     await sleep(1000);
     reGetCount++;
-    return getTxResult(TransactionId, reGetCount);
+    return getTxResult(TransactionId, reGetCount, notExistedReGetCount);
   }
-
-  if (result.Status.toLowerCase() === 'mined') {
-    return TransactionId;
-  }
-
-  throw Error(result.Error || 'Transaction error');
+  if (lowerCaseStatus === 'mined') return TransactionId;
+  throw new TXError(result.Error || `Transaction: ${result.Status}`, TransactionId);
 }
+
 export function messageHTML(txId: string, type: 'success' | 'error' | 'warning' = 'success', moreMessage = '') {
   const aProps = isMobile ? {} : { target: '_blank', rel: 'noreferrer' };
   const explorerHref = getExploreLink(txId, 'transaction');
