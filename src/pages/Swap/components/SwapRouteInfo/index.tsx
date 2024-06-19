@@ -14,14 +14,23 @@ import { CurrencyLogos } from 'components/CurrencyLogo';
 import { Currency } from '@awaken/sdk-core';
 import { TSwapInfo } from '../SwapPanel';
 import { formatSymbol } from 'utils/token';
+import './styles.less';
 
 export type TSwapRouteInfoProps = {
   swapInfo: TSwapInfo;
   routeInfo: TSwapRouteInfo | undefined;
   gasFee: string | 0;
+  isTipShow?: boolean;
+  isRoutingShow?: boolean;
 };
 
-export const SwapRouteInfo = ({ swapInfo, routeInfo, gasFee }: TSwapRouteInfoProps) => {
+export const SwapRouteInfo = ({
+  swapInfo,
+  routeInfo,
+  gasFee,
+  isTipShow = true,
+  isRoutingShow = true,
+}: TSwapRouteInfoProps) => {
   const { t } = useTranslation();
   const [{ userSlippageTolerance }] = useUserSettings();
 
@@ -70,20 +79,21 @@ export const SwapRouteInfo = ({ swapInfo, routeInfo, gasFee }: TSwapRouteInfoPro
   return (
     <>
       <Row align={'middle'} justify={'space-between'}>
-        <Col className="swap-detail-title">
+        <Col className="swap-route-info-title">
           <Font color="two" size={14} lineHeight={22}>
             {t('Min. Received')}
           </Font>
-
-          <CommonTooltip
-            placement="top"
-            title={t(
-              'Min.Received refers to the exchange result at the price corresponding to the Max.Slippage you set.Generally, it will be more.',
-            )}
-            getPopupContainer={(v) => v}
-            buttonTitle={t('ok')}
-            headerDesc={t('Min. Received')}
-          />
+          {isTipShow && (
+            <CommonTooltip
+              placement="top"
+              title={t(
+                'Min.Received refers to the exchange result at the price corresponding to the Max.Slippage you set.Generally, it will be more.',
+              )}
+              getPopupContainer={(v) => v}
+              buttonTitle={t('ok')}
+              headerDesc={t('Min. Received')}
+            />
+          )}
         </Col>
 
         <Col>
@@ -94,20 +104,21 @@ export const SwapRouteInfo = ({ swapInfo, routeInfo, gasFee }: TSwapRouteInfoPro
       </Row>
 
       <Row align={'middle'} justify={'space-between'}>
-        <Col className="swap-detail-title">
+        <Col className="swap-route-info-title">
           <Font color="two" size={14} lineHeight={22}>
             {t('priceSlippage')}
           </Font>
-
-          <CommonTooltip
-            placement="top"
-            title={t(
-              'The maximum impact on the currency price of the liquidity pool after the transaction is completed.',
-            )}
-            getPopupContainer={(v) => v}
-            buttonTitle={t('ok')}
-            headerDesc={t('priceSlippage')}
-          />
+          {isTipShow && (
+            <CommonTooltip
+              placement="top"
+              title={t(
+                'The maximum impact on the currency price of the liquidity pool after the transaction is completed.',
+              )}
+              getPopupContainer={(v) => v}
+              buttonTitle={t('ok')}
+              headerDesc={t('priceSlippage')}
+            />
+          )}
         </Col>
 
         <Col>
@@ -118,18 +129,19 @@ export const SwapRouteInfo = ({ swapInfo, routeInfo, gasFee }: TSwapRouteInfoPro
       </Row>
 
       <Row align={'middle'} justify={'space-between'}>
-        <Col className="swap-detail-title">
+        <Col className="swap-route-info-title">
           <Font color="two" size={14} lineHeight={22}>
             {t('Fee')}
           </Font>
-
-          <CommonTooltip
-            placement="top"
-            title={t('DEX fees belong to liquidity providers and are already included in the current quote.')}
-            getPopupContainer={(v) => v}
-            buttonTitle={t('ok')}
-            headerDesc={t('Fee')}
-          />
+          {isTipShow && (
+            <CommonTooltip
+              placement="top"
+              title={t('DEX fees belong to liquidity providers and are already included in the current quote.')}
+              getPopupContainer={(v) => v}
+              buttonTitle={t('ok')}
+              headerDesc={t('Fee')}
+            />
+          )}
         </Col>
 
         <Col>
@@ -140,18 +152,20 @@ export const SwapRouteInfo = ({ swapInfo, routeInfo, gasFee }: TSwapRouteInfoPro
       </Row>
 
       <Row align={'middle'} justify={'space-between'}>
-        <Col className="swap-detail-title">
+        <Col className="swap-route-info-title">
           <Font color="two" size={14} lineHeight={22}>
             {t('transactionFee')}
           </Font>
 
-          <CommonTooltip
-            placement="top"
-            title={t('Txn Fee are the miner fees paid in order for transactions to proceed')}
-            getPopupContainer={(v) => v}
-            buttonTitle={t('ok')}
-            headerDesc={t('transactionFee')}
-          />
+          {isTipShow && (
+            <CommonTooltip
+              placement="top"
+              title={t('Txn Fee are the miner fees paid in order for transactions to proceed')}
+              getPopupContainer={(v) => v}
+              buttonTitle={t('ok')}
+              headerDesc={t('transactionFee')}
+            />
+          )}
         </Col>
 
         <Col>
@@ -161,35 +175,39 @@ export const SwapRouteInfo = ({ swapInfo, routeInfo, gasFee }: TSwapRouteInfoPro
         </Col>
       </Row>
 
-      <Row align={'middle'} justify={'space-between'}>
-        <Col className="swap-detail-title">
-          <Font color="two" size={14} lineHeight={22}>
-            {t('Order Routing')}
-          </Font>
+      {isRoutingShow && (
+        <Row align={'middle'} justify={'space-between'}>
+          <Col className="swap-route-info-title">
+            <Font color="two" size={14} lineHeight={22}>
+              {t('Order Routing')}
+            </Font>
 
-          <CommonTooltip
-            placement="top"
-            title={t(
-              `Awaken's order routing selects the swap path with the lowest comprehensive cost to complete the transaction and increase the amount you receive.`,
+            {isTipShow && (
+              <CommonTooltip
+                placement="top"
+                title={t(
+                  `Awaken's order routing selects the swap path with the lowest comprehensive cost to complete the transaction and increase the amount you receive.`,
+                )}
+                getPopupContainer={(v) => v}
+                buttonTitle={t('ok')}
+                headerDesc={t('Order Routing')}
+              />
             )}
-            getPopupContainer={(v) => v}
-            buttonTitle={t('ok')}
-            headerDesc={t('Order Routing')}
-          />
-        </Col>
+          </Col>
 
-        <Col className="swap-order-routing-tip-wrap">
-          <CommonTooltip
-            width={'400px'}
-            placement="right"
-            title={<SwapOrderRouting route={routeInfo?.route} />}
-            getPopupContainer={(v) => v}
-            buttonTitle={t('ok')}
-            headerDesc={t('Order Routing')}>
-            <CurrencyLogos size={20} tokens={currencyLogoTokens} isSortToken={false} />
-          </CommonTooltip>
-        </Col>
-      </Row>
+          <Col className="swap-order-routing-tip-wrap">
+            <CommonTooltip
+              width={'400px'}
+              placement="right"
+              title={<SwapOrderRouting route={routeInfo?.route} />}
+              getPopupContainer={(v) => v}
+              buttonTitle={t('ok')}
+              headerDesc={t('Order Routing')}>
+              <CurrencyLogos size={20} tokens={currencyLogoTokens} isSortToken={false} />
+            </CommonTooltip>
+          </Col>
+        </Row>
+      )}
     </>
   );
 };
