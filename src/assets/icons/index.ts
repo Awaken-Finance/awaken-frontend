@@ -12,6 +12,7 @@ import { ReactComponent as IconNotificationCopy } from './icon-notification-copy
 import { ReactComponent as IconAssets } from './icon-assets.svg';
 import { ReactComponent as IconMenu } from './icon-menu.svg';
 import { ReactComponent as IconArrowRight } from './icon-arrow-right.svg';
+import { ReactComponent as IconArrowRight2 } from './icon-arrow-right2.svg';
 import { ReactComponent as IconArrowLeft } from './icon-arrow-left.svg';
 import { ReactComponent as IconArrowLeft2 } from './icon-arrow-left2.svg';
 import { ReactComponent as IconArrowUp } from './icon-arrow-up.svg';
@@ -60,6 +61,7 @@ export {
   IconAssets,
   IconMenu,
   IconArrowRight,
+  IconArrowRight2,
   IconArrowLeft,
   IconArrowLeft2,
   IconArrowUp,

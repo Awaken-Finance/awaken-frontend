@@ -151,12 +151,12 @@ export default function Transaction() {
       preDataSource.current = list ?? [];
     }
 
-    preDataSource.current = preDataSource.current.map((item: LiquidityRecord | RecentTransaction) => {
-      if (getTokenWeights(item.tradePair?.token0?.symbol) > getTokenWeights(item.tradePair?.token1?.symbol)) {
-        item.price = new BigNumber(1).div(item.price || '').toString();
-      }
-      return item;
-    });
+    // preDataSource.current = preDataSource.current.map((item: LiquidityRecord | RecentTransaction) => {
+    //   if (getTokenWeights(item.tradePair?.token0?.symbol) > getTokenWeights(item.tradePair?.token1?.symbol)) {
+    //     item.price = new BigNumber(1).div(item.price || '').toString();
+    //   }
+    //   return item;
+    // });
 
     return preDataSource.current;
   }, [isMobile, list]);

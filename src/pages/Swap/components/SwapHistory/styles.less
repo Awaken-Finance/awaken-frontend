@@ -1,0 +1,149 @@
+.swap-history {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+
+  .swap-history-bg {
+    height: 8px;
+    width: 100%;
+    background-color: #131620;
+  }
+
+  .swap-history-header {
+    width: 640px;
+    height: 24px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 12px;
+  }
+
+  .swap-history-view-btn {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+
+    .swap-history-view-btn-label {
+      margin-right: 4px;
+    }
+  }
+
+  .swap-history-content {
+    width: 640px;
+  }
+
+  .transaction-hash-wrap {
+    display: flex;
+    align-items: center;
+    .transaction-hash-label {
+      flex: 1;
+    }
+    .transaction-hash-link {
+      word-break: break-all;
+      font-size: 12px;
+      line-height: 20px;
+    }
+    .transaction-hash-link:hover {
+      text-decoration: underline;
+    }
+  }
+
+  .common-table {
+    border-radius: 8px;
+    overflow: hidden;
+
+    .ant-spin-nested-loading > div > .ant-spin .ant-spin-dot {
+      top: 50%;
+      left: 50%;
+      margin: 0;
+      transform: translate(-50%, -50%);
+      width: auto;
+    }
+
+    .ant-table {
+      background-color: transparent;
+      border: 1px solid #181b23;
+      border-radius: 8px;
+      padding: 0;
+      min-height: 105px;
+      .ant-table-placeholder {
+        .ant-table-cell {
+          transform: translateY(36px);
+        }
+      }
+    }
+    .ant-table-thead {
+      & > tr > th {
+        background-color: #131620;
+        padding-left: 4px;
+        padding-right: 4px;
+        &:first-child {
+          padding-left: 16px;
+        }
+        &:last-child:not(.ant-table-cell-scrollbar) {
+          padding-right: 16px;
+        }
+      }
+      th.ant-table-column-has-sorters:hover {
+        background-color: var(--ant-container-bg-color);
+      }
+    }
+
+    .ant-table-tbody {
+      & > tr > td {
+        padding-left: 4px;
+        padding-right: 4px;
+        vertical-align: middle;
+        border-bottom: 1px solid #181b23;
+        &:first-child {
+          padding-left: 16px;
+        }
+        &:last-child {
+          padding-right: 16px;
+        }
+      }
+      & > tr:last-child {
+        td {
+          border: none;
+        }
+      }
+    }
+
+    .empty-placeholder {
+      padding-top: 0;
+    }
+  }
+}
+
+.swap-transaction-list-item {
+  padding: 12px 0;
+  .align-right {
+    display: flex;
+    justify-content: end;
+  }
+}
+
+.mobile-site-content {
+  .swap-history {
+    .swap-history-header {
+      width: 100%;
+      padding: 0 16px;
+      margin-top: 24px;
+      margin-bottom: 12px;
+    }
+    .swap-history-content {
+      width: 100%;
+      padding: 0 16px 12px;
+      .swap-transaction-list-wrapper {
+        min-height: 160px;
+      }
+
+      .common-list {
+        .ant-spin-nested-loading {
+          min-height: 160px;
+        }
+      }
+    }
+  }
+}
