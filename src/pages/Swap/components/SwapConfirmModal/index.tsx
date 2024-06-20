@@ -182,7 +182,7 @@ export const SwapConfirmModal = forwardRef(
 
         if (amountMinOutAmountBN.gt(amountOutAmount)) {
           notification.warning({
-            message: t('Warning'),
+            message: null,
             description: t('The price has changed, please re-initiate the transaction'),
           });
           return;

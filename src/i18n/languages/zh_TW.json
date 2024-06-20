@@ -633,7 +633,6 @@
     "View All": "看全部",
     "Review Swap": "檢查交易",
     "Confirm Swap": "確認交易",
-    "The price has changed, please re-initiate the transaction": "價格發生變化，請重新發起交易",
-    "Warning": "警告"
+    "The price has changed, please re-initiate the transaction": "價格發生變化，請重新發起交易"
   }
 }
