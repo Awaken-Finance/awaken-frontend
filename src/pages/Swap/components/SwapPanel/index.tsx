@@ -3,7 +3,7 @@ import { sleep } from 'utils';
 import { useGetRouteList } from '../../hooks';
 import { TPairRoute, TSwapRouteInfo } from '../../types';
 import { SWAP_TIME_INTERVAL, ZERO } from 'constants/misc';
-import { getContractAmountOut, getRouteInfoWithValueIn, getRouteInfoWithValueOut } from '../../utils';
+import { getRouteInfoWithValueIn, getRouteInfoWithValueOut } from '../../utils';
 import Font from 'components/Font';
 import { ChainConstants } from 'constants/ChainConstants';
 import { Currency } from '@awaken/sdk-core';
@@ -22,12 +22,10 @@ import SettingFee from 'Buttons/SettingFeeBtn';
 import { useUserSettings } from 'contexts/useUserSettings';
 import { useRequest } from 'ahooks';
 import { getTransactionFee } from 'pages/Exchange/apis/getTransactionFee';
-import { divDecimals, timesDecimals } from 'utils/calculate';
+import { divDecimals } from 'utils/calculate';
 import { WebLoginState, useWebLogin } from 'aelf-web-login';
 import AuthBtn from 'Buttons/AuthBtn';
 import { FontColor } from 'utils/getFontStyle';
-import { useRouterContract } from 'hooks/useContract';
-import { SupportedSwapRateMap } from 'constants/swap';
 import { SwapRouteInfo } from '../SwapRouteInfo';
 import { useTokenPrice } from 'contexts/useTokenPrice/hooks';
 import { formatSymbol } from 'utils/token';
@@ -462,9 +460,7 @@ export const SwapPanel = () => {
     };
   }, [isExceedBalance, isInvalidParis, isPortkeySDK, isRouteEmpty, loginState, swapInfo, t]);
 
-  const routeContract = useRouterContract(SupportedSwapRateMap[optimumRouteInfo?.route?.feeRate || '']);
   const [isSwapping, setIsSwapping] = useState(false);
-
   const modalDispatch = useModalDispatch();
   const onSwapClick = useCallback(async () => {
     const { tokenIn, tokenOut, valueIn, valueOut } = swapInfo;
@@ -480,57 +476,35 @@ export const SwapPanel = () => {
       return;
     }
 
-    if (!optimumRouteInfo || !valueIn || !valueOut) return;
-
-    const { route } = optimumRouteInfo;
-    const routeSymbolIn = route.rawPath?.[0]?.symbol;
-    const routeSymbolOut = route.rawPath?.[route.rawPath?.length - 1]?.symbol;
-    // swapInfo do not match routeInfo
-    if (tokenIn.symbol !== routeSymbolIn || tokenOut.symbol !== routeSymbolOut) return;
+    if (!valueIn || !valueOut) return;
 
     const _refreshTokenValue = refreshTokenValueRef.current;
-    if (!_refreshTokenValue || !routeContract) return;
+    if (!_refreshTokenValue) return;
     setIsSwapping(true);
     try {
       const result = await _refreshTokenValue(true);
-
       // can not get routeInfo
       if (!result || !result.routeInfo) return;
 
-      const originPath = route.rawPath.map((item) => item.symbol);
-      const path = result.routeInfo.route.rawPath.map((item) => item.symbol);
-      const originFeeRate = result.routeInfo.route.feeRate;
-      const feeRate = result.routeInfo.route.feeRate;
-      if (path.join('_') !== originPath.join('_') || feeRate !== originFeeRate) {
-        //  route change
-        return;
-      }
-
-      const valueInAmountBN = timesDecimals(valueIn, tokenIn.decimals);
-      const valueInAmount = valueInAmountBN.toFixed();
-
-      const amountResult = await getContractAmountOut(routeContract, valueInAmount, path);
-      const amountOutAmount: string | undefined = amountResult?.amount?.[amountResult?.amount?.length - 1];
-      if (!amountOutAmount) return;
-
-      console.log('onSwapClick amountOutAmount', amountOutAmount);
+      const routeInfo = result.routeInfo;
+      const { route } = routeInfo;
+      const routeSymbolIn = route.rawPath?.[0]?.symbol;
+      const routeSymbolOut = route.rawPath?.[route.rawPath?.length - 1]?.symbol;
+      // swapInfo do not match routeInfo
+      if (tokenIn.symbol !== routeSymbolIn || tokenOut.symbol !== routeSymbolOut) return;
 
       swapConfirmModalRef.current?.show({
-        swapInfo: {
-          ...swapInfo,
-          valueOut: divDecimals(amountOutAmount, tokenOut.decimals).toFixed(),
-        },
-        routeInfo: optimumRouteInfo,
+        swapInfo,
+        routeInfo,
         priceLabel,
       });
     } catch (error) {
-      //
       console.log('error', error);
     } finally {
       console.log('onSwap finally');
       setIsSwapping(false);
     }
-  }, [isRouteEmpty, modalDispatch, optimumRouteInfo, priceLabel, routeContract, swapInfo]);
+  }, [isRouteEmpty, modalDispatch, priceLabel, swapInfo]);
 
   const onSwapSuccess = useCallback(() => {
     setSwapInfo((pre) => ({
