@@ -33,9 +33,10 @@ export default function CommonBlockProgress({
 
   return (
     <div className="common-block-progress">
-      {blockList.map((b) => {
+      {blockList.map((b, idx) => {
         return (
           <div
+            key={idx}
             className={clsx({
               'block-item': true,
               'block-item-active': b.progress <= value,

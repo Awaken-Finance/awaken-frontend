@@ -5,7 +5,7 @@ import { useRemoveLiquidityInputs, useSelectPair, useTokens } from 'hooks/swap';
 import { useBalances } from 'hooks/useBalances';
 import { usePair, usePairsAddress } from 'hooks/userPairs';
 import { useActiveWeb3React } from 'hooks/web3';
-import { useMemo, useRef, useState } from 'react';
+import { useCallback, useMemo, useRef, useState } from 'react';
 import { RemoveOutputs } from 'types/swap';
 import { divDecimals, timesDecimals } from 'utils/calculate';
 import { getCurrencyAddress, getLPDecimals } from 'utils/swap';
@@ -91,14 +91,25 @@ export default function Remove({ pairInfo }: { pairInfo: PairInfo }) {
     showLpBalance,
   });
 
-  const inputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (event.target.value && !isValidNumber(event.target.value)) {
-      return;
-    }
+  const changeInput = useCallback(
+    (value: string) => {
+      setProgress(0);
+      onChange && onChange('lp', parseInputChange(value, min.current, getLPDecimals()));
+    },
+    [onChange],
+  );
 
-    setProgress(0);
-    onChange && onChange('lp', parseInputChange(event.target.value, min.current, getLPDecimals()));
-  };
+  const inputChange = useCallback(
+    (event: React.ChangeEvent<HTMLInputElement>) => {
+      console.log('event.target.value', event.target.value);
+      if (event.target.value && !isValidNumber(event.target.value)) {
+        return;
+      }
+      console.log('event.target.value', event.target.value);
+      changeInput(event.target.value);
+    },
+    [changeInput],
+  );
 
   const removeCb = async () => {
     if (!account || !inputs || !pairAddress || !!tmpInput) {
@@ -146,6 +157,11 @@ export default function Remove({ pairInfo }: { pairInfo: PairInfo }) {
     return uLP;
   }, [showLpBalance]);
 
+  const onMax = useCallback(() => {
+    changeInput(showLpBalance.toFixed());
+    setProgress(100);
+  }, [changeInput, showLpBalance]);
+
   return (
     <Row gutter={[0, 16]} className="remove-modal-box">
       <Col span={24} className="remove-modal-box-input" onClick={() => inputRef.current?.focus()}>
@@ -179,6 +195,9 @@ export default function Remove({ pairInfo }: { pairInfo: PairInfo }) {
             <Font lineHeight={14} size={12} color="two">
               {`${t('lp')}: ${lpBalanceText}`}
             </Font>
+            <div className="max-btn" onClick={onMax}>
+              MAX
+            </div>
           </Col>
         </Row>
       </Col>

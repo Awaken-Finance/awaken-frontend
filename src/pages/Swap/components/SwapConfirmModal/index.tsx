@@ -102,7 +102,7 @@ export const SwapConfirmModal = forwardRef(
         closable={true}
         centered={true}
         visible={isVisible}
-        title={t('Receive Swap')}
+        title={t('Review Swap')}
         className={'swap-confirm-modal'}
         onCancel={onCancel}>
         <div className="swap-confirm-modal-content">
@@ -137,7 +137,7 @@ export const SwapConfirmModal = forwardRef(
             <Row align={'middle'} justify={'space-between'}>
               <Col className="swap-detail-title">
                 <Font color="two" size={14} lineHeight={22}>
-                  {t('Rate')}
+                  {t('price')}
                 </Font>
               </Col>
 
@@ -178,7 +178,7 @@ export const SwapConfirmModal = forwardRef(
           </div>
         </div>
         <CommonButton onClick={onConfirmClick} loading={loading} className="swap-confirm-modal-btn" type="primary">
-          {t('Swap')}
+          {t('Confirm Swap')}
         </CommonButton>
       </CommonModal>
     );

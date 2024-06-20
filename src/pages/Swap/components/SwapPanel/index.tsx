@@ -90,12 +90,18 @@ export const SwapPanel = () => {
   }, []);
 
   const [isRouteEmpty, setIsRouteEmpty] = useState(false);
+  // const preRoutePair = useRef(`${swapInfo.tokenIn?.symbol}_${swapInfo.tokenOut?.symbol}`);
   const executeCb = useCallback(
     async (isRefreshTokenValue = true) => {
       const { tokenIn, tokenOut } = swapInfoRef.current;
       if (!tokenIn || !tokenOut) return;
 
-      setIsRouteEmpty(false);
+      // const nowRoutePair = `${tokenIn.symbol}_${tokenOut.symbol}`;
+      // if (preRoutePair.current !== nowRoutePair) {
+      //   setIsRouteEmpty(false);
+      // }
+      // preRoutePair.current = nowRoutePair;
+
       try {
         const routeList = await getRouteList({
           startSymbol: tokenIn.symbol,
