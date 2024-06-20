@@ -2,13 +2,13 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { sleep } from 'utils';
 import { useGetRouteList } from '../../hooks';
 import { TPairRoute, TSwapRouteInfo } from '../../types';
-import { REQ_CODE, ZERO } from 'constants/misc';
+import { SWAP_TIME_INTERVAL, ZERO } from 'constants/misc';
 import { getContractAmountOut, getRouteInfoWithValueIn, getRouteInfoWithValueOut } from '../../utils';
 import Font from 'components/Font';
 import { ChainConstants } from 'constants/ChainConstants';
 import { Currency } from '@awaken/sdk-core';
 import { useCurrencyBalancesV2 } from 'hooks/useBalances';
-import { bigNumberToUPString, getCurrencyAddress, minimumAmountOut, parseUserSlippageTolerance } from 'utils/swap';
+import { bigNumberToUPString, getCurrencyAddress, parseUserSlippageTolerance } from 'utils/swap';
 import SwapSelectTokenButton from '../SwapSelectTokenButton';
 import SwapInputRow from '../SwapInputRow';
 import { IconArrowDown2, IconPriceSwitch, IconSettingFee, IconSwapDefault, IconSwapHover } from 'assets/icons';
@@ -28,12 +28,7 @@ import AuthBtn from 'Buttons/AuthBtn';
 import { FontColor } from 'utils/getFontStyle';
 import { useRouterContract } from 'hooks/useContract';
 import { SupportedSwapRateMap } from 'constants/swap';
-import { useActiveWeb3React } from 'hooks/web3';
-import useAllowanceAndApprove from 'hooks/useApprove';
-import { onSwap } from 'utils/swapContract';
 import { SwapRouteInfo } from '../SwapRouteInfo';
-
-import './styles.less';
 import { useTokenPrice } from 'contexts/useTokenPrice/hooks';
 import { formatSymbol } from 'utils/token';
 import { useEffectOnce } from 'react-use';
@@ -41,6 +36,7 @@ import { useModalDispatch } from 'contexts/useModal/hooks';
 import { basicModalView } from 'contexts/useModal/actions';
 import { useIsPortkeySDK } from 'hooks/useIsPortkeySDK';
 import { SwapConfirmModal, SwapConfirmModalInterface } from '../SwapConfirmModal';
+import './styles.less';
 
 export type TSwapInfo = {
   tokenIn?: Currency;
@@ -282,7 +278,7 @@ export const SwapPanel = () => {
     timerRef.current = setInterval(() => {
       executeCbRef.current();
       swapCircleProcessRef.current?.start();
-    }, 30 * 1000);
+    }, SWAP_TIME_INTERVAL);
   }, [clearTimer]);
 
   useEffectOnce(() => {
@@ -467,14 +463,6 @@ export const SwapPanel = () => {
   }, [isExceedBalance, isInvalidParis, isPortkeySDK, isRouteEmpty, loginState, swapInfo, t]);
 
   const routeContract = useRouterContract(SupportedSwapRateMap[optimumRouteInfo?.route?.feeRate || '']);
-  const { account } = useActiveWeb3React();
-  const tokenInAddress = useMemo(() => getCurrencyAddress(swapInfo.tokenIn), [swapInfo.tokenIn]);
-  const { approve, checkAllowance } = useAllowanceAndApprove(
-    ChainConstants.constants.TOKEN_CONTRACT,
-    tokenInAddress,
-    account || undefined,
-    routeContract?.address,
-  );
   const [isSwapping, setIsSwapping] = useState(false);
 
   const modalDispatch = useModalDispatch();
@@ -493,105 +481,66 @@ export const SwapPanel = () => {
     }
 
     if (!optimumRouteInfo || !valueIn || !valueOut) return;
-    swapConfirmModalRef.current?.show({
-      swapInfo,
-      routeInfo: optimumRouteInfo,
-      priceLabel,
-    });
-  }, [isRouteEmpty, modalDispatch, optimumRouteInfo, priceLabel, swapInfo]);
 
-  const onSwapConfirm = useCallback(
-    async ({ swapInfo: _swapInfo, routeInfo: _routeInfo }: { swapInfo: TSwapInfo; routeInfo: TSwapRouteInfo }) => {
-      const { tokenIn, tokenOut, valueIn, valueOut } = _swapInfo;
-      if (!tokenIn || !tokenOut) return;
+    const { route } = optimumRouteInfo;
+    const routeSymbolIn = route.rawPath?.[0]?.symbol;
+    const routeSymbolOut = route.rawPath?.[route.rawPath?.length - 1]?.symbol;
+    // swapInfo do not match routeInfo
+    if (tokenIn.symbol !== routeSymbolIn || tokenOut.symbol !== routeSymbolOut) return;
 
-      if (!_routeInfo || !valueIn || !valueOut) return;
+    const _refreshTokenValue = refreshTokenValueRef.current;
+    if (!_refreshTokenValue || !routeContract) return;
+    setIsSwapping(true);
+    try {
+      const result = await _refreshTokenValue(true);
 
-      const { route } = _routeInfo;
-      const routeSymbolIn = route.rawPath?.[0]?.symbol;
-      const routeSymbolOut = route.rawPath?.[route.rawPath?.length - 1]?.symbol;
-      if (tokenIn.symbol !== routeSymbolIn || tokenOut.symbol !== routeSymbolOut) return;
+      // can not get routeInfo
+      if (!result || !result.routeInfo) return;
 
-      const _refreshTokenValue = refreshTokenValueRef.current;
-      if (!_refreshTokenValue || !routeContract) return;
-      setIsSwapping(true);
-      try {
-        const result = await _refreshTokenValue(true);
-        if (!result || !result.routeInfo) return;
-
-        const originPath = route.rawPath.map((item) => item.symbol);
-        const path = result.routeInfo.route.rawPath.map((item) => item.symbol);
-        const originFeeRate = result.routeInfo.route.feeRate;
-        const feeRate = result.routeInfo.route.feeRate;
-        if (path.join('_') !== originPath.join('_') || feeRate !== originFeeRate) {
-          //  route change
-          return;
-        }
-
-        const valueInAmountBN = timesDecimals(valueIn, tokenIn.decimals);
-        const valueOutAmountBN = timesDecimals(valueOut, tokenOut.decimals);
-        const valueInAmount = valueInAmountBN.toFixed();
-        const allowance = await checkAllowance();
-        if (valueInAmountBN.gt(allowance)) {
-          await approve(valueInAmountBN);
-        }
-
-        console.log('valueInAmount', valueInAmount, path, routeContract.address);
-        const amountResult = await getContractAmountOut(routeContract, valueInAmount, path);
-        const amountOutAmount: string | undefined = amountResult?.amount?.[amountResult?.amount?.length - 1];
-        if (!amountOutAmount) return;
-
-        console.log('amountOutAmount', amountOutAmount);
-        const amountMinOutAmountBN = minimumAmountOut(valueOutAmountBN, userSlippageTolerance);
-
-        if (amountMinOutAmountBN.gt(amountOutAmount)) {
-          setSwapInfo((pre) => ({
-            ...pre,
-            valueOut: divDecimals(amountOutAmount, tokenOut.decimals).toFixed(),
-          }));
-          return;
-        }
-
-        console.log('onSwap', {
-          account,
-          routerContract: routeContract,
-          path,
-          amountIn: valueInAmountBN,
-          amountOutMin: amountMinOutAmountBN,
-          tokenB: tokenIn,
-          tokenA: tokenOut,
-        });
-
-        const req = await onSwap({
-          account,
-          routerContract: routeContract,
-          path,
-          amountIn: valueInAmountBN,
-          amountOutMin: amountMinOutAmountBN,
-          tokenB: tokenIn,
-          tokenA: tokenOut,
-          t,
-        });
-        if (req !== REQ_CODE.UserDenied) {
-          setSwapInfo((pre) => ({
-            ...pre,
-            valueIn: '',
-            valueOut: '',
-          }));
-          setOptimumRouteInfo(undefined);
-          registerTimer();
-          return true;
-        }
-      } catch (error) {
-        //
-        console.log('error', error);
-      } finally {
-        console.log('onSwap finally');
-        setIsSwapping(false);
+      const originPath = route.rawPath.map((item) => item.symbol);
+      const path = result.routeInfo.route.rawPath.map((item) => item.symbol);
+      const originFeeRate = result.routeInfo.route.feeRate;
+      const feeRate = result.routeInfo.route.feeRate;
+      if (path.join('_') !== originPath.join('_') || feeRate !== originFeeRate) {
+        //  route change
+        return;
       }
-    },
-    [account, approve, checkAllowance, registerTimer, routeContract, t, userSlippageTolerance],
-  );
+
+      const valueInAmountBN = timesDecimals(valueIn, tokenIn.decimals);
+      const valueInAmount = valueInAmountBN.toFixed();
+
+      const amountResult = await getContractAmountOut(routeContract, valueInAmount, path);
+      const amountOutAmount: string | undefined = amountResult?.amount?.[amountResult?.amount?.length - 1];
+      if (!amountOutAmount) return;
+
+      console.log('onSwapClick amountOutAmount', amountOutAmount);
+
+      swapConfirmModalRef.current?.show({
+        swapInfo: {
+          ...swapInfo,
+          valueOut: divDecimals(amountOutAmount, tokenOut.decimals).toFixed(),
+        },
+        routeInfo: optimumRouteInfo,
+        priceLabel,
+      });
+    } catch (error) {
+      //
+      console.log('error', error);
+    } finally {
+      console.log('onSwap finally');
+      setIsSwapping(false);
+    }
+  }, [isRouteEmpty, modalDispatch, optimumRouteInfo, priceLabel, routeContract, swapInfo]);
+
+  const onSwapSuccess = useCallback(() => {
+    setSwapInfo((pre) => ({
+      ...pre,
+      valueIn: '',
+      valueOut: '',
+    }));
+    setOptimumRouteInfo(undefined);
+    registerTimer();
+  }, [registerTimer]);
 
   const tokenInPrice = useTokenPrice({ symbol: swapInfo.tokenIn?.symbol });
   const tokenOutPrice = useTokenPrice({ symbol: swapInfo.tokenOut?.symbol });
@@ -696,6 +645,7 @@ export const SwapPanel = () => {
             size="large"
             className={clsx('swap-btn', swapBtnInfo.className)}
             onClick={onSwapClick}
+            loading={isSwapping}
             disabled={!swapBtnInfo.active}>
             <Font size={16} color={swapBtnInfo.fontColor}>
               {swapBtnInfo.label}
@@ -767,8 +717,7 @@ export const SwapPanel = () => {
         tokenInPrice={tokenInPrice}
         tokenOutPrice={tokenOutPrice}
         gasFee={gasFee}
-        onConfirm={onSwapConfirm}
-        loading={isSwapping}
+        onSuccess={onSwapSuccess}
       />
     </>
   );

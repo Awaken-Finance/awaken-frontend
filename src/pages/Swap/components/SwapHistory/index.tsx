@@ -23,6 +23,7 @@ import { WebLoginState, useWebLogin } from 'aelf-web-login';
 import CommonList from 'components/CommonList';
 import { Col, Row } from 'antd';
 import { useHistory } from 'react-router-dom';
+import { SWAP_TIME_INTERVAL } from 'constants/misc';
 
 export function SwapTransactionItem({
   item: { tradePair, timestamp, side, token0Amount, token1Amount, transactionHash, totalPriceInUsd },
@@ -169,7 +170,7 @@ export const SwapHistory = () => {
     refreshTransactionListRef.current();
     const _timer = setInterval(() => {
       refreshTransactionListRef.current();
-    }, 30 * 1000);
+    }, SWAP_TIME_INTERVAL);
 
     return {
       remove: () => {
