@@ -20,7 +20,7 @@ import { ReactComponent as IconArrowDown } from './icon-arrow-down.svg';
 import { ReactComponent as IconArrowDown2 } from './icon-arrow-down2.svg';
 import { ReactComponent as IconLogoutWarn } from './icon-logout-warn.svg';
 import { ReactComponent as IconSearch } from './icon-search.svg';
-import { ReactComponent as TconSetFee } from './icon-set-fee.svg';
+import { ReactComponent as IconSetFee } from './icon-set-fee.svg';
 import { ReactComponent as IconRedError } from './icon-red-error.svg';
 import { ReactComponent as IconOpenKLine } from './icon-open-k-line.svg';
 import { ReactComponent as IconAddCircle } from './icon-add-circle.svg';
@@ -69,7 +69,7 @@ export {
   IconArrowDown2,
   IconLogoutWarn,
   IconSearch,
-  TconSetFee,
+  IconSetFee,
   IconRedError,
   IconOpenKLine,
   IconAddCircle,
