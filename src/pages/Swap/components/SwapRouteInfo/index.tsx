@@ -81,7 +81,7 @@ export const SwapRouteInfo = ({
       <Row align={'middle'} justify={'space-between'}>
         <Col className="swap-route-info-title">
           <Font color="two" size={14} lineHeight={22}>
-            {t('Min. Received')}
+            {t('minEaring')}
           </Font>
           {isTipShow && (
             <CommonTooltip
@@ -91,7 +91,7 @@ export const SwapRouteInfo = ({
               )}
               getPopupContainer={(v) => v}
               buttonTitle={t('ok')}
-              headerDesc={t('Min. Received')}
+              headerDesc={t('minEaring')}
             />
           )}
         </Col>
@@ -136,7 +136,7 @@ export const SwapRouteInfo = ({
           {isTipShow && (
             <CommonTooltip
               placement="top"
-              title={t('DEX fees belong to liquidity providers and are already included in the current quote.')}
+              title={t('feeDescription')}
               getPopupContainer={(v) => v}
               buttonTitle={t('ok')}
               headerDesc={t('Fee')}
@@ -160,7 +160,7 @@ export const SwapRouteInfo = ({
           {isTipShow && (
             <CommonTooltip
               placement="top"
-              title={t('Txn Fee are the miner fees paid in order for transactions to proceed')}
+              title={t('transactionFeeDescription')}
               getPopupContainer={(v) => v}
               buttonTitle={t('ok')}
               headerDesc={t('transactionFee')}
