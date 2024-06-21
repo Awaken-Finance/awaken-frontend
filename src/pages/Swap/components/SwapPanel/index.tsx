@@ -494,7 +494,11 @@ export const SwapPanel = () => {
       if (tokenIn.symbol !== routeSymbolIn || tokenOut.symbol !== routeSymbolOut) return;
 
       swapConfirmModalRef.current?.show({
-        swapInfo,
+        swapInfo: {
+          ...swapInfo,
+          valueIn: result.valueIn,
+          valueOut: result.valueOut,
+        },
         routeInfo,
         priceLabel,
       });
