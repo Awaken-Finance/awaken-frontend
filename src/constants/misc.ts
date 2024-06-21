@@ -37,3 +37,5 @@ export const TOKEN_SORT_MAP: Record<string, string> = {
   ELF: LANG_MAX.toFixed(),
   USDT: LANG_MAX.minus(1).toFixed(),
 };
+
+export const SWAP_TIME_INTERVAL = 30 * 1000;

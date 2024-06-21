@@ -9,13 +9,13 @@
     padding-bottom: 40PX;
 
     @media screen and (max-width: 1920PX) {
-      padding-top: calc((100vw - 1680PX)/(1920 - 1680) * 20 + 60PX);
+      padding-top: calc((100vw - 1680PX) / (1920 - 1680) * 20 + 60PX);
     }
 
     @media screen and (max-width: 1680PX) {
-      padding-top: calc((100vw - 1440PX)/(1680 - 1440) * 20 + 40PX);
+      padding-top: calc((100vw - 1440PX) / (1680 - 1440) * 20 + 40PX);
     }
-    
+
     @media screen and (max-width: 1440PX) {
       padding-top: 40PX;
     }
@@ -38,7 +38,6 @@
   &.awaken-portkey-sdk-pc {
     margin: 0 auto;
   }
-  
 
   .step-page-full-wrapper {
     max-height: calc(100vh - 60px);
@@ -53,7 +52,7 @@
     min-height: calc(100vh - 60px);
     max-height: calc(100vh - 60px);
   }
-  
+
   .portkey-ui-web2design-wrapper {
     .left-wrapper {
       .portkey-ui-flex-1 {
@@ -64,7 +63,6 @@
         padding: 3px 10px;
         border: none;
         background-color: rgb(250 173 20 / 10%);
-        
       }
     }
   }
@@ -83,7 +81,7 @@
       color: var(--portkey-ui-font-7);
     }
   }
-  
+
   .portkey-ui-switch-upgraded-wrapper {
     width: 100%;
     align-self: center;
@@ -98,13 +96,13 @@
       background-color: var(--ant-container-bg-color);
       border: none;
     }
-    .portkey-ant-drawer-title{
+    .portkey-ant-drawer-title {
       position: relative;
       .title {
         color: var(--ant-black-font-color-1);
         font-weight: 500;
       }
-      >img {
+      > img {
         position: absolute;
         right: 0;
         top: 0.01rem;
@@ -115,7 +113,9 @@
   .aelf-web-connect-modal {
     border-radius: 8px;
     overflow: hidden;
-    .ant-modal-header, .ant-modal-body, .portkey-ant-modal-content {
+    .ant-modal-header,
+    .ant-modal-body,
+    .portkey-ant-modal-content {
       background-color: var(--ant-container-bg-color);
       border: none;
     }
@@ -125,7 +125,7 @@
         color: var(--ant-black-font-color-1);
         font-weight: 500;
       }
-      >img {
+      > img {
         position: absolute;
         right: 0;
         top: 0.01rem;
@@ -140,7 +140,7 @@
 }
 
 .mobile-site-content {
-  .page-login { 
+  .page-login {
     overflow: initial;
   }
   #awaken-portkey-sdk-root {
@@ -153,5 +153,15 @@
     .left-wrapper {
       padding: 24PX 16PX 0;
     }
+  }
+
+  .portkey-ui-code-verify-passcode
+    .adm-passcode-input.adm-passcode-input-seperated
+    .adm-passcode-input-cell:not(:last-child) {
+    margin-right: 12px;
+  }
+  .portkey-ui-code-verify-passcode .adm-passcode-input-cell {
+    width: 45px;
+    max-width: 45px;
   }
 }

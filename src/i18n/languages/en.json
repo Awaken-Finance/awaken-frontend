@@ -157,14 +157,14 @@
     "currentPrice": "Current price",
     "total": "Total",
     "slippageLimit": "Slippage limit",
-    "minEaring": "Minimum Output",
+    "minEaring": "Min. Received",
     "priceSlippage": "Price Impact",
     "sellToken": "Sell {{symbol}}",
     "volSold": "Sell Volume",
     "tradingSetting": "Settings",
     "Add liquidity setting": "Add liquidity setting",
     "Remove liquidity setting": "Remove liquidity setting",
-    "slippageTolerance": "Slippage Tolerance",
+    "slippageTolerance": "Max. Slippage",
     "tradingSettingTip1": "The trade will be cancelled when slippage exceeds this percentage.",
     "expirationTimeToTrade": "Transaction deadline",
     "tradingSettingTip2": "The trade will be cancelled when it exceeds the time limit.",
@@ -511,7 +511,7 @@
     "24ValForELF": "24h Volume(ELF)",
     "LP7D": "LP Reward APR (7D)",
     "trade": "Trade",
-    "transactionFee": "Txn Fee",
+    "transactionFee": "Network Cost",
     "myTrades": "My Trades",
     "lp": "LP",
     "removeLiquidity": "Remove Liquidity",
@@ -592,8 +592,8 @@
 
     "TotalValue": "Total Value",
     "Average Price": "Average Price",
-    "Fee": "DEX Fee",
-    "transactionID": "Transaction ID",
+    "Fee": "Fee",
+    "transactionID": "Txn ID",
     "pooled": "Pooled Tokens",
     "ok": "OK",
     "shareOfPool": "Share of pool",
@@ -614,6 +614,8 @@
     "My": "My",
 
     "Swap": "Swap",
-    "SwapNotSupportedContent": "The {{symbolIn}} and {{symbolOut}} you selected are not directly or indirectly supported by the liquidity pool. You can create this trading pair liquidity pool yourself. Do you want to create it?"
+    "SwapNotSupportedContent": "The {{symbolIn}} and {{symbolOut}} you selected are not directly or indirectly supported by the liquidity pool. You can create this trading pair liquidity pool yourself. Do you want to create it?",
+    "feeDescription": "Fee belong to liquidity providers and are already included in the current quote.",
+    "transactionFeeDescription": "Network Cost are the miner fees paid in order for transactions to proceed."
   }
 }

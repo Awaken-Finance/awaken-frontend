@@ -6,6 +6,7 @@ import Font from 'components/Font';
 import { divDecimals } from 'utils/calculate';
 import BigNumber from 'bignumber.js';
 import { useMobile } from 'utils/isMobile';
+import CommonTooltip from 'components/CommonTooltip';
 
 export default function TransactionFee({ onChange = () => null }: { onChange: (val: BigNumber.Value) => void }) {
   const { t } = useTranslation();
@@ -19,11 +20,21 @@ export default function TransactionFee({ onChange = () => null }: { onChange: (v
 
   return (
     <Row justify="space-between">
-      <Col>
-        <Font size={isMobile ? 12 : 14} lineHeight={isMobile ? 18 : 20} color="two">
-          {t('transactionFee')}
-        </Font>
-      </Col>
+      <Row gutter={[2, 0]} align="middle">
+        <Col>
+          <Font size={isMobile ? 12 : 14} lineHeight={isMobile ? 18 : 20} color="two">
+            {t('transactionFee')}
+          </Font>
+        </Col>
+        <Col>
+          <CommonTooltip
+            placement="topLeft"
+            title={t('transactionFeeDescription')}
+            headerDesc={t('transactionFee')}
+            buttonTitle={t('ok')}
+          />
+        </Col>
+      </Row>
       <Col>
         <Row gutter={[2, 0]}>
           <Col>

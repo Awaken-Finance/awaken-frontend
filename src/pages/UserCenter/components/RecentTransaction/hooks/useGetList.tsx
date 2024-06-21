@@ -1,7 +1,7 @@
 import { useRequest } from 'ahooks';
 import { SortOrder } from 'antd/lib/table/interface';
 import { useActiveWeb3React } from 'hooks/web3';
-import { getLiquidityRecord, getTransationList } from 'pages/UserCenter/apis/recentTransaction';
+import { getLiquidityRecord, getTransactionList } from 'pages/UserCenter/apis/recentTransaction';
 import { GetRecentTransactionParams, LiquidityRecordParams } from 'pages/UserCenter/type';
 import { useCallback, useMemo } from 'react';
 
@@ -23,7 +23,7 @@ export default function useGetList() {
   } = useRequest(
     (params: GetRecentTransactionParams | LiquidityRecordParams, menu: string | number) => {
       if (menu === 'all') {
-        return getTransationList(params);
+        return getTransactionList(params);
       }
 
       return getLiquidityRecord(params);

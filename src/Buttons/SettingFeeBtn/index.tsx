@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import { TconSetFee } from 'assets/icons';
+import { IconSetFee } from 'assets/icons';
 import CommonButton, { CommonButtonProps } from 'components/CommonButton';
 import { basicModalView } from 'contexts/useModal/actions';
 import { useModalDispatch } from 'contexts/useModal/hooks';
@@ -29,6 +29,6 @@ export default function SettingFee({ className, children }: CommonButtonProps) {
   }
 
   return (
-    <CommonButton type="text" icon={<TconSetFee />} onClick={onClick} className={clsx('setting-fee-btn', className)} />
+    <CommonButton type="text" icon={<IconSetFee />} onClick={onClick} className={clsx('setting-fee-btn', className)} />
   );
 }

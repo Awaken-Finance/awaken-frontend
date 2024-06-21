@@ -12,6 +12,7 @@ import { ReactComponent as IconNotificationCopy } from './icon-notification-copy
 import { ReactComponent as IconAssets } from './icon-assets.svg';
 import { ReactComponent as IconMenu } from './icon-menu.svg';
 import { ReactComponent as IconArrowRight } from './icon-arrow-right.svg';
+import { ReactComponent as IconArrowRight2 } from './icon-arrow-right2.svg';
 import { ReactComponent as IconArrowLeft } from './icon-arrow-left.svg';
 import { ReactComponent as IconArrowLeft2 } from './icon-arrow-left2.svg';
 import { ReactComponent as IconArrowUp } from './icon-arrow-up.svg';
@@ -19,7 +20,7 @@ import { ReactComponent as IconArrowDown } from './icon-arrow-down.svg';
 import { ReactComponent as IconArrowDown2 } from './icon-arrow-down2.svg';
 import { ReactComponent as IconLogoutWarn } from './icon-logout-warn.svg';
 import { ReactComponent as IconSearch } from './icon-search.svg';
-import { ReactComponent as TconSetFee } from './icon-set-fee.svg';
+import { ReactComponent as IconSetFee } from './icon-set-fee.svg';
 import { ReactComponent as IconRedError } from './icon-red-error.svg';
 import { ReactComponent as IconOpenKLine } from './icon-open-k-line.svg';
 import { ReactComponent as IconAddCircle } from './icon-add-circle.svg';
@@ -60,6 +61,7 @@ export {
   IconAssets,
   IconMenu,
   IconArrowRight,
+  IconArrowRight2,
   IconArrowLeft,
   IconArrowLeft2,
   IconArrowUp,
@@ -67,7 +69,7 @@ export {
   IconArrowDown2,
   IconLogoutWarn,
   IconSearch,
-  TconSetFee,
+  IconSetFee,
   IconRedError,
   IconOpenKLine,
   IconAddCircle,

@@ -7,10 +7,9 @@ import CommonButton, { CommonButtonProps } from 'components/CommonButton';
 import { Pair } from 'components/Pair';
 import { basicModalView } from 'contexts/useModal/actions';
 import { useModalDispatch } from 'contexts/useModal/hooks';
-
-import './index.less';
 import Font from 'components/Font';
 import { IconArrowDown } from 'assets/icons';
+import './styles.less';
 
 interface SelectTokenButtonProps extends CommonButtonProps {
   token?: Currency;
