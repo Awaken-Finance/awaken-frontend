@@ -2,13 +2,13 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { sleep } from 'utils';
 import { useGetRouteList } from '../../hooks';
 import { TPairRoute, TSwapRouteInfo } from '../../types';
-import { REQ_CODE, ZERO } from 'constants/misc';
-import { getContractAmountOut, getRouteInfoWithValueIn, getRouteInfoWithValueOut } from '../../utils';
+import { SWAP_TIME_INTERVAL, ZERO } from 'constants/misc';
+import { getRouteInfoWithValueIn, getRouteInfoWithValueOut } from '../../utils';
 import Font from 'components/Font';
 import { ChainConstants } from 'constants/ChainConstants';
 import { Currency } from '@awaken/sdk-core';
 import { useCurrencyBalancesV2 } from 'hooks/useBalances';
-import { bigNumberToUPString, getCurrencyAddress, minimumAmountOut, parseUserSlippageTolerance } from 'utils/swap';
+import { bigNumberToUPString, getCurrencyAddress, parseUserSlippageTolerance } from 'utils/swap';
 import SwapSelectTokenButton from '../SwapSelectTokenButton';
 import SwapInputRow from '../SwapInputRow';
 import { IconArrowDown2, IconPriceSwitch, IconSettingFee, IconSwapDefault, IconSwapHover } from 'assets/icons';
@@ -22,24 +22,19 @@ import SettingFee from 'Buttons/SettingFeeBtn';
 import { useUserSettings } from 'contexts/useUserSettings';
 import { useRequest } from 'ahooks';
 import { getTransactionFee } from 'pages/Exchange/apis/getTransactionFee';
-import { divDecimals, timesDecimals } from 'utils/calculate';
+import { divDecimals } from 'utils/calculate';
 import { WebLoginState, useWebLogin } from 'aelf-web-login';
 import AuthBtn from 'Buttons/AuthBtn';
 import { FontColor } from 'utils/getFontStyle';
-import { useRouterContract } from 'hooks/useContract';
-import { SupportedSwapRateMap } from 'constants/swap';
-import { useActiveWeb3React } from 'hooks/web3';
-import useAllowanceAndApprove from 'hooks/useApprove';
-import { onSwap } from 'utils/swapContract';
 import { SwapRouteInfo } from '../SwapRouteInfo';
-
-import './styles.less';
 import { useTokenPrice } from 'contexts/useTokenPrice/hooks';
 import { formatSymbol } from 'utils/token';
 import { useEffectOnce } from 'react-use';
 import { useModalDispatch } from 'contexts/useModal/hooks';
 import { basicModalView } from 'contexts/useModal/actions';
 import { useIsPortkeySDK } from 'hooks/useIsPortkeySDK';
+import { SwapConfirmModal, SwapConfirmModalInterface } from '../SwapConfirmModal';
+import './styles.less';
 
 export type TSwapInfo = {
   tokenIn?: Currency;
@@ -64,6 +59,7 @@ export const SwapPanel = () => {
   const getRouteList = useReturnLastCallback(_getRouteList, [_getRouteList]);
 
   const swapCircleProcessRef = useRef<SwapCircleProcessInterface>();
+  const swapConfirmModalRef = useRef<SwapConfirmModalInterface>();
   const { data: gasFee = 0 } = useRequest(getTransactionFee);
 
   const [swapInfo, setSwapInfo] = useState<TSwapInfo>({
@@ -88,12 +84,18 @@ export const SwapPanel = () => {
   }, []);
 
   const [isRouteEmpty, setIsRouteEmpty] = useState(false);
+  // const preRoutePair = useRef(`${swapInfo.tokenIn?.symbol}_${swapInfo.tokenOut?.symbol}`);
   const executeCb = useCallback(
     async (isRefreshTokenValue = true) => {
       const { tokenIn, tokenOut } = swapInfoRef.current;
       if (!tokenIn || !tokenOut) return;
 
-      setIsRouteEmpty(false);
+      // const nowRoutePair = `${tokenIn.symbol}_${tokenOut.symbol}`;
+      // if (preRoutePair.current !== nowRoutePair) {
+      //   setIsRouteEmpty(false);
+      // }
+      // preRoutePair.current = nowRoutePair;
+
       try {
         const routeList = await getRouteList({
           startSymbol: tokenIn.symbol,
@@ -274,7 +276,7 @@ export const SwapPanel = () => {
     timerRef.current = setInterval(() => {
       executeCbRef.current();
       swapCircleProcessRef.current?.start();
-    }, 30 * 1000);
+    }, SWAP_TIME_INTERVAL);
   }, [clearTimer]);
 
   useEffectOnce(() => {
@@ -458,17 +460,7 @@ export const SwapPanel = () => {
     };
   }, [isExceedBalance, isInvalidParis, isPortkeySDK, isRouteEmpty, loginState, swapInfo, t]);
 
-  const routeContract = useRouterContract(SupportedSwapRateMap[optimumRouteInfo?.route?.feeRate || '']);
-  const { account } = useActiveWeb3React();
-  const tokenInAddress = useMemo(() => getCurrencyAddress(swapInfo.tokenIn), [swapInfo.tokenIn]);
-  const { approve, checkAllowance } = useAllowanceAndApprove(
-    ChainConstants.constants.TOKEN_CONTRACT,
-    tokenInAddress,
-    account || undefined,
-    routeContract?.address,
-  );
   const [isSwapping, setIsSwapping] = useState(false);
-
   const modalDispatch = useModalDispatch();
   const onSwapClick = useCallback(async () => {
     const { tokenIn, tokenOut, valueIn, valueOut } = swapInfo;
@@ -484,104 +476,49 @@ export const SwapPanel = () => {
       return;
     }
 
-    if (!optimumRouteInfo || !valueIn || !valueOut) return;
-
-    const { route } = optimumRouteInfo;
-    const routeSymbolIn = route.rawPath?.[0]?.symbol;
-    const routeSymbolOut = route.rawPath?.[route.rawPath?.length - 1]?.symbol;
-    if (tokenIn.symbol !== routeSymbolIn || tokenOut.symbol !== routeSymbolOut) return;
+    if (!valueIn || !valueOut) return;
 
     const _refreshTokenValue = refreshTokenValueRef.current;
-    if (!_refreshTokenValue || !routeContract) return;
+    if (!_refreshTokenValue) return;
     setIsSwapping(true);
     try {
       const result = await _refreshTokenValue(true);
+      // can not get routeInfo
       if (!result || !result.routeInfo) return;
 
-      const originPath = route.rawPath.map((item) => item.symbol);
-      const path = result.routeInfo.route.rawPath.map((item) => item.symbol);
-      const originFeeRate = result.routeInfo.route.feeRate;
-      const feeRate = result.routeInfo.route.feeRate;
-      if (path.join('_') !== originPath.join('_') || feeRate !== originFeeRate) {
-        //  route change
-        return;
-      }
+      const routeInfo = result.routeInfo;
+      const { route } = routeInfo;
+      const routeSymbolIn = route.rawPath?.[0]?.symbol;
+      const routeSymbolOut = route.rawPath?.[route.rawPath?.length - 1]?.symbol;
+      // swapInfo do not match routeInfo
+      if (tokenIn.symbol !== routeSymbolIn || tokenOut.symbol !== routeSymbolOut) return;
 
-      const valueInAmountBN = timesDecimals(valueIn, tokenIn.decimals);
-      const valueOutAmountBN = timesDecimals(valueOut, tokenOut.decimals);
-      const valueInAmount = valueInAmountBN.toFixed();
-      const allowance = await checkAllowance();
-      if (valueInAmountBN.gt(allowance)) {
-        await approve(valueInAmountBN);
-      }
-
-      console.log('valueInAmount', valueInAmount, path, routeContract.address);
-      const amountResult = await getContractAmountOut(routeContract, valueInAmount, path);
-      const amountOutAmount: string | undefined = amountResult?.amount?.[amountResult?.amount?.length - 1];
-      if (!amountOutAmount) return;
-
-      console.log('amountOutAmount', amountOutAmount);
-      const amountMinOutAmountBN = minimumAmountOut(valueOutAmountBN, userSlippageTolerance);
-
-      if (amountMinOutAmountBN.gt(amountOutAmount)) {
-        setSwapInfo((pre) => ({
-          ...pre,
-          valueOut: divDecimals(amountOutAmount, tokenOut.decimals).toFixed(),
-        }));
-        return;
-      }
-
-      console.log('onSwap', {
-        account,
-        routerContract: routeContract,
-        path,
-        amountIn: valueInAmountBN,
-        amountOutMin: amountMinOutAmountBN,
-        tokenB: tokenIn,
-        tokenA: tokenOut,
+      swapConfirmModalRef.current?.show({
+        swapInfo: {
+          ...swapInfo,
+          valueIn: result.valueIn,
+          valueOut: result.valueOut,
+        },
+        routeInfo,
+        priceLabel,
       });
-
-      const req = await onSwap({
-        account,
-        routerContract: routeContract,
-        path,
-        amountIn: valueInAmountBN,
-        amountOutMin: amountMinOutAmountBN,
-        tokenB: tokenIn,
-        tokenA: tokenOut,
-        t,
-      });
-      if (req !== REQ_CODE.UserDenied) {
-        setSwapInfo((pre) => ({
-          ...pre,
-          valueIn: '',
-          valueOut: '',
-        }));
-        setOptimumRouteInfo(undefined);
-        registerTimer();
-      }
     } catch (error) {
-      //
       console.log('error', error);
     } finally {
       console.log('onSwap finally');
       setIsSwapping(false);
     }
+  }, [isRouteEmpty, modalDispatch, priceLabel, swapInfo]);
 
-    console.log('routeContract', routeContract);
-  }, [
-    account,
-    approve,
-    checkAllowance,
-    isRouteEmpty,
-    modalDispatch,
-    optimumRouteInfo,
-    registerTimer,
-    routeContract,
-    swapInfo,
-    t,
-    userSlippageTolerance,
-  ]);
+  const onSwapSuccess = useCallback(() => {
+    setSwapInfo((pre) => ({
+      ...pre,
+      valueIn: '',
+      valueOut: '',
+    }));
+    setOptimumRouteInfo(undefined);
+    registerTimer();
+  }, [registerTimer]);
 
   const tokenInPrice = useTokenPrice({ symbol: swapInfo.tokenIn?.symbol });
   const tokenOutPrice = useTokenPrice({ symbol: swapInfo.tokenOut?.symbol });
@@ -616,140 +553,150 @@ export const SwapPanel = () => {
   }, [swapInfo, tokenInPrice, tokenOutPrice]);
 
   return (
-    <div className="swap-panel">
-      <SwapInputRow
-        title={t('Pay')}
-        value={swapInfo.valueIn}
-        onChange={setValueIn}
-        balance={currencyBalances?.[getCurrencyAddress(swapInfo.tokenIn)]}
-        token={swapInfo.tokenIn}
-        showMax={true}
-        gasFee={gasFee}
-        suffix={
-          <SwapSelectTokenButton
-            className="swap-select-token-btn"
-            type="default"
-            size="middle"
-            token={swapInfo.tokenIn}
-            setToken={setTokenIn}
-          />
-        }
-      />
-      <div className="swap-token-switch-wrap">
-        <div className="swap-token-switch-btn" onClick={switchToken}>
-          <IconSwapDefault className="swap-token-switch-btn-default" />
-          <IconSwapHover className="swap-token-switch-btn-hover" />
-        </div>
-      </div>
-      <SwapInputRow
-        className="swap-input-out-row"
-        title={t('Receive')}
-        value={swapInfo.valueOut}
-        onChange={setValueOut}
-        balance={currencyBalances?.[getCurrencyAddress(swapInfo.tokenOut)]}
-        token={swapInfo.tokenOut}
-        suffix={
-          <SwapSelectTokenButton
-            className="swap-select-token-btn"
-            type="default"
-            size="middle"
-            token={swapInfo.tokenOut}
-            setToken={setTokenOut}
-          />
-        }
-        usdSuffix={
-          <>
-            {usdImpactInfo && (
-              <Font size={14} color={usdImpactInfo?.fontColor}>
-                {usdImpactInfo?.label}
-              </Font>
-            )}
-          </>
-        }
-      />
-
-      {isRouteEmpty && (
-        <div className="route-empty-warning">
-          <div className="route-empty-warning-icon-wrap">
-            <span className="route-empty-warning-icon" />
+    <>
+      <div className="swap-panel">
+        <SwapInputRow
+          title={t('Pay')}
+          value={swapInfo.valueIn}
+          onChange={setValueIn}
+          balance={currencyBalances?.[getCurrencyAddress(swapInfo.tokenIn)]}
+          token={swapInfo.tokenIn}
+          showMax={true}
+          gasFee={gasFee}
+          suffix={
+            <SwapSelectTokenButton
+              className="swap-select-token-btn"
+              type="default"
+              size="middle"
+              token={swapInfo.tokenIn}
+              setToken={setTokenIn}
+            />
+          }
+        />
+        <div className="swap-token-switch-wrap">
+          <div className="swap-token-switch-btn" onClick={switchToken}>
+            <IconSwapDefault className="swap-token-switch-btn-default" />
+            <IconSwapHover className="swap-token-switch-btn-hover" />
           </div>
-          <Font color="two" lineHeight={20}>
-            {t('The current transaction is not supported, You can create the pair yourself.')}
-          </Font>
         </div>
-      )}
-
-      <div className="swap-btn-wrap">
-        <AuthBtn
-          loading={isSwapping}
-          type={swapBtnInfo.type}
-          size="large"
-          className={clsx('swap-btn', swapBtnInfo.className)}
-          onClick={onSwapClick}
-          disabled={!swapBtnInfo.active}>
-          <Font size={16} color={swapBtnInfo.fontColor}>
-            {swapBtnInfo.label}
-          </Font>
-        </AuthBtn>
-      </div>
-
-      {isExtraInfoShow && (
-        <>
-          <Row className="swap-extra-wrap" align={'middle'} justify={'space-between'}>
-            <Col className="price-warp">
-              {priceLabel !== '-' && (
-                <>
-                  <Font size={16} lineHeight={24}>
-                    {priceLabel}
-                  </Font>
-                  <IconPriceSwitch className="price-switch-btn" onClick={onReversePrice} />
-                </>
-              )}
-
-              <SwapCircleProcess ref={swapCircleProcessRef} />
-            </Col>
-            <Col>
-              <IconArrowDown2
-                className={clsx('swap-detail-btn', isDetailShow && 'swap-detail-btn-show')}
-                onClick={switchDetailShow}
-              />
-            </Col>
-          </Row>
-
-          <div className={clsx('swap-detail', isDetailShow && 'swap-detail-show')}>
-            <Row align={'middle'} justify={'space-between'}>
-              <Col className="swap-detail-title">
-                <Font color="two" size={14} lineHeight={22}>
-                  {t('slippageTolerance')}
+        <SwapInputRow
+          className="swap-input-out-row"
+          title={t('Receive')}
+          value={swapInfo.valueOut}
+          onChange={setValueOut}
+          balance={currencyBalances?.[getCurrencyAddress(swapInfo.tokenOut)]}
+          token={swapInfo.tokenOut}
+          suffix={
+            <SwapSelectTokenButton
+              className="swap-select-token-btn"
+              type="default"
+              size="middle"
+              token={swapInfo.tokenOut}
+              setToken={setTokenOut}
+            />
+          }
+          usdSuffix={
+            <>
+              {usdImpactInfo && (
+                <Font size={14} color={usdImpactInfo?.fontColor}>
+                  {usdImpactInfo?.label}
                 </Font>
+              )}
+            </>
+          }
+        />
 
-                <CommonTooltip
-                  placement="top"
-                  title={t('tradingSettingTip1')}
-                  getPopupContainer={(v) => v}
-                  buttonTitle={t('ok')}
-                  headerDesc={t('slippageTolerance')}
+        {isRouteEmpty && (
+          <div className="route-empty-warning">
+            <div className="route-empty-warning-icon-wrap">
+              <span className="route-empty-warning-icon" />
+            </div>
+            <Font color="two" lineHeight={20}>
+              {t('The current transaction is not supported, You can create the pair yourself.')}
+            </Font>
+          </div>
+        )}
+
+        <div className="swap-btn-wrap">
+          <AuthBtn
+            type={swapBtnInfo.type}
+            size="large"
+            className={clsx('swap-btn', swapBtnInfo.className)}
+            onClick={onSwapClick}
+            loading={isSwapping}
+            disabled={!swapBtnInfo.active}>
+            <Font size={16} color={swapBtnInfo.fontColor}>
+              {swapBtnInfo.label}
+            </Font>
+          </AuthBtn>
+        </div>
+
+        {isExtraInfoShow && (
+          <>
+            <Row className="swap-extra-wrap" align={'middle'} justify={'space-between'}>
+              <Col className="price-warp">
+                {priceLabel !== '-' && (
+                  <>
+                    <Font size={16} lineHeight={24}>
+                      {priceLabel}
+                    </Font>
+                    <IconPriceSwitch className="price-switch-btn" onClick={onReversePrice} />
+                  </>
+                )}
+
+                <SwapCircleProcess ref={swapCircleProcessRef} />
+              </Col>
+              <Col>
+                <IconArrowDown2
+                  className={clsx('swap-detail-btn', isDetailShow && 'swap-detail-btn-show')}
+                  onClick={switchDetailShow}
                 />
               </Col>
-
-              <Row gutter={[4, 0]} align="middle">
-                <Col>
-                  <Font size={14} lineHeight={22} suffix="%">
-                    {slippageValue}
-                  </Font>
-                </Col>
-                <Col>
-                  <SettingFee className="slippage-set-fee">
-                    <IconSettingFee />
-                  </SettingFee>
-                </Col>
-              </Row>
             </Row>
 
-            {optimumRouteInfo && <SwapRouteInfo swapInfo={swapInfo} routeInfo={optimumRouteInfo} gasFee={gasFee} />}
-          </div>
-        </>
-      )}
-    </div>
+            <div className={clsx('swap-detail', isDetailShow && 'swap-detail-show')}>
+              <Row align={'middle'} justify={'space-between'}>
+                <Col className="swap-detail-title">
+                  <Font color="two" size={14} lineHeight={22}>
+                    {t('slippageTolerance')}
+                  </Font>
+
+                  <CommonTooltip
+                    placement="top"
+                    title={t('tradingSettingTip1')}
+                    getPopupContainer={(v) => v}
+                    buttonTitle={t('ok')}
+                    headerDesc={t('slippageTolerance')}
+                  />
+                </Col>
+
+                <Row gutter={[4, 0]} align="middle">
+                  <Col>
+                    <Font size={14} lineHeight={22} suffix="%">
+                      {slippageValue}
+                    </Font>
+                  </Col>
+                  <Col>
+                    <SettingFee className="slippage-set-fee">
+                      <IconSettingFee />
+                    </SettingFee>
+                  </Col>
+                </Row>
+              </Row>
+
+              {optimumRouteInfo && <SwapRouteInfo swapInfo={swapInfo} routeInfo={optimumRouteInfo} gasFee={gasFee} />}
+            </div>
+          </>
+        )}
+      </div>
+
+      <SwapConfirmModal
+        ref={swapConfirmModalRef}
+        tokenInPrice={tokenInPrice}
+        tokenOutPrice={tokenOutPrice}
+        gasFee={gasFee}
+        onSuccess={onSwapSuccess}
+      />
+    </>
   );
 };

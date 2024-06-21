@@ -9,7 +9,7 @@ interface TransactionListResult<T> {
   error?: any;
 }
 
-export async function getTransationList(params: GetRecentTransactionParams) {
+export async function getTransactionList(params: GetRecentTransactionParams) {
   if (!params.address || !params.chainId) {
     return {
       totalCount: 0,

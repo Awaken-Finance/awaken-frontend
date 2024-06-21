@@ -281,13 +281,13 @@ export default function LeftCard({
             <Slippage value={parseUserSlippageTolerance(userSlippageTolerance)} />
           </Col>
           <Col span={24}>
-            <TransactionFee onChange={(val) => setTransactionFee(val)} />
-          </Col>
-          <Col span={24}>
             <MinimumOutput value={amountOutMin} token={tokenA} />
           </Col>
           <Col span={24}>
             <PriceImpact value={priceImpact} />
+          </Col>
+          <Col span={24}>
+            <TransactionFee onChange={(val) => setTransactionFee(val)} />
           </Col>
         </Row>
       </Col>

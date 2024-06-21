@@ -77,5 +77,5 @@ export function useReturnLastCallback<T extends (...args: any[]) => any>(callbac
     if (last.current !== id) throw new Error('Not the latest request');
     return req;
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, deps);
+  }, deps) as T;
 }

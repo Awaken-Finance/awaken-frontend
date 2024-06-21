@@ -3,9 +3,9 @@ import { forwardRef, useCallback, useImperativeHandle, useState } from 'react';
 import { sleep } from 'utils';
 import './styles.less';
 
-export type SwapCircleProcessInterface = {
+export interface SwapCircleProcessInterface {
   start: () => void;
-};
+}
 
 export type SwapCircleProcessProps = {
   className?: string;

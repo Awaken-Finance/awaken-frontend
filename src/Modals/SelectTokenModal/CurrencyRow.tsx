@@ -10,6 +10,7 @@ import { Pair } from 'components/Pair';
 import Font from 'components/Font';
 import { useMemo } from 'react';
 import { divDecimals } from 'utils/calculate';
+import clsx from 'clsx';
 
 export interface ICurrencyRowProps {
   currency: Currency;
@@ -26,7 +27,7 @@ export default function CurrencyRow({ currency, balance, isBalanceShow = true }:
 
   return (
     <List.Item
-      className="select-token-list-item"
+      className={clsx('select-token-list-item', isSelected && 'select-token-list-item-active')}
       onClick={() => {
         if (isSelected) return;
         tokenCallBack?.(currency);
