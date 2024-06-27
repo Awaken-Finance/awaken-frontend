@@ -1,7 +1,6 @@
 on:
   pull_request:
     types: [opened, synchronize, reopened]
-
 name: PR Static Code Analysis
 jobs:
   static-code-analysis:
@@ -19,3 +18,4 @@ jobs:
         with:
           args: >
             -Dsonar.projectKey=awaken-frontend
+            -Dsonar.exclusions=src/constants/**
