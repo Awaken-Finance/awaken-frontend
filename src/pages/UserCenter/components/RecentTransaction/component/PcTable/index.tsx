@@ -26,8 +26,8 @@ import { getTokenWeights } from 'utils/token';
 import PriceDigits from 'components/PriceDigits';
 import getFontStyle from 'utils/getFontStyle';
 import PriceUSDDigits from 'components/PriceUSDDigits';
-import { getRealPriceWithDexFee } from 'utils/calculate';
-import { ZERO } from 'constants/misc';
+import { getRealReceivePriceWithDexFee } from 'utils/calculate';
+import { ONE, ZERO } from 'constants/misc';
 import { stringMidShort } from 'utils/string';
 
 export default function PcTable({
@@ -148,13 +148,21 @@ export default function PcTable({
         align: 'left',
         width: 116,
         render: (_val: BigNumber, record: RecentTransaction) => {
-          const price = getRealPriceWithDexFee({
+          const price = getRealReceivePriceWithDexFee({
             side: record.side,
             token0Amount: record.token0Amount,
             token1Amount: record.token1Amount,
             dexFee: record.totalFee,
           });
-          return <PriceDigits className={getFontStyle({ lineHeight: 20 })} price={price} />;
+          const _symbol = record.side !== 0 ? record.tradePair.token0.symbol : record.tradePair.token1.symbol;
+
+          return (
+            <>
+              <PriceDigits className={getFontStyle({ lineHeight: 20 })} price={price} />
+              &nbsp;
+              <Pair lineHeight={24} symbol={_symbol} />
+            </>
+          );
         },
       },
       {
@@ -222,7 +230,18 @@ export default function PcTable({
         dataIndex: 'price',
         align: 'left',
         width: 116,
-        render: (val: BigNumber) => <PriceDigits className={getFontStyle({ lineHeight: 20 })} price={val} />,
+        render: (val: BigNumber, record: RecentTransaction) => {
+          const _val = record.side !== 1 ? val : ONE.div(val).toFixed();
+          const _symbol = record.side !== 0 ? record.tradePair.token0.symbol : record.tradePair.token1.symbol;
+
+          return (
+            <>
+              <PriceDigits className={getFontStyle({ lineHeight: 20 })} price={_val} />
+              &nbsp;
+              <Pair lineHeight={24} symbol={_symbol} />
+            </>
+          );
+        },
       },
       {
         title: (

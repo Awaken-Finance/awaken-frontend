@@ -16,8 +16,8 @@ import PriceDigits from 'components/PriceDigits';
 import getFontStyle, { FontColor } from 'utils/getFontStyle';
 import PriceUSDDigits from 'components/PriceUSDDigits';
 import { useMemo } from 'react';
-import { getRealPriceWithDexFee } from 'utils/calculate';
-import { ZERO } from 'constants/misc';
+import { getRealReceivePriceWithDexFee } from 'utils/calculate';
+import { ONE, ZERO } from 'constants/misc';
 import { stringMidShort } from 'utils/string';
 
 export default function TransactionItem({
@@ -66,13 +66,20 @@ export default function TransactionItem({
 
   const realPrice = useMemo(
     () =>
-      getRealPriceWithDexFee({
+      getRealReceivePriceWithDexFee({
         side,
         token0Amount,
         token1Amount,
         dexFee: totalFee,
       }),
     [side, token0Amount, token1Amount, totalFee],
+  );
+
+  const receiveAveragePrice = useMemo(() => (side !== 1 ? price : ONE.div(price || 1).toFixed()), [price, side]);
+
+  const priceSymbol = useMemo(
+    () => (side !== 0 ? tradePair.token0.symbol : tradePair.token1.symbol),
+    [side, tradePair.token0.symbol, tradePair.token1.symbol],
   );
 
   return (
@@ -115,6 +122,8 @@ export default function TransactionItem({
       </Col>
       <Col span={12} className="align-right height-20">
         <PriceDigits price={realPrice} className={getFontStyle({ lineHeight: 20 })} />
+        &nbsp;
+        <Pair lineHeight={24} symbol={priceSymbol} />
       </Col>
 
       <Col span={12} className="height-20">
@@ -154,7 +163,9 @@ export default function TransactionItem({
         </Font>
       </Col>
       <Col span={12} className="align-right height-20">
-        <PriceDigits price={price} className={getFontStyle({ lineHeight: 20 })} />
+        <PriceDigits price={receiveAveragePrice} className={getFontStyle({ lineHeight: 20 })} />
+        &nbsp;
+        <Pair lineHeight={24} symbol={priceSymbol} />
       </Col>
 
       <Col span={12} className="height-20">
