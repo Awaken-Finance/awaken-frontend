@@ -632,6 +632,17 @@
     "View All": "看全部",
     "Review Swap": "檢查交易",
     "Confirm Swap": "確認交易",
-    "The price has changed, please re-initiate the transaction": "價格發生變化，請重新發起交易"
+    "The price has changed, please re-initiate the transaction": "價格發生變化，請重新發起交易",
+
+    "Community": "社群",
+    "Document": "文件",
+    "Audit Report": "審計報告",
+    "Terms of Service": "服務條款",
+    "Privacy Policy": "隱私政策",
+    "Help": "幫助",
+    "About AwakenSwap": "關於AwakenSwap",
+    "User Guide": "使用者指南",
+    "FAQ": "常見問題",
+    "awakenDescription": "AwakenSwap是一家基於aelf鏈的去中心化交易所，為用戶提供交易兌換、借貸、抵押、資產管理等一站式DeFi服務。"
   }
 }

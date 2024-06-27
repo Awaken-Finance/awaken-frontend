@@ -616,6 +616,8 @@
     "Swap": "Swap",
     "SwapNotSupportedContent": "The {{symbolIn}} and {{symbolOut}} you selected are not directly or indirectly supported by the liquidity pool. You can create this trading pair liquidity pool yourself. Do you want to create it?",
     "feeDescription": "Fee belong to liquidity providers and are already included in the current quote.",
-    "transactionFeeDescription": "Network Cost are the miner fees paid in order for transactions to proceed."
+    "transactionFeeDescription": "Network Cost are the miner fees paid in order for transactions to proceed.",
+
+    "awakenDescription": "AwakenSwap is a decentralized exchange based on the aelf chain, offering users one-stop DeFi services including trading, swapping, lending, staking, asset management, and more."
   }
 }
