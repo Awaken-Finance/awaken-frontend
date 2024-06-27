@@ -158,35 +158,48 @@ export default function PcTable({
         },
       },
       {
-        title: t('amount'),
+        title: isAll ? t('Pay') : t('amount'),
         key: 'token0Amount',
         dataIndex: 'token0Amount',
         width: 132,
         align: 'left',
-        render: (token0Amount: number, record: RecentTransaction) => {
+        render: (token0Amount: string | undefined, record: RecentTransaction) => {
+          let _amount = token0Amount;
+          let _symbol = record?.tradePair?.token0?.symbol;
+          if (isAll && record.side === 0) {
+            _amount = record.token1Amount;
+            _symbol = record?.tradePair?.token1?.symbol;
+          }
+
           return (
             <>
               <Font lineHeight={20} size={14}>
-                {formatPriceChange(token0Amount)}
+                {formatPriceChange(_amount)}
               </Font>
               &nbsp;
-              <Pair lineHeight={20} size={14} symbol={record?.tradePair?.token0?.symbol} />
+              <Pair lineHeight={20} size={14} symbol={_symbol} />
             </>
           );
         },
       },
       {
-        title: isAll ? t('total') : t('amount'),
+        title: isAll ? t('Receive') : t('amount'),
         key: 'token1Amount',
         dataIndex: 'token1Amount',
         align: 'left',
         width: 132,
-        render: (token1Amount: number, record: RecentTransaction) => {
+        render: (token1Amount: string | undefined, record: RecentTransaction) => {
+          let _amount = token1Amount;
+          let _symbol = record?.tradePair?.token1?.symbol;
+          if (isAll && record.side === 0) {
+            _amount = record.token0Amount;
+            _symbol = record?.tradePair?.token0?.symbol;
+          }
           return (
             <>
-              <Font lineHeight={24}>{formatPriceChange(token1Amount)}</Font>
+              <Font lineHeight={24}>{formatPriceChange(_amount)}</Font>
               &nbsp;
-              <Pair lineHeight={24} symbol={record?.tradePair?.token1?.symbol} />
+              <Pair lineHeight={24} symbol={_symbol} />
             </>
           );
         },

@@ -119,24 +119,24 @@ export default function TransactionItem({
 
       <Col span={12} className="height-20">
         <Font lineHeight={20} color="two">
-          {t('amount')}
+          {t('Pay')}
         </Font>
       </Col>
       <Col span={12} className="align-right height-20">
-        <Font lineHeight={20}>{formatPriceChange(token0Amount)}</Font>
+        <Font lineHeight={20}>{formatPriceChange(side === 0 ? token1Amount : token0Amount)}</Font>
         &nbsp;
-        <Pair lineHeight={20} symbol={tradePair?.token0?.symbol} />
+        <Pair lineHeight={20} symbol={side === 0 ? tradePair?.token1?.symbol : tradePair?.token0?.symbol} />
       </Col>
 
       <Col span={12} className="height-20">
         <Font lineHeight={20} color="two">
-          {t('total')}
+          {t('Receive')}
         </Font>
       </Col>
       <Col span={12} className="align-right height-20">
-        <Font lineHeight={20}>{`${formatPriceChange(token1Amount)}`}</Font>
+        <Font lineHeight={20}>{`${formatPriceChange(side === 0 ? token0Amount : token1Amount)}`}</Font>
         &nbsp;
-        <Pair lineHeight={20} symbol={tradePair?.token1?.symbol} />
+        <Pair lineHeight={20} symbol={side === 0 ? tradePair?.token0?.symbol : tradePair?.token1?.symbol} />
       </Col>
 
       <Col span={12} className="height-20">
