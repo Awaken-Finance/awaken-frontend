@@ -75,7 +75,7 @@ export default function TransactionItem({
     [side, token0Amount, token1Amount, totalFee],
   );
 
-  const receiveAveragePrice = useMemo(() => (side !== 1 ? price : ONE.div(price || 1).toFixed()), [price, side]);
+  const receiveAveragePrice = useMemo(() => (side !== 1 ? price : ONE.div(price ?? 1).toFixed()), [price, side]);
 
   const priceSymbol = useMemo(
     () => (side !== 0 ? tradePair.token0.symbol : tradePair.token1.symbol),

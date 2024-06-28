@@ -83,15 +83,15 @@ export const OverviewFooter = () => {
           </Font>
         </div>
         <div className="overview-footer-menu-wrap">
-          {MENU_LIST.map((menuGroup, groupIdx) => (
-            <div key={groupIdx} className="overview-footer-menu-group">
+          {MENU_LIST.map((menuGroup) => (
+            <div key={menuGroup.title} className="overview-footer-menu-group">
               <Font size={14} lineHeight={22} color="three">
                 {t(menuGroup.title)}
               </Font>
               <div className="overview-footer-menu-list">
-                {menuGroup.list.map((item, idx) => (
-                  <div>
-                    <a key={idx} className="overview-footer-menu-link" target="_blank" href={item.link}>
+                {menuGroup.list.map((item) => (
+                  <div key={item.title}>
+                    <a className="overview-footer-menu-link" target="_blank" href={item.link}>
                       {item.icon && <item.icon className="overview-footer-menu-icon" />}
                       <Font size={14} lineHeight={22} color="one">
                         {t(item.title)}
