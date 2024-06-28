@@ -1,36 +1,118 @@
 .overview-footer {
   width: 100%;
   background-color: var(--ant-container-bg-color);
-  height: 88px;
+  height: 274px;
   position: absolute;
   bottom: 0;
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   justify-content: space-between;
   align-items: center;
-  padding: 0 40px 16px;
+  padding: 0 40px;
 
-  .overview-media-list {
+  .overview-footer-content {
+    flex: 1;
     display: flex;
     flex-direction: row;
-    align-items: center;
-    gap: 24px;
+    width: 100%;
+    padding-top: 48px;
   }
 
-  .overview-media-icon {
-    font-size: 0;
-    &:hover svg {
-      fill: var(--ant-black-font-color-1);
+  .overview-footer-info {
+    flex: 44;
+    padding-right: 120px;
+
+    .overview-footer-logo {
+      width: 105px;
+      margin-bottom: 16px;
+      display: block;
     }
+  }
+
+  .overview-footer-menu-wrap {
+    flex: 55;
+    display: flex;
+    flex-direction: row;
+
+    .overview-footer-menu-group {
+      flex: 1;
+      flex-shrink: 0;
+      min-width: 0;
+    }
+
+    .overview-footer-menu-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-top: 12px;
+    }
+
+    .overview-footer-menu-link {
+      display: inline-flex;
+      flex-direction: row;
+      align-items: center;
+      gap: 8px;
+
+      &:hover {
+        .overview-footer-menu-icon {
+          fill: var(--ant-primary-font-color);
+        }
+        .default-font-style {
+          color: var(--ant-primary-font-color);
+        }
+      }
+
+      .overview-footer-menu-icon {
+        width: 12px;
+        height: 12px;
+        font-size: 0;
+        fill: var(--ant-black-font-color-1);
+      }
+    }
+  }
+
+  .overview-footer-copyright {
+    width: 100%;
+    display: flex;
+    height: 70px;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    border-top: 1px solid #2a2e3a;
   }
 }
 
 .mobile-site-content {
   .overview-footer {
     border-top: 1px solid #393d47;
+    padding: 0 16px;
+    height: 566px;
+  }
+
+  .overview-footer-content {
     flex-direction: column;
-    padding: 24px 0;
-    height: 106px;
+    padding-top: 32px;
+    padding-bottom: 40px;
+  }
+
+  .overview-footer-info {
+    flex: none;
+    padding-right: 0;
+    margin-bottom: 32px;
+    .overview-footer-logo {
+      width: 90px;
+    }
+  }
+
+  .overview-footer-menu-wrap {
+    flex: none;
+    flex-wrap: wrap;
+    gap: 32px 0;
+
+    .overview-footer-menu-group {
+      flex: none;
+      min-width: 50%;
+    }
   }
 }
 

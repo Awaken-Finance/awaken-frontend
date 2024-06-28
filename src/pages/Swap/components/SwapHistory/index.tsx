@@ -81,9 +81,9 @@ export function SwapTransactionItem({
         </Font>
       </Col>
       <Col span={12} className="align-right height-20">
-        <Font lineHeight={20}>{formatPriceChange(token0Amount)}</Font>
+        <Font lineHeight={20}>{formatPriceChange(side === 0 ? token1Amount : token0Amount)}</Font>
         &nbsp;
-        <Pair lineHeight={20} symbol={tradePair?.token0?.symbol} />
+        <Pair lineHeight={20} symbol={side === 0 ? tradePair?.token1?.symbol : tradePair?.token0?.symbol} />
       </Col>
 
       <Col span={12} className="height-20">
@@ -92,9 +92,9 @@ export function SwapTransactionItem({
         </Font>
       </Col>
       <Col span={12} className="align-right height-20">
-        <Font lineHeight={20}>{`${formatPriceChange(token1Amount)}`}</Font>
+        <Font lineHeight={20}>{`${formatPriceChange(side === 0 ? token0Amount : token1Amount)}`}</Font>
         &nbsp;
-        <Pair lineHeight={20} symbol={tradePair?.token1?.symbol} />
+        <Pair lineHeight={20} symbol={side === 0 ? tradePair?.token0?.symbol : tradePair?.token1?.symbol} />
       </Col>
 
       <Col span={12} className="height-20">
@@ -230,14 +230,20 @@ export const SwapHistory = () => {
         dataIndex: 'token0Amount',
         width: 110,
         align: 'left',
-        render: (token0Amount: number, record: RecentTransaction) => {
+        render: (token0Amount: string | undefined, record: RecentTransaction) => {
+          let _amount = token0Amount;
+          let _symbol = record?.tradePair?.token0?.symbol;
+          if (record.side === 0) {
+            _amount = record.token1Amount;
+            _symbol = record?.tradePair?.token1?.symbol;
+          }
           return (
             <>
               <Font lineHeight={20} size={14}>
-                {formatPriceChange(token0Amount)}
+                {formatPriceChange(_amount)}
               </Font>
               &nbsp;
-              <Pair lineHeight={20} size={14} symbol={record?.tradePair?.token0?.symbol} />
+              <Pair lineHeight={20} size={14} symbol={_symbol} />
             </>
           );
         },
@@ -248,12 +254,18 @@ export const SwapHistory = () => {
         dataIndex: 'token1Amount',
         align: 'left',
         width: 110,
-        render: (token1Amount: number, record: RecentTransaction) => {
+        render: (token1Amount: string | undefined, record: RecentTransaction) => {
+          let _amount = token1Amount;
+          let _symbol = record?.tradePair?.token1?.symbol;
+          if (record.side === 0) {
+            _amount = record.token0Amount;
+            _symbol = record?.tradePair?.token0?.symbol;
+          }
           return (
             <>
-              <Font lineHeight={24}>{formatPriceChange(token1Amount)}</Font>
+              <Font lineHeight={24}>{formatPriceChange(_amount)}</Font>
               &nbsp;
-              <Pair lineHeight={24} symbol={record?.tradePair?.token1?.symbol} />
+              <Pair lineHeight={24} symbol={_symbol} />
             </>
           );
         },

@@ -26,8 +26,8 @@ import { getTokenWeights } from 'utils/token';
 import PriceDigits from 'components/PriceDigits';
 import getFontStyle from 'utils/getFontStyle';
 import PriceUSDDigits from 'components/PriceUSDDigits';
-import { getRealPriceWithDexFee } from 'utils/calculate';
-import { ZERO } from 'constants/misc';
+import { getRealReceivePriceWithDexFee } from 'utils/calculate';
+import { ONE, ZERO } from 'constants/misc';
 import { stringMidShort } from 'utils/string';
 
 export default function PcTable({
@@ -148,45 +148,66 @@ export default function PcTable({
         align: 'left',
         width: 116,
         render: (_val: BigNumber, record: RecentTransaction) => {
-          const price = getRealPriceWithDexFee({
+          const price = getRealReceivePriceWithDexFee({
             side: record.side,
             token0Amount: record.token0Amount,
             token1Amount: record.token1Amount,
             dexFee: record.totalFee,
           });
-          return <PriceDigits className={getFontStyle({ lineHeight: 20 })} price={price} />;
-        },
-      },
-      {
-        title: t('amount'),
-        key: 'token0Amount',
-        dataIndex: 'token0Amount',
-        width: 132,
-        align: 'left',
-        render: (token0Amount: number, record: RecentTransaction) => {
+          const _symbol = record.side !== 0 ? record.tradePair.token0.symbol : record.tradePair.token1.symbol;
+
           return (
             <>
-              <Font lineHeight={20} size={14}>
-                {formatPriceChange(token0Amount)}
-              </Font>
+              <PriceDigits className={getFontStyle({ lineHeight: 20 })} price={price} />
               &nbsp;
-              <Pair lineHeight={20} size={14} symbol={record?.tradePair?.token0?.symbol} />
+              <Pair lineHeight={24} symbol={_symbol} />
             </>
           );
         },
       },
       {
-        title: isAll ? t('total') : t('amount'),
+        title: isAll ? t('Pay') : t('amount'),
+        key: 'token0Amount',
+        dataIndex: 'token0Amount',
+        width: 132,
+        align: 'left',
+        render: (token0Amount: string | undefined, record: RecentTransaction) => {
+          let _amount = token0Amount;
+          let _symbol = record?.tradePair?.token0?.symbol;
+          if (isAll && record.side === 0) {
+            _amount = record.token1Amount;
+            _symbol = record?.tradePair?.token1?.symbol;
+          }
+
+          return (
+            <>
+              <Font lineHeight={20} size={14}>
+                {formatPriceChange(_amount)}
+              </Font>
+              &nbsp;
+              <Pair lineHeight={20} size={14} symbol={_symbol} />
+            </>
+          );
+        },
+      },
+      {
+        title: isAll ? t('Receive') : t('amount'),
         key: 'token1Amount',
         dataIndex: 'token1Amount',
         align: 'left',
         width: 132,
-        render: (token1Amount: number, record: RecentTransaction) => {
+        render: (token1Amount: string | undefined, record: RecentTransaction) => {
+          let _amount = token1Amount;
+          let _symbol = record?.tradePair?.token1?.symbol;
+          if (isAll && record.side === 0) {
+            _amount = record.token0Amount;
+            _symbol = record?.tradePair?.token0?.symbol;
+          }
           return (
             <>
-              <Font lineHeight={24}>{formatPriceChange(token1Amount)}</Font>
+              <Font lineHeight={24}>{formatPriceChange(_amount)}</Font>
               &nbsp;
-              <Pair lineHeight={24} symbol={record?.tradePair?.token1?.symbol} />
+              <Pair lineHeight={24} symbol={_symbol} />
             </>
           );
         },
@@ -209,7 +230,18 @@ export default function PcTable({
         dataIndex: 'price',
         align: 'left',
         width: 116,
-        render: (val: BigNumber) => <PriceDigits className={getFontStyle({ lineHeight: 20 })} price={val} />,
+        render: (val: BigNumber, record: RecentTransaction) => {
+          const _val = record.side !== 1 ? val : ONE.div(val).toFixed();
+          const _symbol = record.side !== 0 ? record.tradePair.token0.symbol : record.tradePair.token1.symbol;
+
+          return (
+            <>
+              <PriceDigits className={getFontStyle({ lineHeight: 20 })} price={_val} />
+              &nbsp;
+              <Pair lineHeight={24} symbol={_symbol} />
+            </>
+          );
+        },
       },
       {
         title: (
