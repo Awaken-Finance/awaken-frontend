@@ -89,8 +89,6 @@ export const getRealReceivePriceWithDexFee = ({
 }: TGetRealPriceWithDexFeeParams) => {
   if (side === 0) {
     return ZERO.plus(token1Amount).minus(dexFee).div(token0Amount);
-  } else if (side === 1) {
-    return ZERO.plus(token0Amount).minus(dexFee).div(token1Amount);
   } else {
     return ZERO.plus(token0Amount).minus(dexFee).div(token1Amount);
   }
