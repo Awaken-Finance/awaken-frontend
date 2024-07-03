@@ -1,5 +1,5 @@
 import { Layout, Row, Col } from 'antd';
-import { IconArrowDown, IconLogo } from 'assets/icons';
+import { IconArrowDown, IconLogo, IconWallet } from 'assets/icons';
 import clsx from 'clsx';
 import Network from 'components/Network';
 import { basicModalView } from 'contexts/useModal/actions';
@@ -13,17 +13,19 @@ import { useTranslation } from 'react-i18next';
 import { WebLoginState, useWebLogin } from 'aelf-web-login';
 import { useModal } from 'contexts/useModal';
 import CommonButton from 'components/CommonButton';
-import { IconUser } from 'assets/icons';
 import useLogin from 'hooks/useLogin';
 
 import './styles.less';
 import Font from 'components/Font';
 import { useMonitorScroll } from 'hooks/useMonitorScroll';
 import { useIsPortkeySDK } from 'hooks/useIsPortkeySDK';
+import useChainId from 'hooks/useChainId';
+import { shortenAddress } from 'utils';
 
 function PcHeader() {
   const { selectedKeys } = useSelectedKeys();
-  const { loginState } = useWebLogin();
+  const { wallet, loginState } = useWebLogin();
+  const { chainId } = useChainId();
   const pathname = useLocation().pathname;
   const { t } = useTranslation();
 
@@ -48,15 +50,21 @@ function PcHeader() {
 
   const isPortkeySDK = useIsPortkeySDK();
 
+  const displayAddress = useMemo(() => {
+    if (!wallet.address) return '';
+    const addr = shortenAddress(wallet.address);
+    return `ELF_${addr}_${chainId}`;
+  }, [chainId, wallet.address]);
+
   const renderLoginPart = () => {
     if (loginState === WebLoginState.logined) {
       return (
         <Col>
           <CommonButton onClick={toggleAccountModal} className="my-btn">
             <div className="my-btn-content">
-              <IconUser />
+              <IconWallet />
               <Font size={14} className="my-btn-content-font">
-                {t('My')}
+                {displayAddress}
               </Font>
               <IconArrowDown className="my-btn-content-icon" />
             </div>

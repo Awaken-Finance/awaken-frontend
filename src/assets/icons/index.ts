@@ -46,6 +46,7 @@ import { ReactComponent as IconX } from './icon-X.svg';
 import { ReactComponent as IconSwapDefault } from './icon-swap-default.svg';
 import { ReactComponent as IconSwapHover } from './icon-swap-hover.svg';
 import { ReactComponent as IconPriceSwitch } from './icon-price-switch.svg';
+import { ReactComponent as IconWallet } from './icon-wallet.svg';
 
 export {
   IconClose,
@@ -96,4 +97,5 @@ export {
   IconSwapDefault,
   IconSwapHover,
   IconPriceSwitch,
+  IconWallet,
 };

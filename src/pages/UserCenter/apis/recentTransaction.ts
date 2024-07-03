@@ -3,7 +3,7 @@ import { RecentTransaction, GetRecentTransactionParams, LiquidityRecord, Liquidi
 import { message } from 'antd';
 import i18n from 'i18next';
 
-interface TransactionListResult<T> {
+export interface TransactionListResult<T> {
   totalCount?: number;
   items?: T[];
   error?: any;

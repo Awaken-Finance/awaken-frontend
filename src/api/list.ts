@@ -50,11 +50,18 @@ export const USER_CENTER_API_LIST = {
   SET_USER_ASSET_TOKEN: '/api/app/user-assets-token',
 };
 
+export const PORTFOLIO_API_LIST = {
+  GET_ASSET_PORTFOLIO: '/api/app/asset/user-portfolio',
+  GET_IDLE_TOKENS: '/api/app/asset/idle-tokens',
+  GET_LIQUIDITY_POSITION: '/api/app/liquidity/user-positions',
+};
+
 export const EXPAND_APIS = {
   cms: CMS_API_LIST,
   token: TOKEN_API_LIST,
   lending: LENDING_API_LIST,
   userCenter: USER_CENTER_API_LIST,
+  portfolio: PORTFOLIO_API_LIST,
 };
 
 export type API_REQ_FUNCTION = (config?: requestConfig) => Promise<any | AxiosResponse<any>>;

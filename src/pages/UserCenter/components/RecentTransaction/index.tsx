@@ -7,8 +7,6 @@ import PcTable from './component/PcTable';
 import MobileList from './component/MobileList';
 import useGetList, { PageInfoParams } from './hooks/useGetList';
 import { useTranslation } from 'react-i18next';
-import { getTokenWeights } from 'utils/token';
-import BigNumber from 'bignumber.js';
 
 export default function Transaction() {
   const isMobile = useMobile();
