@@ -18,7 +18,6 @@ import CommonButton from 'components/CommonButton';
 import SwitchWallets from './SwitchWallets';
 import Font from 'components/Font';
 import { IconArrowDown, IconArrowRight, IconArrowUp, IconClose } from 'assets/icons';
-import { TableEmptyData } from 'assets/images';
 import MyTokenList from './MyTokenList';
 import { NavLink, matchPath, useHistory } from 'react-router-dom';
 import { detectDiscoverProvider, detectNightElf } from 'aelf-web-login';

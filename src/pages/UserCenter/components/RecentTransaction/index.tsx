@@ -1,7 +1,7 @@
-import { useCallback, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useMobile } from 'utils/isMobile';
 import { FetchParam } from 'types/requeset';
-import { useMount, useDebounceFn } from 'ahooks';
+import { useDebounceFn } from 'ahooks';
 import { LiquidityRecord, RecentTransaction } from '../../type';
 import PcTable from './component/PcTable';
 import MobileList from './component/MobileList';
@@ -190,10 +190,16 @@ export default function Transaction() {
     );
   };
 
-  useMount(() => {
+  const init = useCallback(() => {
     getList(pageInfo.current, searchVal, menu);
     setIsInit(true);
-  });
+  }, [getList, menu, searchVal]);
+  const initRef = useRef(init);
+  initRef.current = init;
+
+  useEffect(() => {
+    initRef.current();
+  }, [getList]);
 
   return renderContent();
 }

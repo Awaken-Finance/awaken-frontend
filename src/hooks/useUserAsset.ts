@@ -55,6 +55,10 @@ export function useUserAssetTokenList(shouldFetchInterval = false) {
   }, [fetchUserAssetTokenList, shouldFetchInterval]);
 
   useEffect(() => {
+    setList({
+      showList: [],
+      hiddenList: [],
+    });
     fetchUserAssetTokenList();
   }, [fetchUserAssetTokenList]);
 
@@ -95,6 +99,7 @@ export function useUserPositions(shouldFetchInterval = false) {
   }, [fetchList, shouldFetchInterval]);
 
   useEffect(() => {
+    setUserPositions(undefined);
     fetchList();
   }, [fetchList]);
 
@@ -135,6 +140,7 @@ export function useUserTransactions(shouldFetchInterval = false) {
   }, [fetchList, shouldFetchInterval]);
 
   useEffect(() => {
+    setList(undefined);
     fetchList();
   }, [fetchList]);
 
