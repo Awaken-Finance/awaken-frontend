@@ -188,7 +188,7 @@ function AccountModal() {
       return (
         <div className="account-modal-list-empty">
           <div className="account-modal-list-empty-title">
-            <Font size={14} color="two" weight="bold">
+            <Font size={16} color="two" lineHeight={24} weight="bold">
               {t('NoTokens')}
             </Font>
             <Font size={14} color="two" weight="regular">
@@ -231,19 +231,24 @@ function AccountModal() {
     );
   }, [address, showHiddenTokens, t, userTokenList.hiddenList, userTokenList.showList]);
 
+  const onAddLiquidityClick = useCallback(() => {
+    history.push('/liquidity/ELF_USDT_0.05/add');
+    onClose();
+  }, [history, onClose]);
+
   const userPositionsDom = useMemo(() => {
     if (!userPositions?.items?.length) {
       return (
         <div className="account-modal-list-empty">
           <div className="account-modal-list-empty-title">
-            <Font size={14} color="two" weight="bold">
+            <Font size={16} color="two" lineHeight={24} weight="bold">
               {t('No positions yet')}
             </Font>
             <Font size={14} color="two" weight="regular">
               {t('Open a new position or create a pool to get started')}
             </Font>
           </div>
-          <CommonButton type="primary">{`+ ${t('Add Liquidity')}`}</CommonButton>
+          <CommonButton type="primary" onClick={onAddLiquidityClick}>{`+ ${t('Add Liquidity')}`}</CommonButton>
         </div>
       );
     }
@@ -287,7 +292,7 @@ function AccountModal() {
       return (
         <div className="account-modal-list-empty">
           <div className="account-modal-list-empty-title">
-            <Font size={14} color="two" weight="bold">
+            <Font size={16} color="two" weight="bold">
               {t('No transactions yet')}
             </Font>
           </div>
@@ -308,7 +313,7 @@ function AccountModal() {
                   size={16}
                   weight="medium"
                 />
-                <Font size={12} lineHeight={20}>
+                <Font size={12} lineHeight={20} color="two">
                   {moment(item.timestamp).format('YYYY-MM-DD HH:mm:ss')}
                 </Font>
               </div>
@@ -316,7 +321,10 @@ function AccountModal() {
                 <Font lineHeight={24} size={14} color={SIDE_COLOR_MAP[item.side ?? 2]}>
                   {t(SIDE_LABEL_MAP[item.side ?? 2])}
                 </Font>
-                <PriceUSDDigits className={getFontStyle({ lineHeight: 16, size: 12 })} price={item.totalPriceInUsd} />
+                <PriceUSDDigits
+                  className={getFontStyle({ lineHeight: 16, size: 12, color: 'two' })}
+                  price={item.totalPriceInUsd}
+                />
               </div>
             </div>
           ))}
@@ -364,7 +372,7 @@ function AccountModal() {
                 onClick={() => {
                   setMenu(item.key);
                 }}>
-                <Font size={16} lineHeight={24} color="two">
+                <Font size={16} lineHeight={24} color="two" weight={menu === item.key ? 'medium' : 'regular'}>
                   {t(item.title)}
                 </Font>
               </div>
