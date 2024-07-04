@@ -3,10 +3,9 @@ import useChainId from 'hooks/useChainId';
 import { useActiveWeb3React } from './web3';
 import { useCallback, useEffect, useState } from 'react';
 import { useInterval } from 'react-use';
-import { RecentTransaction } from 'pages/UserCenter/type';
+import { MyTradePairLiquidity, RecentTransaction } from 'pages/UserCenter/type';
 import { getTransactionList } from 'pages/UserCenter/apis/recentTransaction';
-import { TTLiquidityPositionResult } from 'types/portfolio';
-import { getLiquidityPositionApi } from 'api/utils/portfolio';
+import { getExchangeList } from 'pages/UserCenter/hooks/useExchangeOfUser';
 
 export type UserAssetTokenInfo = {
   symbol: string;
@@ -70,18 +69,18 @@ export function useUserAssetTokenList(shouldFetchInterval = false) {
 export function useUserPositions(shouldFetchInterval = false) {
   const { chainId } = useChainId();
   const { account } = useActiveWeb3React();
-  const [userPositions, setUserPositions] = useState<TTLiquidityPositionResult>();
+  const [userPositions, setUserPositions] = useState<MyTradePairLiquidity[]>();
 
   const fetchList = useCallback(async () => {
     if (!account || !chainId) return;
     try {
-      const data = await getLiquidityPositionApi({
+      const data = await getExchangeList({
         chainId,
         address: account,
         skipCount: 0,
         maxResultCount: 200,
       });
-      setUserPositions(data);
+      setUserPositions(data.items);
       return data;
     } catch (error) {
       console.log('useUserPositions error', error);
