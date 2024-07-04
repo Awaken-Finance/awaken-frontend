@@ -618,6 +618,13 @@
     "feeDescription": "Fee belong to liquidity providers and are already included in the current quote.",
     "transactionFeeDescription": "Network Cost are the miner fees paid in order for transactions to proceed.",
 
-    "awakenDescription": "AwakenSwap is a decentralized exchange based on the aelf chain, offering users one-stop DeFi services including trading, swapping, lending, staking, asset management, and more."
+    "awakenDescription": "AwakenSwap is a decentralized exchange based on the aelf chain, offering users one-stop DeFi services including trading, swapping, lending, staking, asset management, and more.",
+    "Positions": "Positions",
+    "View More": "View More",
+    "Explore Market": "Explore Market",
+    "No positions yet": "No positions yet",
+    "Open a new position or create a pool to get started": "Open a new position or create a pool to get started",
+    "Add Liquidity": "Add Liquidity",
+    "No transactions yet": "No transactions yet"
   }
 }

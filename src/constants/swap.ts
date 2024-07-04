@@ -1,3 +1,5 @@
+import { FontColor } from 'utils/getFontStyle';
+
 export enum SupportedSwapRate {
   percent_0_05 = '0.05',
   percent_0_3 = '0.3',
@@ -39,3 +41,15 @@ export type SupportedSwapRateKeysIndex = keyof typeof SupportedSwapRateKeys;
 export const DEFAULT_SLIPPAGE_TOLERANCE = '0.005';
 
 export const DEFAULT_EXPIRATION = '20';
+
+export const SIDE_COLOR_MAP: Record<number, FontColor> = {
+  [0]: 'rise',
+  [1]: 'fall',
+  [2]: 'one',
+};
+
+export const SIDE_LABEL_MAP: Record<number, string> = {
+  [0]: 'buy',
+  [1]: 'sell',
+  [2]: 'Swap',
+};

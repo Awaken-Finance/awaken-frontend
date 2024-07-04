@@ -1,5 +1,5 @@
 import { useActiveWeb3React } from 'hooks/web3';
-import { useMemo, useRef } from 'react';
+import { useCallback, useEffect, useMemo, useRef } from 'react';
 import { useMobile } from 'utils/isMobile';
 import { getExchangeList, ExchangeListFetchParams } from 'pages/UserCenter/hooks/useExchangeOfUser';
 import { FetchParam } from 'types/requeset';
@@ -33,17 +33,20 @@ export default function AssetExchange() {
 
   const { data, loading, run } = useRequest((params: ExchangeListFetchParams) => getExchangeList(params));
 
-  const getList = (info: PageInfoParams) => {
-    const params: ExchangeListFetchParams = {
-      address: account,
-      chainId: chainId,
-      skipCount: ((info.pageNum as number) - 1) * (info.pageSize as number),
-      maxResultCount: info.pageSize,
-      sorting: info.order ? `${info.field} ${info.order}` : null,
-    };
+  const getList = useCallback(
+    (info: PageInfoParams) => {
+      const params: ExchangeListFetchParams = {
+        address: account,
+        chainId: chainId,
+        skipCount: ((info.pageNum as number) - 1) * (info.pageSize as number),
+        maxResultCount: info.pageSize,
+        sorting: info.order ? `${info.field} ${info.order}` : null,
+      };
 
-    run(params);
-  };
+      run(params);
+    },
+    [account, chainId, run],
+  );
 
   const getData = (params: FetchParam): void => {
     const { page, pageSize = 20, order, field } = params;
@@ -114,9 +117,9 @@ export default function AssetExchange() {
     );
   };
 
-  useMount(() => {
+  useEffect(() => {
     getList(pageInfo.current);
-  });
+  }, [getList]);
 
   return renderContent();
 }

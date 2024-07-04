@@ -1,5 +1,5 @@
 import NotFound from 'pages/NotFound';
-import { Swap } from 'pages/Swap';
+
 import { lazy } from 'react';
 import { RoutesProps } from 'types';
 import { sleep } from 'utils';
@@ -18,6 +18,9 @@ const AuthComp = lazy(() =>
 const UserCenter = lazy(() => import('pages/UserCenter'));
 const Login = lazy(() => import('pages/Login'));
 const Example = lazy(() => import('pages/Example'));
+const Swap = lazy(() => import('pages/Swap'));
+// const Portfolio = lazy(() => import('pages/Portfolio'));
+// const Transactions = lazy(() => import('pages/Transactions'));
 
 const routes: RoutesProps[] = [
   {
@@ -67,9 +70,17 @@ const routes: RoutesProps[] = [
     component: Exchange,
   },
   {
-    path: '/Swap',
+    path: '/swap',
     component: Swap,
   },
+  // {
+  //   path: '/portfolio',
+  //   component: Portfolio,
+  // },
+  // {
+  //   path: '/transactions',
+  //   component: Transactions,
+  // },
   {
     path: '/',
     component: Overview,
