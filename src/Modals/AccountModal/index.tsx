@@ -181,6 +181,11 @@ function AccountModal() {
     }
   });
 
+  const onExploreClick = useCallback(() => {
+    history.push('/overview');
+    onClose();
+  }, [history, onClose]);
+
   const tokenList = useMemo(() => {
     const isEmpty = userTokenList.showList.length + userTokenList.hiddenList.length === 0;
 
@@ -195,7 +200,9 @@ function AccountModal() {
               {t('NoTokensDesc')}
             </Font>
           </div>
-          <CommonButton type="primary">{t('Explore Market')}</CommonButton>
+          <CommonButton onClick={onExploreClick} type="primary">
+            {t('Explore Market')}
+          </CommonButton>
         </div>
       );
 
@@ -229,7 +236,7 @@ function AccountModal() {
         )}
       </>
     );
-  }, [address, showHiddenTokens, t, userTokenList.hiddenList, userTokenList.showList]);
+  }, [address, onExploreClick, showHiddenTokens, t, userTokenList.hiddenList, userTokenList.showList]);
 
   const onAddLiquidityClick = useCallback(() => {
     history.push('/liquidity/ELF_USDT_0.05/add');
@@ -280,7 +287,7 @@ function AccountModal() {
         ))}
       </div>
     );
-  }, [t, userPositions]);
+  }, [onAddLiquidityClick, t, userPositions]);
 
   const onTransactionsViewAll = useCallback(() => {
     history.push('/user-center/transaction');
