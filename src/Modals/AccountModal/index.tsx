@@ -36,7 +36,6 @@ import PriceUSDDigits from 'components/PriceUSDDigits';
 import getFontStyle from 'utils/getFontStyle';
 import moment from 'moment';
 import { SIDE_COLOR_MAP, SIDE_LABEL_MAP } from 'constants/swap';
-import { ZERO } from 'constants/misc';
 import CommonLink from 'components/CommonLink';
 
 const MENU_LIST = [
@@ -244,7 +243,7 @@ function AccountModal() {
   }, [history, onClose]);
 
   const userPositionsDom = useMemo(() => {
-    if (!userPositions?.items?.length) {
+    if (!userPositions?.length) {
       return (
         <div className="account-modal-list-empty">
           <div className="account-modal-list-empty-title">
@@ -262,26 +261,26 @@ function AccountModal() {
 
     return (
       <div className="account-modal-position-list">
-        {userPositions.items?.map((item) => (
-          <div key={item.tradePairInfo.address} className="account-modal-position-item">
-            <CurrencyLogos size={24} tokens={[item?.tradePairInfo?.token0, item?.tradePairInfo?.token1]} />
+        {userPositions?.map((item) => (
+          <div key={item.tradePair.address} className="account-modal-position-item">
+            <CurrencyLogos size={24} tokens={[item?.tradePair?.token0, item?.tradePair?.token1]} />
             <div className="account-modal-position-item-middle">
               <Pairs
-                tokenA={item?.tradePairInfo?.token0}
-                tokenB={item?.tradePairInfo?.token1}
+                tokenA={item?.tradePair?.token0}
+                tokenB={item?.tradePair?.token1}
                 lineHeight={24}
                 size={16}
                 weight="medium"
               />
               <div className="account-modal-position-fee-wrap">
-                <FeeRate useBg>{formatPercentage(item?.tradePairInfo?.feeRate * 100)}</FeeRate>
+                <FeeRate useBg>{formatPercentage(item?.tradePair?.feeRate * 100)}</FeeRate>
               </div>
             </div>
             <div className="account-modal-position-item-right">
-              <PriceUSDDigits className={getFontStyle({ size: 16, lineHeight: 24 })} price={item.position.valueInUsd} />
-              <Font size={12} lineHeight={16} color="two">{`APR  ${ZERO.plus(item.estimatedAPR[0]?.percent)
-                .dp(2)
-                .toFixed()}%`}</Font>
+              <PriceUSDDigits className={getFontStyle({ size: 16, lineHeight: 24 })} price={item.assetUSD} />
+              <Font size={12} lineHeight={16} color="two">
+                {`${item.lpTokenAmount} LP`}
+              </Font>
             </div>
           </div>
         ))}
