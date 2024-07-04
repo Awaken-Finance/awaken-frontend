@@ -231,6 +231,11 @@ function AccountModal() {
     );
   }, [address, showHiddenTokens, t, userTokenList.hiddenList, userTokenList.showList]);
 
+  const onAddLiquidityClick = useCallback(() => {
+    history.push('/liquidity/ELF_USDT_0.05/add');
+    onClose();
+  }, [history, onClose]);
+
   const userPositionsDom = useMemo(() => {
     if (!userPositions?.items?.length) {
       return (
@@ -243,7 +248,7 @@ function AccountModal() {
               {t('Open a new position or create a pool to get started')}
             </Font>
           </div>
-          <CommonButton type="primary">{`+ ${t('Add Liquidity')}`}</CommonButton>
+          <CommonButton type="primary" onClick={onAddLiquidityClick}>{`+ ${t('Add Liquidity')}`}</CommonButton>
         </div>
       );
     }
@@ -308,7 +313,7 @@ function AccountModal() {
                   size={16}
                   weight="medium"
                 />
-                <Font size={12} lineHeight={20}>
+                <Font size={12} lineHeight={20} color="two">
                   {moment(item.timestamp).format('YYYY-MM-DD HH:mm:ss')}
                 </Font>
               </div>
@@ -316,7 +321,10 @@ function AccountModal() {
                 <Font lineHeight={24} size={14} color={SIDE_COLOR_MAP[item.side ?? 2]}>
                   {t(SIDE_LABEL_MAP[item.side ?? 2])}
                 </Font>
-                <PriceUSDDigits className={getFontStyle({ lineHeight: 16, size: 12 })} price={item.totalPriceInUsd} />
+                <PriceUSDDigits
+                  className={getFontStyle({ lineHeight: 16, size: 12, color: 'two' })}
+                  price={item.totalPriceInUsd}
+                />
               </div>
             </div>
           ))}
