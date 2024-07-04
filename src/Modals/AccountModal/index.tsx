@@ -188,7 +188,7 @@ function AccountModal() {
       return (
         <div className="account-modal-list-empty">
           <div className="account-modal-list-empty-title">
-            <Font size={14} color="two" weight="bold">
+            <Font size={16} color="two" lineHeight={24} weight="bold">
               {t('NoTokens')}
             </Font>
             <Font size={14} color="two" weight="regular">
@@ -236,7 +236,7 @@ function AccountModal() {
       return (
         <div className="account-modal-list-empty">
           <div className="account-modal-list-empty-title">
-            <Font size={14} color="two" weight="bold">
+            <Font size={16} color="two" lineHeight={24} weight="bold">
               {t('No positions yet')}
             </Font>
             <Font size={14} color="two" weight="regular">
@@ -287,7 +287,7 @@ function AccountModal() {
       return (
         <div className="account-modal-list-empty">
           <div className="account-modal-list-empty-title">
-            <Font size={14} color="two" weight="bold">
+            <Font size={16} color="two" weight="bold">
               {t('No transactions yet')}
             </Font>
           </div>
@@ -364,7 +364,7 @@ function AccountModal() {
                 onClick={() => {
                   setMenu(item.key);
                 }}>
-                <Font size={16} lineHeight={24} color="two">
+                <Font size={16} lineHeight={24} color="two" weight={menu === item.key ? 'medium' : 'regular'}>
                   {t(item.title)}
                 </Font>
               </div>
