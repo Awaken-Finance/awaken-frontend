@@ -38,12 +38,12 @@
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    >path {
+    > path {
       fill: var(--ant-black-font-color-2);
     }
 
     &:hover {
-      >path {
+      > path {
         fill: var(--ant-black-font-color-1);
       }
     }
@@ -61,7 +61,7 @@
     max-height: calc(100vh - 110px);
     overflow-y: auto;
     box-shadow: 0 0 24px 0 rgb(0 0 0 / 50%);
-  } 
+  }
 
   .switch-wallet-btn {
     width: 100%;
@@ -75,6 +75,8 @@
     padding: 24px 0;
     display: flex;
     flex-direction: column;
+    position: relative;
+
     &-list {
       border-top: 1px solid var(--ant-button-ghost-border-color);
     }
@@ -94,6 +96,7 @@
       padding: 0 24px;
     }
   }
+
   .account-switch {
     padding: 8px;
 
@@ -124,7 +127,7 @@
       &:hover {
         background-color: var(--ant-list-item-color-hover);
       }
-      
+
       .icon-col {
         display: flex;
         align-items: center;
@@ -144,6 +147,19 @@
     }
   }
 
+  .account-modal-view-more-btn {
+    position: absolute;
+    bottom: 24px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    left: 0;
+    right: 0;
+    .common-link {
+      gap: 4px;
+    }
+  }
+
   .my-tokens-hidden-btn {
     height: 24px;
     padding: 2px 8px;
@@ -159,16 +175,87 @@
     padding: 20px;
   }
 
-  .my-token-list-empty {
+  .account-modal-list-empty {
+    margin-top: 127px;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 12px;
+    gap: 32px;
+
+    .account-modal-list-empty-title {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+    }
 
     img {
       width: 80px;
       height: 80px;
+    }
+  }
+
+  .account-modal-menu-header {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-bottom: 8px;
+    gap: 16px;
+    padding: 0 16px;
+    margin-top: 32px;
+
+    .account-modal-menu-item {
+      cursor: pointer;
+    }
+
+    .account-modal-menu-item-active {
+      .default-font-style {
+        color: var(--ant-black-font-color-1);
+      }
+    }
+  }
+
+  .account-modal-position-list {
+    display: flex;
+    flex-direction: column;
+    padding: 0 16px;
+  }
+
+  .account-modal-transactions-list {
+    padding-bottom: 30px;
+  }
+
+  .account-modal-position-item {
+    padding: 10px 0;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+
+    .account-modal-position-item-middle {
+      margin-left: 8px;
+      margin-right: 12px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      .fee-rate-use-bg {
+        display: inline-block;
+      }
+      .account-modal-position-fee-wrap {
+        line-height: 20px;
+        height: 20px;
+      }
+    }
+    .account-modal-position-item-right {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: end;
+      gap: 2px;
+      .price-digits-wrapper {
+        line-height: 16px;
+      }
     }
   }
 }
@@ -180,6 +267,7 @@
 
     .account-content {
       padding: 16px 0;
+      position: relative;
     }
 
     .ant-modal-header {
@@ -202,7 +290,8 @@
       }
     }
 
-    &.ant-modal, .ant-modal-content {
+    &.ant-modal,
+    .ant-modal-content {
       height: 100%;
       width: 100vw;
       margin: 0;
@@ -218,7 +307,7 @@
     .ant-modal-content {
       max-height: auto;
     }
-    .account-info  {
+    .account-info {
       padding: 0 16px;
     }
     .account-content-title {
@@ -231,12 +320,12 @@
       }
     }
     .logout-icon {
-      >path {
+      > path {
         fill: var(--ant-black-font-color-1);
       }
-  
+
       &:hover {
-        >path {
+        > path {
           fill: unset;
         }
       }

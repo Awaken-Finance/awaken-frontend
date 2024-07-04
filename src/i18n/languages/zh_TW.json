@@ -643,6 +643,13 @@
     "About AwakenSwap": "關於AwakenSwap",
     "User Guide": "使用者指南",
     "FAQ": "常見問題",
-    "awakenDescription": "AwakenSwap是一家基於aelf鏈的去中心化交易所，為用戶提供交易兌換、借貸、抵押、資產管理等一站式DeFi服務。"
+    "awakenDescription": "AwakenSwap是一家基於aelf鏈的去中心化交易所，為用戶提供交易兌換、借貸、抵押、資產管理等一站式DeFi服務。",
+    "Positions": "持倉",
+    "View More": "看更多",
+    "Explore Market": "瀏覽市場",
+    "No positions yet": "暫無持倉",
+    "Open a new position or create a pool to get started": "開倉或創造池子方可開始",
+    "Add Liquidity": "添加流動性",
+    "No transactions yet": "暫無交易紀錄"
   }
 }

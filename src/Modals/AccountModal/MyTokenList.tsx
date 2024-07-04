@@ -37,7 +37,7 @@ export function TokenItem({ data }: { data: TokenInfoItem }) {
       </Col>
       <Col flex={'auto'}>
         <div className="symbol">
-          <Font size={16} color="one" weight="medium">
+          <Font size={16} lineHeight={24} color="one" weight="medium">
             {formatSymbol(data.symbol)}
           </Font>
         </div>
@@ -49,7 +49,7 @@ export function TokenItem({ data }: { data: TokenInfoItem }) {
       </Col>
       <Col className="balance-col">
         <div className="balance">
-          <Font size={16} color="one">
+          <Font size={16} lineHeight={24} color="one">
             {ZERO.plus(data.amount).dp(8)}
           </Font>
         </div>

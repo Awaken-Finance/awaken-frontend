@@ -4,4 +4,6 @@ export interface Response<T> {
   data: T;
 }
 
-export type ListResponse<T> = Response<{ totalCount: number; items: T[] }>;
+export type TListResponseData<T> = { totalCount: number; items: T[] };
+
+export type ListResponse<T> = Response<TListResponseData<T>>;

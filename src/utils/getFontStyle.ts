@@ -11,9 +11,9 @@ export type FontColor = 'one' | 'two' | 'three' | 'primary' | 'fall' | 'rise' | 
 // rise: --ant-rise-font-color #2AED9B
 // secondary: --ant-secondary-color #FFC736
 
-export type FontSize = 10 | 12 | 14 | 16 | 18 | 20 | 24 | 32;
+export type FontSize = 10 | 12 | 14 | 16 | 18 | 20 | 22 | 24 | 32;
 
-export type LineHeight = 12 | 14 | 16 | 18 | 20 | 22 | 24 | 26 | 28 | 30 | 32 | 36 | 48;
+export type LineHeight = 12 | 14 | 16 | 18 | 20 | 22 | 24 | 26 | 28 | 30 | 32 | 36 | 40 | 48;
 
 export type Align = 'left' | 'center' | 'right';
 
@@ -41,3 +41,16 @@ export default function getFontStyle({
     `text-align-${align}`,
   );
 }
+
+export type TSvgSize = 16 | 20;
+export type TSvgColor = 'one' | 'two';
+// one: --ant-black-font-color-1 #E5E8EF
+// two: --ant-black-font-color-2 #9BA0B0
+
+export type TGetSvgStyleParams = {
+  size?: TSvgSize;
+  color?: TSvgColor;
+};
+export const getSvgStyle = ({ size = 20, color = 'one' }: TGetSvgStyleParams) => {
+  return clsx(`svg-size-${size}`, `svg-color-${color}`);
+};
