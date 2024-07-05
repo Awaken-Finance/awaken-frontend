@@ -4,6 +4,7 @@ import { stringCut } from 'utils/string';
 import * as echarts from 'echarts';
 import './styles.less';
 import { ZERO } from 'constants/misc';
+import { formatPriceUSD } from 'utils/price';
 
 export type TPortfolioChartDataItem = {
   value: number;
@@ -85,11 +86,7 @@ export const PortfolioChart = ({ data }: TPortfolioChartProps) => {
               fontFamily: 'RobotoRegular',
               formatter: (item) => {
                 return `${stringCut(item.name, 8)}\n${
-                  Number(item.value ?? 0) < 0.01
-                    ? '< $0.01'
-                    : `$${ZERO.plus(Number(item.value ?? 0))
-                        .dp(2)
-                        .toFixed()}`
+                  Number(item.value ?? 0) < 0.01 ? '< $0.01' : `$${formatPriceUSD(ZERO.plus(Number(item.value ?? 0)))}`
                 }`;
               },
             },
