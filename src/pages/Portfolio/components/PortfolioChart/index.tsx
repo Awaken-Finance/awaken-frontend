@@ -39,12 +39,12 @@ export const PortfolioChart = ({ data }: TPortfolioChartProps) => {
         icon: 'circle',
         textStyle: {
           color: '#9BA0B0',
-          fontSize: 14,
+          fontSize: 12,
           fontFamily: 'RobotoRegular',
         },
         itemGap: 12,
         formatter: function (name: string) {
-          return stringCut(name, 8);
+          return stringCut(name, 10);
         },
         tooltip: {
           show: true,
