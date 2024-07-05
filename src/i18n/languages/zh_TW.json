@@ -650,6 +650,29 @@
     "No positions yet": "暫無持倉",
     "Open a new position or create a pool to get started": "開倉或創造池子方可開始",
     "Add Liquidity": "添加流動性",
-    "No transactions yet": "暫無交易紀錄"
+    "No transactions yet": "暫無交易紀錄",
+
+    "My Portfolio": "我的投資組合",
+    "Overview": "概覽",
+    "Total Positions": "總持倉",
+    "Total Fees": "總手續費",
+    "By Pool": "按池子分佈",
+    "By Token": "按代幣分佈",
+    "Idle Tokens": "閒置代幣",
+    "My Positions": "我的持倉",
+    "My Position": "我的持倉",
+    "My LP Token": "我的LP代幣",
+    "Pool Liquidity": "池子流動性",
+    "24h Volume": "24h交易量",
+    "Fees": "手續費",
+    "Cumulative net addition": "累計淨添加",
+    "cumulativeDescription": "累計淨添加 = 累計添加 - (累計移除 - 已提領手續費)，移除時投入與手續費按比例提領。",
+    "Estimated APR": "預估收益率",
+    "estimatedAPRDescription": "預估收益率 = 持倉週期手續費分成 / 累計淨添加 * 100% * 360 / 持倉週期",
+    "Dynamic APR": "動態收益率",
+    "dynamicAPRDescription": "動態收益率 = (我的持倉-累計淨添加) / 累計淨添加 * 100% * 360 / 平均持有期限，因提供流動性期間存在無常損失，故動態APY有可能低於LP APR，甚至為負",
+    "Impermanent loss": "無常損失",
+    "impermanentLossDescription": "無常損失是指您在提供流動性期間，因市場上代幣的價格發生變化，導致您存入流動性池中的資產的價值低於其市場現值時，就產生了無常損失。",
+    "Portfolio": "投資組合"
   }
 }

@@ -107,7 +107,7 @@
     "confirmRedeem": "Confirm",
     "lockedPrincipal": "Locked principal",
     "expectedAmountToClaim": "Expected amount to claim",
-    "unlockingPeriodTip": "If you redeem all your principal at once during the unlocking period, you can only receive the principal and income  that are unlocked. The locked income（{{pendingAward}}AWAKEN） will be transferred into the fine pool as penalty, and you will lose your qualification for future earnings.",
+    "unlockingPeriodTip": "If you redeem all your principal at once during the unlocking period, you can only receive the principal and income  that are unlocked. The locked income ({{pendingAward}}AWAKEN) will be transferred into the fine pool as penalty, and you will lose your qualification for future earnings.",
     "days": "days",
 
     "search": "Search",
@@ -420,7 +420,7 @@
     "swapFees": "Swap fees({{symbol}})",
     "pairNotExist": "The trading pair doesn't exist.",
     "insufficientBalanceLP": "Insufficient balance (LP)",
-    "zeroBalanceLP": "Zero balance（LP）",
+    "zeroBalanceLP": "Zero balance (LP)",
     "latestPrice2": "Latest price",
     "depthMap": "Depth map",
     "The entered value is too small": "The entered value is too small",
@@ -625,6 +625,29 @@
     "No positions yet": "No positions yet",
     "Open a new position or create a pool to get started": "Open a new position or create a pool to get started",
     "Add Liquidity": "Add Liquidity",
-    "No transactions yet": "No transactions yet"
+    "No transactions yet": "No transactions yet",
+
+    "My Portfolio": "My Portfolio",
+    "Overview": "Overview",
+    "Total Positions": "Total Positions",
+    "Total Fees": "Total Fees",
+    "By Pool": "By Pool",
+    "By Token": "By Token",
+    "Idle Tokens": "Idle Tokens",
+    "My Positions": "My Positions",
+    "My Position": "My Position",
+    "My LP Token": "My LP Token",
+    "Pool Liquidity": "Pool Liquidity",
+    "24h Volume": "24h Volume",
+    "Fees": "Fees",
+    "Cumulative net addition": "Cumulative net addition",
+    "cumulativeDescription": "Cumulative net addition = cumulative addition - (cumulative removal - withdrawn handling fee), when withdrawing, the investment and fee are withdrawn in proportion.",
+    "Estimated APR": "Estimated APR",
+    "estimatedAPRDescription": "Estimated APR = Holding period handling fee share / cumulative net addition * 100% * 360 / Holding period",
+    "Dynamic APR": "Dynamic APR",
+    "dynamicAPRDescription": "Dynamic APR=(My position - Cumulative net addition) / Cumulative addition * 100% * 360 / Average holding days,Due to impermanent losses during the period of providing liquidity, the dynamic APY may be lower than the LP APY",
+    "Impermanent loss": "Impermanent loss",
+    "impermanentLossDescription": "Impermanent loss refers to the period during which you provide liquidity, when the price of the token in the market changes, causing the value of the assets you deposit in the liquidity pool to be lower than its current market value.",
+    "Portfolio": "Portfolio"
   }
 }

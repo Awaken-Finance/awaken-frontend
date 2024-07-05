@@ -17,9 +17,9 @@ import AccountInfo from './AccountInfo';
 import CommonButton from 'components/CommonButton';
 import SwitchWallets from './SwitchWallets';
 import Font from 'components/Font';
-import { IconArrowDown, IconArrowRight, IconArrowUp, IconClose } from 'assets/icons';
+import { IconArrowDown, IconArrowUp, IconClose } from 'assets/icons';
 import MyTokenList from './MyTokenList';
-import { NavLink, matchPath, useHistory } from 'react-router-dom';
+import { matchPath, useHistory } from 'react-router-dom';
 import { detectDiscoverProvider, detectNightElf } from 'aelf-web-login';
 import { useTranslation } from 'react-i18next';
 import { routes } from 'routes';
@@ -27,7 +27,12 @@ import querystring from 'query-string';
 
 import './styles.less';
 import clsx from 'clsx';
-import { useUserAssetTokenList, useUserPositions, useUserTransactions } from 'hooks/useUserAsset';
+import {
+  useUserAssetTokenList,
+  useUserCombinedAssets,
+  useUserPositions,
+  useUserTransactions,
+} from 'hooks/useUserAsset';
 import { CurrencyLogos } from 'components/CurrencyLogo';
 import { Pairs } from 'components/Pair';
 import FeeRate from 'components/FeeRate';
@@ -37,6 +42,7 @@ import getFontStyle from 'utils/getFontStyle';
 import moment from 'moment';
 import { SIDE_COLOR_MAP, SIDE_LABEL_MAP } from 'constants/swap';
 import CommonLink from 'components/CommonLink';
+import { ZERO } from 'constants/misc';
 
 const MENU_LIST = [
   {
@@ -67,27 +73,28 @@ function AccountModal() {
   const [logoutPortkeyBySwitch, setLogoutPortkeyBySwitch] = useState(false);
   const [checkingPlugin, setCheckingPlugin] = useState(false);
   const { current, switchWallet, switching } = useMultiWallets();
-  const corousel = useRef<CarouselRef>(null);
+  const carouselRef = useRef<CarouselRef>(null);
   const isMobile = useMobile();
 
   const [menu, setMenu] = useState(MENU_LIST[0].key);
   const { list: userTokenList } = useUserAssetTokenList(isAccountModalShow && menu === 'tokens');
   const { userPositions } = useUserPositions(isAccountModalShow && menu === 'positions');
   const { list: userTxList } = useUserTransactions(isAccountModalShow && menu === 'transactions');
+  const { data: userCombinedAssets } = useUserCombinedAssets(isAccountModalShow);
 
   const isSwitchingWallet = useMemo(() => checkingPlugin && switching, [checkingPlugin, switching]);
   const { t } = useTranslation();
 
   const toWalletInfo = () => {
-    corousel.current?.goTo(0);
+    carouselRef.current?.goTo(0);
   };
   const toSwitchWallet = () => {
-    corousel.current?.goTo(1);
+    carouselRef.current?.goTo(1);
   };
 
   const onClose = useCallback(() => {
     dispatch(basicModalView.setAccountModal.actions(false));
-    corousel.current?.goTo(0, true);
+    carouselRef.current?.goTo(0, true);
   }, [dispatch]);
 
   const onClickSwitchWallet = async (type: SwitchWalletType) => {
@@ -242,8 +249,12 @@ function AccountModal() {
     onClose();
   }, [history, onClose]);
 
+  const onPositionsViewAll = useCallback(() => {
+    history.push('/portfolio');
+    onClose();
+  }, [history, onClose]);
   const userPositionsDom = useMemo(() => {
-    if (!userPositions?.length) {
+    if (!userPositions?.items?.length) {
       return (
         <div className="account-modal-list-empty">
           <div className="account-modal-list-empty-title">
@@ -260,36 +271,46 @@ function AccountModal() {
     }
 
     return (
-      <div className="account-modal-position-list">
-        {userPositions?.map((item) => (
-          <div key={item.tradePair.address} className="account-modal-position-item">
-            <CurrencyLogos size={24} tokens={[item?.tradePair?.token0, item?.tradePair?.token1]} />
-            <div className="account-modal-position-item-middle">
-              <Pairs
-                tokenA={item?.tradePair?.token0}
-                tokenB={item?.tradePair?.token1}
-                lineHeight={24}
-                size={16}
-                weight="medium"
-              />
-              <div className="account-modal-position-fee-wrap">
-                <FeeRate useBg>{formatPercentage(item?.tradePair?.feeRate * 100)}</FeeRate>
+      <>
+        <div className="account-modal-position-list">
+          {userPositions?.items?.map((item) => (
+            <div key={item.tradePairInfo.address} className="account-modal-position-item">
+              <CurrencyLogos size={24} tokens={[item?.tradePairInfo?.token0, item?.tradePairInfo?.token1]} />
+              <div className="account-modal-position-item-middle">
+                <Pairs
+                  tokenA={item?.tradePairInfo?.token0}
+                  tokenB={item?.tradePairInfo?.token1}
+                  lineHeight={24}
+                  size={16}
+                  weight="medium"
+                />
+                <div className="account-modal-position-fee-wrap">
+                  <FeeRate useBg>{formatPercentage(item?.tradePairInfo?.feeRate * 100)}</FeeRate>
+                </div>
+              </div>
+              <div className="account-modal-position-item-right">
+                <PriceUSDDigits
+                  className={getFontStyle({ size: 16, lineHeight: 24 })}
+                  price={item.position.valueInUsd}
+                />
+                <Font size={12} lineHeight={16} color="two">{`APR  ${ZERO.plus(item.estimatedAPR[0]?.percent)
+                  .dp(2)
+                  .toFixed()}%`}</Font>
               </div>
             </div>
-            <div className="account-modal-position-item-right">
-              <PriceUSDDigits className={getFontStyle({ size: 16, lineHeight: 24 })} price={item.assetUSD} />
-              <Font size={12} lineHeight={16} color="two">
-                {`${item.lpTokenAmount} LP`}
-              </Font>
-            </div>
-          </div>
-        ))}
-      </div>
+          ))}
+        </div>
+        <div className="account-modal-view-more-btn">
+          <CommonLink color="two" onClick={onPositionsViewAll} iconProps={{ size: 16, color: 'two' }}>
+            {t('View More')}
+          </CommonLink>
+        </div>
+      </>
     );
-  }, [onAddLiquidityClick, t, userPositions]);
+  }, [onAddLiquidityClick, onPositionsViewAll, t, userPositions?.items]);
 
   const onTransactionsViewAll = useCallback(() => {
-    history.push('/user-center/transaction');
+    history.push('/transactions');
     onClose();
   }, [history, onClose]);
 
@@ -307,7 +328,7 @@ function AccountModal() {
 
     return (
       <>
-        <div className="account-modal-position-list account-modal-transactions-list">
+        <div className="account-modal-position-list">
           {userTxList?.map((item) => (
             <div key={item.id} className="account-modal-position-item">
               <CurrencyLogos size={24} tokens={[item?.tradePair?.token0, item?.tradePair?.token1]} />
@@ -357,17 +378,15 @@ function AccountModal() {
       footer={null}
       style={isMobile ? {} : { position: 'fixed', top: 68, right: 8 }}
       onCancel={onClose}>
-      <Carousel ref={corousel} dots={false} autoplay={false} swipe={false}>
+      <Carousel ref={carouselRef} dots={false} autoplay={false} swipe={false}>
         <div className="account-content">
           <AccountInfo onClickLogout={onClickLogout} onClickSwitchWallet={toSwitchWallet} />
 
-          <div className="account-content-list">
-            <NavLink to="/user-center/exchange" className="account-content-item" onClick={onClose}>
-              <Font weight="bold" lineHeight={24} size={16}>
-                {t('myMarketingMakingLiquidity')}
-              </Font>
-              <IconArrowRight />
-            </NavLink>
+          <div className="account-content-title">
+            <PriceUSDDigits
+              className={getFontStyle({ lineHeight: 48, size: 40, color: 'one', weight: 'medium' })}
+              price={userCombinedAssets?.valueInUsd ?? 0}
+            />
           </div>
 
           <div className="account-modal-menu-header">

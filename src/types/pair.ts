@@ -16,5 +16,6 @@ export type TTradePairInfo = GenerateType<
     price: string;
     volume24h: string;
     tvl: string;
+    volume24hInUsd: string;
   }
 >;

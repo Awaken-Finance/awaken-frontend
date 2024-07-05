@@ -3,9 +3,12 @@ import useChainId from 'hooks/useChainId';
 import { useActiveWeb3React } from './web3';
 import { useCallback, useEffect, useState } from 'react';
 import { useInterval } from 'react-use';
-import { MyTradePairLiquidity, RecentTransaction } from 'pages/UserCenter/type';
+import { RecentTransaction } from 'pages/UserCenter/type';
 import { getTransactionList } from 'pages/UserCenter/apis/recentTransaction';
-import { getExchangeList } from 'pages/UserCenter/hooks/useExchangeOfUser';
+import { getUserCombinedAssetsApi } from 'api/utils/userCenter';
+import { TUserCombinedAssets } from 'types/userCenter';
+import { getLiquidityPositionApi } from 'api/utils/portfolio';
+import { TTLiquidityPositionResult } from 'types/portfolio';
 
 export type UserAssetTokenInfo = {
   symbol: string;
@@ -69,18 +72,18 @@ export function useUserAssetTokenList(shouldFetchInterval = false) {
 export function useUserPositions(shouldFetchInterval = false) {
   const { chainId } = useChainId();
   const { account } = useActiveWeb3React();
-  const [userPositions, setUserPositions] = useState<MyTradePairLiquidity[]>();
+  const [userPositions, setUserPositions] = useState<TTLiquidityPositionResult>();
 
   const fetchList = useCallback(async () => {
     if (!account || !chainId) return;
     try {
-      const data = await getExchangeList({
+      const data = await getLiquidityPositionApi({
         chainId,
         address: account,
         skipCount: 0,
-        maxResultCount: 200,
+        maxResultCount: 5,
       });
-      setUserPositions(data.items);
+      setUserPositions(data);
       return data;
     } catch (error) {
       console.log('useUserPositions error', error);
@@ -124,7 +127,7 @@ export function useUserTransactions(shouldFetchInterval = false) {
       setList(data.items);
       return data;
     } catch (error) {
-      console.log('useUserPositions error', error);
+      console.log('useUserTransactions error', error);
     }
   }, [account, chainId]);
 
@@ -145,5 +148,44 @@ export function useUserTransactions(shouldFetchInterval = false) {
 
   return {
     list,
+  };
+}
+
+export function useUserCombinedAssets(shouldFetchInterval = false) {
+  const { chainId } = useChainId();
+  const { account } = useActiveWeb3React();
+  const [data, setData] = useState<TUserCombinedAssets>();
+
+  const fetchList = useCallback(async () => {
+    if (!account || !chainId) return;
+    try {
+      const data = await getUserCombinedAssetsApi({
+        chainId,
+        address: account,
+      });
+      setData(data);
+      return data;
+    } catch (error) {
+      console.log('useUserCombinedAssets error', error);
+    }
+  }, [account, chainId]);
+
+  useInterval(() => {
+    if (shouldFetchInterval) {
+      fetchList();
+    }
+  }, ASSET_INTERVAL);
+
+  useEffect(() => {
+    if (shouldFetchInterval) fetchList();
+  }, [fetchList, shouldFetchInterval]);
+
+  useEffect(() => {
+    setData(undefined);
+    fetchList();
+  }, [fetchList]);
+
+  return {
+    data,
   };
 }

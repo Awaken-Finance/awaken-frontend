@@ -1,5 +1,5 @@
 import { ZERO } from 'constants/misc';
-import { EChartOption, EChartsResponsiveOption } from 'echarts';
+import { EChartsOption } from 'echarts';
 import { TFunction } from 'react-i18next';
 import { formatPrice, formatTokenAmount } from 'utils/price';
 import { formatSymbol } from 'utils/token';
@@ -32,7 +32,7 @@ const graphic = [
   },
 ];
 
-const DepthTooltip: (pairInfo: any, t: TFunction<'translation'>, isMobile: boolean) => EChartOption.Tooltip = (
+const DepthTooltip: (pairInfo: any, t: TFunction<'translation'>, isMobile: boolean) => EChartsOption['tooltip'] = (
   pairInfo,
   t,
   isMobile,
@@ -44,10 +44,8 @@ const DepthTooltip: (pairInfo: any, t: TFunction<'translation'>, isMobile: boole
     padding: 0,
     borderWidth: 0,
     backgroundColor: 'rgba(0, 0, 0, 0)',
-    formatter: (param: EChartOption.Tooltip.Format | EChartOption.Tooltip.Format[]) => {
-      const [x, , token0Volume, token1Volume, changes] = (param as EChartOption.Tooltip.Format[])?.[0]?.data ?? [
-        0, 0, 0, 0, 0,
-      ];
+    formatter: (param) => {
+      const [x, , token0Volume, token1Volume, changes] = (param as any)?.[0]?.data ?? [0, 0, 0, 0, 0];
       return `
       <div class="depth-chart-tooltip-wrap ${isMobile && 'depth-chart-tooltip-wrap-mobile'}">
         <div class="item price">
@@ -78,7 +76,7 @@ const DepthTooltip: (pairInfo: any, t: TFunction<'translation'>, isMobile: boole
   };
 };
 
-const DepthOption: (isMobile: boolean) => EChartOption | EChartsResponsiveOption = (isMobile) => ({
+const DepthOption: (isMobile: boolean) => EChartsOption = (isMobile) => ({
   backgroundColor: 'var(--ant-k-line-bg-color)',
   title: {
     show: false,
