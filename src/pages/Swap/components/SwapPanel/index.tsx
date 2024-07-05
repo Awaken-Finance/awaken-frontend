@@ -35,6 +35,7 @@ import { useIsPortkeySDK } from 'hooks/useIsPortkeySDK';
 import { SwapConfirmModal, SwapConfirmModalInterface } from '../SwapConfirmModal';
 import './styles.less';
 import { CircleProcess, CircleProcessInterface } from 'components/CircleProcess';
+import { formatPrice } from 'utils/price';
 
 export type TSwapInfo = {
   tokenIn?: Currency;
@@ -389,12 +390,12 @@ export const SwapPanel = () => {
     if (!isPriceReverse) {
       if (!valueIn || !valueOut) return `1 ${symbolOut} = - ${symbolIn}`;
 
-      const _price = bigNumberToUPString(ZERO.plus(valueIn).div(ZERO.plus(valueOut)), tokenIn.decimals);
+      const _price = formatPrice(ZERO.plus(valueIn).div(ZERO.plus(valueOut)));
       return `1 ${symbolOut} = ${_price} ${symbolIn}`;
     } else {
       if (!valueIn || !valueOut) return `1 ${symbolIn} = - ${symbolOut}`;
 
-      const _price = bigNumberToUPString(ZERO.plus(valueOut).div(ZERO.plus(valueIn)), tokenOut.decimals);
+      const _price = formatPrice(ZERO.plus(valueOut).div(ZERO.plus(valueIn)));
       return `1 ${symbolIn} = ${_price} ${symbolOut}`;
     }
   }, [isPriceReverse, swapInfo]);

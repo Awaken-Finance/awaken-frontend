@@ -9,13 +9,12 @@ import { ONE, ZERO } from 'constants/misc';
 import { useTranslation } from 'react-i18next';
 import { TLiquidityPositionItem } from 'types/portfolio';
 import getFontStyle from 'utils/getFontStyle';
-import { formatLiquidity, formatPercentage, formatTokenAmount } from 'utils/price';
+import { formatLiquidity, formatPercentage, formatPrice, formatTokenAmount } from 'utils/price';
 import { formatSymbol } from 'utils/token';
 import './styles.less';
 import { useCallback, useMemo, useState } from 'react';
 import clsx from 'clsx';
 import { IconPriceSwitch } from 'assets/icons';
-import { bigNumberToUPString } from 'utils/swap';
 import CommonButton from 'components/CommonButton';
 import useLoginCheck from 'hooks/useLoginCheck';
 import { useHistory } from 'react-router-dom';
@@ -45,26 +44,19 @@ export const PortfolioPositionItem = ({ item }: TPortfolioPositionItemProps) => 
   const [isPriceReverse, setIsPriceReverse] = useState(false);
   const priceLabel = useMemo(() => {
     if (isPriceReverse) {
-      const _price = bigNumberToUPString(ZERO.plus(item.tradePairInfo.price), item.tradePairInfo.token0.decimals);
+      const _price = formatPrice(ZERO.plus(item.tradePairInfo.price));
 
       return `1 ${formatSymbol(item.tradePairInfo.token1.symbol)} = ${_price} ${formatSymbol(
         item.tradePairInfo.token0.symbol,
       )}`;
     } else {
-      const _price = bigNumberToUPString(ONE.div(item.tradePairInfo.price), item.tradePairInfo.token1.decimals);
+      const _price = formatPrice(ONE.div(item.tradePairInfo.price));
 
       return `1 ${formatSymbol(item.tradePairInfo.token0.symbol)} = ${_price} ${formatSymbol(
         item.tradePairInfo.token1.symbol,
       )}`;
     }
-  }, [
-    isPriceReverse,
-    item.tradePairInfo.price,
-    item.tradePairInfo.token0.decimals,
-    item.tradePairInfo.token0.symbol,
-    item.tradePairInfo.token1.decimals,
-    item.tradePairInfo.token1.symbol,
-  ]);
+  }, [isPriceReverse, item.tradePairInfo.price, item.tradePairInfo.token0.symbol, item.tradePairInfo.token1.symbol]);
   const onReversePrice = useCallback(() => {
     setIsPriceReverse((pre) => !pre);
   }, []);
