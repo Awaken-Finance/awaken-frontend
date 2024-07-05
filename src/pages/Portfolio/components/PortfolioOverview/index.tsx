@@ -86,7 +86,9 @@ export const PortfolioOverview = () => {
       return (
         assetPortfolio?.tradePairPositionDistributions.map((item) => ({
           name: item.tradePair.token0
-            ? `${formatSymbol(item.tradePair.token0.symbol)}/${formatSymbol(item.tradePair.token1.symbol)}`
+            ? `${formatSymbol(item.tradePair.token0.symbol)}/${formatSymbol(item.tradePair.token1.symbol)}-${
+                item.tradePair.feeRate
+              }`
             : item.name,
           value: ZERO.plus(item.valueInUsd).toNumber(),
         })) || []
@@ -106,7 +108,9 @@ export const PortfolioOverview = () => {
       return (
         assetPortfolio?.tradePairFeeDistributions.map((item) => ({
           name: item.tradePair.token0
-            ? `${formatSymbol(item.tradePair.token0.symbol)}/${formatSymbol(item.tradePair.token1.symbol)}`
+            ? `${formatSymbol(item.tradePair.token0.symbol)}/${formatSymbol(item.tradePair.token1.symbol)}-${
+                item.tradePair.feeRate
+              }`
             : item.name,
           value: ZERO.plus(item.valueInUsd).toNumber(),
         })) || []

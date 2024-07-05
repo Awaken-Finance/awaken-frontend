@@ -40,6 +40,7 @@ export const PortfolioChart = ({ data }: TPortfolioChartProps) => {
         textStyle: {
           color: '#9BA0B0',
           fontSize: 14,
+          fontFamily: 'RobotoRegular',
         },
         itemGap: 12,
         formatter: function (name: string) {
@@ -50,6 +51,7 @@ export const PortfolioChart = ({ data }: TPortfolioChartProps) => {
           textStyle: {
             color: '#E5E8EF',
             lineHeight: 22,
+            fontFamily: 'RobotoRegular',
           },
           backgroundColor: '#484E60',
         },
@@ -80,13 +82,14 @@ export const PortfolioChart = ({ data }: TPortfolioChartProps) => {
               fontWeight: 'bold',
               color: '#E5E8EF',
               lineHeight: 22,
+              fontFamily: 'RobotoRegular',
               formatter: (item) => {
                 return `${stringCut(item.name, 8)}\n${
                   Number(item.value ?? 0) < 0.01
-                    ? '< 0.01'
-                    : ZERO.plus(Number(item.value ?? 0))
+                    ? '< $0.01'
+                    : `$${ZERO.plus(Number(item.value ?? 0))
                         .dp(2)
-                        .toFixed()
+                        .toFixed()}`
                 }`;
               },
             },
