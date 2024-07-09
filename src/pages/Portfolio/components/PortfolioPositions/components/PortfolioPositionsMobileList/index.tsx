@@ -30,7 +30,7 @@ export const PortfolioPositionsMobileList = ({
   }, [history]);
 
   const renderItem = (item: TLiquidityPositionItem) => {
-    return <PortfolioPositionItem item={item} />;
+    return <PortfolioPositionItem item={item} key={item.tradePairInfo.address} />;
   };
 
   const isFetchRef = useRef(false);
@@ -75,6 +75,7 @@ export const PortfolioPositionsMobileList = ({
             loading={!liquidity && isLoading}
             getMore={fetchList}
             pageNum={pageNum}
+            hideNoMoreOnSinglePage={false}
           />
         )}
       </div>

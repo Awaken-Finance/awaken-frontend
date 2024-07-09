@@ -182,10 +182,10 @@ export function useUserCombinedAssets(shouldFetchInterval = false) {
 
   useEffect(() => {
     setData(undefined);
-    fetchList();
   }, [fetchList]);
 
   return {
     data,
+    refresh: fetchList,
   };
 }

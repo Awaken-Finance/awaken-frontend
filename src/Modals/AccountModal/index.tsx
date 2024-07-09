@@ -11,7 +11,7 @@ import {
   useWebLoginEvent,
 } from 'aelf-web-login';
 import { Row, Carousel, Modal, Col, message } from 'antd';
-import { useCallback, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { CarouselRef } from 'antd/lib/carousel';
 import AccountInfo from './AccountInfo';
 import CommonButton from 'components/CommonButton';
@@ -80,7 +80,11 @@ function AccountModal() {
   const { list: userTokenList } = useUserAssetTokenList(isAccountModalShow && menu === 'tokens');
   const { userPositions } = useUserPositions(isAccountModalShow && menu === 'positions');
   const { list: userTxList } = useUserTransactions(isAccountModalShow && menu === 'transactions');
-  const { data: userCombinedAssets } = useUserCombinedAssets(isAccountModalShow);
+  const { data: userCombinedAssets, refresh: refreshUserCombinedAssets } = useUserCombinedAssets(isAccountModalShow);
+
+  useEffect(() => {
+    refreshUserCombinedAssets();
+  }, [menu, refreshUserCombinedAssets]);
 
   const isSwitchingWallet = useMemo(() => checkingPlugin && switching, [checkingPlugin, switching]);
   const { t } = useTranslation();

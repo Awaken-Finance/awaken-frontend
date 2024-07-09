@@ -87,8 +87,6 @@ export const PortfolioPositions = () => {
     await executeCbRef.current();
   }, []);
 
-  console.log('liquidity', liquidity);
-
   return (
     <div className="portfolio-position">
       <div className="portfolio-position-header">

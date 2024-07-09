@@ -92,7 +92,7 @@ export const PortfolioOverview = () => {
                 item.tradePair.feeRate,
               )
                 .times(100)
-                .toFixed()}`
+                .toFixed()}%`
             : item.name,
           value: ZERO.plus(item.valueInUsd).toNumber(),
         })) || []
@@ -116,7 +116,7 @@ export const PortfolioOverview = () => {
                 item.tradePair.feeRate,
               )
                 .times(100)
-                .toFixed()}`
+                .toFixed()}%`
             : item.name,
           value: ZERO.plus(item.valueInUsd).toNumber(),
         })) || []

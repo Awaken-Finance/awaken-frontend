@@ -82,6 +82,7 @@ export const PortfolioPositionItemValue = ({
                 color: 'one',
               })}
               price={tokenAmountInUsd}
+              isUSDUnit
             />
           </Col>
           <Col>
@@ -205,6 +206,7 @@ export const PortfolioPositionItem = ({ item }: TPortfolioPositionItemProps) => 
               <PriceUSDDigits
                 className={getFontStyle({ lineHeight: 24, size: 16, color: 'one', weight: 'medium' })}
                 price={item.position.valueInUsd}
+                isUSDUnit
               />
             </div>
             <div className="portfolio-position-item-box-content">
@@ -256,6 +258,7 @@ export const PortfolioPositionItem = ({ item }: TPortfolioPositionItemProps) => 
               <PriceUSDDigits
                 className={getFontStyle({ lineHeight: isMobile ? 20 : 24, size: isMobile ? 14 : 16, color: 'one' })}
                 price={item.tradePairInfo.tvl}
+                isUSDUnit
               />
             </Row>
 
@@ -266,6 +269,7 @@ export const PortfolioPositionItem = ({ item }: TPortfolioPositionItemProps) => 
               <PriceUSDDigits
                 className={getFontStyle({ lineHeight: isMobile ? 20 : 24, size: isMobile ? 14 : 16, color: 'one' })}
                 price={item.tradePairInfo.volume24hInUsd}
+                isUSDUnit
               />
             </Row>
           </div>
@@ -295,6 +299,7 @@ export const PortfolioPositionItem = ({ item }: TPortfolioPositionItemProps) => 
               <PriceUSDDigits
                 className={getFontStyle({ lineHeight: 24, size: 16, color: 'one', weight: 'medium' })}
                 price={item.fee.valueInUsd}
+                isUSDUnit
               />
             </div>
 
@@ -336,6 +341,7 @@ export const PortfolioPositionItem = ({ item }: TPortfolioPositionItemProps) => 
               <PriceUSDDigits
                 className={getFontStyle({ lineHeight: 24, size: 16, color: 'one', weight: 'medium' })}
                 price={item.cumulativeAddition.valueInUsd}
+                isUSDUnit
               />
             </div>
 
@@ -423,7 +429,7 @@ export const PortfolioPositionItem = ({ item }: TPortfolioPositionItemProps) => 
               <Row align="middle" gutter={[4, 0]}>
                 <Col>
                   <Font size={16} lineHeight={24} color="two" weight="medium">
-                    {t('Impermanent Loss')}
+                    {t('Impermanent loss')}
                   </Font>
                 </Col>
                 <Col>
@@ -431,7 +437,7 @@ export const PortfolioPositionItem = ({ item }: TPortfolioPositionItemProps) => 
                     placement="top"
                     title={t('impermanentLossDescription')}
                     buttonTitle={t('ok')}
-                    headerDesc={t('Impermanent Loss')}
+                    headerDesc={t('Impermanent loss')}
                   />
                 </Col>
               </Row>
@@ -439,6 +445,7 @@ export const PortfolioPositionItem = ({ item }: TPortfolioPositionItemProps) => 
               <PriceUSDDigits
                 className={getFontStyle({ lineHeight: 28, size: 20, color: 'one', weight: 'medium' })}
                 price={item.impermanentLossInUSD}
+                isUSDUnit
               />
             </div>
           </div>
