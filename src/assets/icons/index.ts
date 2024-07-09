@@ -1,4 +1,5 @@
 import { ReactComponent as IconClose } from './icon-close.svg';
+import { ReactComponent as IconClose2 } from './icon-close2.svg';
 import { ReactComponent as IconBack } from './icon-back.svg';
 import { ReactComponent as IconLanguage } from './icon-language.svg';
 import { ReactComponent as IconUser } from './icon-user.svg';
@@ -13,6 +14,7 @@ import { ReactComponent as IconAssets } from './icon-assets.svg';
 import { ReactComponent as IconMenu } from './icon-menu.svg';
 import { ReactComponent as IconArrowRight } from './icon-arrow-right.svg';
 import { ReactComponent as IconArrowRight2 } from './icon-arrow-right2.svg';
+import { ReactComponent as IconArrowRight3 } from './icon-arrow-right3.svg';
 import { ReactComponent as IconArrowLeft } from './icon-arrow-left.svg';
 import { ReactComponent as IconArrowLeft2 } from './icon-arrow-left2.svg';
 import { ReactComponent as IconArrowUp } from './icon-arrow-up.svg';
@@ -50,6 +52,7 @@ import { ReactComponent as IconWallet } from './icon-wallet.svg';
 
 export {
   IconClose,
+  IconClose2,
   IconBack,
   IconLanguage,
   IconUser,
@@ -63,6 +66,7 @@ export {
   IconMenu,
   IconArrowRight,
   IconArrowRight2,
+  IconArrowRight3,
   IconArrowLeft,
   IconArrowLeft2,
   IconArrowUp,
