@@ -5,6 +5,7 @@ import * as echarts from 'echarts';
 import './styles.less';
 import { ZERO } from 'constants/misc';
 import { formatPriceUSD } from 'utils/price';
+import { useMobile } from 'utils/isMobile';
 
 export type TPortfolioChartDataItem = {
   value: number;
@@ -16,6 +17,7 @@ export type TPortfolioChartProps = {
 };
 
 export const PortfolioChart = ({ data }: TPortfolioChartProps) => {
+  const isMobile = useMobile();
   const ele = useRef<HTMLElement>();
   const [myChart, setMyChart] = useState<echarts.ECharts>();
   useEffect(() => {
@@ -60,14 +62,14 @@ export const PortfolioChart = ({ data }: TPortfolioChartProps) => {
       color: ['#7453FA', '#44A96C', '#E75558', '#4880FF', '#D09F40', '#41C1CD', '#fc8452', '#9a60b4', '#ea7ccc'],
       series: [
         {
-          top: '-27%',
+          top: isMobile ? '-40%' : '-27%',
           name: '',
           type: 'pie',
-          radius: ['36.75%', '52.5%'],
+          radius: isMobile ? ['26.45%', '37.785%'] : ['36.75%', '52.5%'],
           avoidLabelOverlap: false,
           // padAngle: 1,
           itemStyle: {
-            borderRadius: 2,
+            // borderRadius: 2,
           },
           tooltip: {
             show: false,
@@ -103,7 +105,7 @@ export const PortfolioChart = ({ data }: TPortfolioChartProps) => {
     };
 
     myChart?.setOption(option, true);
-  }, [data, myChart]);
+  }, [data, isMobile, myChart]);
 
   useEffect(() => {
     if (!myChart) return;

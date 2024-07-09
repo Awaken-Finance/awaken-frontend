@@ -26,6 +26,9 @@
       .common-button.ant-btn {
         padding: 0 16px;
         height: 32px;
+        span {
+          font-weight: 600;
+        }
       }
     }
   }
@@ -112,7 +115,7 @@
 
     .portfolio-position-item-box-split {
       position: absolute;
-      bottom: -18px;
+      bottom: -18.5px;
       left: 0;
       right: 0;
       height: 1px;
@@ -144,7 +147,7 @@
     display: flex;
     border-radius: 6px;
     padding: 4px;
-    background-color: #131620;
+    background-color: #1e212b;
     .portfolio-position-item-switch-btn {
       flex: 1;
       min-width: 0;
@@ -166,6 +169,115 @@
       .default-font-style {
         color: var(--ant-black-font-color-1);
       }
+    }
+  }
+}
+
+.mobile-site-content {
+  .portfolio-position-item {
+    padding: 20px 16px;
+    .portfolio-position-item-header {
+      flex-direction: column;
+      align-items: flex-start;
+      justify-content: flex-start;
+      gap: 12px;
+
+      .portfolio-position-item-header-left {
+        flex-direction: column;
+        gap: 12px;
+        width: 100%;
+        align-items: flex-start;
+      }
+      .portfolio-position-item-header-right {
+        width: 100%;
+        .common-button.ant-btn {
+          flex: 1;
+          flex-shrink: 0;
+          min-width: 0;
+          gap: 8px;
+        }
+      }
+    }
+
+    .portfolio-position-item-pair-info {
+      align-items: flex-start;
+
+      .currency-logo {
+        align-self: center;
+      }
+      .fee-rate-use-bg {
+        margin-top: 2px;
+      }
+    }
+
+    .portfolio-position-item-price-wrap {
+      align-items: flex-start;
+    }
+
+    .portfolio-position-item-price-switch-btn {
+      margin-top: 4px;
+    }
+
+    .portfolio-position-item-content {
+      flex-direction: column;
+      gap: 12px;
+
+      .portfolio-position-item-right {
+        .portfolio-position-item-info {
+          flex-direction: column;
+          gap: 24px;
+        }
+      }
+
+      .portfolio-position-item-info {
+        min-height: auto;
+        padding: 12px;
+      }
+    }
+
+    .portfolio-position-item-box-split {
+      position: absolute;
+      bottom: -16.5px;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background-color: #1e212b;
+    }
+
+    .portfolio-position-item-left {
+      gap: 24px;
+    }
+
+    .portfolio-position-item-middle {
+      gap: 32px;
+    }
+
+    .portfolio-position-item-box {
+      min-height: auto;
+
+      .portfolio-position-item-box-header {
+        margin-bottom: 12px;
+      }
+    }
+
+    .portfolio-position-item-right-box {
+      gap: 12px;
+    }
+
+    .portfolio-position-item-left-bottom {
+      min-height: auto;
+      gap: 8px;
+    }
+
+    .portfolio-position-item-switch {
+      right: 8px;
+      top: 8px;
+    }
+  }
+
+  .portfolio-position-item-value-wrap {
+    .portfolio-position-item-value-logo {
+      margin-top: 2px;
     }
   }
 }

@@ -13,8 +13,10 @@ import clsx from 'clsx';
 import { PortfolioChart } from '../PortfolioChart';
 import { ZERO } from 'constants/misc';
 import { formatSymbol } from 'utils/token';
+import { useMobile } from 'utils/isMobile';
 
 export const PortfolioOverview = () => {
+  const isMobile = useMobile();
   const { t } = useTranslation();
   const { account, chainId } = useActiveWeb3React();
 
@@ -141,7 +143,7 @@ export const PortfolioOverview = () => {
   return (
     <div className="portfolio-overview">
       <div className="portfolio-overview-header">
-        <Font size={22} lineHeight={30} weight="medium">
+        <Font size={isMobile ? 18 : 22} lineHeight={isMobile ? 26 : 30} weight="medium">
           {t('Overview')}
         </Font>
       </div>
@@ -156,7 +158,7 @@ export const PortfolioOverview = () => {
                 'portfolio-overview-total-switch-btn',
                 isPool && 'portfolio-overview-total-switch-active',
               )}>
-              <Font size={12} color="two">
+              <Font size={12} color="two" weight="medium">
                 {t('By Pool')}
               </Font>
             </div>
@@ -168,7 +170,7 @@ export const PortfolioOverview = () => {
                 'portfolio-overview-total-switch-btn',
                 !isPool && 'portfolio-overview-total-switch-active',
               )}>
-              <Font size={12} color="two">
+              <Font size={12} color="two" weight="medium">
                 {t('By Token')}
               </Font>
             </div>
@@ -176,11 +178,11 @@ export const PortfolioOverview = () => {
 
           <div className="portfolio-overview-total-left">
             <div className="portfolio-overview-title-wrap">
-              <Font size={16} lineHeight={24}>
+              <Font size={isMobile ? 14 : 16} lineHeight={isMobile ? 20 : 24}>
                 {t('Total Positions')}
               </Font>
               <PriceUSDDigits
-                className={getFontStyle({ size: 32, lineHeight: 40 })}
+                className={getFontStyle({ size: isMobile ? 24 : 32, lineHeight: isMobile ? 32 : 40 })}
                 price={assetPortfolio?.totalPositionsInUSD ?? 0}
               />
             </div>
@@ -192,11 +194,11 @@ export const PortfolioOverview = () => {
 
           <div className="portfolio-overview-total-right">
             <div className="portfolio-overview-title-wrap">
-              <Font size={16} lineHeight={24}>
+              <Font size={isMobile ? 14 : 16} lineHeight={isMobile ? 20 : 24}>
                 {t('Total Fees')}
               </Font>
               <PriceUSDDigits
-                className={getFontStyle({ size: 32, lineHeight: 40 })}
+                className={getFontStyle({ size: isMobile ? 24 : 32, lineHeight: isMobile ? 32 : 40 })}
                 price={assetPortfolio?.totalFeeInUSD ?? 0}
               />
             </div>
@@ -207,11 +209,11 @@ export const PortfolioOverview = () => {
 
         <div className="portfolio-overview-tokens">
           <div className="portfolio-overview-title-wrap">
-            <Font size={16} lineHeight={24}>
+            <Font size={isMobile ? 14 : 16} lineHeight={isMobile ? 20 : 24}>
               {t('Idle Tokens')}
             </Font>
             <PriceUSDDigits
-              className={getFontStyle({ size: 32, lineHeight: 40 })}
+              className={getFontStyle({ size: isMobile ? 24 : 32, lineHeight: isMobile ? 32 : 40 })}
               price={idleTokenInfo?.totalValueInUsd ?? 0}
             />
           </div>

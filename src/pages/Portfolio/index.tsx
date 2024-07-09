@@ -7,9 +7,11 @@ import { useHistory } from 'react-router-dom';
 import { PortfolioPositions } from './components/PortfolioPositions';
 import './styles.less';
 import { WebLoginState, useWebLogin } from 'aelf-web-login';
+import { useMobile } from 'utils/isMobile';
 
 export const Portfolio = () => {
   const { t } = useTranslation();
+  const isMobile = useMobile();
 
   const history = useHistory();
   const onTransactionsClick = useCallback(() => {
@@ -21,10 +23,10 @@ export const Portfolio = () => {
   return (
     <div className="portfolio-page">
       <div className="portfolio-page-header">
-        <Font weight="bold" size={32} lineHeight={40}>
+        <Font weight="bold" size={isMobile ? 24 : 32} lineHeight={isMobile ? 32 : 40}>
           {t('My Portfolio')}
         </Font>
-        <CommonLink size={16} lineHeight={24} onClick={onTransactionsClick}>
+        <CommonLink size={isMobile ? 14 : 16} lineHeight={isMobile ? 20 : 24} onClick={onTransactionsClick}>
           {t('recentTransaction')}
         </CommonLink>
       </div>

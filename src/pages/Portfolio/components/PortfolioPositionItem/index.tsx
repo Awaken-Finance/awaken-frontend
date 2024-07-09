@@ -18,6 +18,8 @@ import { IconPriceSwitch } from 'assets/icons';
 import CommonButton from 'components/CommonButton';
 import useLoginCheck from 'hooks/useLoginCheck';
 import { useHistory } from 'react-router-dom';
+import { useMobile } from 'utils/isMobile';
+import { TokenInfo } from 'types';
 
 export type TPortfolioPositionItemProps = {
   item: TLiquidityPositionItem;
@@ -37,7 +39,64 @@ const ESTIMATED_APR_TYPE_LABEL_MAP = {
 
 const ESTIMATED_APR_TYPE_LIST = [EstimatedAPRType.week, EstimatedAPRType.month, EstimatedAPRType.all];
 
+export type TPortfolioPositionItemValueProps = {
+  tokenInfo: TokenInfo;
+  tokenAmount: string;
+  tokenAmountInUsd: string;
+  tokenPercent: string;
+};
+export const PortfolioPositionItemValue = ({
+  tokenInfo,
+  tokenAmount,
+  tokenAmountInUsd,
+  tokenPercent,
+}: TPortfolioPositionItemValueProps) => {
+  const isMobile = useMobile();
+
+  return (
+    <Row className="portfolio-position-item-value-wrap" justify="space-between" wrap={false} gutter={[8, 0]}>
+      <Col>
+        <Row gutter={[8, 0]} wrap={false}>
+          <Col className="portfolio-position-item-value-logo">
+            <CurrencyLogo address={tokenInfo.address} symbol={tokenInfo.symbol} size={isMobile ? 20 : 24} />
+          </Col>
+          <Col>
+            <Font
+              size={isMobile ? 14 : 16}
+              lineHeight={24}
+              weight="medium"
+              className="word-break-all">{`${formatTokenAmount(tokenAmount, tokenInfo.decimals)} ${formatSymbol(
+              tokenInfo.symbol,
+            )}`}</Font>
+          </Col>
+        </Row>
+      </Col>
+
+      <Col>
+        <Row gutter={[8, 0]} wrap={false}>
+          <Col>
+            <PriceUSDDigits
+              className={getFontStyle({
+                lineHeight: 24,
+                size: isMobile ? 14 : 16,
+                color: 'one',
+              })}
+              price={tokenAmountInUsd}
+            />
+          </Col>
+          <Col>
+            <Font size={isMobile ? 14 : 16} lineHeight={24} color="two">{`${
+              formatPercentage(tokenPercent) || '-'
+            }%`}</Font>
+          </Col>
+        </Row>
+      </Col>
+    </Row>
+  );
+};
+
 export const PortfolioPositionItem = ({ item }: TPortfolioPositionItemProps) => {
+  const isMobile = useMobile();
   const { t } = useTranslation();
   const [estimatedAPRType, setEstimatedAPRType] = useState<EstimatedAPRType>(EstimatedAPRType.week);
 
@@ -110,7 +169,7 @@ export const PortfolioPositionItem = ({ item }: TPortfolioPositionItemProps) => 
             <Pairs
               tokenA={item.tradePairInfo?.token0}
               tokenB={item.tradePairInfo?.token1}
-              lineHeight={28}
+              lineHeight={isMobile ? 24 : 28}
               size={20}
               weight="medium"
             />
@@ -118,7 +177,7 @@ export const PortfolioPositionItem = ({ item }: TPortfolioPositionItemProps) => 
           </div>
 
           <div className="portfolio-position-item-price-wrap">
-            <Font size={16} lineHeight={24} color="two">
+            <Font size={16} lineHeight={24} color="two" className="word-break-all">
               {priceLabel}
             </Font>
             <IconPriceSwitch className="portfolio-position-item-price-switch-btn" onClick={onReversePrice} />
@@ -149,105 +208,63 @@ export const PortfolioPositionItem = ({ item }: TPortfolioPositionItemProps) => 
               />
             </div>
             <div className="portfolio-position-item-box-content">
-              <Row justify="space-between">
-                <Row gutter={[8, 0]}>
-                  <Col>
-                    <CurrencyLogo
-                      address={item.tradePairInfo.token0.address}
-                      symbol={item.tradePairInfo.token0.symbol}
-                      size={24}
-                    />
-                  </Col>
-                  <Col>
-                    <Font size={16} lineHeight={24}>{`${formatTokenAmount(
-                      item.position.token0Amount,
-                      item.tradePairInfo.token0.decimals,
-                    )} ${formatSymbol(item.tradePairInfo.token0.symbol)}`}</Font>
-                  </Col>
-                </Row>
-                <Row gutter={[8, 0]}>
-                  <Col>
-                    <PriceUSDDigits
-                      className={getFontStyle({ lineHeight: 24, size: 16, color: 'one' })}
-                      price={item.position.token0AmountInUsd}
-                    />
-                  </Col>
-                  <Col>
-                    <Font size={16} lineHeight={24} color="two">{`${
-                      Number(item.position.token0Percent) || '-'
-                    }%`}</Font>
-                  </Col>
-                </Row>
-              </Row>
+              <PortfolioPositionItemValue
+                tokenInfo={item.tradePairInfo.token0}
+                tokenAmount={item.position.token0Amount}
+                tokenAmountInUsd={item.position.token0AmountInUsd}
+                tokenPercent={item.position.token0Percent}
+              />
 
-              <Row justify="space-between">
-                <Row gutter={[8, 0]}>
-                  <Col>
-                    <CurrencyLogo
-                      address={item.tradePairInfo.token1.address}
-                      symbol={item.tradePairInfo.token1.symbol}
-                      size={24}
-                    />
-                  </Col>
-                  <Col>
-                    <Font size={16} lineHeight={24}>{`${formatTokenAmount(
-                      item.position.token1Amount,
-                      item.tradePairInfo.token1.decimals,
-                    )} ${formatSymbol(item.tradePairInfo.token1.symbol)}`}</Font>
-                  </Col>
-                </Row>
-                <Row gutter={[8, 0]}>
-                  <Col>
-                    <PriceUSDDigits
-                      className={getFontStyle({ lineHeight: 24, size: 16, color: 'one' })}
-                      price={item.position.token1AmountInUsd}
-                    />
-                  </Col>
-                  <Col>
-                    <Font size={16} lineHeight={24} color="two">{`${
-                      formatPercentage(item.position.token1Percent) || '-'
-                    }%`}</Font>
-                  </Col>
-                </Row>
-              </Row>
+              <PortfolioPositionItemValue
+                tokenInfo={item.tradePairInfo.token1}
+                tokenAmount={item.position.token1Amount}
+                tokenAmountInUsd={item.position.token1AmountInUsd}
+                tokenPercent={item.position.token1Percent}
+              />
             </div>
           </div>
 
           <div className="portfolio-position-item-left-bottom">
-            <Row justify="space-between" wrap={false}>
-              <Font size={16} lineHeight={24} color="two">
-                {t('My LP Token')}
-              </Font>
-              <Row gutter={[8, 0]} wrap={false}>
-                <Col>
-                  <Font size={16} lineHeight={24}>{`${formatLiquidity(item.lpTokenAmount)} LP`}</Font>
-                </Col>
-                <Col>
-                  <Font size={16} lineHeight={24} color="two">
-                    {`${
-                      ZERO.plus(item.lpTokenPercent).lt(0.01) ? '<0.01' : formatPercentage(item.lpTokenPercent) || '-'
-                    }%`}
-                  </Font>
-                </Col>
-              </Row>
+            <Row justify="space-between" gutter={[8, 0]} wrap={false}>
+              <Col>
+                <Font size={isMobile ? 14 : 16} lineHeight={isMobile ? 20 : 24} color="two">
+                  {t('My LP Token')}
+                </Font>
+              </Col>
+              <Col>
+                <Row gutter={[8, 0]} wrap={false}>
+                  <Col>
+                    <Font size={isMobile ? 14 : 16} lineHeight={isMobile ? 20 : 24}>{`${formatLiquidity(
+                      item.lpTokenAmount,
+                    )} LP`}</Font>
+                  </Col>
+                  <Col>
+                    <Font size={isMobile ? 14 : 16} lineHeight={isMobile ? 20 : 24} color="two">
+                      {`${
+                        ZERO.plus(item.lpTokenPercent).lt(0.01) ? '<0.01' : formatPercentage(item.lpTokenPercent) || '-'
+                      }%`}
+                    </Font>
+                  </Col>
+                </Row>
+              </Col>
             </Row>
 
             <Row justify="space-between" wrap={false}>
-              <Font size={16} lineHeight={24} color="two">
+              <Font size={isMobile ? 14 : 16} lineHeight={isMobile ? 20 : 24} color="two">
                 {t('Pool Liquidity')}
               </Font>
               <PriceUSDDigits
-                className={getFontStyle({ lineHeight: 24, size: 16, color: 'one' })}
+                className={getFontStyle({ lineHeight: isMobile ? 20 : 24, size: isMobile ? 14 : 16, color: 'one' })}
                 price={item.tradePairInfo.tvl}
               />
             </Row>
 
             <Row justify="space-between" wrap={false}>
-              <Font size={16} lineHeight={24} color="two">
+              <Font size={isMobile ? 14 : 16} lineHeight={isMobile ? 20 : 24} color="two">
                 {t('24h Volume')}
               </Font>
               <PriceUSDDigits
-                className={getFontStyle({ lineHeight: 24, size: 16, color: 'one' })}
+                className={getFontStyle({ lineHeight: isMobile ? 20 : 24, size: isMobile ? 14 : 16, color: 'one' })}
                 price={item.tradePairInfo.volume24hInUsd}
               />
             </Row>
@@ -257,6 +274,7 @@ export const PortfolioPositionItem = ({ item }: TPortfolioPositionItemProps) => 
         <div className="portfolio-position-item-info portfolio-position-item-middle">
           <div className="portfolio-position-item-box">
             <div className="portfolio-position-item-box-split" />
+
             <div className="portfolio-position-item-box-header">
               <Row align="middle" gutter={[4, 0]}>
                 <Col>
@@ -279,68 +297,21 @@ export const PortfolioPositionItem = ({ item }: TPortfolioPositionItemProps) => 
                 price={item.fee.valueInUsd}
               />
             </div>
-            <div className="portfolio-position-item-box-content">
-              <Row justify="space-between">
-                <Row gutter={[8, 0]}>
-                  <Col>
-                    <CurrencyLogo
-                      address={item.tradePairInfo.token0.address}
-                      symbol={item.tradePairInfo.token0.symbol}
-                      size={24}
-                    />
-                  </Col>
-                  <Col>
-                    <Font size={16} lineHeight={24}>{`${formatTokenAmount(
-                      item.fee.token0Amount,
-                      item.tradePairInfo.token0.decimals,
-                    )} ${formatSymbol(item.tradePairInfo.token0.symbol)}`}</Font>
-                  </Col>
-                </Row>
-                <Row gutter={[8, 0]}>
-                  <Col>
-                    <PriceUSDDigits
-                      className={getFontStyle({ lineHeight: 24, size: 16, color: 'one' })}
-                      price={item.fee.token0AmountInUsd}
-                    />
-                  </Col>
-                  <Col>
-                    <Font size={16} lineHeight={24} color="two">{`${
-                      formatPercentage(item.fee.token0Percent) || '-'
-                    }%`}</Font>
-                  </Col>
-                </Row>
-              </Row>
 
-              <Row justify="space-between">
-                <Row gutter={[8, 0]}>
-                  <Col>
-                    <CurrencyLogo
-                      address={item.tradePairInfo.token1.address}
-                      symbol={item.tradePairInfo.token1.symbol}
-                      size={24}
-                    />
-                  </Col>
-                  <Col>
-                    <Font size={16} lineHeight={24}>{`${formatTokenAmount(
-                      item.fee.token1Amount,
-                      item.tradePairInfo.token1.decimals,
-                    )} ${formatSymbol(item.tradePairInfo.token1.symbol)}`}</Font>
-                  </Col>
-                </Row>
-                <Row gutter={[8, 0]}>
-                  <Col>
-                    <PriceUSDDigits
-                      className={getFontStyle({ lineHeight: 24, size: 16, color: 'one' })}
-                      price={item.fee.token1AmountInUsd}
-                    />
-                  </Col>
-                  <Col>
-                    <Font size={16} lineHeight={24} color="two">{`${
-                      formatPercentage(item.fee.token1Percent) || '-'
-                    }%`}</Font>
-                  </Col>
-                </Row>
-              </Row>
+            <div className="portfolio-position-item-box-content">
+              <PortfolioPositionItemValue
+                tokenInfo={item.tradePairInfo.token0}
+                tokenAmount={item.fee.token0Amount}
+                tokenAmountInUsd={item.fee.token0AmountInUsd}
+                tokenPercent={item.fee.token0Percent}
+              />
+
+              <PortfolioPositionItemValue
+                tokenInfo={item.tradePairInfo.token1}
+                tokenAmount={item.fee.token1Amount}
+                tokenAmountInUsd={item.fee.token1AmountInUsd}
+                tokenPercent={item.fee.token1Percent}
+              />
             </div>
           </div>
 
@@ -367,68 +338,21 @@ export const PortfolioPositionItem = ({ item }: TPortfolioPositionItemProps) => 
                 price={item.cumulativeAddition.valueInUsd}
               />
             </div>
-            <div className="portfolio-position-item-box-content">
-              <Row justify="space-between">
-                <Row gutter={[8, 0]}>
-                  <Col>
-                    <CurrencyLogo
-                      address={item.tradePairInfo.token0.address}
-                      symbol={item.tradePairInfo.token0.symbol}
-                      size={24}
-                    />
-                  </Col>
-                  <Col>
-                    <Font size={16} lineHeight={24}>{`${formatTokenAmount(
-                      item.cumulativeAddition.token0Amount,
-                      item.tradePairInfo.token0.decimals,
-                    )} ${formatSymbol(item.tradePairInfo.token0.symbol)}`}</Font>
-                  </Col>
-                </Row>
-                <Row gutter={[8, 0]}>
-                  <Col>
-                    <PriceUSDDigits
-                      className={getFontStyle({ lineHeight: 24, size: 16, color: 'one' })}
-                      price={item.cumulativeAddition.token0AmountInUsd}
-                    />
-                  </Col>
-                  <Col>
-                    <Font size={16} lineHeight={24} color="two">{`${
-                      formatPercentage(item.cumulativeAddition.token0Percent) || '-'
-                    }%`}</Font>
-                  </Col>
-                </Row>
-              </Row>
 
-              <Row justify="space-between">
-                <Row gutter={[8, 0]}>
-                  <Col>
-                    <CurrencyLogo
-                      address={item.tradePairInfo.token1.address}
-                      symbol={item.tradePairInfo.token1.symbol}
-                      size={24}
-                    />
-                  </Col>
-                  <Col>
-                    <Font size={16} lineHeight={24}>{`${formatTokenAmount(
-                      item.cumulativeAddition.token1Amount,
-                      item.tradePairInfo.token1.decimals,
-                    )} ${formatSymbol(item.tradePairInfo.token1.symbol)}`}</Font>
-                  </Col>
-                </Row>
-                <Row gutter={[8, 0]}>
-                  <Col>
-                    <PriceUSDDigits
-                      className={getFontStyle({ lineHeight: 24, size: 16, color: 'one' })}
-                      price={item.cumulativeAddition.token1AmountInUsd}
-                    />
-                  </Col>
-                  <Col>
-                    <Font size={16} lineHeight={24} color="two">{`${
-                      formatPercentage(item.cumulativeAddition.token1Percent) || '-'
-                    }%`}</Font>
-                  </Col>
-                </Row>
-              </Row>
+            <div className="portfolio-position-item-box-content">
+              <PortfolioPositionItemValue
+                tokenInfo={item.tradePairInfo.token0}
+                tokenAmount={item.cumulativeAddition.token0Amount}
+                tokenAmountInUsd={item.cumulativeAddition.token0AmountInUsd}
+                tokenPercent={item.cumulativeAddition.token0Percent}
+              />
+
+              <PortfolioPositionItemValue
+                tokenInfo={item.tradePairInfo.token1}
+                tokenAmount={item.cumulativeAddition.token1Amount}
+                tokenAmountInUsd={item.cumulativeAddition.token1AmountInUsd}
+                tokenPercent={item.cumulativeAddition.token1Percent}
+              />
             </div>
           </div>
         </div>

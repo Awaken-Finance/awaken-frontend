@@ -7,14 +7,17 @@ import { useActiveWeb3React } from 'hooks/web3';
 import { TTLiquidityPositionResult } from 'types/portfolio';
 import { useReturnLastCallback } from 'hooks';
 import { getLiquidityPositionApi } from 'api/utils/portfolio';
-import { Pagination } from 'antd';
-import { PortfolioPositionItem } from '../PortfolioPositionItem';
-import Lottie from 'lottie-react';
-import { awakenLoading } from 'assets/animation';
-import CommonButton from 'components/CommonButton';
-import { useHistory } from 'react-router-dom';
+import { PortfolioPositionsList } from './components/PortfolioPositionsList';
+import { useMobile } from 'utils/isMobile';
+import { PortfolioPositionsMobileList } from './components/PortfolioPositionsMobileList';
+
+const INIT_PAGINATION = {
+  pageNum: 1,
+  pageSize: 10,
+};
 
 export const PortfolioPositions = () => {
+  const isMobile = useMobile();
   const { t } = useTranslation();
   const circleProcessRef = useRef<CircleProcessInterface>();
 
@@ -23,10 +26,7 @@ export const PortfolioPositions = () => {
   const [liquidity, setLiquidity] = useState<TTLiquidityPositionResult>();
   const getLiquidityPosition = useReturnLastCallback(getLiquidityPositionApi, []);
 
-  const paginationRef = useRef({
-    pageNum: 1,
-    pageSize: 10,
-  });
+  const paginationRef = useRef({ ...INIT_PAGINATION });
 
   const [isLoading, setIsLoading] = useState(true);
   const executeCb = useCallback(async () => {
@@ -34,19 +34,23 @@ export const PortfolioPositions = () => {
     if (!account || !chainId) return;
     setIsLoading(true);
     try {
+      const { pageNum, pageSize } = paginationRef.current;
+
       const data = await getLiquidityPosition({
         address: account,
         chainId,
-        skipCount: (paginationRef.current.pageNum - 1) * paginationRef.current.pageSize,
-        maxResultCount: paginationRef.current.pageSize,
+        skipCount: isMobile ? 0 : (pageNum - 1) * pageSize,
+        maxResultCount: isMobile ? pageNum * pageSize : pageSize,
       });
+
       setLiquidity(data);
     } catch (error) {
       console.log('getLiquidityPosition error', error);
     } finally {
+      console.log('executeCb finally');
       setIsLoading(false);
     }
-  }, [account, chainId, getLiquidityPosition]);
+  }, [account, chainId, getLiquidityPosition, isMobile]);
   const executeCbRef = useRef(executeCb);
   executeCbRef.current = executeCb;
 
@@ -73,18 +77,17 @@ export const PortfolioPositions = () => {
     };
   }, [account, chainId, register]);
 
-  const onPageChange = useCallback((pageNum: number, pageSize: number) => {
+  const [pagination, setPagination] = useState({ ...INIT_PAGINATION });
+  const onPageChange = useCallback(async (pageNum: number, pageSize: number) => {
     paginationRef.current = {
       pageNum,
       pageSize,
     };
-    executeCbRef.current();
+    setPagination(paginationRef.current);
+    await executeCbRef.current();
   }, []);
 
-  const history = useHistory();
-  const onAddLiquidityClick = useCallback(() => {
-    history.push('/liquidity/ELF_USDT_0.05/add');
-  }, [history]);
+  console.log('liquidity', liquidity);
 
   return (
     <div className="portfolio-position">
@@ -96,36 +99,17 @@ export const PortfolioPositions = () => {
         <CircleProcess ref={circleProcessRef} />
       </div>
 
-      <div className="portfolio-position-content">
-        {liquidity?.items.map((item) => (
-          <PortfolioPositionItem key={item.tradePairInfo.address} item={item} />
-        ))}
+      {!isMobile && <PortfolioPositionsList liquidity={liquidity} isLoading={isLoading} onPageChange={onPageChange} />}
 
-        {liquidity && liquidity.totalCount === 0 && (
-          <div className="portfolio-position-empty">
-            <div className="portfolio-position-empty-content">
-              <div className="portfolio-position-empty-title">
-                <Font size={16} color="two" lineHeight={24} weight="bold">
-                  {t('No positions yet')}
-                </Font>
-                <Font size={14} color="two" weight="regular">
-                  {t('Open a new position or create a pool to get started')}
-                </Font>
-              </div>
-
-              <CommonButton type="primary" onClick={onAddLiquidityClick}>{`+ ${t('Add Liquidity')}`}</CommonButton>
-            </div>
-          </div>
-        )}
-      </div>
-
-      {!liquidity && isLoading && (
-        <div className="portfolio-position-loading-wrap">
-          <Lottie className="loading-box-animation" animationData={awakenLoading} loop />
-        </div>
+      {isMobile && (
+        <PortfolioPositionsMobileList
+          liquidity={liquidity}
+          isLoading={isLoading}
+          onPageChange={onPageChange}
+          pageNum={pagination.pageNum}
+          pageSize={pagination.pageSize}
+        />
       )}
-
-      {liquidity && <Pagination total={liquidity?.totalCount ?? 0} showSizeChanger onChange={onPageChange} />}
     </div>
   );
 };
