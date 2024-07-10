@@ -81,10 +81,10 @@ export const PortfolioChart = ({ data }: TPortfolioChartProps) => {
           emphasis: {
             label: {
               show: true,
-              fontSize: 16,
+              fontSize: isMobile ? 10 : 16,
               fontWeight: 'bold',
               color: '#E5E8EF',
-              lineHeight: 22,
+              lineHeight: isMobile ? 14 : 22,
               fontFamily: 'RobotoRegular',
               formatter: (item) => {
                 return `${stringCut(item.name, 8)}\n${

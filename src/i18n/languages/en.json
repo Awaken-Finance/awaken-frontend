@@ -651,6 +651,7 @@
     "Portfolio": "Portfolio",
     "portfolioTipsTitle": "Liquidity provider rewards",
     "portfolioTipsDescription": "Liquidity providers earn a 0.05%, 0.1%, 0.3%, 3%, 5%  fee(Varies for different liquidity pools) on all trades proportional to their share of the pool. Fees are added to the pool, accrue in real time and can be claimed by withdrawing your liquidity.",
+    "portfolioTipsCloseToast": "Closed, you can go to the Help Center to view",
     "Learn more": "Learn more"
   }
 }

@@ -9,6 +9,7 @@ import './styles.less';
 import { WebLoginState, useWebLogin } from 'aelf-web-login';
 import { useMobile } from 'utils/isMobile';
 import { IconArrowRight3, IconClose2 } from 'assets/icons';
+import notification from 'utils/notificationNew';
 
 export const Portfolio = () => {
   const { t } = useTranslation();
@@ -31,7 +32,11 @@ export const Portfolio = () => {
   const closeTips = useCallback(() => {
     setIsTipsShow(false);
     localStorage.setItem('PORTFOLIO_TIPS_HIDE', 'true');
-  }, []);
+    notification.info({
+      message: null,
+      description: t('portfolioTipsCloseToast'),
+    });
+  }, [t]);
 
   return (
     <div className="portfolio-page">
@@ -46,16 +51,18 @@ export const Portfolio = () => {
             {t('portfolioTipsDescription')}
           </Font>
 
-          <a
-            href="https://awakenswap.gitbook.io/help-en/liquidity-provider-faq/why-earn-profits-by-providing-liquidity"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="portfolio-page-tips-more">
-            <Font size={14} lineHeight={20} color="primary" weight="medium">
-              {t('Learn more')}
-            </Font>
-            <IconArrowRight3 />
-          </a>
+          <div>
+            <a
+              href="https://awakenswap.gitbook.io/help-en/liquidity-provider-faq/why-earn-profits-by-providing-liquidity"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="portfolio-page-tips-more">
+              <Font size={14} lineHeight={20} color="primary" weight="medium">
+                {t('Learn more')}
+              </Font>
+              <IconArrowRight3 />
+            </a>
+          </div>
         </div>
       )}
 

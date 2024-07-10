@@ -676,6 +676,7 @@
     "Portfolio": "投資組合",
     "portfolioTipsTitle": "流動資金提供者獎勵",
     "portfolioTipsDescription": "流動資金提供者在所有交易中按其在流動池中的份額獲得一定比例（0.3%/0.5%/1%/3%/5%）的手續費。手續費以即時累積方式添加到流動池中，可與流動資金一起贖回。",
+    "portfolioTipsCloseToast": "已關閉，你可前往幫助中心查看",
     "Learn more": "了解更多"
   }
 }
