@@ -14,7 +14,6 @@ import SwapInputRow from '../SwapInputRow';
 import { IconArrowDown2, IconPriceSwitch, IconSettingFee, IconSwapDefault, IconSwapHover } from 'assets/icons';
 import { useReturnLastCallback } from 'hooks';
 import { Col, Row } from 'antd';
-import { SwapCircleProcess, SwapCircleProcessInterface } from '../SwapCircleProcess';
 import clsx from 'clsx';
 import CommonTooltip from 'components/CommonTooltip';
 import { useTranslation } from 'react-i18next';
@@ -35,6 +34,8 @@ import { basicModalView } from 'contexts/useModal/actions';
 import { useIsPortkeySDK } from 'hooks/useIsPortkeySDK';
 import { SwapConfirmModal, SwapConfirmModalInterface } from '../SwapConfirmModal';
 import './styles.less';
+import { CircleProcess, CircleProcessInterface } from 'components/CircleProcess';
+import { formatPrice } from 'utils/price';
 
 export type TSwapInfo = {
   tokenIn?: Currency;
@@ -58,7 +59,7 @@ export const SwapPanel = () => {
   const _getRouteList = useGetRouteList();
   const getRouteList = useReturnLastCallback(_getRouteList, [_getRouteList]);
 
-  const swapCircleProcessRef = useRef<SwapCircleProcessInterface>();
+  const circleProcessRef = useRef<CircleProcessInterface>();
   const swapConfirmModalRef = useRef<SwapConfirmModalInterface>();
   const { data: gasFee = 0 } = useRequest(getTransactionFee);
 
@@ -272,10 +273,10 @@ export const SwapPanel = () => {
     if (!tokenIn || !tokenOut) return;
 
     executeCbRef.current();
-    swapCircleProcessRef.current?.start();
+    circleProcessRef.current?.start();
     timerRef.current = setInterval(() => {
       executeCbRef.current();
-      swapCircleProcessRef.current?.start();
+      circleProcessRef.current?.start();
     }, SWAP_TIME_INTERVAL);
   }, [clearTimer]);
 
@@ -389,12 +390,12 @@ export const SwapPanel = () => {
     if (!isPriceReverse) {
       if (!valueIn || !valueOut) return `1 ${symbolOut} = - ${symbolIn}`;
 
-      const _price = bigNumberToUPString(ZERO.plus(valueIn).div(ZERO.plus(valueOut)), tokenIn.decimals);
+      const _price = formatPrice(ZERO.plus(valueIn).div(ZERO.plus(valueOut)));
       return `1 ${symbolOut} = ${_price} ${symbolIn}`;
     } else {
       if (!valueIn || !valueOut) return `1 ${symbolIn} = - ${symbolOut}`;
 
-      const _price = bigNumberToUPString(ZERO.plus(valueOut).div(ZERO.plus(valueIn)), tokenOut.decimals);
+      const _price = formatPrice(ZERO.plus(valueOut).div(ZERO.plus(valueIn)));
       return `1 ${symbolIn} = ${_price} ${symbolOut}`;
     }
   }, [isPriceReverse, swapInfo]);
@@ -644,7 +645,7 @@ export const SwapPanel = () => {
                   </>
                 )}
 
-                <SwapCircleProcess ref={swapCircleProcessRef} />
+                <CircleProcess ref={circleProcessRef} />
               </Col>
               <Col>
                 <IconArrowDown2

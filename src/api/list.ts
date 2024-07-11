@@ -48,6 +48,7 @@ export const USER_CENTER_API_LIST = {
   GET_USER_LIQUIDITY_RECORDS: '/api/app/liquidity/liquidity-records',
   GET_USER_ASSET_TOKEN: '/api/app/user-assets-token',
   SET_USER_ASSET_TOKEN: '/api/app/user-assets-token',
+  GET_USER_COMBINED_ASSETS: '/api/app/asset/user-combined-assets',
 };
 
 export const PORTFOLIO_API_LIST = {

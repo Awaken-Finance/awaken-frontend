@@ -3,14 +3,14 @@ import { forwardRef, useCallback, useImperativeHandle, useState } from 'react';
 import { sleep } from 'utils';
 import './styles.less';
 
-export interface SwapCircleProcessInterface {
+export interface CircleProcessInterface {
   start: () => void;
 }
 
-export type SwapCircleProcessProps = {
+export type CircleProcessProps = {
   className?: string;
 };
-export const SwapCircleProcess = forwardRef(({ className }: SwapCircleProcessProps, ref) => {
+export const CircleProcess = forwardRef(({ className }: CircleProcessProps, ref) => {
   const [isCircleAnimation, setIsCircleAnimation] = useState(false);
 
   const start = useCallback(async () => {
@@ -21,10 +21,10 @@ export const SwapCircleProcess = forwardRef(({ className }: SwapCircleProcessPro
   useImperativeHandle(ref, () => ({ start }));
 
   return (
-    <div className={clsx(['swap-circle-warp', className, isCircleAnimation && 'swap-circle-warp-animation'])}>
-      <div className="swap-circle-left"></div>
-      <div className="swap-circle-right"></div>
-      <div className="swap-circle-fill"></div>
+    <div className={clsx(['circle-process-warp', className, isCircleAnimation && 'circle-process-warp-animation'])}>
+      <div className="circle-process-left"></div>
+      <div className="circle-process-right"></div>
+      <div className="circle-process-fill"></div>
     </div>
   );
 });

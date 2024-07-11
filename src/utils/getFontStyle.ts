@@ -11,7 +11,7 @@ export type FontColor = 'one' | 'two' | 'three' | 'primary' | 'fall' | 'rise' | 
 // rise: --ant-rise-font-color #2AED9B
 // secondary: --ant-secondary-color #FFC736
 
-export type FontSize = 10 | 12 | 14 | 16 | 18 | 20 | 22 | 24 | 32;
+export type FontSize = 10 | 12 | 14 | 16 | 18 | 20 | 22 | 24 | 32 | 40;
 
 export type LineHeight = 12 | 14 | 16 | 18 | 20 | 22 | 24 | 26 | 28 | 30 | 32 | 36 | 40 | 48;
 

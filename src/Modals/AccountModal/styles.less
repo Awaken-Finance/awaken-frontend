@@ -6,8 +6,8 @@
   .account-info {
     display: flex;
     align-items: center;
-    margin-bottom: 24px;
-    padding: 0 24px;
+    margin-bottom: 32px;
+    padding: 0 16px;
     .account-addr-info {
       display: flex;
       align-items: center;
@@ -77,23 +77,8 @@
     flex-direction: column;
     position: relative;
 
-    &-list {
-      border-top: 1px solid var(--ant-button-ghost-border-color);
-    }
-    &-item {
-      height: 56px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      border-bottom: 1px solid var(--ant-button-ghost-border-color);
-      padding: 0 24px;
-      &:hover {
-        background-color: var(--ant-container-bg-color-2);
-      }
-    }
-    &-title {
-      margin-top: 16px;
-      padding: 0 24px;
+    .account-content-title {
+      padding: 0 16px;
     }
   }
 
@@ -220,11 +205,7 @@
   .account-modal-position-list {
     display: flex;
     flex-direction: column;
-    padding: 0 16px;
-  }
-
-  .account-modal-transactions-list {
-    padding-bottom: 30px;
+    padding: 0 16px 30px;
   }
 
   .account-modal-position-item {
