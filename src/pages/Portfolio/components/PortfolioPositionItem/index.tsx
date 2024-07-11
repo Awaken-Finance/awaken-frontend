@@ -6,7 +6,7 @@ import Font from 'components/Font';
 import { Pairs } from 'components/Pair';
 import PriceUSDDigits from 'components/PriceUSDDigits';
 import { ONE, ZERO } from 'constants/misc';
-import { useTranslation } from 'react-i18next';
+import { Trans, useTranslation } from 'react-i18next';
 import { TLiquidityPositionItem } from 'types/portfolio';
 import getFontStyle from 'utils/getFontStyle';
 import { formatLiquidity, formatPercentage, formatPrice, formatTokenAmount } from 'utils/price';
@@ -104,13 +104,13 @@ export const PortfolioPositionItem = ({ item }: TPortfolioPositionItemProps) => 
   const [isPriceReverse, setIsPriceReverse] = useState(false);
   const priceLabel = useMemo(() => {
     if (isPriceReverse) {
-      const _price = formatPrice(ZERO.plus(item.tradePairInfo.price));
+      const _price = formatPrice(ONE.div(item.tradePairInfo.price));
 
       return `1 ${formatSymbol(item.tradePairInfo.token1.symbol)} = ${_price} ${formatSymbol(
         item.tradePairInfo.token0.symbol,
       )}`;
     } else {
-      const _price = formatPrice(ONE.div(item.tradePairInfo.price));
+      const _price = formatPrice(ZERO.plus(item.tradePairInfo.price));
 
       return `1 ${formatSymbol(item.tradePairInfo.token0.symbol)} = ${_price} ${formatSymbol(
         item.tradePairInfo.token1.symbol,
@@ -435,7 +435,12 @@ export const PortfolioPositionItem = ({ item }: TPortfolioPositionItemProps) => 
                 <Col>
                   <CommonTooltip
                     placement="top"
-                    title={t('impermanentLossDescription')}
+                    title={
+                      <div className="portfolio-position-item-loss-tip">
+                        <Trans i18nKey="impermanentLossDescription" />
+                      </div>
+                    }
+                    getPopupContainer={(v) => v}
                     buttonTitle={t('ok')}
                     headerDesc={t('Impermanent loss')}
                   />
@@ -446,6 +451,8 @@ export const PortfolioPositionItem = ({ item }: TPortfolioPositionItemProps) => 
                 className={getFontStyle({ lineHeight: 28, size: 20, color: 'one', weight: 'medium' })}
                 price={item.impermanentLossInUSD}
                 isUSDUnit
+                isPlusPrefixShow
+                isUSDUnitZero
               />
             </div>
           </div>
