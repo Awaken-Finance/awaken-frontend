@@ -65,7 +65,7 @@ export const PortfolioChart = ({ data }: TPortfolioChartProps) => {
           top: isMobile ? '-40%' : '-27%',
           name: '',
           type: 'pie',
-          radius: isMobile ? ['26.45%', '37.785%'] : ['36.75%', '52.5%'],
+          radius: isMobile ? ['26.45%', '38.632%'] : ['36.75%', '52.5%'],
           avoidLabelOverlap: false,
           // padAngle: 1,
           itemStyle: {
@@ -92,6 +92,7 @@ export const PortfolioChart = ({ data }: TPortfolioChartProps) => {
                 }`;
               },
             },
+            scaleSize: isMobile ? 3.75 : 5,
           },
           emptyCircleStyle: {
             color: '#2A2E3A',

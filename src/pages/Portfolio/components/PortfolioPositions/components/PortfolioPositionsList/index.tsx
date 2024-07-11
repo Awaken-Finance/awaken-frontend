@@ -54,7 +54,9 @@ export const PortfolioPositionsList = ({ liquidity, isLoading, onPageChange }: T
         </div>
       )}
 
-      {liquidity && <Pagination total={liquidity?.totalCount ?? 0} showSizeChanger onChange={onPageChange} />}
+      {liquidity && (
+        <Pagination total={liquidity?.totalCount ?? 0} showSizeChanger onChange={onPageChange} hideOnSinglePage />
+      )}
     </div>
   );
 };

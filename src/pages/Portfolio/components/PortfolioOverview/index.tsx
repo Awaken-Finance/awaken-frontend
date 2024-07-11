@@ -182,7 +182,7 @@ export const PortfolioOverview = () => {
                 {t('Total Positions')}
               </Font>
               <PriceUSDDigits
-                className={getFontStyle({ size: isMobile ? 24 : 32, lineHeight: isMobile ? 32 : 40 })}
+                className={getFontStyle({ size: isMobile ? 24 : 32, lineHeight: isMobile ? 32 : 40, weight: 'medium' })}
                 price={assetPortfolio?.totalPositionsInUSD ?? 0}
               />
             </div>
@@ -198,7 +198,7 @@ export const PortfolioOverview = () => {
                 {t('Total Fees')}
               </Font>
               <PriceUSDDigits
-                className={getFontStyle({ size: isMobile ? 24 : 32, lineHeight: isMobile ? 32 : 40 })}
+                className={getFontStyle({ size: isMobile ? 24 : 32, lineHeight: isMobile ? 32 : 40, weight: 'medium' })}
                 price={assetPortfolio?.totalFeeInUSD ?? 0}
               />
             </div>
@@ -213,7 +213,7 @@ export const PortfolioOverview = () => {
               {t('Idle Tokens')}
             </Font>
             <PriceUSDDigits
-              className={getFontStyle({ size: isMobile ? 24 : 32, lineHeight: isMobile ? 32 : 40 })}
+              className={getFontStyle({ size: isMobile ? 24 : 32, lineHeight: isMobile ? 32 : 40, weight: 'medium' })}
               price={idleTokenInfo?.totalValueInUsd ?? 0}
             />
           </div>
