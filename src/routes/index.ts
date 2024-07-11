@@ -19,8 +19,8 @@ const UserCenter = lazy(() => import('pages/UserCenter'));
 const Login = lazy(() => import('pages/Login'));
 const Example = lazy(() => import('pages/Example'));
 const Swap = lazy(() => import('pages/Swap'));
-// const Portfolio = lazy(() => import('pages/Portfolio'));
-// const Transactions = lazy(() => import('pages/Transactions'));
+const Portfolio = lazy(() => import('pages/Portfolio'));
+const Transactions = lazy(() => import('pages/Transactions'));
 
 const routes: RoutesProps[] = [
   {
@@ -73,14 +73,16 @@ const routes: RoutesProps[] = [
     path: '/swap',
     component: Swap,
   },
-  // {
-  //   path: '/portfolio',
-  //   component: Portfolio,
-  // },
-  // {
-  //   path: '/transactions',
-  //   component: Transactions,
-  // },
+  {
+    path: '/portfolio',
+    component: Portfolio,
+    authComp: AuthComp,
+  },
+  {
+    path: '/transactions',
+    component: Transactions,
+    authComp: AuthComp,
+  },
   {
     path: '/',
     component: Overview,

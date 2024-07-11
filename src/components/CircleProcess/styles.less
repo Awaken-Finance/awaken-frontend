@@ -1,8 +1,8 @@
-.swap-circle-warp {
+.circle-process-warp {
   width: 14px;
   height: 14px;
   position: relative;
-  .swap-circle-left {
+  .circle-process-left {
     position: absolute;
     width: 100%;
     height: 100%;
@@ -13,7 +13,7 @@
     transform: rotate(45deg);
     z-index: 2;
   }
-  .swap-circle-right {
+  .circle-process-right {
     position: absolute;
     width: 100%;
     height: 100%;
@@ -24,7 +24,7 @@
     transform: rotate(45deg);
     z-index: 0;
   }
-  .swap-circle-fill {
+  .circle-process-fill {
     position: absolute;
     width: 100%;
     height: 100%;
@@ -37,16 +37,16 @@
   }
 }
 
-.swap-circle-warp-animation {
-  .swap-circle-right {
-    animation: swap-change-color 30s linear;
+.circle-process-warp-animation {
+  .circle-process-right {
+    animation: circle-process-change-color 30s linear;
   }
-  .swap-circle-fill {
-    animation: swap-rotate-fill 30s linear;
+  .circle-process-fill {
+    animation: circle-process-rotate-fill 30s linear;
   }
 }
 
-@keyframes swap-rotate-fill {
+@keyframes circle-process-rotate-fill {
   0% {
     transform: rotate(45deg);
     z-index: 1;
@@ -65,7 +65,7 @@
   }
 }
 
-@keyframes swap-change-color {
+@keyframes circle-process-change-color {
   0%,
   50% {
     border-color: #5685ff;

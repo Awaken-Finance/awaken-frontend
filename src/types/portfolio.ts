@@ -36,10 +36,12 @@ export type TIdleTokenInfo = {
 
 export type TLiquidityValue = {
   valueInUsd: string;
-  token0Value: string;
-  token0ValueInUsd: string;
-  token1Value: string;
-  token1ValueInUsd: string;
+  token0Amount: string;
+  token0AmountInUsd: string;
+  token0Percent: string;
+  token1Amount: string;
+  token1AmountInUsd: string;
+  token1Percent: string;
 };
 
 export type TEstimatedAPRItem = {
@@ -48,11 +50,8 @@ export type TEstimatedAPRItem = {
 };
 export type TLiquidityPositionItem = {
   tradePairInfo: TTradePairInfo;
-  token0Amount: string;
-  token1Amount: string;
-  token0Percent: string;
-  token1Percent: string;
   lpTokenAmount: string;
+  lpTokenPercent: string;
   position: TLiquidityValue;
   fee: TLiquidityValue;
   cumulativeAddition: TLiquidityValue;

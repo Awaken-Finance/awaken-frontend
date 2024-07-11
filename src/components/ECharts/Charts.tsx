@@ -10,7 +10,7 @@ const Charts = forwardRef(
       option,
       className,
     }: {
-      option?: echarts.EChartOption | echarts.EChartsResponsiveOption;
+      option?: echarts.EChartsOption;
       disabled?: boolean;
       className?: string;
     },

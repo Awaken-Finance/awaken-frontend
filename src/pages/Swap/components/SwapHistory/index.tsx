@@ -308,7 +308,7 @@ export const SwapHistory = () => {
 
   const history = useHistory();
   const toAll = useCallback(() => {
-    history.push(`/user-center/transaction`);
+    history.push(`/transactions`);
   }, [history]);
 
   return (

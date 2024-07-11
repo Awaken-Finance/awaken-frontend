@@ -3,7 +3,7 @@ import { Empty, Spin } from 'antd';
 import './ECharts.less';
 import Charts from './Charts';
 import clsx from 'clsx';
-import { EChartOption, EChartsResponsiveOption } from 'echarts';
+import { EChartsOption } from 'echarts';
 const ECharts = forwardRef(
   (
     {
@@ -16,7 +16,7 @@ const ECharts = forwardRef(
       disabled?: boolean;
       noData?: boolean;
       loading?: boolean;
-      option?: EChartOption | EChartsResponsiveOption;
+      option?: EChartsOption;
       className?: string;
     },
     ref,

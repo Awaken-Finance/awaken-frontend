@@ -7,7 +7,7 @@ export type TGetAssetPortfolioApiParams = {
   showCount?: number;
 };
 
-export const getAssetPortfolioApi = async ({ chainId, address, showCount = 5 }: TGetAssetPortfolioApiParams) => {
+export const getAssetPortfolioApi = async ({ chainId, address, showCount = 6 }: TGetAssetPortfolioApiParams) => {
   const res: {
     code: number;
     data: TAssetPortfolio;
@@ -26,7 +26,7 @@ export type TGetIdleTokensApiParams = {
   chainId: string;
   showCount?: number;
 };
-export const getIdleTokensApi = async ({ chainId, address, showCount = 5 }: TGetIdleTokensApiParams) => {
+export const getIdleTokensApi = async ({ chainId, address, showCount = 6 }: TGetIdleTokensApiParams) => {
   const res: {
     code: number;
     data: TIdleTokenInfo;

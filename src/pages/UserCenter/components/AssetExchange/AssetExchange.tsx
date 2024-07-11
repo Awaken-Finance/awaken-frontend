@@ -3,7 +3,7 @@ import { useCallback, useEffect, useMemo, useRef } from 'react';
 import { useMobile } from 'utils/isMobile';
 import { getExchangeList, ExchangeListFetchParams } from 'pages/UserCenter/hooks/useExchangeOfUser';
 import { FetchParam } from 'types/requeset';
-import { useRequest, useMount } from 'ahooks';
+import { useRequest } from 'ahooks';
 import { SortOrder } from 'antd/lib/table/interface';
 
 import PcTable from './components/PcTable';
