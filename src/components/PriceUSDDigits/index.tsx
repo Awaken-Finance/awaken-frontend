@@ -37,21 +37,20 @@ export default function PriceUSDDigits({
 
   const _prefix = useMemo(() => {
     if (!isPlusPrefixShow) return prefix;
-    console.log('????', price ?? 0, ZERO.gt(price ?? 0));
     return ZERO.lt(price ?? 0) ? `${prefix}+` : prefix;
   }, [isPlusPrefixShow, prefix, price]);
 
   const usdUnitPrice = useMemo(() => {
-    if (!isUSDUnit) return '0';
+    if (!isUSDUnit) return `${prefix}0`;
     const _price = price ?? 0;
-    if (ZERO.eq(_price)) return '0';
+    if (ZERO.eq(_price)) return `${prefix}0`;
 
     if (ONE.div(100).gt(ZERO.plus(_price).abs() || 0)) {
-      return isUSDUnitZero ? '0' : '<0.01';
+      return isUSDUnitZero ? `${prefix}0` : `${prefix}<0.01`;
     }
 
     return `${_prefix}${formatPriceUSD(price)}`;
-  }, [_prefix, isUSDUnit, isUSDUnitZero, price]);
+  }, [_prefix, isUSDUnit, isUSDUnitZero, prefix, price]);
 
   if (isUSDUnit)
     return (
