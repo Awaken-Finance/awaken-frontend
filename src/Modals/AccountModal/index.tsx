@@ -306,7 +306,7 @@ function AccountModal() {
         </div>
         <div className="account-modal-view-more-btn">
           <CommonLink color="two" onClick={onPositionsViewAll} iconProps={{ size: 16, color: 'two' }}>
-            {t('View More')}
+            {t('Details')}
           </CommonLink>
         </div>
       </>
@@ -362,7 +362,7 @@ function AccountModal() {
         </div>
         <div className="account-modal-view-more-btn">
           <CommonLink color="two" onClick={onTransactionsViewAll} iconProps={{ size: 16, color: 'two' }}>
-            {t('View More')}
+            {t('Details')}
           </CommonLink>
         </div>
       </>
