@@ -18,6 +18,8 @@ export default function PriceUSDDigits({
   size,
   isSink,
   isUSDUnit = false,
+  isPlusPrefixShow = false,
+  isUSDUnitZero = false,
 }: {
   price?: BigNumber.Value;
   prefix?: string;
@@ -28,31 +30,42 @@ export default function PriceUSDDigits({
   size?: TSize;
   isSink?: boolean;
   isUSDUnit?: boolean;
+  isPlusPrefixShow?: boolean;
+  isUSDUnitZero?: boolean;
 }) {
   const isMobile = useMobile();
+
+  const _prefix = useMemo(() => {
+    if (!isPlusPrefixShow) return prefix;
+    return ZERO.lt(price ?? 0) ? `${prefix}+` : prefix;
+  }, [isPlusPrefixShow, prefix, price]);
+
   const usdUnitPrice = useMemo(() => {
-    if (!isUSDUnit) return '0';
+    if (!isUSDUnit) return `${prefix}0`;
+    const _price = price ?? 0;
+    if (ZERO.eq(_price)) return `${prefix}0`;
 
-    if (ZERO.eq(price ?? 0)) return '0';
-    if (ONE.div(100).gt(price || 0)) return '<0.01';
+    if (ONE.div(100).gt(ZERO.plus(_price).abs() || 0)) {
+      return isUSDUnitZero ? `${prefix}0` : `${prefix}<0.01`;
+    }
 
-    return formatPriceUSD(price);
-  }, [isUSDUnit, price]);
+    return `${_prefix}${formatPriceUSD(price)}`;
+  }, [_prefix, isUSDUnit, isUSDUnitZero, prefix, price]);
 
   if (isUSDUnit)
     return (
       <span className={clsx('price-digits-inner', size && `price-digits-${size}`, className)}>
-        {typeof price !== 'undefined' ? `${prefix}${usdUnitPrice}${suffix}` : '-'}
+        {typeof price !== 'undefined' ? `${usdUnitPrice}${suffix}` : '-'}
       </span>
     );
 
   return (
     <span style={style} className={clsx('price-digits-wrapper', wrapperClassName)}>
       {isMobile || isSink ? (
-        <PriceUSDDecimalsSink prefix={prefix} suffix={suffix} price={price} className={className} />
+        <PriceUSDDecimalsSink prefix={_prefix} suffix={suffix} price={price} className={className} />
       ) : (
         <span className={clsx('price-digits-inner', size && `price-digits-${size}`, className)}>
-          {typeof price !== 'undefined' ? `${prefix}${formatPriceUSD(price)}${suffix}` : '-'}
+          {typeof price !== 'undefined' ? `${_prefix}${formatPriceUSD(price)}${suffix}` : '-'}
         </span>
       )}
     </span>
