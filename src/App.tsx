@@ -1,7 +1,6 @@
 import { Suspense } from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-import { Layout, message } from 'antd';
-import { PortkeyLoading } from '@portkey/did-ui-react';
+import { Layout } from 'antd';
 import Header from 'components/Header';
 import ScrollToTop from 'components/ScrollToTop';
 import { routes } from 'routes';
@@ -9,34 +8,33 @@ import Modals from './Modals';
 import './utils/initialize';
 import './utils/vconsole';
 import { LoadPageLoading } from 'components/Loading';
-import { WebLoginEvents, usePortkeyLock, usePortkeyPreparing, useWebLogin, useWebLoginEvent } from 'aelf-web-login';
-import { WebLoginInstance } from 'utils/webLogin';
 
 const { Content } = Layout;
 
 export default function App() {
-  const { isPreparing } = usePortkeyPreparing();
-  const { isUnlocking } = usePortkeyLock();
-  const webLoginContext = useWebLogin();
-  WebLoginInstance.get().setWebLoginContext(webLoginContext);
+  // const { isPreparing } = usePortkeyPreparing();
+  // const { isUnlocking } = usePortkeyLock();
+  // const webLoginContext = useWebLogin();
+  // WebLoginInstance.get().setWebLoginContext(webLoginContext);
 
-  useWebLoginEvent(WebLoginEvents.ERROR, (error: any) => {
-    console.error(error);
-    if (error.code) {
-      if (error.message) {
-        message.error(error.message);
-      }
-    }
-  });
+  // TODO: v2
+  // useWebLoginEvent(WebLoginEvents.ERROR, (error: any) => {
+  //   console.error(error);
+  //   if (error.code) {
+  //     if (error.message) {
+  //       message.error(error.message);
+  //     }
+  //   }
+  // });
 
-  useWebLoginEvent(WebLoginEvents.LOGIN_ERROR, (error: any) => {
-    console.error(error);
-    if (error.code) {
-      if (error.message) {
-        message.error(error.message);
-      }
-    }
-  });
+  // useWebLoginEvent(WebLoginEvents.LOGIN_ERROR, (error: any) => {
+  //   console.error(error);
+  //   if (error.code) {
+  //     if (error.message) {
+  //       message.error(error.message);
+  //     }
+  //   }
+  // });
 
   return (
     <>
@@ -62,7 +60,8 @@ export default function App() {
                 })}
               </Switch>
             </Suspense>
-            <PortkeyLoading loading={isPreparing || isUnlocking} />
+            {/* TODO: v2 */}
+            {/* <PortkeyLoading loading={isPreparing || isUnlocking} /> */}
           </Content>
         </Layout>
       </Router>

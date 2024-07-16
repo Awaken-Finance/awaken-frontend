@@ -1,19 +1,23 @@
-import React, { useMemo } from 'react';
+import { useMemo } from 'react';
 import { Modal, Button, Row } from 'antd';
-import { ConfirmLogoutDialogProps } from 'aelf-web-login';
 import { IconLogoutWarn } from 'assets/icons';
 import Font from 'components/Font';
 import { isMobileDevices } from 'utils/isMobile';
 import './styles.less';
 import { useTranslation } from 'react-i18next';
 
-const defaultProps: Partial<ConfirmLogoutDialogProps> = {
+export type TConfirmLogoutDialogProps = {
+  visible: boolean;
+  onOk: () => undefined;
+  onCancel: () => undefined;
+};
+const defaultProps: TConfirmLogoutDialogProps = {
   visible: false,
   onOk: () => void 0,
   onCancel: () => void 0,
 };
 
-export default function ConfirmLogoutDialog(props: Partial<ConfirmLogoutDialogProps>) {
+export default function ConfirmLogoutDialog(props: Partial<TConfirmLogoutDialogProps>) {
   const { visible, onOk, onCancel } = {
     ...defaultProps,
     ...props,

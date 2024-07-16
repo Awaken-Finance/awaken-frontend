@@ -22,7 +22,6 @@ import { useUserSettings } from 'contexts/useUserSettings';
 import { useRequest } from 'ahooks';
 import { getTransactionFee } from 'pages/Exchange/apis/getTransactionFee';
 import { divDecimals } from 'utils/calculate';
-import { WebLoginState, useWebLogin } from 'aelf-web-login';
 import AuthBtn from 'Buttons/AuthBtn';
 import { FontColor } from 'utils/getFontStyle';
 import { SwapRouteInfo } from '../SwapRouteInfo';
@@ -36,6 +35,7 @@ import { SwapConfirmModal, SwapConfirmModalInterface } from '../SwapConfirmModal
 import './styles.less';
 import { CircleProcess, CircleProcessInterface } from 'components/CircleProcess';
 import { formatPrice } from 'utils/price';
+import { useConnectWallet } from '@aelf-web-login/wallet-adapter-react';
 
 export type TSwapInfo = {
   tokenIn?: Currency;
@@ -430,7 +430,7 @@ export const SwapPanel = () => {
     return false;
   }, [currencyBalances, gasFee, swapInfo]);
 
-  const { loginState } = useWebLogin();
+  const { isConnected, isLocking } = useConnectWallet();
   const isPortkeySDK = useIsPortkeySDK();
   const swapBtnInfo = useMemo<{
     active?: boolean;
@@ -439,8 +439,7 @@ export const SwapPanel = () => {
     fontColor?: FontColor;
     type?: 'primary';
   }>(() => {
-    if (loginState !== WebLoginState.logined)
-      return { label: t(isPortkeySDK ? 'Unlock' : 'connectWallet'), fontColor: 'primary', active: true };
+    if (!isConnected) return { label: t(isLocking ? 'Unlock' : 'connectWallet'), fontColor: 'primary', active: true };
     const { tokenIn, tokenOut, isFocusValueIn, valueIn, valueOut } = swapInfo;
     if (!tokenIn || !tokenOut) return { label: t('selectAToken'), fontColor: 'two' };
     if (isRouteEmpty) return { label: t('Go To Create'), active: true, type: 'primary' };
@@ -459,7 +458,7 @@ export const SwapPanel = () => {
       label: t('Swap'),
       type: 'primary',
     };
-  }, [isExceedBalance, isInvalidParis, isPortkeySDK, isRouteEmpty, loginState, swapInfo, t]);
+  }, [isConnected, isExceedBalance, isInvalidParis, isLocking, isRouteEmpty, swapInfo, t]);
 
   const [isSwapping, setIsSwapping] = useState(false);
   const modalDispatch = useModalDispatch();

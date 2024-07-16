@@ -1,4 +1,4 @@
-import { useCallback, useMemo } from 'react';
+import { useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import SettingFee from 'Buttons/SettingFeeBtn';
 import { useHistory } from 'react-router-dom';
@@ -8,15 +8,14 @@ import { SwapPanel } from './components/SwapPanel';
 
 import './styles.less';
 import { SwapHistory } from './components/SwapHistory';
-import { WebLoginState, useWebLogin } from 'aelf-web-login';
+import { useConnectWallet } from '@aelf-web-login/wallet-adapter-react';
 
 export const Swap = () => {
   const { t } = useTranslation();
   const isMobile = useMobile();
   const history = useHistory();
-  const { loginState } = useWebLogin();
+  const { isConnected } = useConnectWallet();
 
-  const isLogin = useMemo(() => loginState === WebLoginState.logined, [loginState]);
   const onCancel = useCallback(() => {
     history.goBack();
   }, [history]);
@@ -32,7 +31,7 @@ export const Swap = () => {
         <SwapPanel />
       </CommonPanelPage>
 
-      {isLogin && <SwapHistory />}
+      {isConnected && <SwapHistory />}
     </>
   );
 };

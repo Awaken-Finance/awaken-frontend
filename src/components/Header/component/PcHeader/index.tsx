@@ -10,7 +10,6 @@ import NavMenu from '../NavMenu';
 import { NavLink, useLocation } from 'react-router-dom';
 import useSelectedKeys from 'components/Header/hooks/useSelectedKeys';
 import { useTranslation } from 'react-i18next';
-import { WebLoginState, useWebLogin } from 'aelf-web-login';
 import { useModal } from 'contexts/useModal';
 import CommonButton from 'components/CommonButton';
 import useLogin from 'hooks/useLogin';
@@ -21,10 +20,11 @@ import { useMonitorScroll } from 'hooks/useMonitorScroll';
 import { useIsPortkeySDK } from 'hooks/useIsPortkeySDK';
 import useChainId from 'hooks/useChainId';
 import { shortenAddress } from 'utils';
+import { useConnectWallet } from '@aelf-web-login/wallet-adapter-react';
 
 function PcHeader() {
   const { selectedKeys } = useSelectedKeys();
-  const { wallet, loginState } = useWebLogin();
+  const { walletInfo, isConnected } = useConnectWallet();
   const { chainId } = useChainId();
   const pathname = useLocation().pathname;
   const { t } = useTranslation();
@@ -51,13 +51,13 @@ function PcHeader() {
   const isPortkeySDK = useIsPortkeySDK();
 
   const displayAddress = useMemo(() => {
-    if (!wallet.address) return '';
-    const addr = shortenAddress(wallet.address);
+    if (!walletInfo?.address) return '';
+    const addr = shortenAddress(walletInfo.address);
     return `ELF_${addr}_${chainId}`;
-  }, [chainId, wallet.address]);
+  }, [chainId, walletInfo]);
 
   const renderLoginPart = () => {
-    if (loginState === WebLoginState.logined) {
+    if (isConnected) {
       return (
         <Col>
           <CommonButton onClick={toggleAccountModal} className="my-btn">

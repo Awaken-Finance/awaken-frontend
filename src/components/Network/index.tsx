@@ -9,7 +9,6 @@ import CommonDropdown from 'components/CommonDropdown';
 import CommonButton from 'components/CommonButton';
 import { IconArrowDown, IconLogoutWarn, IconRedError } from 'assets/icons';
 import { elfChain } from 'assets/images';
-import { WalletType, WebLoginEvents, getConfig, useWebLogin, useWebLoginEvent } from 'aelf-web-login';
 import { useInterval } from 'react-use';
 import { useMobile } from 'utils/isMobile';
 import CommonTooltip from 'components/CommonTooltip';
@@ -18,9 +17,12 @@ import Font from 'components/Font';
 import { useTranslation } from 'react-i18next';
 
 import './index.less';
+import { useConnectWallet } from '@aelf-web-login/wallet-adapter-react';
+import { WEB_LOGIN_CONFIG } from 'config/webLoginConfig';
+import { WalletTypeEnum } from '@aelf-web-login/wallet-adapter-base';
 
 function useNetworkCheck() {
-  const { walletType, wallet } = useWebLogin();
+  const { walletType } = useConnectWallet();
   const [mismatch, setMismatch] = useState(false);
 
   const checkNetwork = async () => {
@@ -31,16 +33,17 @@ function useNetworkCheck() {
         method: 'network',
       });
       console.log(network);
-      setMismatch(network !== getConfig().networkType);
+      setMismatch(network !== WEB_LOGIN_CONFIG.baseConfig.networkType);
     } catch (error) {
       console.warn(error);
       setMismatch(false);
     }
   };
 
-  useWebLoginEvent(WebLoginEvents.NETWORK_MISMATCH, () => {
-    setMismatch(true);
-  });
+  // TODO: v2
+  // useWebLoginEvent(WebLoginEvents.NETWORK_MISMATCH, () => {
+  //   setMismatch(true);
+  // });
 
   useInterval(() => {
     if (mismatch) {
@@ -48,18 +51,21 @@ function useNetworkCheck() {
     }
   }, 500);
 
-  if (walletType !== WalletType.discover) return false;
+  return useMemo(() => {
+    if (walletType !== WalletTypeEnum.discover) return false;
 
-  if (!wallet.discoverInfo?.provider) {
-    return false;
-  }
+    // TODO: v2
+    // if (!walletInfo?.discoverInfo?.provider) {
+    //   return false;
+    // }
 
-  return mismatch;
+    return mismatch;
+  }, [mismatch, walletType]);
 }
 
 export default function Network(props: { overlayClassName?: string | undefined }) {
   const { chainId } = useActiveWeb3React();
-  const { logout } = useWebLogin();
+  const { disConnectWallet } = useConnectWallet();
   const [modalOpen, setModalOpen] = useState(false);
   const networkMismatch = useNetworkCheck();
   const isMobile = useMobile();
@@ -95,13 +101,14 @@ export default function Network(props: { overlayClassName?: string | undefined }
   };
 
   const onClickDisconnect = () => {
-    logout();
+    disConnectWallet();
     setModalOpen(false);
   };
 
-  useWebLoginEvent(WebLoginEvents.NETWORK_MISMATCH, () => {
-    setModalOpen(true);
-  });
+  // TODO: v2
+  // useWebLoginEvent(WebLoginEvents.NETWORK_MISMATCH, () => {
+  //   setModalOpen(true);
+  // });
 
   if (!chainId) return null;
 

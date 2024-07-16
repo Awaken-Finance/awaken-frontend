@@ -1,4 +1,3 @@
-import { useWebLogin } from 'aelf-web-login';
 import { Row, Col, Avatar, message } from 'antd';
 import { shortenAddress } from 'utils';
 import Font from 'components/Font';
@@ -8,6 +7,7 @@ import { useMemo } from 'react';
 import useChainId from 'hooks/useChainId';
 import { useCopyToClipboard } from 'react-use';
 import { useMobile } from 'utils/isMobile';
+import { useConnectWallet } from '@aelf-web-login/wallet-adapter-react';
 
 export default function AccountInfo({
   onClickLogout,
@@ -17,19 +17,20 @@ export default function AccountInfo({
   onClickSwitchWallet: () => void;
 }) {
   const [, setCopied] = useCopyToClipboard();
-  const { wallet } = useWebLogin();
+  const { walletInfo } = useConnectWallet();
   const { chainId } = useChainId();
   const isMobile = useMobile();
 
   const displayAddress = useMemo(() => {
-    if (!wallet.address) return '';
-    const addr = shortenAddress(wallet.address);
+    if (!walletInfo?.address) return '';
+    const addr = shortenAddress(walletInfo?.address);
     return `ELF_${addr}_${chainId}`;
-  }, [chainId, wallet.address]);
+  }, [chainId, walletInfo?.address]);
 
   const copyAddress = useMemo(() => {
-    return `ELF_${wallet.address}_${chainId}`;
-  }, [chainId, wallet.address]);
+    if (!walletInfo?.address) return '';
+    return `ELF_${walletInfo?.address}_${chainId}`;
+  }, [chainId, walletInfo?.address]);
 
   return (
     <Row className="account-info" align="middle" gutter={8}>

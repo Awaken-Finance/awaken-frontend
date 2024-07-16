@@ -1,16 +1,15 @@
 import { useMemo } from 'react';
 import useChainId from '../hooks/useChainId';
-import { useWebLogin } from 'aelf-web-login';
+import { useConnectWallet } from '@aelf-web-login/wallet-adapter-react';
 
 export function useActiveWeb3React() {
-  // const [{ userChainId }] = useChain();
   const { chainId, apiChainId } = useChainId();
-  const { wallet } = useWebLogin();
+  const { walletInfo } = useConnectWallet();
   const tmpContext = useMemo(() => {
     if (typeof chainId === 'string') {
       return {
         chainId,
-        account: wallet.address,
+        account: walletInfo?.address || '',
         library: undefined,
         apiChainId,
         error: null,
@@ -19,6 +18,6 @@ export function useActiveWeb3React() {
       };
     }
     throw new Error(`Unsupported chainId: ${chainId}`);
-  }, [chainId, wallet.address, apiChainId]);
+  }, [chainId, walletInfo?.address, apiChainId]);
   return tmpContext;
 }

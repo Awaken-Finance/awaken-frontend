@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import Font from 'components/Font';
 import { useTranslation } from 'react-i18next';
 import { PortfolioOverview } from './components/PortfolioOverview';
@@ -6,10 +6,10 @@ import CommonLink from 'components/CommonLink';
 import { useHistory } from 'react-router-dom';
 import { PortfolioPositions } from './components/PortfolioPositions';
 import './styles.less';
-import { WebLoginState, useWebLogin } from 'aelf-web-login';
 import { useMobile } from 'utils/isMobile';
 import { IconArrowRight3, IconClose2 } from 'assets/icons';
 import notification from 'utils/notificationNew';
+import { useConnectWallet } from '@aelf-web-login/wallet-adapter-react';
 
 export const Portfolio = () => {
   const { t } = useTranslation();
@@ -19,8 +19,7 @@ export const Portfolio = () => {
   const onTransactionsClick = useCallback(() => {
     history.push('/transactions');
   }, [history]);
-  const { loginState } = useWebLogin();
-  const isLogin = useMemo(() => loginState === WebLoginState.logined, [loginState]);
+  const { isConnected } = useConnectWallet();
 
   const [isTipsShow, setIsTipsShow] = useState(false);
   useEffect(() => {
@@ -77,7 +76,7 @@ export const Portfolio = () => {
 
       <PortfolioOverview />
 
-      {isLogin && <PortfolioPositions />}
+      {isConnected && <PortfolioPositions />}
     </div>
   );
 };

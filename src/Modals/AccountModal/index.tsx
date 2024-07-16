@@ -1,15 +1,6 @@
 import { useModal } from 'contexts/useModal';
 import { basicModalView } from 'contexts/useModal/actions';
 import { useMobile } from 'utils/isMobile';
-import {
-  SwitchWalletType,
-  WebLoginEvents,
-  openNightElfPluginPage,
-  openPortkeyPluginPage,
-  useMultiWallets,
-  useWebLogin,
-  useWebLoginEvent,
-} from 'aelf-web-login';
 import { Row, Carousel, Modal, Col, message } from 'antd';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { CarouselRef } from 'antd/lib/carousel';
@@ -20,7 +11,6 @@ import Font from 'components/Font';
 import { IconArrowDown, IconArrowUp, IconClose } from 'assets/icons';
 import MyTokenList from './MyTokenList';
 import { matchPath, useHistory } from 'react-router-dom';
-import { detectDiscoverProvider, detectNightElf } from 'aelf-web-login';
 import { useTranslation } from 'react-i18next';
 import { routes } from 'routes';
 import querystring from 'query-string';
@@ -43,6 +33,7 @@ import moment from 'moment';
 import { SIDE_COLOR_MAP, SIDE_LABEL_MAP } from 'constants/swap';
 import CommonLink from 'components/CommonLink';
 import { ZERO } from 'constants/misc';
+import { useConnectWallet } from '@aelf-web-login/wallet-adapter-react';
 
 const MENU_LIST = [
   {
@@ -62,17 +53,13 @@ const MENU_LIST = [
 function AccountModal() {
   const [{ accountModal: isAccountModalShow }, { dispatch }] = useModal();
   const [showHiddenTokens, setShowHiddenTokens] = useState(false);
-  const {
-    walletType,
-    logout,
-    wallet: { address },
-  } = useWebLogin();
+  const { walletType, walletInfo, disConnectWallet } = useConnectWallet();
   const history = useHistory();
   const query = useMemo(() => querystring.parse(history.location.search), [history.location.search]);
   const redirect = query['redirect'];
   const [logoutPortkeyBySwitch, setLogoutPortkeyBySwitch] = useState(false);
   const [checkingPlugin, setCheckingPlugin] = useState(false);
-  const { current, switchWallet, switching } = useMultiWallets();
+  // const { current, switchWallet, switching } = useMultiWallets();
   const carouselRef = useRef<CarouselRef>(null);
   const isMobile = useMobile();
 
@@ -86,7 +73,8 @@ function AccountModal() {
     refreshUserCombinedAssets();
   }, [menu, refreshUserCombinedAssets]);
 
-  const isSwitchingWallet = useMemo(() => checkingPlugin && switching, [checkingPlugin, switching]);
+  // TODO: v2
+  // const isSwitchingWallet = useMemo(() => checkingPlugin && switching, [checkingPlugin, switching]);
   const { t } = useTranslation();
 
   const toWalletInfo = () => {
@@ -101,95 +89,91 @@ function AccountModal() {
     carouselRef.current?.goTo(0, true);
   }, [dispatch]);
 
-  const onClickSwitchWallet = async (type: SwitchWalletType) => {
-    if (current === type) return;
-    if (isSwitchingWallet) return;
-
-    setCheckingPlugin(true);
-    setLogoutPortkeyBySwitch(false);
-
-    if (type === 'discover') {
-      try {
-        const discoverProvider = await detectDiscoverProvider();
-        if (!discoverProvider && !isMobile) {
-          setCheckingPlugin(false);
-          openPortkeyPluginPage();
-          return;
-        }
-      } catch (e) {
-        setCheckingPlugin(false);
-        if (!isMobile) {
-          openPortkeyPluginPage();
-        }
-        return;
-      }
-    }
-
-    if (type === 'elf') {
-      const detectRes = await detectNightElf();
-      if (detectRes === 'none' && !isMobile) {
-        openNightElfPluginPage();
-        setCheckingPlugin(false);
-        return;
-      }
-    }
-    setCheckingPlugin(false);
-
-    if (current === 'portkey') {
-      setLogoutPortkeyBySwitch(true);
-      await logout();
-      return;
-    }
-
-    if (type === 'portkey') {
-      await logout();
-      window.location.href = '/login';
-    } else {
-      console.log('switch to', type);
-      try {
-        await switchWallet(type);
-        console.log('switch to', type, 'done');
-      } catch (err: any) {
-        message.error(err.message);
-      }
-    }
+  // TODO: v2
+  const onClickSwitchWallet = async (type: any) => {
+    // if (current === type) return;
+    // if (isSwitchingWallet) return;
+    // setCheckingPlugin(true);
+    // setLogoutPortkeyBySwitch(false);
+    // if (type === 'discover') {
+    //   try {
+    //     const discoverProvider = await detectDiscoverProvider();
+    //     if (!discoverProvider && !isMobile) {
+    //       setCheckingPlugin(false);
+    //       openPortkeyPluginPage();
+    //       return;
+    //     }
+    //   } catch (e) {
+    //     setCheckingPlugin(false);
+    //     if (!isMobile) {
+    //       openPortkeyPluginPage();
+    //     }
+    //     return;
+    //   }
+    // }
+    // if (type === 'elf') {
+    //   const detectRes = await detectNightElf();
+    //   if (detectRes === 'none' && !isMobile) {
+    //     openNightElfPluginPage();
+    //     setCheckingPlugin(false);
+    //     return;
+    //   }
+    // }
+    // setCheckingPlugin(false);
+    // if (current === 'portkey') {
+    //   setLogoutPortkeyBySwitch(true);
+    //   await logout();
+    //   return;
+    // }
+    // if (type === 'portkey') {
+    //   await logout();
+    //   window.location.href = '/login';
+    // } else {
+    //   console.log('switch to', type);
+    //   try {
+    //     await switchWallet(type);
+    //     console.log('switch to', type, 'done');
+    //   } catch (err: any) {
+    //     message.error(err.message);
+    //   }
+    // }
   };
 
   const onClickLogout = async () => {
-    if (walletType === 'portkey') {
-      dispatch(basicModalView.setAccountModal.actions(false));
-      await logout();
-      return;
-    }
-    setLogoutPortkeyBySwitch(false);
-    dispatch(basicModalView.setAccountModal.actions(false));
-    await logout();
+    // if (walletType === 'portkey') {
+    //   dispatch(basicModalView.setAccountModal.actions(false));
+    //   await logout();
+    //   return;
+    // }
+    // setLogoutPortkeyBySwitch(false);
+    // dispatch(basicModalView.setAccountModal.actions(false));
+    // await logout();
   };
 
-  useWebLoginEvent(WebLoginEvents.LOGOUT, () => {
-    console.log('logout', current);
-    setLogoutPortkeyBySwitch(false);
-    onClose();
-    if (logoutPortkeyBySwitch) {
-      window.location.href = '/login';
-    } else {
-      const isNeedLoginPage = routes.some((route) => {
-        if (route.path === history.location.pathname || matchPath(history.location.pathname, { path: route.path })) {
-          return !!route.authComp;
-        }
-        return false;
-      });
-      if (isNeedLoginPage) {
-        window.location.href = '/';
-      } else {
-        const noReloadPages = ['/user-center'];
-        const noReload = typeof redirect === 'string' && !!noReloadPages.find((path) => redirect.startsWith(path));
-        if (!noReload) {
-          // window.location.reload();
-        }
-      }
-    }
-  });
+  // useWebLoginEvent(WebLoginEvents.LOGOUT, () => {
+  //   console.log('logout', current);
+  //   setLogoutPortkeyBySwitch(false);
+  //   onClose();
+  //   if (logoutPortkeyBySwitch) {
+  //     window.location.href = '/login';
+  //   } else {
+  //     const isNeedLoginPage = routes.some((route) => {
+  //       if (route.path === history.location.pathname || matchPath(history.location.pathname, { path: route.path })) {
+  //         return !!route.authComp;
+  //       }
+  //       return false;
+  //     });
+  //     if (isNeedLoginPage) {
+  //       window.location.href = '/';
+  //     } else {
+  //       const noReloadPages = ['/user-center'];
+  //       const noReload = typeof redirect === 'string' && !!noReloadPages.find((path) => redirect.startsWith(path));
+  //       if (!noReload) {
+  //         // window.location.reload();
+  //       }
+  //     }
+  //   }
+  // });
 
   const onExploreClick = useCallback(() => {
     history.push('/overview');
@@ -219,7 +203,7 @@ function AccountModal() {
     return (
       <>
         <Row>
-          <MyTokenList items={userTokenList.showList} address={address} />
+          <MyTokenList items={userTokenList.showList} address={walletInfo?.address || ''} />
         </Row>
 
         {userTokenList.hiddenList.length > 0 && (
@@ -239,14 +223,14 @@ function AccountModal() {
             </Row>
             {showHiddenTokens && (
               <Row>
-                <MyTokenList items={userTokenList.hiddenList} address={address} />
+                <MyTokenList items={userTokenList.hiddenList} address={walletInfo?.address || ''} />
               </Row>
             )}
           </>
         )}
       </>
     );
-  }, [address, onExploreClick, showHiddenTokens, t, userTokenList.hiddenList, userTokenList.showList]);
+  }, [onExploreClick, showHiddenTokens, t, userTokenList.hiddenList, userTokenList.showList, walletInfo?.address]);
 
   const onAddLiquidityClick = useCallback(() => {
     history.push('/liquidity/ELF_USDT_0.05/add');

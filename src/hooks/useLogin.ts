@@ -1,7 +1,5 @@
-import { WebLoginState, useWebLogin } from 'aelf-web-login';
 import { useHistory } from 'react-router-dom';
-import { isNightElfApp, isPortkeyAppWithDiscover } from 'utils/isApp';
-import { useIsPortkeySDK } from './useIsPortkeySDK';
+import { useConnectWallet } from '@aelf-web-login/wallet-adapter-react';
 
 export function appendRedirect(path: string, redirect: string | undefined = undefined) {
   const { pathname } = window.location;
@@ -17,36 +15,29 @@ export function appendRedirect(path: string, redirect: string | undefined = unde
 }
 
 export default function useLogin(redirect: string | undefined = undefined) {
-  const { loginState, login } = useWebLogin();
+  const { isConnected, isLocking, connectWallet } = useConnectWallet();
   const history = useHistory();
-  const isPortkeySDK = useIsPortkeySDK();
 
   const toLogin = () => {
-    if (isPortkeySDK) {
-      login();
+    if (isLocking) {
+      connectWallet();
       return;
     }
-    if (loginState === WebLoginState.initial || loginState === WebLoginState.logining) {
-      if (isPortkeyAppWithDiscover() || isNightElfApp()) {
-        login();
-      } else {
-        history.push(appendRedirect('/login', redirect));
-      }
-    } else if (loginState === WebLoginState.eagerly || loginState === WebLoginState.lock) {
-      login();
+    // TODO: v2
+    if (!isConnected) {
+      history.push(appendRedirect('/login', redirect));
+      return;
     }
+
+    console.log('toLogin invalid');
   };
 
   const toSignup = () => {
-    if (loginState === WebLoginState.initial || loginState === WebLoginState.logining) {
-      if (isPortkeyAppWithDiscover() || isNightElfApp()) {
-        login();
-      } else {
-        history.push(appendRedirect('/signup', redirect));
-      }
-    } else if (loginState === WebLoginState.eagerly || loginState === WebLoginState.lock) {
-      login();
+    if (!isConnected && !isLocking) {
+      history.push(appendRedirect('/signup', redirect));
+      return;
     }
+    console.log('toSignup invalid');
   };
 
   return {

@@ -1,7 +1,7 @@
-import { WebLoginInterface } from 'aelf-web-login';
+// import { WebLoginInterface } from 'aelf-web-login';
 
 let instance: WebLoginInstance;
-
+// TODO: v2 remove
 export class WebLoginInstance {
   static get() {
     if (!instance) {
@@ -10,9 +10,9 @@ export class WebLoginInstance {
     return instance;
   }
 
-  private _context!: WebLoginInterface;
+  private _context!: any;
 
-  setWebLoginContext(context: WebLoginInterface) {
+  setWebLoginContext(context: any) {
     this._context = context;
   }
 

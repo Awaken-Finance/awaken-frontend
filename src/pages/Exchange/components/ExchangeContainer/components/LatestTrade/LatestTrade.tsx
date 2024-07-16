@@ -1,6 +1,5 @@
 import { useMemo, memo, useState } from 'react';
 import moment from 'moment';
-import { useWebLogin } from 'aelf-web-login';
 import { useMarketTradeList, useUserTradList } from 'pages/Exchange/hooks/useLatestList';
 import { TradeItem } from 'socket/socketType';
 import { useTranslation } from 'react-i18next';
@@ -16,6 +15,7 @@ import { useSwapContext } from 'pages/Exchange/hooks/useSwap';
 import './LatestTrade.less';
 import { getRealPrice } from 'utils/calculate';
 import { formatSymbol } from 'utils/token';
+import { useConnectWallet } from '@aelf-web-login/wallet-adapter-react';
 
 const menus = [
   {
@@ -30,12 +30,12 @@ const menus = [
 
 function LatestTrade() {
   const { t } = useTranslation();
-  const { wallet } = useWebLogin();
+  const { walletInfo } = useConnectWallet();
   const [{ pairInfo }] = useSwapContext();
 
   const marketList = useMarketTradeList(pairInfo?.id, 200);
 
-  const userList = useUserTradList(pairInfo?.id, wallet?.address, 200);
+  const userList = useUserTradList(pairInfo?.id, walletInfo?.address, 200);
 
   const [menu, setMenu] = useState<string | number>('market');
 

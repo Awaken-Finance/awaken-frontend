@@ -1,15 +1,16 @@
-import { useWebLogin } from 'aelf-web-login';
-import { APPNAME } from 'config/webLoginConfig';
+import { useConnectWallet } from '@aelf-web-login/wallet-adapter-react';
+import { APP_NAME } from 'config/webLoginConfig';
 import { useEffect, useState } from 'react';
 
+// TODO: v2
 export const useIsPortkeySDK = () => {
-  const { loginState } = useWebLogin();
+  const { isConnected } = useConnectWallet();
   const [isPortkeySDK, setIsPortkeySDK] = useState(false);
 
   useEffect(() => {
-    const storageStr = localStorage.getItem(`V2-${APPNAME}`);
+    const storageStr = localStorage.getItem(`V2-${APP_NAME}`);
     setIsPortkeySDK(!!storageStr);
-  }, [loginState]);
+  }, [isConnected]);
 
   return isPortkeySDK;
 };

@@ -19,11 +19,11 @@ import getFontStyle, { FontColor } from 'utils/getFontStyle';
 import { getExploreLink } from 'utils';
 import { stringMidShort } from 'utils/string';
 import CommonCopy from 'components/CommonCopy';
-import { WebLoginState, useWebLogin } from 'aelf-web-login';
 import CommonList from 'components/CommonList';
 import { Col, Row } from 'antd';
 import { useHistory } from 'react-router-dom';
 import { SWAP_TIME_INTERVAL } from 'constants/misc';
+import { useConnectWallet } from '@aelf-web-login/wallet-adapter-react';
 
 export function SwapTransactionItem({
   item: { tradePair, timestamp, side, token0Amount, token1Amount, transactionHash, totalPriceInUsd },
@@ -134,12 +134,12 @@ export const SwapHistory = () => {
   const { account, chainId } = useActiveWeb3React();
   const isMobile = useMobile();
   const { t } = useTranslation();
-  const { loginState } = useWebLogin();
+  const { isConnected } = useConnectWallet();
 
   const [list, setList] = useState<RecentTransaction[]>([]);
   const dataSource = useMemo(() => {
-    return loginState === WebLoginState.logined ? list : [];
-  }, [list, loginState]);
+    return isConnected ? list : [];
+  }, [isConnected, list]);
 
   const getLastTransactionList = useReturnLastCallback<typeof getTransactionList>(getTransactionList, []);
 

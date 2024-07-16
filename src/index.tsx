@@ -1,9 +1,9 @@
 import React, { useMemo } from 'react';
 import ReactDOM from 'react-dom';
 import { ConfigProvider, message } from 'antd';
-import { WebLoginProvider, getConfig, PortkeyProvider, PortkeyDid, PortkeyDidV1 } from 'aelf-web-login';
+// import { WebLoginProvider, getConfig, PortkeyProvider, PortkeyDid, PortkeyDidV1 } from 'aelf-web-login';
 import { devicesEnv } from '@portkey/utils';
-import type { ExtraWalletNames } from 'aelf-web-login';
+// import type { ExtraWalletNames } from 'aelf-web-login';
 import { useAsync } from 'react-use';
 
 import App from './App';
@@ -19,16 +19,17 @@ import { ANTD_LOCAL } from './i18n/config';
 import { useLanguage } from './i18n';
 import SignInProxy from 'pages/Login/SignInProxy';
 import ConfirmLogoutDialog from 'Modals/ConfirmLogoutDialog';
+import { WebLoginProvider, init, useConnectWallet } from '@aelf-web-login/wallet-adapter-react';
 
 import './config/webLoginConfig';
 import './sentry';
 
-import '@portkey/did-ui-react/dist/assets/index.css';
-import '@portkey-v1/did-ui-react/dist/assets/index.css';
-import 'aelf-web-login/dist/assets/index.css';
+// import '@portkey/did-ui-react/dist/assets/index.css';
+// import '@portkey-v1/did-ui-react/dist/assets/index.css';
 
 import './index.css';
 import './App.less';
+import { WEB_LOGIN_CONFIG } from './config/webLoginConfig';
 
 message.config({
   maxCount: 1,
@@ -52,17 +53,27 @@ function ContextProviders({ children }: { children?: React.ReactNode }) {
 function RootApp() {
   const { value, loading } = useAsync(async () => await devicesEnv.getPortkeyShellApp());
 
-  const extraWallets: ExtraWalletNames[] | undefined = useMemo(() => {
-    if (loading) {
-      return;
-    }
+  // const bridgeAPI = init(WEB_LOGIN_CONFIG);
+  const bridgeAPI = useMemo(() => init(WEB_LOGIN_CONFIG), []);
 
-    return value ? undefined : ['discover', 'elf'];
-  }, [loading, value]);
+  // const extraWallets: ExtraWalletNames[] | undefined = useMemo(() => {
+  //   if (loading) {
+  //     return;
+  //   }
+
+  //   return value ? undefined : ['discover', 'elf'];
+  // }, [loading, value]);
 
   return (
     <ChianProvider>
-      <PortkeyProvider
+      <WebLoginProvider bridgeAPI={bridgeAPI}>
+        <StoreProvider>
+          <ContextProviders>
+            <App />
+          </ContextProviders>
+        </StoreProvider>
+      </WebLoginProvider>
+      {/* <PortkeyProvider
         networkType={getConfig().networkType as PortkeyDidV1.NetworkType}
         networkTypeV2={getConfig().portkeyV2?.networkType as PortkeyDid.NetworkType}
         theme="dark">
@@ -90,7 +101,7 @@ function RootApp() {
             </ContextProviders>
           </StoreProvider>
         </WebLoginProvider>
-      </PortkeyProvider>
+      </PortkeyProvider> */}
     </ChianProvider>
   );
 }
