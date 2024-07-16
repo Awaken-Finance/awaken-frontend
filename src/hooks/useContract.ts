@@ -103,12 +103,12 @@ export function useAElfContract(contractAddress?: string) {
         const inputType = methods[methodName];
         const args = transformArrayToMap(inputType, paramsOption);
         // console.log('[Contract] callViewMethod', contractAddress, methodName, paramsOption, args);
-        const result = callViewMethod({
+        const result: any = await callViewMethod({
           contractAddress,
           methodName,
           args: args,
         });
-        return result;
+        return result?.data;
       },
       callSendMethod: async (functionName: string, account: string, paramsOption: any, sendOptions: any) => {
         if (!contractAddress) {
