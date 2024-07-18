@@ -32,6 +32,7 @@ switch (API_ENV) {
 const didConfig = {
   graphQLUrl: portkeyService.v2.graphQLUrl,
   connectUrl: portkeyService.v2.connectServer,
+  serviceUrl: portkeyService.v2.apiServer,
   requestDefaults: {
     baseURL: portkeyService.v2.apiServer,
     timeout: 30000,
@@ -41,6 +42,9 @@ const didConfig = {
       websiteName: APP_NAME,
       websiteIcon: WEBSITE_ICON,
     },
+  },
+  loginConfig: {
+    loginMethodsOrder: ['Email', 'Google', 'Apple', 'Telegram', 'Scan'],
   },
 };
 

@@ -148,6 +148,9 @@ function AccountModal() {
     // setLogoutPortkeyBySwitch(false);
     // dispatch(basicModalView.setAccountModal.actions(false));
     // await logout();
+
+    dispatch(basicModalView.setAccountModal.actions(false));
+    await disConnectWallet();
   };
 
   // useWebLoginEvent(WebLoginEvents.LOGOUT, () => {

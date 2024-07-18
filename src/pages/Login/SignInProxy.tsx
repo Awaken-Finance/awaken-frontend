@@ -6,6 +6,7 @@
 //   PortkeyDid,
 //   PortkeyDidV1,
 // } from 'aelf-web-login';
+import { PortkeyDid } from '@aelf-web-login/wallet-adapter-bridge';
 import { useConnectWallet } from '@aelf-web-login/wallet-adapter-react';
 import useInterval from 'hooks/useInterval';
 import React, { useEffect, useMemo, useState } from 'react';
@@ -13,14 +14,15 @@ import { createPortal } from 'react-dom';
 import { useLocation } from 'react-use';
 import { isNightElfApp, isPortkeyAppWithDiscover } from 'utils/isApp';
 import isMobile from 'utils/isMobile';
-import { SignIn } from '@portkey/did-ui-react';
+// import { SignIn } from '@portkey/did-ui-react';
 
 export default React.forwardRef((props, ref) => {
-  const { isConnected, isLocking } = useConnectWallet();
+  // const { isConnected, isLocking } = useConnectWallet();
   // const { switching } = useMultiWallets();
   // const { isPreparing } = usePortkeyPreparing();
   const { pathname } = useLocation();
   const [shouldCallOnCancel, setShouldCallOnCancel] = useState(false);
+
   const [renderDom, setRenderDom] = useState<HTMLElement>();
   const [lifeCycle, setLifeCycle] = useState<any>(pathname?.startsWith('/login') ? 'Login' : 'SignUp');
 
@@ -67,7 +69,7 @@ export default React.forwardRef((props, ref) => {
   }, [height, width]);
 
   const SignComponent = useMemo(() => {
-    return SignIn;
+    return PortkeyDid.SignIn;
   }, []);
 
   const [isShowSign, setShowSign] = useState<Boolean>(false);
@@ -77,9 +79,9 @@ export default React.forwardRef((props, ref) => {
    * So we need to call onCancel when use left login/signup page.
    */
   useEffect(() => {
-    if (!isConnected && !isLocking) {
-      setLifeCycle(null);
-    }
+    // if (!isConnected && !isLocking) {
+    //   setLifeCycle(null);
+    // }
     if (pathname === '/login' || pathname === '/signup') {
       setShouldCallOnCancel(true);
       setShowSign(true);
@@ -94,7 +96,12 @@ export default React.forwardRef((props, ref) => {
       //   anyProps.onCancel();
       // }
     }
-  }, [isConnected, isLocking, pathname, props, shouldCallOnCancel]);
+  }, [pathname, props, shouldCallOnCancel]);
+
+  const [isPreparing, setIsPreparing] = useState(false);
+  useEffect(() => {
+    setIsPreparing(false);
+  }, [pathname]);
 
   const onLifeCycleChange = (lifeCycle: any) => {
     if (!pathname?.startsWith('/login') && !pathname?.startsWith('/signup')) return;
@@ -104,12 +111,16 @@ export default React.forwardRef((props, ref) => {
       history.replaceState(null, '', '/signup');
     }
     setLifeCycle(lifeCycle);
+    if (lifeCycle === 'SetPinAndAddManager') {
+      setIsPreparing(true);
+    }
   };
 
   if (isPortkeyAppWithDiscover() || isNightElfApp()) return <></>;
 
-  // if (isPreparing) return <></>; // !!! don't delete this line
+  if (isPreparing && lifeCycle === 'Login') return <></>; // !!! don't delete this line
   // if (switching) return <></>;
+
   if (!isShowSign) return <></>;
 
   if (!renderDom) {

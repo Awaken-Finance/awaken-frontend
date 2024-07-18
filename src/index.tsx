@@ -30,6 +30,7 @@ import './sentry';
 import './index.css';
 import './App.less';
 import { WEB_LOGIN_CONFIG } from './config/webLoginConfig';
+import { SignInDesignEnum } from '@aelf-web-login/wallet-adapter-base';
 
 message.config({
   maxCount: 1,
@@ -54,7 +55,24 @@ function RootApp() {
   const { value, loading } = useAsync(async () => await devicesEnv.getPortkeyShellApp());
 
   // const bridgeAPI = init(WEB_LOGIN_CONFIG);
-  const bridgeAPI = useMemo(() => init(WEB_LOGIN_CONFIG), []);
+
+  const bridgeAPI = useMemo(
+    () =>
+      init({
+        ...WEB_LOGIN_CONFIG,
+        baseConfig: {
+          ...WEB_LOGIN_CONFIG.baseConfig,
+          noCommonBaseModal: true,
+          design: SignInDesignEnum.Web2Design,
+          SignInComponent: SignInProxy as any,
+          PortkeyProviderProps: {
+            // theme: 'dark',
+            networkType: WEB_LOGIN_CONFIG.baseConfig.networkType,
+          },
+        },
+      }),
+    [],
+  );
 
   // const extraWallets: ExtraWalletNames[] | undefined = useMemo(() => {
   //   if (loading) {
