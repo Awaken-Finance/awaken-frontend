@@ -13,27 +13,25 @@ type TMenuGroup = {
   list: TMenuItem[];
 };
 
-const MENU_LIST: TMenuGroup[] = [
+const MEDIA_LIST: Required<TMenuItem>[] = [
   {
-    title: 'Community',
-    list: [
-      {
-        icon: IconX,
-        title: 'Twitter',
-        link: 'https://twitter.com/AwakenSwap',
-      },
-      {
-        icon: IconDiscord,
-        title: 'Discord',
-        link: 'https://discord.gg/uVbGVVbRhA',
-      },
-      {
-        icon: IconTelegram,
-        title: 'Telegram',
-        link: 'https://t.me/AwakenSwap',
-      },
-    ],
+    icon: IconX,
+    title: 'Twitter',
+    link: 'https://twitter.com/AwakenSwap',
   },
+  {
+    icon: IconDiscord,
+    title: 'Discord',
+    link: 'https://discord.gg/uVbGVVbRhA',
+  },
+  {
+    icon: IconTelegram,
+    title: 'Telegram',
+    link: 'https://t.me/AwakenSwap',
+  },
+];
+
+const MENU_LIST: TMenuGroup[] = [
   {
     title: 'Document',
     list: [
@@ -55,12 +53,12 @@ const MENU_LIST: TMenuGroup[] = [
     title: 'Help',
     list: [
       {
-        title: 'About AwakenSwap',
+        title: 'About',
         link: 'https://awakenswap.gitbook.io/help-en',
       },
       {
         title: 'User Guide',
-        link: 'https://awakenswap.gitbook.io/help-en/user-guide/how-to-download-and-use-the-portkey-wallet',
+        link: 'https://awakenswap.gitbook.io/help-en/user-guide/how-to-trade-on-awakenswap',
       },
       {
         title: 'FAQ',
@@ -85,7 +83,7 @@ export const OverviewFooter = () => {
         <div className="overview-footer-menu-wrap">
           {MENU_LIST.map((menuGroup) => (
             <div key={menuGroup.title} className="overview-footer-menu-group">
-              <Font size={14} lineHeight={22} color="three">
+              <Font size={16} lineHeight={24} color="two">
                 {t(menuGroup.title)}
               </Font>
               <div className="overview-footer-menu-list">
@@ -93,7 +91,7 @@ export const OverviewFooter = () => {
                   <div key={item.title}>
                     <a className="overview-footer-menu-link" target="_blank" href={item.link}>
                       {item.icon && <item.icon className="overview-footer-menu-icon" />}
-                      <Font size={14} lineHeight={22} color="one">
+                      <Font size={14} lineHeight={20} color="one">
                         {t(item.title)}
                       </Font>
                     </a>
@@ -104,19 +102,20 @@ export const OverviewFooter = () => {
           ))}
         </div>
       </div>
+
       <div className="overview-footer-copyright">
+        <div className="overview-media-list">
+          {MEDIA_LIST.map((item, idx) => (
+            <a key={idx} className="overview-media-icon" target="_blank" href={item.link}>
+              <item.icon />
+            </a>
+          ))}
+        </div>
+
         <Font lineHeight={22} size={14} color="three">
           AwakenSwap@2024
         </Font>
       </div>
-      {/* <div className="overview-media-list">
-        {MEDIA_LIST.map((item, idx) => (
-          <a key={idx} className="overview-media-icon" target="_blank" href={item.link}>
-            <item.icon />
-          </a>
-        ))}
-      </div>
-       */}
     </div>
   );
 };
