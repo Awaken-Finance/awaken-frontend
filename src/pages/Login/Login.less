@@ -112,6 +112,17 @@
     }
   }
 
+  .nested-entry-wrapper {
+    padding-top: 0;
+    padding-bottom: 0;
+
+    .nested-wallet-wrapper {
+      span {
+        color: #515a62;
+      }
+    }
+  }
+
   .nested-connect-modal {
     border-radius: 8px;
     overflow: hidden;
@@ -123,9 +134,14 @@
     }
     .portkey-ant-modal-title {
       position: relative;
+
       .aelf-web-logout-dialog-title {
         color: var(--ant-black-font-color-1);
         font-weight: 500;
+        font-size: 16px;
+        line-height: 24px;
+        padding: 0;
+        text-align: left;
       }
       > img {
         position: absolute;
@@ -153,7 +169,12 @@
     }
 
     .left-wrapper {
-      padding: 24PX 16PX 0;
+      padding: 24px 16px 0;
+    }
+
+    .nested-entry-wrapper {
+      padding-left: 30px;
+      padding-right: 30px;
     }
   }
 

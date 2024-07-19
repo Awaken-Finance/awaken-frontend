@@ -8,8 +8,8 @@ import { useTranslation } from 'react-i18next';
 
 export type TConfirmLogoutDialogProps = {
   visible: boolean;
-  onOk: () => undefined;
-  onCancel: () => undefined;
+  onOk: () => void;
+  onCancel: () => void;
 };
 const defaultProps: TConfirmLogoutDialogProps = {
   visible: false,

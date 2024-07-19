@@ -1,8 +1,6 @@
 import React, { useMemo } from 'react';
 import { ConfigProvider, message } from 'antd';
-// import { WebLoginProvider, getConfig, PortkeyProvider, PortkeyDid, PortkeyDidV1 } from 'aelf-web-login';
 import { devicesEnv } from '@portkey/utils';
-// import type { ExtraWalletNames } from 'aelf-web-login';
 import { useAsync } from 'react-use';
 import { createRoot } from 'react-dom/client';
 
@@ -20,17 +18,14 @@ import { useLanguage } from './i18n';
 import SignInProxy from 'pages/Login/SignInProxy';
 import ConfirmLogoutDialog from 'Modals/ConfirmLogoutDialog';
 import { WebLoginProvider, init, useConnectWallet } from '@aelf-web-login/wallet-adapter-react';
+import { WEB_LOGIN_CONFIG } from './config/webLoginConfig';
+import { SignInDesignEnum } from '@aelf-web-login/wallet-adapter-base';
 
 import './config/webLoginConfig';
 import './sentry';
 
-// import '@portkey/did-ui-react/dist/assets/index.css';
-// import '@portkey-v1/did-ui-react/dist/assets/index.css';
-
 import './index.css';
 import './App.less';
-import { WEB_LOGIN_CONFIG } from './config/webLoginConfig';
-import { SignInDesignEnum } from '@aelf-web-login/wallet-adapter-base';
 
 message.config({
   maxCount: 1,
@@ -65,6 +60,7 @@ function RootApp() {
           noCommonBaseModal: true,
           design: SignInDesignEnum.Web2Design,
           SignInComponent: SignInProxy as any,
+          ConfirmLogoutDialog: ConfirmLogoutDialog,
           PortkeyProviderProps: {
             theme: 'dark',
             networkType: WEB_LOGIN_CONFIG.baseConfig.networkType,
@@ -73,14 +69,6 @@ function RootApp() {
       }),
     [],
   );
-
-  // const extraWallets: ExtraWalletNames[] | undefined = useMemo(() => {
-  //   if (loading) {
-  //     return;
-  //   }
-
-  //   return value ? undefined : ['discover', 'elf'];
-  // }, [loading, value]);
 
   return (
     <ChianProvider>
@@ -91,35 +79,6 @@ function RootApp() {
           </ContextProviders>
         </StoreProvider>
       </WebLoginProvider>
-      {/* <PortkeyProvider
-        networkType={getConfig().networkType as PortkeyDidV1.NetworkType}
-        networkTypeV2={getConfig().portkeyV2?.networkType as PortkeyDid.NetworkType}
-        theme="dark">
-        <WebLoginProvider
-          extraWallets={extraWallets}
-          nightElf={{ connectEagerly: true }}
-          portkey={{
-            autoShowUnlock: false,
-            checkAccountInfoSync: true,
-            SignInComponent: SignInProxy as any,
-            design: 'Web2Design',
-            ConfirmLogoutDialog,
-            noCommonBaseModal: true,
-          }}
-          discover={{
-            autoRequestAccount: true,
-            autoLogoutOnAccountMismatch: true,
-            autoLogoutOnChainMismatch: true,
-            autoLogoutOnDisconnected: true,
-            autoLogoutOnNetworkMismatch: false,
-          }}>
-          <StoreProvider>
-            <ContextProviders>
-              <App />
-            </ContextProviders>
-          </StoreProvider>
-        </WebLoginProvider>
-      </PortkeyProvider> */}
     </ChianProvider>
   );
 }
