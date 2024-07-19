@@ -45,7 +45,7 @@ export default function FallOrRise({
     <PriceDigits price={num} prefix={prefix} suffix={suffix} className={getFontStyle({ ...props, color })} />
   ) : (
     <Font prefix={prefix} suffix={suffix} color={color} {...props}>
-      {(displayNum || num) ?? '--'}
+      {(displayNum || (num as any)) ?? '--'}
     </Font>
   );
 }

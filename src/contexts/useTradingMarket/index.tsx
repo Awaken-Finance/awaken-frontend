@@ -43,7 +43,7 @@ const reducer = (state: TradingState, action: TradingAction): TradingState => {
   }
 };
 const TradingMarket = createContext<any>(defaultState);
-const Provider: React.FC = ({ children }) => {
+const Provider: React.FC = ({ children }: any) => {
   const [state, dispatch] = useReducer(reducer, defaultState);
 
   const pairInfoUpdater = useCallback(

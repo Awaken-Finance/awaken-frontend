@@ -118,7 +118,7 @@ export default function CommonTable({
     if (!emptyType) {
       type = 'nodata';
     } else if (emptyType === 'nodata' || emptyType === 'search' || emptyType === 'internet') {
-      type = emptyType;
+      type = emptyType as any;
     } else if (typeof emptyType === 'function') {
       return emptyType();
     } else {

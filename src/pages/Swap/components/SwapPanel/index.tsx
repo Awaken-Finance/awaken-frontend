@@ -287,7 +287,7 @@ export const SwapPanel = () => {
   });
 
   const setValueIn = useCallback(
-    async (value) => {
+    async (value: string) => {
       setSwapInfo((pre) => ({
         ...pre,
         valueIn: value,
@@ -300,7 +300,7 @@ export const SwapPanel = () => {
     [refreshTokenValue],
   );
   const setValueOut = useCallback(
-    async (value) => {
+    async (value: string) => {
       setSwapInfo((pre) => ({ ...pre, valueOut: value, valueIn: '', isFocusValueIn: false }));
       await sleep(100);
       refreshTokenValue();
@@ -317,7 +317,8 @@ export const SwapPanel = () => {
   }, [registerTimer, resetIsPriceReverse]);
 
   const setTokenIn = useCallback(
-    async (tokenIn) => {
+    async (tokenIn?: Currency) => {
+      if (!tokenIn) return;
       setSwapInfo((pre) => {
         const isSwitch = pre.tokenOut?.symbol === tokenIn.symbol;
         if (!isSwitch)
@@ -343,7 +344,8 @@ export const SwapPanel = () => {
   );
 
   const setTokenOut = useCallback(
-    async (tokenOut) => {
+    async (tokenOut?: Currency) => {
+      if (!tokenOut) return;
       setSwapInfo((pre) => {
         const isSwitch = pre.tokenIn?.symbol === tokenOut.symbol;
         if (!isSwitch)

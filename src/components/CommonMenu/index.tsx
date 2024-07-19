@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next';
 import './index.less';
 
 interface CommonMenuProps {
-  onChange?: (menun: string | number) => void;
+  onChange?: (menu: string | number) => void;
   className?: string;
   menus: any[];
   defaultValue?: string;
@@ -21,39 +21,36 @@ export default function CommonMenu({
   value,
   renderItem = null,
 }: CommonMenuProps) {
-  const [menun, setMenu] = useState<string>(defaultValue);
+  const [menu, setMenu] = useState<string>(defaultValue);
   const { t } = useTranslation();
 
-  const menunChange = useCallback(
-    (v) => {
-      if (v === menun) {
+  const menuChange = useCallback(
+    (v: string) => {
+      if (v === menu) {
         return;
       }
 
       setMenu(v);
       onChange && onChange(v);
     },
-    [onChange, menun],
+    [onChange, menu],
   );
 
-  const renderMeun = useMemo(() => {
+  const renderMenu = useMemo(() => {
     return menus.map(({ key, name }) => (
-      <div
-        key={key}
-        className={clsx('menu-item', menun === key && 'menu-item-active')}
-        onClick={() => menunChange(key)}>
+      <div key={key} className={clsx('menu-item', menu === key && 'menu-item-active')} onClick={() => menuChange(key)}>
         {renderItem ? renderItem({ key, name }) : t(name)}
       </div>
     ));
-  }, [menus, menun, menunChange, t, renderItem]);
+  }, [menus, menu, menuChange, t, renderItem]);
 
   useEffect(() => {
-    if (value === menun || typeof value === 'undefined') {
+    if (value === menu || typeof value === 'undefined') {
       return;
     }
 
     setMenu(value as string);
-  }, [value, menun]);
+  }, [value, menu]);
 
-  return <div className={clsx('menu-content', className)}>{renderMeun}</div>;
+  return <div className={clsx('menu-content', className)}>{renderMenu}</div>;
 }

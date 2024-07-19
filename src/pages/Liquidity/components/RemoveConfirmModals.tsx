@@ -70,7 +70,7 @@ export function RemoveConfirmModal({
         </Col>
         <Col>
           <Font lineHeight={20} weight="medium">
-            {divDecimals(new BigNumber(transactionFee), 8)}
+            {divDecimals(new BigNumber(transactionFee), 8).toFixed()}
           </Font>
           <Font lineHeight={20} weight="medium" color="two">
             &nbsp;ELF

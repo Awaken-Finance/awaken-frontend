@@ -1,7 +1,7 @@
 import { Button, Col, List, Row } from 'antd';
 import { useAddUserToken, useUserAddedTokens } from 'contexts/useUser/hooks';
 import { useActiveWeb3React } from 'hooks/web3';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { ChangeEventHandler, useCallback, useEffect, useMemo, useState } from 'react';
 import { CurrencyLogo } from 'components/CurrencyLogo';
 import { useTranslation } from 'react-i18next';
 
@@ -23,7 +23,7 @@ export default function ManageTokens() {
   const debouncedQuery = useDebounce(searchQuery, 500);
   const [searchedTokenInfo, setSearchTokenInfo] = useState<Token | undefined>();
   // const searchToken = useToken(debouncedQuery);
-  const handleInput = useCallback((event) => {
+  const handleInput: ChangeEventHandler<HTMLInputElement> = useCallback((event) => {
     const input = event.target.value;
     setSearchQuery(input);
   }, []);

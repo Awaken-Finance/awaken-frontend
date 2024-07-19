@@ -47,7 +47,7 @@ function MobileHeader() {
   }, [visible]);
 
   const onLanguageChange = useCallback(
-    (e) => {
+    (e: any) => {
       changeLanguage(e.key);
     },
     [changeLanguage],

@@ -17,7 +17,7 @@ export function useAddLiquidityInputs(
   const [lastInput, setLastInput] = useState<string>();
 
   const onChange = useCallback(
-    (inputAddress, input) => {
+    (inputAddress: any, input: any) => {
       if (!input) {
         return setInputs(reserves ? undefined : { ...inputs, [inputAddress]: undefined });
       }
@@ -60,7 +60,7 @@ export function useRemoveLiquidityInputs(
   const [inputs, setInputs] = useState<RemoveOutputs | undefined>({});
   const [lastInput, setLastInput] = useState<string>();
   const onChange = useCallback(
-    (inputAddress, input) => {
+    (inputAddress: any, input: any) => {
       if (!input || !totalSupply) return setInputs(undefined);
       const lpDecimals = getLPDecimals();
       setLastInput(inputAddress);

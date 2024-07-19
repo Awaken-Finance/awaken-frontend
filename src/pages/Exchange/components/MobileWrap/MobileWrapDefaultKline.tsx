@@ -15,7 +15,7 @@ export default function MobileWrap() {
   const [{ pairInfo }] = useSwapContext();
 
   const openSlider = useCallback(
-    (v) => {
+    (v: string) => {
       if (v === sliderType) {
         return;
       }

@@ -51,7 +51,7 @@ export function TokenItem({ data }: { data: TokenInfoItem }) {
       <Col className="balance-col">
         <div className="balance">
           <Font size={16} lineHeight={24} color="one">
-            {ZERO.plus(data.amount).dp(8)}
+            {ZERO.plus(data.amount).dp(8).toFixed()}
           </Font>
         </div>
         <div className="price-usd">

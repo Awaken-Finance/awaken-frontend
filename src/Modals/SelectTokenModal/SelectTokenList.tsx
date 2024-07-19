@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import { useCallback, useMemo, useState } from 'react';
+import { ChangeEventHandler, useCallback, useMemo, useState } from 'react';
 import useDebounce from 'hooks/useDebounce';
 import { filterTokens, useSortedTokensByQuery } from 'utils/filtering';
 import CurrencyRow from './CurrencyRow';
@@ -38,7 +38,7 @@ export default function SelectTokenList({ onClickManageTokens }: { onClickManage
 
   const filteredSortedTokens = useSortedTokensByQuery(sortedTokens, debouncedQuery);
 
-  const handleInput = useCallback((event) => {
+  const handleInput: ChangeEventHandler<HTMLInputElement> = useCallback((event) => {
     const input = event.target.value;
     setSearchQuery(input);
   }, []);
