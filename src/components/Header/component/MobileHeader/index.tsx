@@ -17,7 +17,6 @@ import clsx from 'clsx';
 import CommonModal from 'components/CommonModal';
 
 import './styles.less';
-import { useIsPortkeySDK } from 'hooks/useIsPortkeySDK';
 import { useConnectWallet } from '@aelf-web-login/wallet-adapter-react';
 
 function MobileHeader() {
@@ -53,8 +52,6 @@ function MobileHeader() {
     [changeLanguage],
   );
 
-  const isPortkeySDK = useIsPortkeySDK();
-
   const renderLoginPart = () => {
     if (isConnected) {
       return (
@@ -67,7 +64,7 @@ function MobileHeader() {
     return (
       <>
         <CommonButton className="signup-btn" type="primary" style={{ fontWeight: '600' }} onClick={toLogin}>
-          {t(isPortkeySDK ? 'Unlock' : 'Log In')}
+          {t(isLocking ? 'Unlock' : 'Log In')}
         </CommonButton>
         {/* <CommonButton className="signup-btn" type="primary" onClick={toSignup}>
           {t('Sign Up')}
@@ -121,14 +118,14 @@ function MobileHeader() {
           <div className="login-buttons">
             <CommonButton
               className="login-btn"
-              type={isPortkeySDK ? 'primary' : 'default'}
+              type={isLocking ? 'primary' : 'default'}
               onClick={() => {
                 onClose();
                 toLogin();
               }}>
-              {t(isPortkeySDK ? 'Unlock' : 'Log In')}
+              {t(isLocking ? 'Unlock' : 'Log In')}
             </CommonButton>
-            {!isPortkeySDK && (
+            {!isLocking && (
               <CommonButton
                 className="signup-btn"
                 type="primary"

@@ -18,7 +18,6 @@ import { ChainConstants } from 'constants/ChainConstants';
 import AuthBtn from 'Buttons/AuthBtn';
 
 import './index.less';
-import { useIsPortkeySDK } from 'hooks/useIsPortkeySDK';
 import { formatSymbol } from 'utils/token';
 import { useConnectWallet } from '@aelf-web-login/wallet-adapter-react';
 
@@ -130,15 +129,14 @@ export default function SellBtn({
   isFixState = false,
 }: Omit<SellBtnProps, 'amountBN' | 'rate' | 'tokenA' | 'tokenB' | 'onTradeSuccess'> & { isFixState?: boolean }) {
   const { t } = useTranslation();
-  const { isConnected } = useConnectWallet();
-  const isPortkeySDK = useIsPortkeySDK();
+  const { isConnected, isLocking } = useConnectWallet();
 
   const btnTxt = useMemo(() => {
     const symbolStr = formatSymbol(symbolA);
     if (isConnected || isFixState) return sell ? `${t('sell')} ${symbolStr}` : `${t('buy')} ${symbolStr}`;
-    if (isPortkeySDK) return sell ? t('Unlock to Sell') : t('Unlock to Buy');
+    if (isLocking) return sell ? t('Unlock to Sell') : t('Unlock to Buy');
     return sell ? t('Log In to Sell') : t('Log In to Buy');
-  }, [isConnected, isFixState, sell, t, symbolA, isPortkeySDK]);
+  }, [isConnected, isFixState, sell, t, symbolA, isLocking]);
 
   const style = useMemo(() => {
     if (isConnected || isFixState)

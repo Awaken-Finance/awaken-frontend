@@ -30,7 +30,6 @@ import { formatSymbol } from 'utils/token';
 import { useEffectOnce } from 'react-use';
 import { useModalDispatch } from 'contexts/useModal/hooks';
 import { basicModalView } from 'contexts/useModal/actions';
-import { useIsPortkeySDK } from 'hooks/useIsPortkeySDK';
 import { SwapConfirmModal, SwapConfirmModalInterface } from '../SwapConfirmModal';
 import './styles.less';
 import { CircleProcess, CircleProcessInterface } from 'components/CircleProcess';
@@ -433,7 +432,6 @@ export const SwapPanel = () => {
   }, [currencyBalances, gasFee, swapInfo]);
 
   const { isConnected, isLocking } = useConnectWallet();
-  const isPortkeySDK = useIsPortkeySDK();
   const swapBtnInfo = useMemo<{
     active?: boolean;
     label: string;

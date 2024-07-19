@@ -17,14 +17,13 @@ import useLogin from 'hooks/useLogin';
 import './styles.less';
 import Font from 'components/Font';
 import { useMonitorScroll } from 'hooks/useMonitorScroll';
-import { useIsPortkeySDK } from 'hooks/useIsPortkeySDK';
 import useChainId from 'hooks/useChainId';
 import { shortenAddress } from 'utils';
 import { useConnectWallet } from '@aelf-web-login/wallet-adapter-react';
 
 function PcHeader() {
   const { selectedKeys } = useSelectedKeys();
-  const { walletInfo, isConnected } = useConnectWallet();
+  const { walletInfo, isConnected, isLocking } = useConnectWallet();
   const { chainId } = useChainId();
   const pathname = useLocation().pathname;
   const { t } = useTranslation();
@@ -47,8 +46,6 @@ function PcHeader() {
       selectedKeys[0] === 'unMatched'
     );
   }, [selectedKeys, pathname]);
-
-  const isPortkeySDK = useIsPortkeySDK();
 
   const displayAddress = useMemo(() => {
     if (!walletInfo?.address) return '';
@@ -78,12 +75,12 @@ function PcHeader() {
           <CommonButton
             className="signup-btn"
             style={{ fontWeight: '600' }}
-            type={isPortkeySDK ? 'primary' : 'text'}
+            type={isLocking ? 'primary' : 'text'}
             onClick={toLogin}>
-            {t(isPortkeySDK ? 'Unlock' : 'Log In')}
+            {t(isLocking ? 'Unlock' : 'Log In')}
           </CommonButton>
         </Col>
-        {!isPortkeySDK && (
+        {!isLocking && (
           <Col>
             <CommonButton className="signup-btn" style={{ fontWeight: '600' }} type="primary" onClick={toSignup}>
               {t('Sign Up')}
