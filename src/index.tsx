@@ -1,10 +1,10 @@
 import React, { useMemo } from 'react';
-import ReactDOM from 'react-dom';
 import { ConfigProvider, message } from 'antd';
 // import { WebLoginProvider, getConfig, PortkeyProvider, PortkeyDid, PortkeyDidV1 } from 'aelf-web-login';
 import { devicesEnv } from '@portkey/utils';
 // import type { ExtraWalletNames } from 'aelf-web-login';
 import { useAsync } from 'react-use';
+import { createRoot } from 'react-dom/client';
 
 import App from './App';
 import ModalProvider from './contexts/useModal';
@@ -66,7 +66,7 @@ function RootApp() {
           design: SignInDesignEnum.Web2Design,
           SignInComponent: SignInProxy as any,
           PortkeyProviderProps: {
-            // theme: 'dark',
+            theme: 'dark',
             networkType: WEB_LOGIN_CONFIG.baseConfig.networkType,
           },
         },
@@ -124,7 +124,9 @@ function RootApp() {
   );
 }
 
-ReactDOM.render(<RootApp />, document.getElementById('root'));
+const container = document.getElementById('root');
+const root = createRoot(container as HTMLElement);
+root.render(<RootApp />);
 
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))

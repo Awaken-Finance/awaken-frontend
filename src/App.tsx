@@ -1,6 +1,6 @@
-import { Suspense } from 'react';
+import { Suspense, useEffect } from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-import { Layout } from 'antd';
+import { Layout, message } from 'antd';
 import Header from 'components/Header';
 import ScrollToTop from 'components/ScrollToTop';
 import { routes } from 'routes';
@@ -8,6 +8,7 @@ import Modals from './Modals';
 import './utils/initialize';
 import './utils/vconsole';
 import { LoadPageLoading } from 'components/Loading';
+import { useConnectWallet } from '@aelf-web-login/wallet-adapter-react';
 
 const { Content } = Layout;
 
@@ -18,7 +19,7 @@ export default function App() {
   // WebLoginInstance.get().setWebLoginContext(webLoginContext);
 
   // TODO: v2
-  // useWebLoginEvent(WebLoginEvents.ERROR, (error: any) => {
+  // useWebLoginEvent(c, (error: any) => {
   //   console.error(error);
   //   if (error.code) {
   //     if (error.message) {
@@ -26,6 +27,13 @@ export default function App() {
   //     }
   //   }
   // });
+  const { loginError } = useConnectWallet();
+  useEffect(() => {
+    if (!loginError) {
+      return;
+    }
+    message.error(loginError.nativeError.message ?? loginError.message);
+  }, [loginError]);
 
   // useWebLoginEvent(WebLoginEvents.LOGIN_ERROR, (error: any) => {
   //   console.error(error);

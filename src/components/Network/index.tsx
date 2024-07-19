@@ -25,31 +25,30 @@ function useNetworkCheck() {
   const { walletType } = useConnectWallet();
   const [mismatch, setMismatch] = useState(false);
 
-  const checkNetwork = async () => {
-    try {
-      const provider = await detectProvider();
-      if (!provider) return;
-      const network = await provider.request({
-        method: 'network',
-      });
-      console.log(network);
-      setMismatch(network !== WEB_LOGIN_CONFIG.baseConfig.networkType);
-    } catch (error) {
-      console.warn(error);
-      setMismatch(false);
-    }
-  };
+  // const checkNetwork = async () => {
+  //   try {
+  //     const provider = await detectProvider();
+  //     if (!provider) return;
+  //     const network = await provider.request({
+  //       method: 'network',
+  //     });
+  //     console.log('detectProvider', network);
+  //     setMismatch(network !== WEB_LOGIN_CONFIG.baseConfig.networkType);
+  //   } catch (error) {
+  //     console.warn(error);
+  //     setMismatch(false);
+  //   }
+  // };
 
-  // TODO: v2
   // useWebLoginEvent(WebLoginEvents.NETWORK_MISMATCH, () => {
   //   setMismatch(true);
   // });
 
-  useInterval(() => {
-    if (mismatch) {
-      checkNetwork();
-    }
-  }, 500);
+  // useInterval(() => {
+  //   if (mismatch) {
+  //     checkNetwork();
+  //   }
+  // }, 500);
 
   return useMemo(() => {
     if (walletType !== WalletTypeEnum.discover) return false;
@@ -67,7 +66,7 @@ export default function Network(props: { overlayClassName?: string | undefined }
   const { chainId } = useActiveWeb3React();
   const { disConnectWallet } = useConnectWallet();
   const [modalOpen, setModalOpen] = useState(false);
-  const networkMismatch = useNetworkCheck();
+  // const networkMismatch = useNetworkCheck();
   const isMobile = useMobile();
   const { t } = useTranslation();
   const menu = useMemo(() => {
@@ -105,27 +104,26 @@ export default function Network(props: { overlayClassName?: string | undefined }
     setModalOpen(false);
   };
 
-  // TODO: v2
   // useWebLoginEvent(WebLoginEvents.NETWORK_MISMATCH, () => {
   //   setModalOpen(true);
   // });
 
   if (!chainId) return null;
 
-  if (networkMismatch) {
-    return (
-      <>
-        <CommonTooltip
-          type="error"
-          title="Your wallet’s current network is unsupported."
-          overlayClassName="network-tooltip"
-          placement={isMobile ? 'bottom' : 'left'}>
-          <IconRedError />
-        </CommonTooltip>
-        {renderDisconnectModal()}
-      </>
-    );
-  }
+  // if (networkMismatch) {
+  //   return (
+  //     <>
+  //       <CommonTooltip
+  //         type="error"
+  //         title="Your wallet’s current network is unsupported."
+  //         overlayClassName="network-tooltip"
+  //         placement={isMobile ? 'bottom' : 'left'}>
+  //         <IconRedError />
+  //       </CommonTooltip>
+  //       {renderDisconnectModal()}
+  //     </>
+  //   );
+  // }
 
   return (
     <>

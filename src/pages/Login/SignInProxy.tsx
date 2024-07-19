@@ -104,6 +104,7 @@ export default React.forwardRef((props, ref) => {
   }, [pathname]);
 
   const onLifeCycleChange = (lifeCycle: any) => {
+    console.log('lifeCycle', lifeCycle);
     if (!pathname?.startsWith('/login') && !pathname?.startsWith('/signup')) return;
     if (lifeCycle === 'Login' && !pathname?.startsWith('/login')) {
       history.replaceState(null, '', '/login');
