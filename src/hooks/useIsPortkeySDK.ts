@@ -2,7 +2,6 @@ import { useConnectWallet } from '@aelf-web-login/wallet-adapter-react';
 import { APP_NAME } from 'config/webLoginConfig';
 import { useEffect, useState } from 'react';
 
-// TODO: v2
 export const useIsPortkeySDK = () => {
   const { isConnected } = useConnectWallet();
   const [isPortkeySDK, setIsPortkeySDK] = useState(false);

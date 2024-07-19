@@ -23,7 +23,7 @@ export default function useLogin(redirect: string | undefined = undefined) {
       connectWallet();
       return;
     }
-    // TODO: v2
+
     if (!isConnected) {
       history.push(appendRedirect('/login', redirect));
       return;

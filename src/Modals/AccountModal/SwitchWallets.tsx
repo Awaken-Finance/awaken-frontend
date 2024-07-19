@@ -32,8 +32,6 @@ export default function SwitchWallets({
     },
   ];
 
-  // TODO: v2
-  // const { current } = useMultiWallets();
   const { walletType } = useConnectWallet();
 
   return (

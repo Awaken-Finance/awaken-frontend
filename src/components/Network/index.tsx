@@ -1,5 +1,4 @@
 import { Menu } from 'antd';
-import detectProvider from '@portkey/detect-provider';
 import { CHAIN_NAME, networkList } from '../../constants';
 import { useMemo, useState } from 'react';
 import { switchNetwork } from '../../utils/network';
@@ -9,64 +8,18 @@ import CommonDropdown from 'components/CommonDropdown';
 import CommonButton from 'components/CommonButton';
 import { IconArrowDown, IconLogoutWarn, IconRedError } from 'assets/icons';
 import { elfChain } from 'assets/images';
-import { useInterval } from 'react-use';
 import { useMobile } from 'utils/isMobile';
-import CommonTooltip from 'components/CommonTooltip';
 import CommonModal from 'components/CommonModal';
 import Font from 'components/Font';
 import { useTranslation } from 'react-i18next';
 
 import './index.less';
 import { useConnectWallet } from '@aelf-web-login/wallet-adapter-react';
-import { WEB_LOGIN_CONFIG } from 'config/webLoginConfig';
-import { WalletTypeEnum } from '@aelf-web-login/wallet-adapter-base';
-
-function useNetworkCheck() {
-  const { walletType } = useConnectWallet();
-  const [mismatch, setMismatch] = useState(false);
-
-  // const checkNetwork = async () => {
-  //   try {
-  //     const provider = await detectProvider();
-  //     if (!provider) return;
-  //     const network = await provider.request({
-  //       method: 'network',
-  //     });
-  //     console.log('detectProvider', network);
-  //     setMismatch(network !== WEB_LOGIN_CONFIG.baseConfig.networkType);
-  //   } catch (error) {
-  //     console.warn(error);
-  //     setMismatch(false);
-  //   }
-  // };
-
-  // useWebLoginEvent(WebLoginEvents.NETWORK_MISMATCH, () => {
-  //   setMismatch(true);
-  // });
-
-  // useInterval(() => {
-  //   if (mismatch) {
-  //     checkNetwork();
-  //   }
-  // }, 500);
-
-  return useMemo(() => {
-    if (walletType !== WalletTypeEnum.discover) return false;
-
-    // TODO: v2
-    // if (!walletInfo?.discoverInfo?.provider) {
-    //   return false;
-    // }
-
-    return mismatch;
-  }, [mismatch, walletType]);
-}
 
 export default function Network(props: { overlayClassName?: string | undefined }) {
   const { chainId } = useActiveWeb3React();
   const { disConnectWallet } = useConnectWallet();
   const [modalOpen, setModalOpen] = useState(false);
-  // const networkMismatch = useNetworkCheck();
   const isMobile = useMobile();
   const { t } = useTranslation();
   const menu = useMemo(() => {
@@ -104,26 +57,7 @@ export default function Network(props: { overlayClassName?: string | undefined }
     setModalOpen(false);
   };
 
-  // useWebLoginEvent(WebLoginEvents.NETWORK_MISMATCH, () => {
-  //   setModalOpen(true);
-  // });
-
   if (!chainId) return null;
-
-  // if (networkMismatch) {
-  //   return (
-  //     <>
-  //       <CommonTooltip
-  //         type="error"
-  //         title="Your wallet’s current network is unsupported."
-  //         overlayClassName="network-tooltip"
-  //         placement={isMobile ? 'bottom' : 'left'}>
-  //         <IconRedError />
-  //       </CommonTooltip>
-  //       {renderDisconnectModal()}
-  //     </>
-  //   );
-  // }
 
   return (
     <>

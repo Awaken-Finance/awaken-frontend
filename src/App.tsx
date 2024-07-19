@@ -13,20 +13,6 @@ import { useConnectWallet } from '@aelf-web-login/wallet-adapter-react';
 const { Content } = Layout;
 
 export default function App() {
-  // const { isPreparing } = usePortkeyPreparing();
-  // const { isUnlocking } = usePortkeyLock();
-  // const webLoginContext = useWebLogin();
-  // WebLoginInstance.get().setWebLoginContext(webLoginContext);
-
-  // TODO: v2
-  // useWebLoginEvent(c, (error: any) => {
-  //   console.error(error);
-  //   if (error.code) {
-  //     if (error.message) {
-  //       message.error(error.message);
-  //     }
-  //   }
-  // });
   const { loginError } = useConnectWallet();
   useEffect(() => {
     if (!loginError) {
@@ -34,15 +20,6 @@ export default function App() {
     }
     message.error(loginError.nativeError.message ?? loginError.message);
   }, [loginError]);
-
-  // useWebLoginEvent(WebLoginEvents.LOGIN_ERROR, (error: any) => {
-  //   console.error(error);
-  //   if (error.code) {
-  //     if (error.message) {
-  //       message.error(error.message);
-  //     }
-  //   }
-  // });
 
   return (
     <>
@@ -68,8 +45,6 @@ export default function App() {
                 })}
               </Switch>
             </Suspense>
-            {/* TODO: v2 */}
-            {/* <PortkeyLoading loading={isPreparing || isUnlocking} /> */}
           </Content>
         </Layout>
       </Router>

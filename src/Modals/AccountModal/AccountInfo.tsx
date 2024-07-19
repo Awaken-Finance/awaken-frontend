@@ -9,13 +9,7 @@ import { useCopyToClipboard } from 'react-use';
 import { useMobile } from 'utils/isMobile';
 import { useConnectWallet } from '@aelf-web-login/wallet-adapter-react';
 
-export default function AccountInfo({
-  onClickLogout,
-  onClickSwitchWallet,
-}: {
-  onClickLogout: () => void;
-  onClickSwitchWallet: () => void;
-}) {
+export default function AccountInfo({ onClickLogout }: { onClickLogout: () => void }) {
   const [, setCopied] = useCopyToClipboard();
   const { walletInfo } = useConnectWallet();
   const { chainId } = useChainId();
@@ -55,11 +49,6 @@ export default function AccountInfo({
           </Col>
         </Row>
       </Col>
-      {!isMobile && (
-        <Col flex={'32px'}>
-          <IconSwitch className="logout-icon" onClick={onClickSwitchWallet} />
-        </Col>
-      )}
 
       <Col flex={'32px'}>
         <IconLogout className="logout-icon" onClick={onClickLogout} />

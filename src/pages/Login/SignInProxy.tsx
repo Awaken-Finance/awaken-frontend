@@ -1,25 +1,12 @@
-// import {
-//   WebLoginState,
-//   useMultiWallets,
-//   usePortkeyPreparing,
-//   useWebLogin,
-//   PortkeyDid,
-//   PortkeyDidV1,
-// } from 'aelf-web-login';
 import { PortkeyDid } from '@aelf-web-login/wallet-adapter-bridge';
-import { useConnectWallet } from '@aelf-web-login/wallet-adapter-react';
 import useInterval from 'hooks/useInterval';
 import React, { useEffect, useMemo, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { useLocation } from 'react-use';
 import { isNightElfApp, isPortkeyAppWithDiscover } from 'utils/isApp';
 import isMobile from 'utils/isMobile';
-// import { SignIn } from '@portkey/did-ui-react';
 
 export default React.forwardRef((props, ref) => {
-  // const { isConnected, isLocking } = useConnectWallet();
-  // const { switching } = useMultiWallets();
-  // const { isPreparing } = usePortkeyPreparing();
   const { pathname } = useLocation();
   const [shouldCallOnCancel, setShouldCallOnCancel] = useState(false);
 
@@ -79,9 +66,6 @@ export default React.forwardRef((props, ref) => {
    * So we need to call onCancel when use left login/signup page.
    */
   useEffect(() => {
-    // if (!isConnected && !isLocking) {
-    //   setLifeCycle(null);
-    // }
     if (pathname === '/login' || pathname === '/signup') {
       setShouldCallOnCancel(true);
       setShowSign(true);
@@ -89,12 +73,6 @@ export default React.forwardRef((props, ref) => {
     }
     if (pathname !== '/login' && pathname !== '/signup') {
       setShowSign(false);
-      // const anyProps = props as any;
-      // TODO: v2
-      // if (!switching && loginState === WebLoginState.logining && shouldCallOnCancel) {
-      //   setShouldCallOnCancel(false);
-      //   anyProps.onCancel();
-      // }
     }
   }, [pathname, props, shouldCallOnCancel]);
 
@@ -120,7 +98,6 @@ export default React.forwardRef((props, ref) => {
   if (isPortkeyAppWithDiscover() || isNightElfApp()) return <></>;
 
   if (isPreparing && lifeCycle === 'Login') return <></>; // !!! don't delete this line
-  // if (switching) return <></>;
 
   if (!isShowSign) return <></>;
 
