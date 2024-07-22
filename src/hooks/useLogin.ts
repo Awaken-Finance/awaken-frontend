@@ -1,5 +1,7 @@
 import { useHistory } from 'react-router-dom';
 import { useConnectWallet } from '@aelf-web-login/wallet-adapter-react';
+import { isNightElfApp, isPortkeyAppWithDiscover } from 'utils/isApp';
+import { PortkeyDid } from '@aelf-web-login/wallet-adapter-bridge';
 
 export function appendRedirect(path: string, redirect: string | undefined = undefined) {
   const { pathname } = window.location;
@@ -25,8 +27,13 @@ export default function useLogin(redirect: string | undefined = undefined) {
     }
 
     if (!isConnected) {
-      history.push(appendRedirect('/login', redirect));
-      return;
+      if (isPortkeyAppWithDiscover() || isNightElfApp() || PortkeyDid.TelegramPlatform.isTelegramPlatform()) {
+        connectWallet();
+        return;
+      } else {
+        history.push(appendRedirect('/login', redirect));
+        return;
+      }
     }
 
     console.log('toLogin invalid');

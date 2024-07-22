@@ -15,7 +15,8 @@ let CHAIN_ID = tDVV.chainId as TChainId,
   NETWORK_TYPE = 'MAINNET' as NetworkType,
   RPC_SERVER = tDVV.rpcUrl,
   portkeyService = PORTKEY_SERVICE.main,
-  WEBSITE_ICON = 'https://awaken.finance/favicon.ico';
+  WEBSITE_ICON = 'https://awaken.finance/favicon.ico',
+  TELEGRAM_BOT_ID = '7354497113';
 
 switch (API_ENV) {
   case 'preview':
@@ -26,6 +27,7 @@ switch (API_ENV) {
     RPC_SERVER = tDVW.rpcUrl;
     portkeyService = PORTKEY_SERVICE.preview;
     WEBSITE_ICON = 'https://test.awaken.finance/favicon.ico';
+    TELEGRAM_BOT_ID = '7387260361';
     break;
 }
 
@@ -41,6 +43,9 @@ const didConfig = {
     Portkey: {
       websiteName: APP_NAME,
       websiteIcon: WEBSITE_ICON,
+    },
+    Telegram: {
+      botId: TELEGRAM_BOT_ID,
     },
   },
   loginConfig: {
