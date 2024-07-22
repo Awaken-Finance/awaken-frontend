@@ -9,6 +9,7 @@ import { useEffectOnce, useSearchParam } from 'react-use';
 import storages from 'storages';
 import isMobile from 'utils/isMobile';
 import { switchNetwork } from 'utils/network';
+import { PortkeyDid } from '@aelf-web-login/wallet-adapter-bridge';
 const body = window.document.getElementsByTagName('body')[0];
 body.className = 'pc-site-content';
 const INITIAL_STATE = {
@@ -58,7 +59,13 @@ export default function Provider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     const resize = () => {
       const isM = isMobile();
-      setMobile(isM.apple.phone || isM.android.phone || isM.apple.tablet || isM.android.tablet);
+      setMobile(
+        isM.apple.phone ||
+          isM.android.phone ||
+          isM.apple.tablet ||
+          isM.android.tablet ||
+          PortkeyDid.TelegramPlatform.isTelegramPlatform(),
+      );
     };
     resize();
     window.addEventListener('resize', resize);
