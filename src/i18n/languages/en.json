@@ -615,7 +615,7 @@
 
     "Swap": "Swap",
     "SwapNotSupportedContent": "The {{symbolIn}} and {{symbolOut}} you selected are not directly or indirectly supported by the liquidity pool. You can create this trading pair liquidity pool yourself. Do you want to create it?",
-    "feeDescription": "Fee belong to liquidity providers and are already included in the current quote.",
+    "feeDescription": "The accumulated fee share of this trading pair’s positions.",
     "transactionFeeDescription": "Network Cost are the miner fees paid in order for transactions to proceed.",
 
     "awakenDescription": "AwakenSwap is a decentralized exchange based on the aelf chain, offering users one-stop DeFi services including trading, swapping, lending, staking, asset management, and more.",
@@ -631,6 +631,7 @@
     "Overview": "Overview",
     "Total Positions": "Total Positions",
     "Total Fees": "Total Fees",
+    "totalFeesDescription": "The transaction fee share accumulated from all your current positions",
     "By Pool": "By Pool",
     "By Token": "By Token",
     "Idle Tokens": "Idle Tokens",
@@ -641,7 +642,7 @@
     "24h Volume": "24h Volume",
     "Fees": "Fees",
     "Cumulative net addition": "Cumulative net addition",
-    "cumulativeDescription": "Cumulative net addition = cumulative addition - (cumulative removal - withdrawn handling fee), when withdrawing, the investment and fee are withdrawn in proportion.",
+    "cumulativeDescription": "Cumulative net addition = cumulative addition - cumulative removal",
     "Estimated APR": "Estimated APR",
     "estimatedAPRDescription": "Estimated APR = Holding period handling fee share / cumulative net addition * 100% * 360 / Holding period",
     "Dynamic APR": "Dynamic APR",
