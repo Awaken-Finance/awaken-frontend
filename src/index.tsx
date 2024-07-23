@@ -17,7 +17,7 @@ import { ANTD_LOCAL } from './i18n/config';
 import { useLanguage } from './i18n';
 import SignInProxy from 'pages/Login/SignInProxy';
 import ConfirmLogoutDialog from 'Modals/ConfirmLogoutDialog';
-import { WebLoginProvider, init, useConnectWallet } from '@aelf-web-login/wallet-adapter-react';
+import { WebLoginProvider, init } from '@aelf-web-login/wallet-adapter-react';
 import { WEB_LOGIN_CONFIG } from './config/webLoginConfig';
 import { SignInDesignEnum } from '@aelf-web-login/wallet-adapter-base';
 
@@ -26,6 +26,7 @@ import './sentry';
 
 import './index.css';
 import './App.less';
+import { IConfigProps } from '@aelf-web-login/wallet-adapter-bridge';
 
 message.config({
   maxCount: 1,
@@ -47,28 +48,28 @@ function ContextProviders({ children }: { children?: React.ReactNode }) {
 }
 
 function RootApp() {
+  // TODO: v2
   const { value, loading } = useAsync(async () => await devicesEnv.getPortkeyShellApp());
 
-  // const bridgeAPI = init(WEB_LOGIN_CONFIG);
-
-  const bridgeAPI = useMemo(
-    () =>
-      init({
-        ...WEB_LOGIN_CONFIG,
-        baseConfig: {
-          ...WEB_LOGIN_CONFIG.baseConfig,
-          noCommonBaseModal: true,
-          design: SignInDesignEnum.Web2Design,
-          SignInComponent: SignInProxy as any,
-          ConfirmLogoutDialog: ConfirmLogoutDialog,
-          PortkeyProviderProps: {
-            theme: 'dark',
-            networkType: WEB_LOGIN_CONFIG.baseConfig.networkType,
-          },
+  const webLoginConfig: IConfigProps = useMemo(
+    () => ({
+      ...WEB_LOGIN_CONFIG,
+      baseConfig: {
+        ...WEB_LOGIN_CONFIG.baseConfig,
+        noCommonBaseModal: true,
+        design: SignInDesignEnum.Web2Design,
+        SignInComponent: SignInProxy as any,
+        ConfirmLogoutDialog: ConfirmLogoutDialog,
+        PortkeyProviderProps: {
+          theme: 'dark',
+          networkType: WEB_LOGIN_CONFIG.baseConfig.networkType,
         },
-      }),
+      },
+    }),
     [],
   );
+
+  const bridgeAPI = init(webLoginConfig);
 
   return (
     <ChianProvider>

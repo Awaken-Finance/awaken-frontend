@@ -87,6 +87,7 @@
     "dev:local": "cross-env REACT_APP_API_ENV=local craco start",
     "build:local": "cross-env REACT_APP_API_ENV=local CI= GENERATE_SOURCEMAP=false craco build",
     "dev:preview": "cross-env REACT_APP_API_ENV=preview craco start",
+    "dev:preview2": "cross-env HTTPS=true SSL_CRT_FILE=./.cert/rootCA.pem SSL_KEY_FILE=./.cert/key.pem REACT_APP_API_ENV=preview craco start",
     "build:preview": "cross-env REACT_APP_API_ENV=preview CI= GENERATE_SOURCEMAP=false craco build",
     "build:preview:ana": "cross-env REACT_APP_API_ENV=preview CI= WEBPACK_ANA=1 GENERATE_SOURCEMAP=false craco build",
     "pkg:preview": "rm -rf build* && npm run build:preview && tar -zcvf awaken-build-kovan.tar.gz build",
