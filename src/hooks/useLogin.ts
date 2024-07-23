@@ -41,8 +41,13 @@ export default function useLogin(redirect: string | undefined = undefined) {
 
   const toSignup = () => {
     if (!isConnected && !isLocking) {
-      history.push(appendRedirect('/signup', redirect));
-      return;
+      if (isPortkeyAppWithDiscover() || isNightElfApp() || PortkeyDid.TelegramPlatform.isTelegramPlatform()) {
+        connectWallet();
+        return;
+      } else {
+        history.push(appendRedirect('/signup', redirect));
+        return;
+      }
     }
     console.log('toSignup invalid');
   };
