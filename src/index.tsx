@@ -26,7 +26,7 @@ import './sentry';
 
 import './index.css';
 import './App.less';
-import { IConfigProps } from '@aelf-web-login/wallet-adapter-bridge';
+import { IConfigProps, PortkeyDid } from '@aelf-web-login/wallet-adapter-bridge';
 
 message.config({
   maxCount: 1,
@@ -51,26 +51,21 @@ function RootApp() {
   // TODO: v2
   const { value, loading } = useAsync(async () => await devicesEnv.getPortkeyShellApp());
 
-  const webLoginConfig: IConfigProps = useMemo(
-    () => ({
-      ...WEB_LOGIN_CONFIG,
-      baseConfig: {
-        ...WEB_LOGIN_CONFIG.baseConfig,
-        showVconsole: true,
-        noCommonBaseModal: true,
-        design: SignInDesignEnum.Web2Design,
-        SignInComponent: SignInProxy as any,
-        ConfirmLogoutDialog: ConfirmLogoutDialog,
-        PortkeyProviderProps: {
-          theme: 'dark',
-          networkType: WEB_LOGIN_CONFIG.baseConfig.networkType,
-        },
+  const bridgeAPI = init({
+    ...WEB_LOGIN_CONFIG,
+    baseConfig: {
+      ...WEB_LOGIN_CONFIG.baseConfig,
+      // showVconsole: true,
+      noCommonBaseModal: PortkeyDid.TelegramPlatform.isTelegramPlatform() ? false : true,
+      design: SignInDesignEnum.Web2Design,
+      SignInComponent: PortkeyDid.TelegramPlatform.isTelegramPlatform() ? undefined : (SignInProxy as any),
+      ConfirmLogoutDialog: ConfirmLogoutDialog,
+      PortkeyProviderProps: {
+        theme: 'dark',
+        networkType: WEB_LOGIN_CONFIG.baseConfig.networkType,
       },
-    }),
-    [],
-  );
-
-  const bridgeAPI = init(webLoginConfig);
+    },
+  });
 
   return (
     <ChianProvider>
