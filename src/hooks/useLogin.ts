@@ -2,6 +2,7 @@ import { useHistory } from 'react-router-dom';
 import { useConnectWallet } from '@aelf-web-login/wallet-adapter-react';
 import { isNightElfApp, isPortkeyAppWithDiscover } from 'utils/isApp';
 import { PortkeyDid } from '@aelf-web-login/wallet-adapter-bridge';
+import { useIsTelegram } from 'utils/isMobile';
 
 export function appendRedirect(path: string, redirect: string | undefined = undefined) {
   const { pathname } = window.location;
@@ -19,6 +20,7 @@ export function appendRedirect(path: string, redirect: string | undefined = unde
 export default function useLogin(redirect: string | undefined = undefined) {
   const { isConnected, isLocking, connectWallet } = useConnectWallet();
   const history = useHistory();
+  const isTelegram = useIsTelegram();
 
   const toLogin = () => {
     if (isLocking) {
@@ -27,7 +29,7 @@ export default function useLogin(redirect: string | undefined = undefined) {
     }
 
     if (!isConnected) {
-      if (isPortkeyAppWithDiscover() || isNightElfApp() || PortkeyDid.TelegramPlatform.isTelegramPlatform()) {
+      if (isPortkeyAppWithDiscover() || isNightElfApp() || isTelegram) {
         connectWallet();
         return;
       } else {
@@ -41,7 +43,7 @@ export default function useLogin(redirect: string | undefined = undefined) {
 
   const toSignup = () => {
     if (!isConnected && !isLocking) {
-      if (isPortkeyAppWithDiscover() || isNightElfApp() || PortkeyDid.TelegramPlatform.isTelegramPlatform()) {
+      if (isPortkeyAppWithDiscover() || isNightElfApp() || isTelegram) {
         connectWallet();
         return;
       } else {

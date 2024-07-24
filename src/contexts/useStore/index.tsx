@@ -7,7 +7,7 @@ import { useLanguage } from 'i18n';
 import { createContext, useContext, useEffect, useMemo, useReducer, useState } from 'react';
 import { useEffectOnce, useSearchParam } from 'react-use';
 import storages from 'storages';
-import isMobile from 'utils/isMobile';
+import isMobile, { useIsTelegram } from 'utils/isMobile';
 import { switchNetwork } from 'utils/network';
 import { PortkeyDid } from '@aelf-web-login/wallet-adapter-bridge';
 import { MOBILE_DEVICE_WIDTH } from 'constants/misc';
@@ -55,6 +55,7 @@ export default function Provider({ children }: { children: React.ReactNode }) {
   );
   const [mobile, setMobile] = useState<boolean>();
   const { language } = useLanguage();
+  const isTelegram = useIsTelegram();
 
   // isMobile
   useEffect(() => {
@@ -79,12 +80,16 @@ export default function Provider({ children }: { children: React.ReactNode }) {
   // className
   useEffect(() => {
     if (!body) return;
-    const addClassName = [mobile ? 'mobile-site-content' : 'pc-site-content', `${language}-site-content`];
+    const addClassName = [
+      mobile ? 'mobile-site-content' : 'pc-site-content',
+      `${language}-site-content`,
+      isTelegram ? 'tg-site-content' : '',
+    ];
     body.className = '';
     addClassName.forEach((i) => {
       if (!body.className.includes(i)) body.className = (body.className.trim() + ' ' + i).trim();
     });
-  }, [mobile, language]);
+  }, [mobile, language, isTelegram]);
 
   // blockHeight
   // const blockHeight = useCurrentBlockHeight();

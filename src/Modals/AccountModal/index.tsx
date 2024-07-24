@@ -1,7 +1,7 @@
 import { useModal } from 'contexts/useModal';
 import { basicModalView } from 'contexts/useModal/actions';
 import { useMobile } from 'utils/isMobile';
-import { Row, Carousel, Modal, Col, message } from 'antd';
+import { Row, Carousel, Modal, Col } from 'antd';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { CarouselRef } from 'antd/lib/carousel';
 import AccountInfo from './AccountInfo';
@@ -11,7 +11,6 @@ import { IconArrowDown, IconArrowUp, IconClose } from 'assets/icons';
 import MyTokenList from './MyTokenList';
 import { useHistory } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import querystring from 'query-string';
 
 import './styles.less';
 import clsx from 'clsx';
@@ -52,10 +51,8 @@ const MENU_LIST = [
 function AccountModal() {
   const [{ accountModal: isAccountModalShow }, { dispatch }] = useModal();
   const [showHiddenTokens, setShowHiddenTokens] = useState(false);
-  const { walletType, walletInfo, disConnectWallet } = useConnectWallet();
+  const { walletInfo, disConnectWallet } = useConnectWallet();
   const history = useHistory();
-  const query = useMemo(() => querystring.parse(history.location.search), [history.location.search]);
-  const redirect = query['redirect'];
   const carouselRef = useRef<CarouselRef>(null);
   const isMobile = useMobile();
 

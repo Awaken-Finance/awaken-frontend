@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { ConfigProvider, message } from 'antd';
 import { devicesEnv } from '@portkey/utils';
 import { useAsync } from 'react-use';
@@ -27,6 +27,8 @@ import './sentry';
 import './index.css';
 import './App.less';
 import { IConfigProps, PortkeyDid } from '@aelf-web-login/wallet-adapter-bridge';
+import './assets/js/telegram-web-app';
+import { useIsTelegram } from 'utils/isMobile';
 
 message.config({
   maxCount: 1,
@@ -34,6 +36,7 @@ message.config({
 
 function ContextProviders({ children }: { children?: React.ReactNode }) {
   const { language } = useLanguage();
+
   return (
     <ConfigProvider locale={ANTD_LOCAL[language]} autoInsertSpaceInButton={false}>
       <TokenPriceProvider>
@@ -48,24 +51,26 @@ function ContextProviders({ children }: { children?: React.ReactNode }) {
 }
 
 function RootApp() {
-  // TODO: v2
-  const { value, loading } = useAsync(async () => await devicesEnv.getPortkeyShellApp());
+  const isTelegram = useIsTelegram();
 
-  const bridgeAPI = init({
-    ...WEB_LOGIN_CONFIG,
-    baseConfig: {
-      ...WEB_LOGIN_CONFIG.baseConfig,
-      // showVconsole: true,
-      noCommonBaseModal: PortkeyDid.TelegramPlatform.isTelegramPlatform() ? false : true,
-      design: SignInDesignEnum.Web2Design,
-      SignInComponent: PortkeyDid.TelegramPlatform.isTelegramPlatform() ? undefined : (SignInProxy as any),
-      ConfirmLogoutDialog: ConfirmLogoutDialog,
-      PortkeyProviderProps: {
-        theme: 'dark',
-        networkType: WEB_LOGIN_CONFIG.baseConfig.networkType,
-      },
-    },
-  });
+  const bridgeAPI = useMemo(
+    () =>
+      init({
+        ...WEB_LOGIN_CONFIG,
+        baseConfig: {
+          ...WEB_LOGIN_CONFIG.baseConfig,
+          noCommonBaseModal: isTelegram ? false : true,
+          design: SignInDesignEnum.Web2Design,
+          SignInComponent: isTelegram ? undefined : (SignInProxy as any),
+          ConfirmLogoutDialog: ConfirmLogoutDialog,
+          PortkeyProviderProps: {
+            theme: 'dark',
+            networkType: WEB_LOGIN_CONFIG.baseConfig.networkType,
+          },
+        },
+      }),
+    [isTelegram],
+  );
 
   return (
     <ChianProvider>

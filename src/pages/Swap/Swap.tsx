@@ -1,33 +1,29 @@
-import { useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import SettingFee from 'Buttons/SettingFeeBtn';
-import { useHistory } from 'react-router-dom';
 import { CommonPanelPage } from 'components/CommonPanelPage';
-import { useMobile } from 'utils/isMobile';
+import { useIsTelegram, useMobile } from 'utils/isMobile';
 import { SwapPanel } from './components/SwapPanel';
 
 import './styles.less';
 import { SwapHistory } from './components/SwapHistory';
 import { useConnectWallet } from '@aelf-web-login/wallet-adapter-react';
+import { useGoBack } from 'hooks/route';
 
 export const Swap = () => {
   const { t } = useTranslation();
   const isMobile = useMobile();
-  const history = useHistory();
+  const isTelegram = useIsTelegram();
   const { isConnected } = useConnectWallet();
-
-  const onCancel = useCallback(() => {
-    history.goBack();
-  }, [history]);
+  const goBack = useGoBack();
 
   return (
     <>
       <CommonPanelPage
         className="swap-page"
-        onCancel={onCancel}
+        onCancel={goBack}
         title={t('Swap')}
         extraTitle={<SettingFee />}
-        isCancelHide={!isMobile}>
+        isCancelHide={!isMobile || isTelegram}>
         <SwapPanel />
       </CommonPanelPage>
 

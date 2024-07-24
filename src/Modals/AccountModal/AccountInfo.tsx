@@ -1,19 +1,20 @@
 import { Row, Col, Avatar, message } from 'antd';
 import { shortenAddress } from 'utils';
 import Font from 'components/Font';
-import { IconCopy, IconLogout, IconSwitch } from 'assets/icons';
+import { IconCopy, IconLogout } from 'assets/icons';
 import { userAvatar } from 'assets/images';
 import { useMemo } from 'react';
 import useChainId from 'hooks/useChainId';
 import { useCopyToClipboard } from 'react-use';
-import { useMobile } from 'utils/isMobile';
+
 import { useConnectWallet } from '@aelf-web-login/wallet-adapter-react';
+import { useIsTelegram } from 'utils/isMobile';
 
 export default function AccountInfo({ onClickLogout }: { onClickLogout: () => void }) {
   const [, setCopied] = useCopyToClipboard();
   const { walletInfo } = useConnectWallet();
   const { chainId } = useChainId();
-  const isMobile = useMobile();
+  const isTelegram = useIsTelegram();
 
   const displayAddress = useMemo(() => {
     if (!walletInfo?.address) return '';
@@ -50,9 +51,7 @@ export default function AccountInfo({ onClickLogout }: { onClickLogout: () => vo
         </Row>
       </Col>
 
-      <Col flex={'32px'}>
-        <IconLogout className="logout-icon" onClick={onClickLogout} />
-      </Col>
+      <Col flex={'32px'}>{!isTelegram && <IconLogout className="logout-icon" onClick={onClickLogout} />}</Col>
     </Row>
   );
 }
