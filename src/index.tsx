@@ -56,6 +56,7 @@ function RootApp() {
       ...WEB_LOGIN_CONFIG,
       baseConfig: {
         ...WEB_LOGIN_CONFIG.baseConfig,
+        showVconsole: true,
         noCommonBaseModal: true,
         design: SignInDesignEnum.Web2Design,
         SignInComponent: SignInProxy as any,
