@@ -111,6 +111,8 @@ export const SwapPanel = () => {
         }
         if (!routeList || routeList.length === 0) {
           setIsRouteEmpty(true);
+        } else {
+          setIsRouteEmpty(false);
         }
         routeListRef.current = routeList;
         console.log('routeList', routeList);
