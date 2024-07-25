@@ -1,7 +1,6 @@
 import { useHistory } from 'react-router-dom';
 import { useConnectWallet } from '@aelf-web-login/wallet-adapter-react';
 import { isNightElfApp, isPortkeyAppWithDiscover } from 'utils/isApp';
-import { PortkeyDid } from '@aelf-web-login/wallet-adapter-bridge';
 import { useIsTelegram } from 'utils/isMobile';
 
 export function appendRedirect(path: string, redirect: string | undefined = undefined) {

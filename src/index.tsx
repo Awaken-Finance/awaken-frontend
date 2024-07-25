@@ -1,7 +1,5 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useMemo } from 'react';
 import { ConfigProvider, message } from 'antd';
-import { devicesEnv } from '@portkey/utils';
-import { useAsync } from 'react-use';
 import { createRoot } from 'react-dom/client';
 
 import App from './App';
@@ -21,12 +19,9 @@ import { WebLoginProvider, init } from '@aelf-web-login/wallet-adapter-react';
 import { WEB_LOGIN_CONFIG } from './config/webLoginConfig';
 import { SignInDesignEnum } from '@aelf-web-login/wallet-adapter-base';
 
-import './config/webLoginConfig';
 import './sentry';
-
 import './index.css';
 import './App.less';
-import { IConfigProps, PortkeyDid } from '@aelf-web-login/wallet-adapter-bridge';
 import './assets/js/telegram-web-app';
 import { useIsTelegram } from 'utils/isMobile';
 

@@ -6,7 +6,7 @@ import { SupportedELFChainId } from 'constants/chain';
 import { useActiveWeb3React } from 'hooks/web3';
 import CommonDropdown from 'components/CommonDropdown';
 import CommonButton from 'components/CommonButton';
-import { IconArrowDown, IconLogoutWarn, IconRedError } from 'assets/icons';
+import { IconArrowDown, IconLogoutWarn } from 'assets/icons';
 import { elfChain } from 'assets/images';
 import { useMobile } from 'utils/isMobile';
 import CommonModal from 'components/CommonModal';

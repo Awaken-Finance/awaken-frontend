@@ -211,21 +211,6 @@ export default function useSearchPairList(
     };
   }, [config?.socket, updateItem]);
 
-  // useWebLoginEvent(WebLoginEvents.LOGINED, () => {
-  //   if (isPortkeyAppWithDiscover() || isNightElfApp() || walletType === 'portkey') {
-  //     pageInfo.current = {
-  //       ...pageInfo.current,
-  //       pageNum: 1,
-  //       pageSize: config?.customPageSize,
-  //       field: null,
-  //       order: null,
-  //       searchVal: '',
-  //     };
-  //     clearDataSource.current = true;
-  //     return getListBySearch(pageInfo.current);
-  //   }
-  // });
-
   const init = useCallback(async () => {
     if (isPortkeyAppWithDiscover() || isNightElfApp() || walletType === WalletTypeEnum.aa) {
       pageInfo.current = {
