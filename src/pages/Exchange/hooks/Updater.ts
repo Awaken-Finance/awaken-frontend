@@ -4,12 +4,12 @@ import { useSwapContext } from './useSwap';
 import { useActiveWeb3React } from 'hooks/web3';
 import { useHistory, useParams } from 'react-router';
 import { useUpdateEffect } from 'react-use';
-import { useWebLogin } from 'aelf-web-login';
 import { useUser } from 'contexts/useUser';
 import { getPairList } from 'pages/Overview/apis/getPairList';
 import BigNumber from 'bignumber.js';
 import { PoolItem } from 'types';
 import { getPairReversed } from 'utils/pair';
+import { useConnectWallet } from '@aelf-web-login/wallet-adapter-react';
 
 export default function Updater() {
   const [{ socket, pairInfo }, { setSocket, pairInfoUpdater }] = useSwapContext();
@@ -17,7 +17,7 @@ export default function Updater() {
   const params = useParams<{ pair?: string }>();
   const history = useHistory();
   const { apiChainId, chainId } = useActiveWeb3React();
-  const { wallet } = useWebLogin();
+  const { walletInfo } = useConnectWallet();
 
   const [{ favChangeItem }, { isFavById }] = useUser();
 
@@ -51,7 +51,7 @@ export default function Updater() {
         token1Symbol,
         feeRate: fee,
         chainId: apiChainId,
-        address: wallet?.address,
+        address: walletInfo?.address,
       });
 
       if (!pairList || !pairList?.items?.length) {
@@ -60,13 +60,13 @@ export default function Updater() {
       }
 
       const pairInfo = pairList.items[0];
-      if (isFavById(wallet?.address, pairInfo?.id)) {
+      if (isFavById(walletInfo?.address, pairInfo?.id)) {
         pairInfo.isFav = true;
       }
 
       pairInfoUpdater(pairInfo);
     },
-    [wallet.address, apiChainId, isFavById, pairInfoUpdater, history],
+    [apiChainId, walletInfo?.address, isFavById, pairInfoUpdater, history],
   );
 
   useUpdateEffect(() => {
@@ -114,7 +114,7 @@ export default function Updater() {
   useEffect(() => {
     const [token0Symbol, token1Symbol, feeRate] = params.pair?.split('_') || ['ELF', 'USDT', '0.05'];
     getPairInfo(token0Symbol, token1Symbol, feeRate);
-  }, [wallet.address, params?.pair, getPairInfo]);
+  }, [walletInfo?.address, params?.pair, getPairInfo]);
 
   return null;
 }

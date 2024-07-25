@@ -4,7 +4,7 @@ export default function useOutSideClick(callback: () => void) {
   const ref = useRef<any>();
 
   const handleClick = useCallback(
-    (event) => {
+    (event: MouseEvent) => {
       if (ref.current && !ref.current.contains(event.target)) {
         callback();
       }

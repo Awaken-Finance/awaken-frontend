@@ -2,7 +2,6 @@ import { Col, Row } from 'antd';
 import { CurrencyLogo } from 'components/CurrencyLogo';
 import Font from 'components/Font';
 import useChainId from 'hooks/useChainId';
-import { getConfig } from 'aelf-web-login';
 import { useMemo } from 'react';
 import { getELFChainTokenURL } from 'utils';
 
@@ -11,6 +10,7 @@ import PriceUSDDigits from 'components/PriceUSDDigits';
 import getFontStyle from 'utils/getFontStyle';
 import { formatSymbol } from 'utils/token';
 import { ZERO } from 'constants/misc';
+import { WEB_LOGIN_CONFIG } from 'config/webLoginConfig';
 
 type TokenInfoItem = {
   symbol: string;
@@ -21,10 +21,11 @@ type TokenInfoItem = {
 
 export function TokenItem({ data }: { data: TokenInfoItem }) {
   const { chainName } = useChainId();
-  const networkType = getConfig().networkType;
   const displayChainName = useMemo(() => {
-    return networkType == 'TESTNET' ? `${chainName} ${networkType}` : chainName;
-  }, [chainName, networkType]);
+    return WEB_LOGIN_CONFIG.baseConfig.networkType == 'TESTNET'
+      ? `${chainName} ${WEB_LOGIN_CONFIG.baseConfig.networkType}`
+      : chainName;
+  }, [chainName]);
 
   const src = useMemo(() => {
     return getELFChainTokenURL(data.symbol);
@@ -50,7 +51,7 @@ export function TokenItem({ data }: { data: TokenInfoItem }) {
       <Col className="balance-col">
         <div className="balance">
           <Font size={16} lineHeight={24} color="one">
-            {ZERO.plus(data.amount).dp(8)}
+            {ZERO.plus(data.amount).dp(8).toFixed()}
           </Font>
         </div>
         <div className="price-usd">

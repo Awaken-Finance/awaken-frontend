@@ -39,7 +39,7 @@ export default function TransactionFee({ onChange = () => null }: { onChange: (v
         <Row gutter={[2, 0]}>
           <Col>
             <Font size={isMobile ? 12 : 14} lineHeight={isMobile ? 18 : 20} weight="medium">
-              {divDecimals(new BigNumber(data), 8)}
+              {divDecimals(new BigNumber(data), 8).toFixed()}
             </Font>
           </Col>
           <Col>

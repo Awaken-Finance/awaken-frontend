@@ -3,7 +3,7 @@ import { DependencyList, useCallback, useRef } from 'react';
 // useLockCallback prevent concurrent execution
 export default function useLockCallback<T extends (...args: any[]) => any>(callback: T, deps: DependencyList) {
   const lock = useRef(false);
-  return useCallback(async (...args) => {
+  return useCallback(async (...args: any[]) => {
     if (lock.current) return;
     lock.current = true;
     try {

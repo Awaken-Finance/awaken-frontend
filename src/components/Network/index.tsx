@@ -1,5 +1,4 @@
 import { Menu } from 'antd';
-import detectProvider from '@portkey/detect-provider';
 import { CHAIN_NAME, networkList } from '../../constants';
 import { useMemo, useState } from 'react';
 import { switchNetwork } from '../../utils/network';
@@ -7,61 +6,20 @@ import { SupportedELFChainId } from 'constants/chain';
 import { useActiveWeb3React } from 'hooks/web3';
 import CommonDropdown from 'components/CommonDropdown';
 import CommonButton from 'components/CommonButton';
-import { IconArrowDown, IconLogoutWarn, IconRedError } from 'assets/icons';
+import { IconArrowDown, IconLogoutWarn } from 'assets/icons';
 import { elfChain } from 'assets/images';
-import { WalletType, WebLoginEvents, getConfig, useWebLogin, useWebLoginEvent } from 'aelf-web-login';
-import { useInterval } from 'react-use';
 import { useMobile } from 'utils/isMobile';
-import CommonTooltip from 'components/CommonTooltip';
 import CommonModal from 'components/CommonModal';
 import Font from 'components/Font';
 import { useTranslation } from 'react-i18next';
 
 import './index.less';
-
-function useNetworkCheck() {
-  const { walletType, wallet } = useWebLogin();
-  const [mismatch, setMismatch] = useState(false);
-
-  const checkNetwork = async () => {
-    try {
-      const provider = await detectProvider();
-      if (!provider) return;
-      const network = await provider.request({
-        method: 'network',
-      });
-      console.log(network);
-      setMismatch(network !== getConfig().networkType);
-    } catch (error) {
-      console.warn(error);
-      setMismatch(false);
-    }
-  };
-
-  useWebLoginEvent(WebLoginEvents.NETWORK_MISMATCH, () => {
-    setMismatch(true);
-  });
-
-  useInterval(() => {
-    if (mismatch) {
-      checkNetwork();
-    }
-  }, 500);
-
-  if (walletType !== WalletType.discover) return false;
-
-  if (!wallet.discoverInfo?.provider) {
-    return false;
-  }
-
-  return mismatch;
-}
+import { useConnectWallet } from '@aelf-web-login/wallet-adapter-react';
 
 export default function Network(props: { overlayClassName?: string | undefined }) {
   const { chainId } = useActiveWeb3React();
-  const { logout } = useWebLogin();
+  const { disConnectWallet } = useConnectWallet();
   const [modalOpen, setModalOpen] = useState(false);
-  const networkMismatch = useNetworkCheck();
   const isMobile = useMobile();
   const { t } = useTranslation();
   const menu = useMemo(() => {
@@ -95,30 +53,11 @@ export default function Network(props: { overlayClassName?: string | undefined }
   };
 
   const onClickDisconnect = () => {
-    logout();
+    disConnectWallet();
     setModalOpen(false);
   };
 
-  useWebLoginEvent(WebLoginEvents.NETWORK_MISMATCH, () => {
-    setModalOpen(true);
-  });
-
   if (!chainId) return null;
-
-  if (networkMismatch) {
-    return (
-      <>
-        <CommonTooltip
-          type="error"
-          title="Your wallet’s current network is unsupported."
-          overlayClassName="network-tooltip"
-          placement={isMobile ? 'bottom' : 'left'}>
-          <IconRedError />
-        </CommonTooltip>
-        {renderDisconnectModal()}
-      </>
-    );
-  }
 
   return (
     <>

@@ -16,7 +16,7 @@ import { AElfContract, IContract } from 'types';
 import { getContractMethods, isELFChain, transformArrayToMap } from 'utils/aelfUtils';
 import { ContractBasic, ContractInterface } from 'utils/contract';
 import { useActiveWeb3React } from './web3';
-import { useCallContract } from 'aelf-web-login';
+import { useConnectWallet } from '@aelf-web-login/wallet-adapter-react';
 
 function formatMethodName(methodName: string) {
   const newMethodName = methodName[0].toUpperCase() + methodName.slice(1);
@@ -81,7 +81,7 @@ export function useGetContractMethods(contractAddress?: string) {
 }
 
 export function useAElfContract(contractAddress?: string) {
-  const { callViewMethod, callSendMethod } = useCallContract();
+  const { callViewMethod, callSendMethod } = useConnectWallet();
 
   const getContractMethods = useGetContractMethods(contractAddress);
 
@@ -103,12 +103,12 @@ export function useAElfContract(contractAddress?: string) {
         const inputType = methods[methodName];
         const args = transformArrayToMap(inputType, paramsOption);
         // console.log('[Contract] callViewMethod', contractAddress, methodName, paramsOption, args);
-        const result = callViewMethod({
+        const result: any = await callViewMethod({
           contractAddress,
           methodName,
           args: args,
         });
-        return result;
+        return result?.data;
       },
       callSendMethod: async (functionName: string, account: string, paramsOption: any, sendOptions: any) => {
         if (!contractAddress) {
@@ -119,14 +119,12 @@ export function useAElfContract(contractAddress?: string) {
         const inputType = methods[methodName];
         const args = transformArrayToMap(inputType, paramsOption);
         // console.log('[Contract] callSendMethod', contractAddress, methodName, paramsOption, args);
-        return callSendMethod(
-          {
-            contractAddress,
-            methodName,
-            args: args,
-          },
+        return callSendMethod({
+          contractAddress,
+          methodName,
+          args: args,
           sendOptions,
-        );
+        });
       },
       callSendPromiseMethod: async (functionName: string, account: string, paramsOption: any, sendOptions: any) => {
         if (!contractAddress) {
@@ -137,14 +135,12 @@ export function useAElfContract(contractAddress?: string) {
         const inputType = methods[methodName];
         const args = transformArrayToMap(inputType, paramsOption);
         // console.log('[Contract] callSendMethod', contractAddress, methodName, paramsOption, args);
-        return callSendMethod(
-          {
-            contractAddress,
-            methodName,
-            args: args,
-          },
+        return callSendMethod({
+          contractAddress,
+          methodName,
+          args: args,
           sendOptions,
-        );
+        });
       },
     };
     return contract;

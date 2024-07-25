@@ -14,6 +14,8 @@ import { PortfolioChart } from '../PortfolioChart';
 import { ZERO } from 'constants/misc';
 import { formatSymbol } from 'utils/token';
 import { useMobile } from 'utils/isMobile';
+import CommonTooltip from 'components/CommonTooltip';
+import { Col, Row } from 'antd';
 
 export const PortfolioOverview = () => {
   const isMobile = useMobile();
@@ -194,9 +196,22 @@ export const PortfolioOverview = () => {
 
           <div className="portfolio-overview-total-right">
             <div className="portfolio-overview-title-wrap">
-              <Font size={isMobile ? 14 : 16} lineHeight={isMobile ? 20 : 24}>
-                {t('Total Fees')}
-              </Font>
+              <Row align="middle" gutter={[4, 0]}>
+                <Col>
+                  <Font size={isMobile ? 14 : 16} lineHeight={isMobile ? 20 : 24}>
+                    {t('Total Fees')}
+                  </Font>
+                </Col>
+                <Col>
+                  <CommonTooltip
+                    placement="top"
+                    title={t('totalFeesDescription')}
+                    buttonTitle={t('ok')}
+                    headerDesc={t('Total Fees')}
+                  />
+                </Col>
+              </Row>
+
               <PriceUSDDigits
                 className={getFontStyle({ size: isMobile ? 24 : 32, lineHeight: isMobile ? 32 : 40, weight: 'medium' })}
                 price={assetPortfolio?.totalFeeInUSD ?? 0}

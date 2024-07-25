@@ -48,7 +48,7 @@ export default function CurrencyRow({ currency, balance, isBalanceShow = true }:
           {isBalanceShow && (
             <Col>
               <Font lineHeight={24} size={16}>
-                {displayBalance}
+                {displayBalance.toFixed()}
               </Font>
             </Col>
           )}

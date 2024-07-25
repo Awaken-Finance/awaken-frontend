@@ -1,8 +1,10 @@
-import { WalletType, WebLoginState, useWebLogin } from 'aelf-web-login';
+import { useConnectWallet } from '@aelf-web-login/wallet-adapter-react';
 import useLogin from './useLogin';
 import { basicModalView } from 'contexts/useModal/actions';
 import { useModalDispatch } from 'contexts/useModal/hooks';
 import { useCallback } from 'react';
+import { WalletTypeEnum } from '@aelf-web-login/wallet-adapter-base';
+import { WEB_LOGIN_CONFIG } from 'config/webLoginConfig';
 
 export default function useLoginCheck<T = any>(
   options: {
@@ -12,7 +14,7 @@ export default function useLoginCheck<T = any>(
   callback?: (arg: T) => void,
   onGotoLogin?: () => void,
 ) {
-  const { wallet, walletType, loginState, loginEagerly } = useWebLogin();
+  const { isConnected, walletType, walletInfo, getWalletSyncIsCompleted } = useConnectWallet();
   const { toLogin } = useLogin(options.redirect);
 
   const dispatch = useModalDispatch();
@@ -21,26 +23,39 @@ export default function useLoginCheck<T = any>(
     dispatch(basicModalView.setSynchronizedAccountInfoModal.actions(true));
   }, [dispatch]);
 
-  const checkLogin = (e?: any) => {
-    e?.stopPropagation?.();
-    if (options.checkAccountSync && loginState === WebLoginState.logined && walletType === WalletType.portkey) {
-      if (!wallet.accountInfoSync.syncCompleted) {
-        popupSynchronizedAccountInfoModal();
+  const checkLogin = useCallback(
+    async (e?: any) => {
+      e?.stopPropagation?.();
+      if (!isConnected) {
+        onGotoLogin?.();
+        toLogin();
+        return;
+      }
+
+      if (options.checkAccountSync && isConnected && walletType === WalletTypeEnum.aa) {
+        const syncCompleted = await getWalletSyncIsCompleted(WEB_LOGIN_CONFIG.baseConfig.chainId);
+        if (!syncCompleted) {
+          popupSynchronizedAccountInfoModal();
+          return true;
+        }
+      }
+      if (walletInfo?.address) {
+        callback && callback(e);
         return true;
       }
-    }
-    if (wallet.address) {
-      callback && callback(e);
-      return true;
-    }
-    if (loginState === WebLoginState.lock || loginState === WebLoginState.eagerly) {
-      onGotoLogin?.();
-      loginEagerly();
-    } else if (loginState === WebLoginState.initial) {
-      onGotoLogin?.();
-      toLogin();
-    }
-  };
+    },
+    [
+      callback,
+      getWalletSyncIsCompleted,
+      isConnected,
+      onGotoLogin,
+      options.checkAccountSync,
+      popupSynchronizedAccountInfoModal,
+      toLogin,
+      walletInfo?.address,
+      walletType,
+    ],
+  );
 
   return checkLogin;
 }

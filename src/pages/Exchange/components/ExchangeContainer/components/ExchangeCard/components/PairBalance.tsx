@@ -9,8 +9,8 @@ import { divDecimals } from 'utils/calculate';
 import { Currency } from '@awaken/sdk-core';
 import { useMobile } from 'utils/isMobile';
 import { showValueWrapper } from 'utils/price';
-import { WebLoginState, useWebLogin } from 'aelf-web-login';
 import { formatSymbol } from 'utils/token';
+import { useConnectWallet } from '@aelf-web-login/wallet-adapter-react';
 
 interface PairBalanceProps {
   token?: Currency;
@@ -20,7 +20,7 @@ interface PairBalanceProps {
 function PairBalance({ token, balance }: PairBalanceProps) {
   const { t } = useTranslation();
   const isMobile = useMobile();
-  const { loginState } = useWebLogin();
+  const { isConnected } = useConnectWallet();
 
   return (
     <Row gutter={[6, 0]}>
@@ -32,7 +32,7 @@ function PairBalance({ token, balance }: PairBalanceProps) {
       <Col>
         <Font size={isMobile ? 12 : 14} lineHeight={isMobile ? 18 : 20} weight="medium">
           {showValueWrapper(
-            loginState === WebLoginState.logined ? token?.decimals : undefined,
+            isConnected ? token?.decimals : undefined,
             unitConverter(divDecimals(balance, token?.decimals)),
           )}
         </Font>

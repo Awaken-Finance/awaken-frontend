@@ -1,12 +1,12 @@
 import { Route } from 'react-router-dom';
-import { useWebLogin } from 'aelf-web-login';
 import { appendRedirect } from 'hooks/useLogin';
 import CustomRedirect from './CustomRedirect';
+import { useConnectWallet } from '@aelf-web-login/wallet-adapter-react';
 
 export function AuthComp({ component: Component, path }: { component: any; path: string }) {
-  const { wallet } = useWebLogin();
+  const { walletInfo } = useConnectWallet();
 
-  return wallet.address ? (
+  return walletInfo?.address ? (
     <Route render={(props) => <Component url={path} {...props} />} />
   ) : (
     <CustomRedirect preserveQueryString to={appendRedirect('/login')} />

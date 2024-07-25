@@ -14,7 +14,7 @@ export default function MobileWrap() {
   const [sellType, setSellType] = useState<string>('');
 
   const openSlider = useCallback(
-    (v) => {
+    (v: string) => {
       if (v === sliderType) {
         return;
       }

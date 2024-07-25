@@ -4,7 +4,7 @@ import { useCallback, useState } from 'react';
 import useInterval from 'hooks/useInterval';
 import { useActiveWeb3React } from './web3';
 import { getBlockHeight as getAElfBlockHeight } from 'utils/aelfUtils';
-import i18n from 'i18next';
+import i18n from 'i18n';
 
 async function getBlockHeight(apiChainId: string) {
   const blockHeight: any = await request.GET_CURRENCY_BLOCK_HEIGHT({

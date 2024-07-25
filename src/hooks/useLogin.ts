@@ -1,7 +1,7 @@
-import { WebLoginState, useWebLogin } from 'aelf-web-login';
 import { useHistory } from 'react-router-dom';
+import { useConnectWallet } from '@aelf-web-login/wallet-adapter-react';
 import { isNightElfApp, isPortkeyAppWithDiscover } from 'utils/isApp';
-import { useIsPortkeySDK } from './useIsPortkeySDK';
+import { useIsTelegram } from 'utils/isMobile';
 
 export function appendRedirect(path: string, redirect: string | undefined = undefined) {
   const { pathname } = window.location;
@@ -17,36 +17,40 @@ export function appendRedirect(path: string, redirect: string | undefined = unde
 }
 
 export default function useLogin(redirect: string | undefined = undefined) {
-  const { loginState, login } = useWebLogin();
+  const { isConnected, isLocking, connectWallet } = useConnectWallet();
   const history = useHistory();
-  const isPortkeySDK = useIsPortkeySDK();
+  const isTelegram = useIsTelegram();
 
   const toLogin = () => {
-    if (isPortkeySDK) {
-      login();
+    if (isLocking) {
+      connectWallet();
       return;
     }
-    if (loginState === WebLoginState.initial || loginState === WebLoginState.logining) {
-      if (isPortkeyAppWithDiscover() || isNightElfApp()) {
-        login();
+
+    if (!isConnected) {
+      if (isPortkeyAppWithDiscover() || isNightElfApp() || isTelegram) {
+        connectWallet();
+        return;
       } else {
         history.push(appendRedirect('/login', redirect));
+        return;
       }
-    } else if (loginState === WebLoginState.eagerly || loginState === WebLoginState.lock) {
-      login();
     }
+
+    console.log('toLogin invalid');
   };
 
   const toSignup = () => {
-    if (loginState === WebLoginState.initial || loginState === WebLoginState.logining) {
-      if (isPortkeyAppWithDiscover() || isNightElfApp()) {
-        login();
+    if (!isConnected && !isLocking) {
+      if (isPortkeyAppWithDiscover() || isNightElfApp() || isTelegram) {
+        connectWallet();
+        return;
       } else {
         history.push(appendRedirect('/signup', redirect));
+        return;
       }
-    } else if (loginState === WebLoginState.eagerly || loginState === WebLoginState.lock) {
-      login();
     }
+    console.log('toSignup invalid');
   };
 
   return {

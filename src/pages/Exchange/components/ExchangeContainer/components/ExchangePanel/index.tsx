@@ -134,7 +134,7 @@ const MobileExchangePanel = memo(
     const [activeKey, setActiveKey] = useState<string>('buy');
 
     const switchChange = useCallback(
-      (v) => {
+      (v: string) => {
         if (v === activeKey) {
           return;
         }

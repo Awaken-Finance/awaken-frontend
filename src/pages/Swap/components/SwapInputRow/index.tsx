@@ -17,8 +17,8 @@ import './styles.less';
 import PriceUSDDigits from 'components/PriceUSDDigits';
 import getFontStyle from 'utils/getFontStyle';
 import { useMobile } from 'utils/isMobile';
-import { WebLoginState, useWebLogin } from 'aelf-web-login';
 import clsx from 'clsx';
+import { useConnectWallet } from '@aelf-web-login/wallet-adapter-react';
 
 interface Props extends Omit<InputProps, 'onChange'> {
   token?: Currency;
@@ -57,17 +57,16 @@ export default function SwapInputRow(props: Props) {
   const isMobile = useMobile();
 
   const inputRef = useRef<InputRef>(null);
-  const { loginState } = useWebLogin();
-  const isLogin = useMemo(() => loginState === WebLoginState.logined, [loginState]);
+  const { isConnected } = useConnectWallet();
 
   const tokenPrice = useTokenPrice({
     symbol: token?.symbol,
   });
 
   const displayBalance = useMemo(() => {
-    if (!balance || !isLogin) return '-';
+    if (!balance || !isConnected) return '-';
     return unitConverter(divDecimals(balance || ZERO, token?.decimals), 8);
-  }, [balance, isLogin, token?.decimals]);
+  }, [balance, isConnected, token?.decimals]);
 
   const min = useRef<BigNumber>(divDecimals('1', token?.decimals));
 

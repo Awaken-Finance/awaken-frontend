@@ -1,6 +1,5 @@
 import { Currency } from '@awaken/sdk-core';
 import AuthBtn from 'Buttons/AuthBtn';
-import { useWebLogin } from 'aelf-web-login';
 import { useAsyncEffect } from 'ahooks';
 import BigNumber from 'bignumber.js';
 import { CommonButtonProps } from 'components/CommonButton';
@@ -9,6 +8,7 @@ import { useEffect, useMemo } from 'react';
 import { divDecimals, timesDecimals } from 'utils/calculate';
 import { useTranslation } from 'react-i18next';
 import { formatSymbol } from 'utils/token';
+import { useConnectWallet } from '@aelf-web-login/wallet-adapter-react';
 
 export type ApproveBtnProps = Omit<CommonButtonProps, 'onClick'> & {
   symbol?: string;
@@ -32,12 +32,12 @@ export default function ApproveBtn({
   onAllowanceChange,
   ...props
 }: ApproveBtnProps) {
-  const { wallet } = useWebLogin();
+  const { walletInfo } = useConnectWallet();
   const { t } = useTranslation();
   const { approving, checkAllowance, allowance, tokenInfo, approve, checkingAllowance } = useAllowanceAndApprove(
     tokenContractAddress,
     symbol,
-    wallet.address,
+    walletInfo?.address,
     approveTargetAddress || tokenContractAddress,
   );
 

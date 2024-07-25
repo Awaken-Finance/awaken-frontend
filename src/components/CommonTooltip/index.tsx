@@ -63,7 +63,7 @@ export default function CommonTooltip({
     modalDispatch(
       basicModalView.setTooltipModal.actions({
         width,
-        title,
+        title: title as ReactNode,
         headerDesc,
         buttonTitle,
       }),

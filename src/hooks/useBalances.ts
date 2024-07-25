@@ -31,7 +31,7 @@ export const useBalances = (
       if (symbol) return getELFChainBalance(contract, rate ? getLPSymbol(symbol) : symbol, account);
     });
     const bs = await Promise.all(promise);
-    setBalances(bs?.map((i) => new BigNumber(i ?? '')));
+    setBalances(bs?.map((i: any) => new BigNumber(i ?? '')));
   }, [tokens, account, tokenContract, rate, factoryContract]);
 
   useInterval(onGetBalance, delay, [account, tokens, chainId, tokenContract, factoryContract]);

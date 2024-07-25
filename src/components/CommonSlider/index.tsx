@@ -37,7 +37,7 @@ const marks: SliderMarks = {
 
 function CommonSlider({ onChange = () => null, min = 0, max = 100, className, ...props }: SliderSingleProps) {
   const handleAfterChange = useCallback(
-    (val) => {
+    (val: number) => {
       if (val === min) {
         onChange(val);
       }

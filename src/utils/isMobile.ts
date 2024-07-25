@@ -1,3 +1,5 @@
+import { PortkeyDid } from '@aelf-web-login/wallet-adapter-bridge';
+import { MOBILE_DEVICE_WIDTH } from 'constants/misc';
 import { useStore } from 'contexts/useStore';
 import { useMemo } from 'react';
 const appleIphone = /iPhone/i;
@@ -187,5 +189,11 @@ export function useMobile() {
 
 export function isMobileDevices() {
   const isM = isMobile();
-  return isM.apple.device || isM.android.device;
+  return isM.apple.device || isM.android.device || window.innerWidth <= MOBILE_DEVICE_WIDTH;
+}
+
+export function useIsTelegram() {
+  return useMemo(() => {
+    return PortkeyDid.TelegramPlatform.isTelegramPlatform();
+  }, []);
 }

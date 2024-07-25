@@ -5,7 +5,7 @@ export const API_LIST = {
   GET_CHAIN_ID: '/api/app/chains',
   GET_CURRENCY_BLOCK_HEIGHT: '/api/app/chains/status', //'/api/app/chains/status',
   GET_CENTRALIZED_POOL: '/api/app/farm/farm-pool-list', //mock/list.json /api/app/farm/farm-pool-list
-  GET_FARMS_SUMMARY: '/api/app/farm-statistic/pools-statistic-info', // /mock/general.json   // /farm/api/app/farm-statistic/pools-statistic-info
+  GET_FARMS_SUMMARY: '/api/app/farm-statistic/pools-statistic-info', // /mock/general.json   // /farmhttps://test.awaken.finance/api/app/farm-statistic/pools-statistic-info
   // GET_DIVIDEND_SUMMARY: '/mock/dividend.json', // /api/app/dividend-pools
   GET_DIVIDEND_POOLS: '/api/app/dividend/dividend-pools', //'/mock/dividend.json', //
   GET_DIVIDEND_PROFITS: '/api/app/dividend/dividend', // '/mock/dividendProfits.json',
@@ -41,8 +41,8 @@ export const USER_CENTER_API_LIST = {
   GET_USER_ASSET_EXCHANGE: '/api/app/liquidity/user-asset', //'/mock/assetExchange.json',
   GET_USER_ASSET_DIVIDEND: '/api/app/dividend/user-dividend', // /api/app/dividend/revenue
   GET_USER_DIVIDEND_STATISTIC: '/api/app/dividend/user-statistic',
-  GET_USER_ASSET_FARM: '/api/app/farm-statistic/users-statistic-info', //   // /farms/api/app/farm-statistic/users-statistic-info
-  GET_USER_ASSET_FARM_LIST: '/api/app/farm/farm-user-info-list', // /mock/assetFarmList.json  //farms/api/app/farm/farm-user-info-list
+  GET_USER_ASSET_FARM: '/api/app/farm-statistic/users-statistic-info', //   // /farmshttps://test.awaken.finance/api/app/farm-statistic/users-statistic-info
+  GET_USER_ASSET_FARM_LIST: '/api/app/farm/farm-user-info-list', // /mock/assetFarmList.json  //farmshttps://test.awaken.finance/api/app/farm/farm-user-info-list
   GET_RECENT_TRANSACTION_LIST: '/api/app/trade-records',
   GET_USER_LIQUIDITYl: '/api/app/liquidity/user-liquidity',
   GET_USER_LIQUIDITY_RECORDS: '/api/app/liquidity/liquidity-records',
