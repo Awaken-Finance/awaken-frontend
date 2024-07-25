@@ -22,7 +22,7 @@ export function useUnmounted() {
 export function useAsyncState<S>(initialState?: S | (() => S)): [S | undefined, Dispatch<SetStateAction<S>>] {
   const unmountedRef = useUnmounted();
   const [state, setState] = useState(initialState);
-  const setAsyncState = useCallback((s) => {
+  const setAsyncState = useCallback((s: any) => {
     if (unmountedRef) return;
     setState(s);
     // eslint-disable-next-line react-hooks/exhaustive-deps

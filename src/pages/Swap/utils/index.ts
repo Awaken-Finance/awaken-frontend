@@ -27,6 +27,7 @@ export const getPairPathApi = async ({
       EndSymbol: endSymbol,
     },
   });
+  if (!res) throw new Error('no pair path');
   return res?.data?.items || [];
 };
 

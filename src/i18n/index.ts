@@ -45,7 +45,7 @@ export function useLanguage(): {
 } {
   const { i18n } = useTranslation();
   const changeLanguage = useCallback(
-    (value) => {
+    (value: string) => {
       if (i18n.language !== value && LOCAL_LANGUAGE_LIST.includes(value)) {
         if (value === 'zh') {
           moment.locale('zh-cn');
@@ -60,4 +60,8 @@ export function useLanguage(): {
   );
   return useMemo(() => ({ language: i18n.language, changeLanguage }), [changeLanguage, i18n.language]);
 }
-export default i18n;
+
+export type TI18N = typeof i18n & {
+  t: any;
+};
+export default i18n as TI18N;

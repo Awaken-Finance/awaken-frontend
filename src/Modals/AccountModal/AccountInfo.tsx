@@ -1,35 +1,31 @@
-import { useWebLogin } from 'aelf-web-login';
 import { Row, Col, Avatar, message } from 'antd';
 import { shortenAddress } from 'utils';
 import Font from 'components/Font';
-import { IconCopy, IconLogout, IconSwitch } from 'assets/icons';
+import { IconCopy, IconLogout } from 'assets/icons';
 import { userAvatar } from 'assets/images';
 import { useMemo } from 'react';
 import useChainId from 'hooks/useChainId';
 import { useCopyToClipboard } from 'react-use';
-import { useMobile } from 'utils/isMobile';
 
-export default function AccountInfo({
-  onClickLogout,
-  onClickSwitchWallet,
-}: {
-  onClickLogout: () => void;
-  onClickSwitchWallet: () => void;
-}) {
+import { useConnectWallet } from '@aelf-web-login/wallet-adapter-react';
+import { useIsTelegram } from 'utils/isMobile';
+
+export default function AccountInfo({ onClickLogout }: { onClickLogout: () => void }) {
   const [, setCopied] = useCopyToClipboard();
-  const { wallet } = useWebLogin();
+  const { walletInfo } = useConnectWallet();
   const { chainId } = useChainId();
-  const isMobile = useMobile();
+  const isTelegram = useIsTelegram();
 
   const displayAddress = useMemo(() => {
-    if (!wallet.address) return '';
-    const addr = shortenAddress(wallet.address);
+    if (!walletInfo?.address) return '';
+    const addr = shortenAddress(walletInfo?.address);
     return `ELF_${addr}_${chainId}`;
-  }, [chainId, wallet.address]);
+  }, [chainId, walletInfo?.address]);
 
   const copyAddress = useMemo(() => {
-    return `ELF_${wallet.address}_${chainId}`;
-  }, [chainId, wallet.address]);
+    if (!walletInfo?.address) return '';
+    return `ELF_${walletInfo?.address}_${chainId}`;
+  }, [chainId, walletInfo?.address]);
 
   return (
     <Row className="account-info" align="middle" gutter={8}>
@@ -54,15 +50,8 @@ export default function AccountInfo({
           </Col>
         </Row>
       </Col>
-      {!isMobile && (
-        <Col flex={'32px'}>
-          <IconSwitch className="logout-icon" onClick={onClickSwitchWallet} />
-        </Col>
-      )}
 
-      <Col flex={'32px'}>
-        <IconLogout className="logout-icon" onClick={onClickLogout} />
-      </Col>
+      <Col flex={'32px'}>{!isTelegram && <IconLogout className="logout-icon" onClick={onClickLogout} />}</Col>
     </Row>
   );
 }

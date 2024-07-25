@@ -77,13 +77,13 @@ export default function CreatePair({ onCancel }: { onCancel: () => void }) {
 
   const [loading, setLoading] = useState<boolean>();
   const onChangeLeft = useCallback(
-    (val) => {
+    (val: string) => {
       onChange(getCurrencyAddress(leftToken), val);
     },
     [leftToken, onChange],
   );
   const onChangeRight = useCallback(
-    (val) => {
+    (val: string) => {
       onChange(getCurrencyAddress(rightToken), val);
     },
     [onChange, rightToken],

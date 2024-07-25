@@ -1,10 +1,6 @@
 import React, { useMemo } from 'react';
-import ReactDOM from 'react-dom';
 import { ConfigProvider, message } from 'antd';
-import { WebLoginProvider, getConfig, PortkeyProvider, PortkeyDid, PortkeyDidV1 } from 'aelf-web-login';
-import { devicesEnv } from '@portkey/utils';
-import type { ExtraWalletNames } from 'aelf-web-login';
-import { useAsync } from 'react-use';
+import { createRoot } from 'react-dom/client';
 
 import App from './App';
 import ModalProvider from './contexts/useModal';
@@ -19,16 +15,15 @@ import { ANTD_LOCAL } from './i18n/config';
 import { useLanguage } from './i18n';
 import SignInProxy from 'pages/Login/SignInProxy';
 import ConfirmLogoutDialog from 'Modals/ConfirmLogoutDialog';
+import { WebLoginProvider, init } from '@aelf-web-login/wallet-adapter-react';
+import { WEB_LOGIN_CONFIG } from './config/webLoginConfig';
+import { SignInDesignEnum } from '@aelf-web-login/wallet-adapter-base';
 
-import './config/webLoginConfig';
 import './sentry';
-
-import '@portkey/did-ui-react/dist/assets/index.css';
-import '@portkey-v1/did-ui-react/dist/assets/index.css';
-import 'aelf-web-login/dist/assets/index.css';
-
 import './index.css';
 import './App.less';
+import './assets/js/telegram-web-app';
+import { useIsTelegram } from 'utils/isMobile';
 
 message.config({
   maxCount: 1,
@@ -36,6 +31,7 @@ message.config({
 
 function ContextProviders({ children }: { children?: React.ReactNode }) {
   const { language } = useLanguage();
+
   return (
     <ConfigProvider locale={ANTD_LOCAL[language]} autoInsertSpaceInButton={false}>
       <TokenPriceProvider>
@@ -50,52 +46,43 @@ function ContextProviders({ children }: { children?: React.ReactNode }) {
 }
 
 function RootApp() {
-  const { value, loading } = useAsync(async () => await devicesEnv.getPortkeyShellApp());
+  const isTelegram = useIsTelegram();
 
-  const extraWallets: ExtraWalletNames[] | undefined = useMemo(() => {
-    if (loading) {
-      return;
-    }
-
-    return value ? undefined : ['discover', 'elf'];
-  }, [loading, value]);
+  const bridgeAPI = useMemo(
+    () =>
+      init({
+        ...WEB_LOGIN_CONFIG,
+        baseConfig: {
+          ...WEB_LOGIN_CONFIG.baseConfig,
+          noCommonBaseModal: isTelegram ? false : true,
+          design: SignInDesignEnum.Web2Design,
+          SignInComponent: isTelegram ? undefined : (SignInProxy as any),
+          ConfirmLogoutDialog: ConfirmLogoutDialog,
+          PortkeyProviderProps: {
+            theme: 'dark',
+            networkType: WEB_LOGIN_CONFIG.baseConfig.networkType,
+          },
+        },
+      }),
+    [isTelegram],
+  );
 
   return (
     <ChianProvider>
-      <PortkeyProvider
-        networkType={getConfig().networkType as PortkeyDidV1.NetworkType}
-        networkTypeV2={getConfig().portkeyV2?.networkType as PortkeyDid.NetworkType}
-        theme="dark">
-        <WebLoginProvider
-          extraWallets={extraWallets}
-          nightElf={{ connectEagerly: true }}
-          portkey={{
-            autoShowUnlock: false,
-            checkAccountInfoSync: true,
-            SignInComponent: SignInProxy as any,
-            design: 'Web2Design',
-            ConfirmLogoutDialog,
-            noCommonBaseModal: true,
-          }}
-          discover={{
-            autoRequestAccount: true,
-            autoLogoutOnAccountMismatch: true,
-            autoLogoutOnChainMismatch: true,
-            autoLogoutOnDisconnected: true,
-            autoLogoutOnNetworkMismatch: false,
-          }}>
-          <StoreProvider>
-            <ContextProviders>
-              <App />
-            </ContextProviders>
-          </StoreProvider>
-        </WebLoginProvider>
-      </PortkeyProvider>
+      <WebLoginProvider bridgeAPI={bridgeAPI}>
+        <StoreProvider>
+          <ContextProviders>
+            <App />
+          </ContextProviders>
+        </StoreProvider>
+      </WebLoginProvider>
     </ChianProvider>
   );
 }
 
-ReactDOM.render(<RootApp />, document.getElementById('root'));
+const container = document.getElementById('root');
+const root = createRoot(container as HTMLElement);
+root.render(<RootApp />);
 
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))

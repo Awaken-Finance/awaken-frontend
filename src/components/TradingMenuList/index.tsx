@@ -57,7 +57,7 @@ export default function TradingMenuList({
   });
 
   const poolTypeChange = useCallback(
-    (v) => {
+    (v: string) => {
       if (v === poolType) {
         return;
       }

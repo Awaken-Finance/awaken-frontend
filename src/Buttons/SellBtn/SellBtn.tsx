@@ -18,9 +18,8 @@ import { ChainConstants } from 'constants/ChainConstants';
 import AuthBtn from 'Buttons/AuthBtn';
 
 import './index.less';
-import { WebLoginState, useWebLogin } from 'aelf-web-login';
-import { useIsPortkeySDK } from 'hooks/useIsPortkeySDK';
 import { formatSymbol } from 'utils/token';
+import { useConnectWallet } from '@aelf-web-login/wallet-adapter-react';
 
 interface SellBtnProps {
   sell?: boolean;
@@ -130,37 +129,34 @@ export default function SellBtn({
   isFixState = false,
 }: Omit<SellBtnProps, 'amountBN' | 'rate' | 'tokenA' | 'tokenB' | 'onTradeSuccess'> & { isFixState?: boolean }) {
   const { t } = useTranslation();
-  const { loginState } = useWebLogin();
-  const isPortkeySDK = useIsPortkeySDK();
-
-  const isLogin = useMemo(() => loginState === WebLoginState.logined, [loginState]);
+  const { isConnected, isLocking } = useConnectWallet();
 
   const btnTxt = useMemo(() => {
     const symbolStr = formatSymbol(symbolA);
-    if (isLogin || isFixState) return sell ? `${t('sell')} ${symbolStr}` : `${t('buy')} ${symbolStr}`;
-    if (isPortkeySDK) return sell ? t('Unlock to Sell') : t('Unlock to Buy');
+    if (isConnected || isFixState) return sell ? `${t('sell')} ${symbolStr}` : `${t('buy')} ${symbolStr}`;
+    if (isLocking) return sell ? t('Unlock to Sell') : t('Unlock to Buy');
     return sell ? t('Log In to Sell') : t('Log In to Buy');
-  }, [isLogin, isFixState, sell, t, symbolA, isPortkeySDK]);
+  }, [isConnected, isFixState, sell, t, symbolA, isLocking]);
 
   const style = useMemo(() => {
-    if (isLogin || isFixState)
+    if (isConnected || isFixState)
       return clsx('trading-button', {
         'trading-sell-button': sell,
         'trading-buy-button': !sell,
       });
     return clsx('trading-button', 'ant-btn-default');
-  }, [isFixState, isLogin, sell]);
+  }, [isFixState, isConnected, sell]);
   return (
     <AuthBtn
       loading={loading}
-      disabled={isLogin && disabled}
+      disabled={isConnected && disabled}
       className={style}
       onClick={onClick}
       checkAuth={checkAuth}
       size="large"
       block
       type="primary">
-      <Font size={16} weight="medium" color={isLogin || isFixState ? 'one' : 'primary'}>
+      <Font size={16} weight="medium" color={isConnected || isFixState ? 'one' : 'primary'}>
         {btnTxt}
       </Font>
     </AuthBtn>

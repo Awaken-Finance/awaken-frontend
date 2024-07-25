@@ -11,20 +11,19 @@ import { useTranslation } from 'react-i18next';
 import CommonButton from 'components/CommonButton';
 import { IconCheckPrimary, IconClose, IconMenu, IconUser } from 'assets/icons';
 import { useModal } from 'contexts/useModal';
-import { WebLoginState, useWebLogin } from 'aelf-web-login';
 import { useHistory, useLocation } from 'react-router-dom';
 import useLogin from 'hooks/useLogin';
 import clsx from 'clsx';
 import CommonModal from 'components/CommonModal';
 
 import './styles.less';
-import { useIsPortkeySDK } from 'hooks/useIsPortkeySDK';
+import { useConnectWallet } from '@aelf-web-login/wallet-adapter-react';
 
 function MobileHeader() {
   const { t } = useTranslation();
   const history = useHistory();
   const location = useLocation();
-  const { loginState } = useWebLogin();
+  const { isConnected, isLocking } = useConnectWallet();
   const { language, changeLanguage } = useLanguage();
   const [openKeyList, setOpenKeyList] = useState(['']);
   const [visible, setVisible] = useState(false);
@@ -47,16 +46,14 @@ function MobileHeader() {
   }, [visible]);
 
   const onLanguageChange = useCallback(
-    (e) => {
+    (e: any) => {
       changeLanguage(e.key);
     },
     [changeLanguage],
   );
 
-  const isPortkeySDK = useIsPortkeySDK();
-
   const renderLoginPart = () => {
-    if (loginState === WebLoginState.logined) {
+    if (isConnected) {
       return (
         <>
           {/* <CommonButton type="text" icon={<IconAssets />} onClick={() => history.push('/user-center/exchange')} /> */}
@@ -67,7 +64,7 @@ function MobileHeader() {
     return (
       <>
         <CommonButton className="signup-btn" type="primary" style={{ fontWeight: '600' }} onClick={toLogin}>
-          {t(isPortkeySDK ? 'Unlock' : 'Log In')}
+          {t(isLocking ? 'Unlock' : 'Log In')}
         </CommonButton>
         {/* <CommonButton className="signup-btn" type="primary" onClick={toSignup}>
           {t('Sign Up')}
@@ -93,7 +90,7 @@ function MobileHeader() {
         <div
           className={clsx({
             'header-right': true,
-            'header-right-logined': loginState === WebLoginState.logined,
+            'header-right-logined': isConnected,
           })}>
           <Network overlayClassName="network-wrap-mobile" />
           {renderLoginPart()}
@@ -117,18 +114,18 @@ function MobileHeader() {
         <div className="header">
           <CommonButton className="close-icon-btn" type="text" icon={<IconClose />} onClick={onClose} />
         </div>
-        {loginState !== WebLoginState.logined && (
+        {!isConnected && !isLocking && (
           <div className="login-buttons">
             <CommonButton
               className="login-btn"
-              type={isPortkeySDK ? 'primary' : 'default'}
+              type={isLocking ? 'primary' : 'default'}
               onClick={() => {
                 onClose();
                 toLogin();
               }}>
-              {t(isPortkeySDK ? 'Unlock' : 'Log In')}
+              {t(isLocking ? 'Unlock' : 'Log In')}
             </CommonButton>
-            {!isPortkeySDK && (
+            {!isLocking && (
               <CommonButton
                 className="signup-btn"
                 type="primary"

@@ -1,3 +1,4 @@
-import { WalletType } from 'aelf-web-login';
+import { WalletTypeEnum } from '@aelf-web-login/wallet-adapter-base';
 
-export const IsCAWallet = (walletType: WalletType) => ['discover', 'portkey'].includes(walletType);
+export const IsCAWallet = (walletType: WalletTypeEnum) =>
+  [WalletTypeEnum.discover, WalletTypeEnum.aa].includes(walletType);

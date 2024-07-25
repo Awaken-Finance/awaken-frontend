@@ -7,11 +7,12 @@ import usePairList from './usePairList';
 import Signalr from 'socket/signalr';
 import { SortOrder } from 'antd/lib/table/interface';
 import { isNightElfApp, isPortkeyAppWithDiscover } from 'utils/isApp';
-import { useWebLogin, useWebLoginEvent, WebLoginEvents } from 'aelf-web-login';
 
 import { useUpdateEffect } from 'ahooks';
 import { useUser } from 'contexts/useUser';
 import { getPairReversed } from 'utils/pair';
+import { useConnectWallet } from '@aelf-web-login/wallet-adapter-react';
+import { WalletTypeEnum } from '@aelf-web-login/wallet-adapter-base';
 
 interface PageInfoParams {
   pageNum?: number;
@@ -36,7 +37,7 @@ export default function useSearchPairList(
 
   const [{ favChangeItem }] = useUser();
 
-  const { walletType } = useWebLogin();
+  const { walletType, isConnected } = useConnectWallet();
 
   const pageInfo = useRef<PageInfoParams>({
     pageNum: 1,
@@ -210,8 +211,8 @@ export default function useSearchPairList(
     };
   }, [config?.socket, updateItem]);
 
-  useWebLoginEvent(WebLoginEvents.LOGINED, () => {
-    if (isPortkeyAppWithDiscover() || isNightElfApp() || walletType === 'portkey') {
+  const init = useCallback(async () => {
+    if (isPortkeyAppWithDiscover() || isNightElfApp() || walletType === WalletTypeEnum.aa) {
       pageInfo.current = {
         ...pageInfo.current,
         pageNum: 1,
@@ -223,7 +224,14 @@ export default function useSearchPairList(
       clearDataSource.current = true;
       return getListBySearch(pageInfo.current);
     }
-  });
+  }, [config?.customPageSize, getListBySearch, walletType]);
+  const initRef = useRef(init);
+  initRef.current = init;
+
+  useEffect(() => {
+    if (!isConnected) return;
+    initRef.current();
+  }, [isConnected, walletType]);
 
   return useMemo(() => {
     const items = (dataSource ?? []).map((pair) => getPairReversed(pair));

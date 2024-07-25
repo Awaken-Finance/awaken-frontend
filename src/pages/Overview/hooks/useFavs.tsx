@@ -1,25 +1,22 @@
 import { useUser } from 'contexts/useUser';
 import { addFavs, removeFavs, AddFavsResponse } from '../apis/getFavList';
-import { useWebLogin } from 'aelf-web-login';
 import { IsCAWallet } from 'utils/wallet';
 import { useCallback, useMemo } from 'react';
+import { useConnectWallet } from '@aelf-web-login/wallet-adapter-react';
 
 export function useFavs() {
-  const {
-    walletType,
-    wallet: { address },
-  } = useWebLogin();
+  const { walletType, walletInfo } = useConnectWallet();
 
   const [, { favListChange, getFavList, setFavChangeItem }] = useUser();
 
   const localSave = useCallback(
     (id: string) => {
       favListChange({
-        address,
+        address: walletInfo?.address,
         id,
       });
     },
-    [favListChange, address],
+    [favListChange, walletInfo?.address],
   );
 
   const serverSave = useCallback(
@@ -36,11 +33,11 @@ export function useFavs() {
         await removeFavs({ id: favId });
         return null;
       } else {
-        const data = await addFavs({ tradePairId: id, address });
+        const data = await addFavs({ tradePairId: id, address: walletInfo?.address });
         return data;
       }
     },
-    [address],
+    [walletInfo?.address],
   );
 
   const setFavs = useCallback(
@@ -53,19 +50,22 @@ export function useFavs() {
       isFav?: boolean;
       id: string;
     }): Promise<AddFavsResponse | null> => {
-      setFavChangeItem({ id, address, isFav: !isFav });
+      setFavChangeItem({ id, address: walletInfo?.address, isFav: !isFav });
 
       if (IsCAWallet(walletType)) {
         const data = await serverSave({ favId, isFav, id });
-        setFavChangeItem({ id, address, isFav: !isFav, favId: data?.id || null });
+        setFavChangeItem({ id, address: walletInfo?.address, isFav: !isFav, favId: data?.id || null });
         return data;
       } else {
         localSave(id);
         return null;
       }
     },
-    [address, localSave, serverSave, setFavChangeItem, walletType],
+    [localSave, serverSave, setFavChangeItem, walletInfo?.address, walletType],
   );
 
-  return useMemo(() => [{ favlist: getFavList(address) }, { setFavs }], [address, getFavList, setFavs]);
+  return useMemo(
+    () => [{ favlist: getFavList(walletInfo?.address || '') }, { setFavs }],
+    [getFavList, setFavs, walletInfo?.address],
+  );
 }

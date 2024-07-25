@@ -1,90 +1,88 @@
-import { setGlobalConfig } from 'aelf-web-login';
 import { CHAIN_INFO as tDVV } from 'constants/platform/aelf-tdvv';
 import { CHAIN_INFO as tDVW } from 'constants/platform/aelf-tdvw';
-import { CHAIN_INFO as tDVV_TEST3 } from 'constants/platform/aelf-tdvv-test3';
 import { PORTKEY_SERVICE } from './portkeyonConfig';
+import { NetworkType } from '@portkey/provider-types';
+import { PortkeyDiscoverWallet } from '@aelf-web-login/wallet-adapter-portkey-discover';
+import { PortkeyAAWallet } from '@aelf-web-login/wallet-adapter-portkey-aa';
+import { NightElfWallet } from '@aelf-web-login/wallet-adapter-night-elf';
+import { IConfigProps } from '@aelf-web-login/wallet-adapter-bridge';
+import { TChainId } from '@aelf-web-login/wallet-adapter-base';
 
 const API_ENV = process.env.REACT_APP_API_ENV;
-export const APPNAME = 'awaken.finance';
+export const APP_NAME = 'awaken.finance';
 
-let CHAIN_ID = tDVV.chainId,
-  NETWORK = 'MAIN',
-  NETWORK_V2 = 'MAINNET',
+let CHAIN_ID = tDVV.chainId as TChainId,
+  NETWORK_TYPE = 'MAINNET' as NetworkType,
   RPC_SERVER = tDVV.rpcUrl,
   portkeyService = PORTKEY_SERVICE.main,
-  WEBSITE_ICON = 'https://awaken.finance/favicon.ico';
+  WEBSITE_ICON = 'https://awaken.finance/favicon.ico',
+  TELEGRAM_BOT_ID = '7354497113';
 
 switch (API_ENV) {
   case 'preview':
-    CHAIN_ID = tDVW.chainId;
-    NETWORK = 'TESTNET';
-    NETWORK_V2 = 'TESTNET';
+  case 'test':
+  case 'local':
+    CHAIN_ID = tDVW.chainId as TChainId;
+    NETWORK_TYPE = 'TESTNET';
     RPC_SERVER = tDVW.rpcUrl;
     portkeyService = PORTKEY_SERVICE.preview;
     WEBSITE_ICON = 'https://test.awaken.finance/favicon.ico';
-    break;
-  case 'test':
-  case 'local':
-    CHAIN_ID = tDVV_TEST3.chainId;
-    RPC_SERVER = tDVV_TEST3.rpcUrl;
-    portkeyService = PORTKEY_SERVICE.test;
-    WEBSITE_ICON = 'https://test.awaken.finance/favicon.ico';
+    TELEGRAM_BOT_ID = '7387260361';
     break;
 }
 
-setGlobalConfig({
-  appName: APPNAME,
+const didConfig = {
+  graphQLUrl: portkeyService.v2.graphQLUrl,
+  connectUrl: portkeyService.v2.connectServer,
+  serviceUrl: portkeyService.v2.apiServer,
+  requestDefaults: {
+    baseURL: portkeyService.v2.apiServer,
+    timeout: 30000,
+  },
+  socialLogin: {
+    Portkey: {
+      websiteName: APP_NAME,
+      websiteIcon: WEBSITE_ICON,
+    },
+    Telegram: {
+      botId: TELEGRAM_BOT_ID,
+    },
+  },
+  loginConfig: {
+    loginMethodsOrder: ['Email', 'Google', 'Apple', 'Telegram', 'Scan'],
+  },
+};
+
+const baseConfig = {
+  networkType: NETWORK_TYPE,
   chainId: CHAIN_ID,
-  networkType: NETWORK as any,
-  defaultRpcUrl: RPC_SERVER,
+  keyboard: true,
+  noCommonBaseModal: false,
+  design: 'CryptoDesign', // "SocialDesign" | "CryptoDesign" | "Web2Design"
+  titleForSocialDesign: 'Crypto wallet',
+  iconSrcForSocialDesign: 'https://awaken.finance/favicon.ico',
+};
 
-  portkey: {
-    useLocalStorage: true,
-    graphQLUrl: portkeyService.v1.graphQLUrl,
-    connectUrl: portkeyService.v1.connectServer,
-    serviceUrl: portkeyService.v1.apiServer,
-    socialLogin: {
-      Portkey: {
-        websiteName: APPNAME,
-        websiteIcon: WEBSITE_ICON,
-      },
-    },
-
-    requestDefaults: {
-      baseURL: API_ENV === 'test' ? '/portkey' : portkeyService.v1.apiServer,
-      timeout: API_ENV === 'test' ? 30000 : 8000,
-    },
-    network: {
-      defaultNetwork: NETWORK,
-    },
-  } as any,
-  portkeyV2: {
-    networkType: NETWORK_V2,
-    useLocalStorage: true,
-    graphQLUrl: portkeyService.v2.graphQLUrl,
-    connectUrl: portkeyService.v2.connectServer,
-    serviceUrl: portkeyService.v2.apiServer,
-    loginConfig: {
-      recommendIndexes: [0, 1],
-      loginMethodsOrder: ['Email', 'Google', 'Apple', 'Telegram'],
-    },
-    socialLogin: {
-      Portkey: {
-        websiteName: APPNAME,
-        websiteIcon: WEBSITE_ICON,
-      },
-    },
-    requestDefaults: {
-      baseURL: API_ENV === 'test' ? '/portkey' : portkeyService.v2.apiServer,
-      timeout: API_ENV === 'test' ? 30000 : 8000,
-    },
-    network: {
-      defaultNetwork: NETWORK_V2,
-    },
-  } as any,
-  onlyShowV2: true,
-  aelfReact: {
-    appName: APPNAME,
+const wallets = [
+  new PortkeyAAWallet({
+    appName: APP_NAME,
+    chainId: CHAIN_ID,
+    autoShowUnlock: true,
+  }),
+  new PortkeyDiscoverWallet({
+    networkType: NETWORK_TYPE,
+    chainId: CHAIN_ID,
+    autoRequestAccount: true,
+    autoLogoutOnDisconnected: true,
+    autoLogoutOnNetworkMismatch: true,
+    autoLogoutOnAccountMismatch: true,
+    autoLogoutOnChainMismatch: true,
+  }),
+  new NightElfWallet({
+    chainId: CHAIN_ID,
+    appName: APP_NAME,
+    connectEagerly: true,
+    defaultRpcUrl: RPC_SERVER,
     nodes: {
       AELF: {
         chainId: 'AELF',
@@ -99,5 +97,11 @@ setGlobalConfig({
         rpcUrl: RPC_SERVER,
       },
     },
-  },
-});
+  }),
+];
+
+export const WEB_LOGIN_CONFIG = {
+  didConfig,
+  baseConfig,
+  wallets,
+} as IConfigProps;

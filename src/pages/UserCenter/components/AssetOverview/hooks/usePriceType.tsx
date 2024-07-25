@@ -1,12 +1,12 @@
-import { useWebLogin } from 'aelf-web-login';
 import { useCallback, useMemo, useState } from 'react';
 import { IsCAWallet } from 'utils/wallet';
 import { useUser } from 'contexts/useUser';
 import { getUserAssetToken, setUserAssetToken } from 'pages/UserCenter/apis/assetOverview';
 import { useAsyncEffect } from 'ahooks';
+import { useConnectWallet } from '@aelf-web-login/wallet-adapter-react';
 
 export default function usePriceType() {
-  const { walletType, wallet } = useWebLogin();
+  const { walletType, walletInfo } = useConnectWallet();
   const [, { getAssetTotalSymbol, setAssetTotalSymbol }] = useUser();
 
   const [assetSymbol, setAssetSymbol] = useState<string>('');
@@ -22,28 +22,28 @@ export default function usePriceType() {
       setAssetSymbol(symbol);
 
       if (!isCAWallet) {
-        return setAssetTotalSymbol(wallet?.address, symbol);
+        return setAssetTotalSymbol(walletInfo?.address || '', symbol);
       }
 
       setUserAssetToken({
         tokenSymbol: symbol,
-        address: wallet?.address,
+        address: walletInfo?.address || '',
       });
     },
-    [isCAWallet, assetSymbol, setAssetTotalSymbol, wallet?.address],
+    [assetSymbol, isCAWallet, walletInfo?.address, setAssetTotalSymbol],
   );
 
   useAsyncEffect(async () => {
     let assetSymbol;
     if (!isCAWallet) {
-      assetSymbol = getAssetTotalSymbol(wallet?.address);
+      assetSymbol = getAssetTotalSymbol(walletInfo?.address || '');
     } else {
-      const results = await getUserAssetToken(wallet?.address);
+      const results = await getUserAssetToken(walletInfo?.address);
       assetSymbol = results?.tokenSymbol;
     }
 
     setAssetSymbol(assetSymbol ?? 'BTC');
-  }, [wallet?.address]);
+  }, [walletInfo?.address]);
 
   return useMemo(() => [{ priceType: assetSymbol }, { savePriceType }], [assetSymbol, savePriceType]);
 }

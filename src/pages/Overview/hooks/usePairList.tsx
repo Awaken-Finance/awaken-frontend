@@ -1,14 +1,14 @@
 import { useRequest } from 'ahooks';
 import { getPairList, GetPairListParams, getPairListByIds } from '../apis/getPairList';
 import { useActiveWeb3React } from 'hooks/web3';
-import { useWebLogin } from 'aelf-web-login';
 import { useFavs } from './useFavs';
 import { IsCAWallet } from 'utils/wallet';
 import { useCallback, useMemo, useRef } from 'react';
+import { useConnectWallet } from '@aelf-web-login/wallet-adapter-react';
 
 export default function usePairList() {
   const { apiChainId } = useActiveWeb3React();
-  const { walletType, wallet } = useWebLogin();
+  const { walletType, walletInfo } = useConnectWallet();
   const [{ favlist }] = useFavs();
 
   const getLocalFavs = useRef<boolean>(false);
@@ -51,11 +51,11 @@ export default function usePairList() {
       }
 
       params.chainId = apiChainId;
-      params.address = wallet?.address;
+      params.address = walletInfo?.address;
 
       return getData(params);
     },
-    [apiChainId, favlist, getData, isCAWallet, wallet?.address],
+    [apiChainId, favlist, getData, isCAWallet, walletInfo?.address],
   );
 
   return useMemo(() => {
