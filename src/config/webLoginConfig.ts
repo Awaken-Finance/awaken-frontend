@@ -51,6 +51,7 @@ const didConfig = {
   loginConfig: {
     loginMethodsOrder: ['Email', 'Google', 'Apple', 'Telegram', 'Scan'],
   },
+  networkType: NETWORK_TYPE,
 };
 
 const baseConfig = {
