@@ -6,16 +6,15 @@ import { Col, Row } from 'antd';
 import CommonModal from 'components/CommonModal';
 import CommonButton from 'components/CommonButton';
 import { TSwapInfo } from '../SwapPanel';
-import { TSwapRouteInfo } from 'pages/Swap/types';
+import { TContractSwapToken, TSwapRoute } from 'pages/Swap/types';
 import { CurrencyLogo } from 'components/CurrencyLogo';
-import { REQ_CODE, SWAP_TIME_INTERVAL, ZERO } from 'constants/misc';
+import { REQ_CODE, SWAP_TIME_INTERVAL, TEN_THOUSAND, ZERO } from 'constants/misc';
 import { SwapRouteInfo } from '../SwapRouteInfo';
 import { useUserSettings } from 'contexts/useUserSettings';
-import { getCurrencyAddress, minimumAmountOut, parseUserSlippageTolerance } from 'utils/swap';
+import { getCurrencyAddress, getDeadline, minimumAmountOut, parseUserSlippageTolerance } from 'utils/swap';
 import './styles.less';
-import { useRouterContract } from 'hooks/useContract';
-import { SupportedSwapRateMap } from 'constants/swap';
-import { getContractAmountOut } from 'pages/Swap/utils';
+import { useAElfContract } from 'hooks/useContract';
+import { getContractTotalAmountOut } from 'pages/Swap/utils';
 import { useReturnLastCallback } from 'hooks';
 import { divDecimals, timesDecimals } from 'utils/calculate';
 import { useActiveWeb3React } from 'hooks/web3';
@@ -23,6 +22,8 @@ import useAllowanceAndApprove from 'hooks/useApprove';
 import { ChainConstants } from 'constants/ChainConstants';
 import { onSwap } from 'utils/swapContract';
 import notification from 'utils/notificationNew';
+import { SWAP_HOOK_CONTRACT_ADDRESS } from 'constants/index';
+import { getCID, sleep } from 'utils';
 
 export type TSwapConfirmModalProps = {
   onSuccess?: () => void;
@@ -32,7 +33,7 @@ export type TSwapConfirmModalProps = {
 };
 
 export interface SwapConfirmModalInterface {
-  show: (params: { swapInfo: TSwapInfo; routeInfo: TSwapRouteInfo; priceLabel: string }) => void;
+  show: (params: { swapInfo: TSwapInfo; swapRoute: TSwapRoute; priceLabel: string }) => void;
 }
 
 export const SwapConfirmModal = forwardRef(
@@ -41,7 +42,7 @@ export const SwapConfirmModal = forwardRef(
 
     const [isVisible, setIsVisible] = useState(false);
     const [swapInfo, setSwapInfo] = useState<TSwapInfo>();
-    const [routeInfo, setRouteInfo] = useState<TSwapRouteInfo>();
+    const [swapRoute, setSwapRoute] = useState<TSwapRoute>();
     const [priceLabel, setPriceLabel] = useState('');
 
     const [{ userSlippageTolerance }] = useUserSettings();
@@ -67,20 +68,20 @@ export const SwapConfirmModal = forwardRef(
       [swapInfo?.valueOut, tokenOutPrice],
     );
 
-    const getValueOut = useReturnLastCallback(getContractAmountOut, []);
+    const getValueOut = useReturnLastCallback(getContractTotalAmountOut, []);
 
-    const routeContract = useRouterContract(SupportedSwapRateMap[routeInfo?.route?.feeRate || '']);
+    const routeContract = useAElfContract(SWAP_HOOK_CONTRACT_ADDRESS);
 
     const executeCb = useCallback(async () => {
-      if (!swapInfo || !routeInfo || !routeContract) return;
-      const { tokenIn, tokenOut, valueIn } = swapInfo;
-      if (!tokenIn || !tokenOut) return;
-      const valueInAmountBN = timesDecimals(valueIn, tokenIn.decimals);
-      const valueInAmount = valueInAmountBN.toFixed();
-      const path = routeInfo.route.rawPath.map((item) => item.symbol);
+      if (!swapInfo || !swapRoute || !routeContract) return;
+      const { tokenOut } = swapInfo;
+      if (!tokenOut) return;
+
       try {
-        const amountResult = await getValueOut(routeContract, valueInAmount, path);
-        const amountOutAmount: string | undefined = amountResult?.amount?.[amountResult?.amount?.length - 1];
+        const { amountOuts, total: amountOutAmount } = await getValueOut({
+          contract: routeContract,
+          swapRoute,
+        });
         if (!amountOutAmount) return;
         const amountOutValue = divDecimals(amountOutAmount, tokenOut.decimals).toFixed();
 
@@ -92,16 +93,22 @@ export const SwapConfirmModal = forwardRef(
             valueOut: amountOutValue,
           };
         });
+        const _swapRoute: TSwapRoute = JSON.parse(JSON.stringify(swapRoute));
+        _swapRoute.distributions.forEach((path, idx) => {
+          path.amountOut = amountOuts[idx];
+        });
+        console.log('_swapRoute', _swapRoute);
 
         return {
-          value: amountOutValue,
-          amount: amountOutAmount,
+          amountOutValue,
+          amountOutAmount,
+          swapRoute: _swapRoute,
         };
       } catch (error) {
         console.log('SwapConfirmModal executeCb error:', error);
         return;
       }
-    }, [getValueOut, routeContract, routeInfo, swapInfo]);
+    }, [getValueOut, routeContract, swapInfo, swapRoute]);
     const executeCbRef = useRef(executeCb);
     executeCbRef.current = executeCb;
 
@@ -123,10 +130,11 @@ export const SwapConfirmModal = forwardRef(
     }, [clearTimer]);
 
     const show = useCallback<SwapConfirmModalInterface['show']>(
-      ({ swapInfo, routeInfo, priceLabel }) => {
+      async ({ swapInfo, swapRoute, priceLabel }) => {
         setSwapInfo(JSON.parse(JSON.stringify(swapInfo)));
-        setRouteInfo(JSON.parse(JSON.stringify(routeInfo)));
+        setSwapRoute(JSON.parse(JSON.stringify(swapRoute)));
         setPriceLabel(priceLabel);
+        await sleep(100);
         registerTimer();
         setIsVisible(true);
       },
@@ -137,7 +145,7 @@ export const SwapConfirmModal = forwardRef(
     const onCancel = useCallback(() => {
       setIsVisible(false);
       setSwapInfo(undefined);
-      setRouteInfo(undefined);
+      setSwapRoute(undefined);
       setPriceLabel('');
       clearTimer();
     }, [clearTimer]);
@@ -152,34 +160,29 @@ export const SwapConfirmModal = forwardRef(
       routeContract?.address,
     );
     const onConfirmClick = useCallback(async () => {
-      if (!swapInfo || !routeInfo || !routeContract) return;
+      console.log('onConfirmClick', swapInfo, routeContract);
+      if (!swapInfo || !routeContract) return;
+
       const { tokenIn, tokenOut, valueIn, valueOut } = swapInfo;
       if (!tokenIn || !tokenOut || !valueIn || !valueOut) return;
-
-      const { route } = routeInfo;
-      const routeSymbolIn = route.rawPath?.[0]?.symbol;
-      const routeSymbolOut = route.rawPath?.[route.rawPath?.length - 1]?.symbol;
-      if (tokenIn.symbol !== routeSymbolIn || tokenOut.symbol !== routeSymbolOut) return;
+      console.log(2);
 
       setIsSwapping(true);
       try {
         const valueInAmountBN = timesDecimals(valueIn, tokenIn.decimals);
-        const valueOutAmountBN = timesDecimals(valueOut, tokenOut.decimals);
-        const valueInAmount = valueInAmountBN.toFixed();
         const allowance = await checkAllowance();
         if (valueInAmountBN.gt(allowance)) {
           await approve(valueInAmountBN);
         }
-        const path = route.rawPath.map((item) => item.symbol);
-        console.log('SwapConfirmModal: valueInAmount', valueInAmount, path, routeContract.address);
 
-        const amountResult = await executeCbRef.current();
-        if (!amountResult) return;
-        const amountOutAmount = amountResult.amount;
+        const valueOutAmountBN = timesDecimals(valueOut, tokenOut.decimals);
 
-        console.log('SwapConfirmModal: amountOutAmount', amountOutAmount);
+        const result = await executeCbRef.current();
+        if (!result) return;
+        const swapRoute = result.swapRoute;
+        const amountOutAmount = result.amountOutAmount;
+
         const amountMinOutAmountBN = minimumAmountOut(valueOutAmountBN, userSlippageTolerance);
-
         if (amountMinOutAmountBN.gt(amountOutAmount)) {
           notification.warning({
             message: null,
@@ -188,20 +191,36 @@ export const SwapConfirmModal = forwardRef(
           return;
         }
 
+        const deadline = getDeadline();
+        const channel = getCID();
+        const swapTokens: TContractSwapToken[] = swapRoute.distributions.map((item) => {
+          const amountOutMinBN = minimumAmountOut(ZERO.plus(item.amountOut), userSlippageTolerance);
+          const amountOutMin = amountOutMinBN.lt(1) ? '1' : amountOutMinBN.toFixed();
+
+          return {
+            amountIn: item.amountIn,
+            amountOutMin,
+            channel,
+            deadline,
+            path: item.tokens.map((token) => token.symbol),
+            to: account,
+            feeRates: item.feeRates.map((fee) => ZERO.plus(TEN_THOUSAND).times(fee).toNumber()),
+          };
+        });
+
         console.log('onSwap', {
           account,
           routerContract: routeContract,
-          path,
+          swapTokens,
           amountIn: valueInAmountBN,
           amountOutMin: amountMinOutAmountBN,
           tokenB: tokenIn,
           tokenA: tokenOut,
         });
-
         const req = await onSwap({
           account,
           routerContract: routeContract,
-          path,
+          swapTokens,
           amountIn: valueInAmountBN,
           amountOutMin: amountMinOutAmountBN,
           tokenB: tokenIn,
@@ -219,18 +238,7 @@ export const SwapConfirmModal = forwardRef(
         console.log('onSwap finally');
         setIsSwapping(false);
       }
-    }, [
-      account,
-      approve,
-      checkAllowance,
-      onCancel,
-      onSuccess,
-      routeContract,
-      routeInfo,
-      swapInfo,
-      t,
-      userSlippageTolerance,
-    ]);
+    }, [account, approve, checkAllowance, onCancel, onSuccess, routeContract, swapInfo, t, userSlippageTolerance]);
 
     return (
       <CommonModal
@@ -305,12 +313,12 @@ export const SwapConfirmModal = forwardRef(
               </Row>
             </Row>
 
-            {routeInfo && swapInfo && (
+            {swapRoute && swapInfo && (
               <SwapRouteInfo
                 isTipShow={false}
                 isRoutingShow={false}
                 swapInfo={swapInfo}
-                routeInfo={routeInfo}
+                swapRoute={swapRoute}
                 gasFee={gasFee}
               />
             )}

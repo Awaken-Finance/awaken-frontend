@@ -13,6 +13,7 @@ import getTransactionId from './contractResult';
 import { TFunction } from 'react-i18next';
 import { formatSwapError } from './formatError';
 import { isZeroDecimalsNFT } from './NFT';
+import { TContractSwapToken } from 'pages/Swap/types';
 
 type addLiquidityTokensProps = {
   tokenA: string;
@@ -256,7 +257,7 @@ type SwapProps = {
   tokenB?: Currency;
   amountIn: BigNumber;
   amountOutMin: BigNumber;
-  path?: string[];
+  swapTokens?: TContractSwapToken[];
   t: TFunction<'translation'>;
 };
 
@@ -267,23 +268,23 @@ export const onSwap: (param: SwapProps) => Promise<boolean | any> = async ({
   routerContract,
   tokenA,
   tokenB,
-  path,
+  swapTokens,
   t,
 }) => {
   if (amountOutMin.lt(1)) amountOutMin = ZERO.plus(1);
 
   let methodName: string,
-    args: Array<string | string[] | number | boolean | PBTimestamp>,
+    args: Array<string | string[] | number | boolean | PBTimestamp | TContractSwapToken[]>,
     sendOptions: any = {
       onMethod: 'receipt',
     };
 
   const contract = routerContract;
-  const isSwap = !!path;
+  const isSwap = !!swapTokens;
 
   if (isSwap) {
     methodName = 'swapExactTokensForTokens';
-    args = [bigNumberToWeb3Input(amountIn), bigNumberToWeb3Input(amountOutMin), path, account, getDeadline(), getCID()];
+    args = [swapTokens];
   } else if (tokenA?.isNative) {
     methodName = 'swapExactTokensForETH';
     args = [

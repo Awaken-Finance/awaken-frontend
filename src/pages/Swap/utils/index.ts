@@ -1,11 +1,12 @@
 import { request } from 'api';
 import { DEFAULT_CHAIN } from 'constants/index';
-import { TPairRoute, TSwapRecordItem, TSwapRouteInfo } from '../types';
-import { ZERO } from 'constants/misc';
+import { TPairRoute, TSwapRecordItem, TSwapRoute, TSwapRouteInfo } from '../types';
+import { TEN_THOUSAND, ZERO } from 'constants/misc';
 import { divDecimals } from 'utils/calculate';
 import { getAmountByInput, getAmountOut } from 'utils/swap';
 import { IContract } from 'types';
 import BigNumber from 'bignumber.js';
+import { TCommonAPIResult } from 'types/common';
 
 export const getPairPathApi = async ({
   startSymbol,
@@ -29,6 +30,34 @@ export const getPairPathApi = async ({
   });
   if (!res) throw new Error('no pair path');
   return res?.data?.items || [];
+};
+
+export type TGetSwapRoutesParams = {
+  symbolIn: string;
+  symbolOut: string;
+  isFocusValueIn: boolean;
+  amountIn?: string;
+  amountOut?: string;
+};
+export const getSwapRoutes = async ({
+  symbolIn,
+  symbolOut,
+  isFocusValueIn,
+  amountIn,
+  amountOut,
+}: TGetSwapRoutesParams) => {
+  const res: TCommonAPIResult<{ routes: TSwapRoute[] }> = await request.GET_SWAP_ROUTES({
+    params: {
+      ChainId: DEFAULT_CHAIN,
+      symbolIn,
+      symbolOut,
+      routeType: isFocusValueIn ? 0 : 1,
+      amountIn,
+      amountOut,
+    },
+  });
+  if (!res) throw new Error('no swap route');
+  return res?.data?.routes || [];
 };
 
 export const getRouteInfoWithValueIn = (routeList: TPairRoute[], valueIn: string): TSwapRouteInfo[] => {
@@ -135,9 +164,44 @@ export const getRouteInfoWithValueOut = (routeList: TPairRoute[], valueOut: stri
   return result.filter((item) => item !== null) as TSwapRouteInfo[];
 };
 
-export const getContractAmountOut = async (routerContract: IContract, amountIn: string, path: string[]) => {
-  return await routerContract.callViewMethod('GetAmountsOut', {
+export type TGetContractAmountOutParams = {
+  contract: IContract;
+  amountIn: string;
+  path: string[];
+  feeRates: Array<string | number>;
+};
+export const getContractAmountOut = async ({
+  contract,
+  amountIn,
+  path,
+  feeRates,
+}: TGetContractAmountOutParams): Promise<{ amount: string[] }> => {
+  return await contract.callViewMethod('GetAmountsOut', {
     amountIn,
     path,
+    feeRates,
   });
+};
+
+export type TGetContractTotalAmountOutParams = {
+  contract: IContract;
+  swapRoute: TSwapRoute;
+};
+export const getContractTotalAmountOut = async ({ contract, swapRoute }: TGetContractTotalAmountOutParams) => {
+  const result = await Promise.all(
+    swapRoute.distributions.map((item) => {
+      return getContractAmountOut({
+        contract,
+        amountIn: item.amountIn,
+        path: item.tokens.map((token) => token.symbol),
+        feeRates: item.feeRates.map((fee) => ZERO.plus(TEN_THOUSAND).times(fee).toNumber()),
+      });
+    }),
+  );
+  const amountOuts = result.map((item) => item?.amount[item?.amount?.length - 1]);
+
+  return {
+    amountOuts,
+    total: amountOuts.reduce((p, c) => p.plus(c), ZERO).toFixed(),
+  };
 };

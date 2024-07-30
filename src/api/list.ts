@@ -19,6 +19,7 @@ export const API_LIST = {
   GET_TRANSACTION_FEE: '/api/app/transaction-fee',
   SET_FAVS: '/api/app/favs',
   GET_PAIR_PATH: '/api/app/token-paths',
+  GET_SWAP_ROUTES: '/api/app/route/best-swap-routes',
 };
 
 const LENDING_API_LIST = {

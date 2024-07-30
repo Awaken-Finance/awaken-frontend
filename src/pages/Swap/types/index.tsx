@@ -1,4 +1,6 @@
 import { TokenInfo } from 'types';
+import { PBTimestamp } from 'types/aelf';
+import { TTradePair } from 'types/pair';
 
 export type TPairRoutePath = {
   token0: TokenInfo;
@@ -29,4 +31,36 @@ export type TSwapRouteInfo = {
   valueIn: string;
   valueOut: string;
   recordList: TSwapRecordItem[];
+};
+
+export type TTradePairExtension = {
+  valueLocked0: string;
+  valueLocked1: string;
+};
+
+export type TSwapRouteDistribution = {
+  percent: number;
+  amountIn: string;
+  amountOut: string;
+  tradePairs: TTradePair[];
+  tradePairExtensions: TTradePairExtension[];
+  tokens: TokenInfo[];
+  amounts: string[];
+  feeRates: number[];
+};
+export type TSwapRoute = {
+  amountIn: string;
+  amountOut: string;
+  splits: number;
+  distributions: TSwapRouteDistribution[];
+};
+
+export type TContractSwapToken = {
+  amountIn: string;
+  amountOutMin: string;
+  channel: string;
+  deadline: number | PBTimestamp;
+  path: string[];
+  to: string;
+  feeRates: number[];
 };

@@ -179,4 +179,16 @@ export const networkList = (() => {
   }
 })();
 
+export const SWAP_HOOK_CONTRACT_ADDRESS = (() => {
+  switch (API_ENV) {
+    case 'local':
+    case 'test':
+    case 'preview':
+      return '2vahJs5WeWVJruzd1DuTAu3TwK8jktpJ2NNeALJJWEbPQCUW4Y';
+    default:
+      // TODO: 2.8.0
+      return '';
+  }
+})();
+
 export const currentDividendSymbol: string | undefined = '';
