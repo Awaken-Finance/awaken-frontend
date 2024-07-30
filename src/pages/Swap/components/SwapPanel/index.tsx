@@ -1,8 +1,8 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { sleep } from 'utils';
-import { TPairRoute, TSwapRoute } from '../../types';
+import { StatusCodeEnum, TPairRoute, TSwapRoute } from '../../types';
 import { SWAP_TIME_INTERVAL, ZERO } from 'constants/misc';
-import { getSwapRoutes as _getSwapRoutes } from '../../utils';
+import { getSwapRoutes as getSwapRoutesInstant } from '../../utils';
 import Font from 'components/Font';
 import { ChainConstants } from 'constants/ChainConstants';
 import { Currency } from '@awaken/sdk-core';
@@ -46,7 +46,7 @@ export type TSwapInfo = {
 
 export const SwapPanel = () => {
   const { t } = useTranslation();
-  const getSwapRoutes = useReturnLastCallback(_getSwapRoutes, []);
+  const getSwapRoutes = useReturnLastCallback(getSwapRoutesInstant, []);
 
   const circleProcessRef = useRef<CircleProcessInterface>();
   const swapConfirmModalRef = useRef<SwapConfirmModalInterface>();
@@ -90,76 +90,78 @@ export const SwapPanel = () => {
   executeCbRef.current = executeCb;
 
   const [isInvalidParis, setIsInvalidParis] = useState(false);
-  const refreshTokenValue = useCallback(async () => {
-    const { tokenIn, tokenOut, valueIn, valueOut, isFocusValueIn } = swapInfoRef.current;
-    if ((isFocusValueIn && valueIn === '') || (!isFocusValueIn && valueOut === '')) {
-      setSwapInfo((pre) => ({
-        ...pre,
-        valueIn: '',
-        valueOut: '',
-      }));
-      setSwapRoute(undefined);
-      return;
-    }
-
-    if ((isFocusValueIn && ZERO.eq(valueIn)) || (!isFocusValueIn && ZERO.eq(valueOut))) {
-      setIsInvalidParis(false);
-      setSwapRoute(undefined);
-      return;
-    }
-
-    if (!tokenIn || !tokenOut) {
-      console.log('refreshTokenValue error', tokenIn, tokenOut);
-      return;
-    }
-
-    try {
-      const routes = await getSwapRoutes({
-        symbolIn: tokenIn.symbol,
-        symbolOut: tokenOut.symbol,
-        isFocusValueIn,
-        amountIn: isFocusValueIn ? timesDecimals(valueIn, tokenIn.decimals).toFixed() : undefined,
-        amountOut: isFocusValueIn ? undefined : timesDecimals(valueOut, tokenOut.decimals).toFixed(),
-      });
-
-      const _swapInfo = swapInfoRef.current;
-      if (
-        _swapInfo.tokenIn?.symbol !== tokenIn?.symbol ||
-        _swapInfo.tokenOut?.symbol !== tokenOut?.symbol ||
-        _swapInfo.isFocusValueIn !== isFocusValueIn ||
-        (isFocusValueIn ? _swapInfo.valueIn !== valueIn : _swapInfo.valueOut !== valueOut)
-      ) {
-        console.log('calculateCb: to exceed the time limit');
+  const refreshTokenValue = useCallback(
+    async (isInstant = false) => {
+      const { tokenIn, tokenOut, valueIn, valueOut, isFocusValueIn } = swapInfoRef.current;
+      if ((isFocusValueIn && valueIn === '') || (!isFocusValueIn && valueOut === '')) {
+        setSwapInfo((pre) => ({
+          ...pre,
+          valueIn: '',
+          valueOut: '',
+        }));
+        setSwapRoute(undefined);
         return;
       }
 
-      if (routes.length === 0) {
-        setIsInvalidParis(true);
-      } else {
+      if ((isFocusValueIn && ZERO.eq(valueIn)) || (!isFocusValueIn && ZERO.eq(valueOut))) {
         setIsInvalidParis(false);
+        setSwapRoute(undefined);
+        return;
       }
-      const route = routes[0];
 
-      const result = {
-        valueIn: divDecimals(route.amountIn, tokenIn.decimals).toFixed(),
-        valueOut: divDecimals(route.amountOut, tokenOut.decimals).toFixed(),
-        swapRoute: route,
-      };
+      if (!tokenIn || !tokenOut) {
+        console.log('refreshTokenValue error', tokenIn, tokenOut);
+        return;
+      }
 
-      setSwapInfo((pre) => ({
-        ...pre,
-        valueIn: result.valueIn,
-        valueOut: result.valueOut,
-      }));
-      setSwapRoute(route);
+      const _getSwapRoutes = isInstant ? getSwapRoutesInstant : getSwapRoutes;
 
-      console.log('refreshTokenValue routes', route);
+      try {
+        const { routes, statusCode } = await _getSwapRoutes({
+          symbolIn: tokenIn.symbol,
+          symbolOut: tokenOut.symbol,
+          isFocusValueIn,
+          amountIn: isFocusValueIn ? timesDecimals(valueIn, tokenIn.decimals).toFixed() : undefined,
+          amountOut: isFocusValueIn ? undefined : timesDecimals(valueOut, tokenOut.decimals).toFixed(),
+        });
 
-      return result;
-    } catch (error) {
-      console.log('refreshTokenValue error', error);
-    }
-  }, [getSwapRoutes]);
+        const _swapInfo = swapInfoRef.current;
+        if (
+          _swapInfo.tokenIn?.symbol !== tokenIn?.symbol ||
+          _swapInfo.tokenOut?.symbol !== tokenOut?.symbol ||
+          _swapInfo.isFocusValueIn !== isFocusValueIn ||
+          (isFocusValueIn ? _swapInfo.valueIn !== valueIn : _swapInfo.valueOut !== valueOut)
+        ) {
+          console.log('calculateCb: to exceed the time limit');
+          return;
+        }
+
+        setIsRouteEmpty(statusCode === StatusCodeEnum.NoRouteFound);
+        setIsInvalidParis(statusCode === StatusCodeEnum.InsufficientLiquidity);
+        const route = routes[0];
+
+        const result = {
+          valueIn: divDecimals(route.amountIn, tokenIn.decimals).toFixed(),
+          valueOut: divDecimals(route.amountOut, tokenOut.decimals).toFixed(),
+          swapRoute: route,
+        };
+
+        setSwapInfo((pre) => ({
+          ...pre,
+          valueIn: result.valueIn,
+          valueOut: result.valueOut,
+        }));
+        setSwapRoute(route);
+
+        console.log('refreshTokenValue routes', route);
+
+        return result;
+      } catch (error) {
+        console.log('refreshTokenValue error', error);
+      }
+    },
+    [getSwapRoutes],
+  );
 
   refreshTokenValueRef.current = refreshTokenValue;
   const refreshTokenValueDebounce = useDebounceCallback(refreshTokenValue, [refreshTokenValue]);
@@ -223,6 +225,7 @@ export const SwapPanel = () => {
     resetIsPriceReverse();
     setSwapRoute(undefined);
     setIsRouteEmpty(false);
+    setIsInvalidParis(false);
     await sleep(100);
     registerTimer();
   }, [registerTimer, resetIsPriceReverse]);
@@ -394,7 +397,7 @@ export const SwapPanel = () => {
     if (!_refreshTokenValue) return;
     setIsSwapping(true);
     try {
-      const result = await _refreshTokenValue();
+      const result = await _refreshTokenValue(true);
       // can not get routeInfo
       if (!result || !result.swapRoute) return;
 

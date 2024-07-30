@@ -1,6 +1,6 @@
 import { request } from 'api';
 import { DEFAULT_CHAIN } from 'constants/index';
-import { TPairRoute, TSwapRecordItem, TSwapRoute, TSwapRouteInfo } from '../types';
+import { StatusCodeEnum, TPairRoute, TSwapRecordItem, TSwapRoute, TSwapRouteInfo } from '../types';
 import { TEN_THOUSAND, ZERO } from 'constants/misc';
 import { divDecimals } from 'utils/calculate';
 import { getAmountByInput, getAmountOut } from 'utils/swap';
@@ -39,6 +39,10 @@ export type TGetSwapRoutesParams = {
   amountIn?: string;
   amountOut?: string;
 };
+export type TGetSwapRoutesResult = TCommonAPIResult<{
+  routes: TSwapRoute[];
+  statusCode: StatusCodeEnum;
+}>;
 export const getSwapRoutes = async ({
   symbolIn,
   symbolOut,
@@ -46,7 +50,7 @@ export const getSwapRoutes = async ({
   amountIn,
   amountOut,
 }: TGetSwapRoutesParams) => {
-  const res: TCommonAPIResult<{ routes: TSwapRoute[] }> = await request.GET_SWAP_ROUTES({
+  const res: TGetSwapRoutesResult = await request.GET_SWAP_ROUTES({
     params: {
       ChainId: DEFAULT_CHAIN,
       symbolIn,
@@ -57,7 +61,7 @@ export const getSwapRoutes = async ({
     },
   });
   if (!res) throw new Error('no swap route');
-  return res?.data?.routes || [];
+  return res?.data;
 };
 
 export const getRouteInfoWithValueIn = (routeList: TPairRoute[], valueIn: string): TSwapRouteInfo[] => {

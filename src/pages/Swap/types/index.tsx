@@ -64,3 +64,9 @@ export type TContractSwapToken = {
   to: string;
   feeRates: number[];
 };
+
+export enum StatusCodeEnum {
+  Success = 1000,
+  InsufficientLiquidity = 2000,
+  NoRouteFound = 2001,
+}
