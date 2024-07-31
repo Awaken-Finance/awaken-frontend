@@ -70,3 +70,18 @@ export enum StatusCodeEnum {
   InsufficientLiquidity = 2000,
   NoRouteFound = 2001,
 }
+
+export type TPercentInfoRoute = {
+  pairAddress: string;
+  tradePair: TTradePair;
+  amountOut: string;
+  amountIn: string;
+  totalFee: string;
+  symbolOut: string;
+  symbolIn: string;
+  channel: string;
+};
+export type TPercentInfo = {
+  percent: string;
+  route: TPercentInfoRoute[];
+};

@@ -1,8 +1,7 @@
-import { TSwapRoute } from 'pages/Swap/types';
+import { TPercentInfo, TSwapRoute } from 'pages/Swap/types';
 import './styles.less';
 import Font from 'components/Font';
 import { useMemo } from 'react';
-import { TokenInfo } from 'types';
 import { CurrencyLogo, CurrencyLogos } from 'components/CurrencyLogo';
 import { useTranslation } from 'react-i18next';
 import { ZERO } from 'constants/misc';
@@ -10,42 +9,85 @@ import { useMobile } from 'utils/isMobile';
 
 export type TSwapOrderRoutingProps = {
   swapRoute?: TSwapRoute;
+  percentRoutes?: TPercentInfo[];
 };
 
-export const SwapOrderRouting = ({ swapRoute }: TSwapOrderRoutingProps) => {
+export const SwapOrderRouting = ({ swapRoute, percentRoutes }: TSwapOrderRoutingProps) => {
   const isMobile = useMobile();
   const { t } = useTranslation();
+  console.log('percentRoutes', percentRoutes);
 
   const routeList = useMemo(() => {
-    if (!swapRoute) return [];
-    return swapRoute.distributions.map((path) => {
-      return {
-        percent: path.percent,
-        tokensList: path.tradePairs.map((item) => {
-          return {
-            tokens: [item.token0, item.token1],
-            feeRate: `${ZERO.plus(item.feeRate).times(100).toFixed()}%`,
-          };
-        }),
-      };
-    });
-  }, [swapRoute]);
+    if (swapRoute) {
+      return swapRoute.distributions.map((path) => {
+        return {
+          percent: path.percent,
+          tokensList: path.tradePairs.map((item, idx) => {
+            return {
+              tokens: [path.tokens[idx], path.tokens[idx + 1]],
+              feeRate: `${ZERO.plus(item.feeRate).times(100).toFixed()}%`,
+            };
+          }),
+        };
+      });
+    }
+    if (percentRoutes) {
+      return percentRoutes.map((path) => {
+        return {
+          percent: path.percent,
+          tokensList: path.route.map((item) => {
+            let tokenIn = item.tradePair.token0;
+            let tokenOut = item.tradePair.token1;
+            if (item.tradePair.token0.symbol === item.symbolOut) {
+              tokenIn = item.tradePair.token1;
+              tokenOut = item.tradePair.token0;
+            }
+
+            return {
+              tokens: [tokenIn, tokenOut],
+              feeRate: `${ZERO.plus(item.tradePair.feeRate).times(100).toFixed()}%`,
+            };
+          }),
+        };
+      });
+    }
+    return [];
+  }, [swapRoute, percentRoutes]);
+
+  console.log('routeList', routeList);
 
   const firstToken = useMemo(() => {
-    return swapRoute?.distributions[0]?.tokens[0];
-  }, [swapRoute?.distributions]);
+    if (swapRoute) return swapRoute?.distributions[0]?.tokens[0];
+    if (percentRoutes) {
+      const route = percentRoutes[0]?.route?.[0];
+      if (!route) return;
+      let tokenIn = route.tradePair.token0;
+      if (route.tradePair.token0.symbol === route.symbolOut) {
+        tokenIn = route.tradePair.token1;
+      }
+      return tokenIn;
+    }
+  }, [percentRoutes, swapRoute]);
 
   const lastToken = useMemo(() => {
-    const tokens = swapRoute?.distributions[0]?.tokens;
-    return tokens?.[tokens?.length - 1];
-  }, [swapRoute?.distributions]);
+    if (swapRoute) {
+      const tokens = swapRoute?.distributions[0]?.tokens;
+      return tokens?.[tokens?.length - 1];
+    }
+    if (percentRoutes) {
+      const path = percentRoutes[0]?.route;
+      if (!path) return;
+      const route = path[path.length - 1];
+      if (!route) return;
+      let tokenOut = route.tradePair.token1;
+      if (route.tradePair.token0.symbol === route.symbolOut) {
+        tokenOut = route.tradePair.token0;
+      }
+      return tokenOut;
+    }
+  }, [percentRoutes, swapRoute]);
 
-  // const feeRate = useMemo(() => {
-  //   if (!route) return '-';
-  //   return `${ZERO.plus(route.feeRate).times(100).toFixed()}%`;
-  // }, [route]);
-
-  if (!swapRoute) return <></>;
+  if (!swapRoute && !percentRoutes) return <></>;
   return (
     <div className="swap-order-routing">
       {!isMobile && (
