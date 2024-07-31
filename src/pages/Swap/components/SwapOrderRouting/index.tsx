@@ -36,16 +36,16 @@ export const SwapOrderRouting = ({ swapRoute, percentRoutes }: TSwapOrderRouting
         return {
           percent: path.percent,
           tokensList: path.route.map((item) => {
-            let tokenIn = item.tradePair.token0;
-            let tokenOut = item.tradePair.token1;
-            if (item.tradePair.token0.symbol === item.symbolOut) {
-              tokenIn = item.tradePair.token1;
-              tokenOut = item.tradePair.token0;
+            let tokenIn = item.tradePair?.token0;
+            let tokenOut = item.tradePair?.token1;
+            if (item.tradePair?.token0.symbol === item.symbolOut) {
+              tokenIn = item.tradePair?.token1;
+              tokenOut = item.tradePair?.token0;
             }
 
             return {
               tokens: [tokenIn, tokenOut],
-              feeRate: `${ZERO.plus(item.tradePair.feeRate).times(100).toFixed()}%`,
+              feeRate: `${ZERO.plus(item.tradePair?.feeRate).times(100).toFixed()}%`,
             };
           }),
         };
@@ -61,9 +61,9 @@ export const SwapOrderRouting = ({ swapRoute, percentRoutes }: TSwapOrderRouting
     if (percentRoutes) {
       const route = percentRoutes[0]?.route?.[0];
       if (!route) return;
-      let tokenIn = route.tradePair.token0;
-      if (route.tradePair.token0.symbol === route.symbolOut) {
-        tokenIn = route.tradePair.token1;
+      let tokenIn = route.tradePair?.token0;
+      if (route.tradePair?.token0.symbol === route.symbolOut) {
+        tokenIn = route.tradePair?.token1;
       }
       return tokenIn;
     }
@@ -79,9 +79,9 @@ export const SwapOrderRouting = ({ swapRoute, percentRoutes }: TSwapOrderRouting
       if (!path) return;
       const route = path[path.length - 1];
       if (!route) return;
-      let tokenOut = route.tradePair.token1;
-      if (route.tradePair.token0.symbol === route.symbolOut) {
-        tokenOut = route.tradePair.token0;
+      let tokenOut = route.tradePair?.token1;
+      if (route.tradePair?.token0.symbol === route.symbolOut) {
+        tokenOut = route.tradePair?.token0;
       }
       return tokenOut;
     }
