@@ -16,6 +16,7 @@ import './LatestTrade.less';
 import { getRealPrice } from 'utils/calculate';
 import { formatSymbol } from 'utils/token';
 import { useConnectWallet } from '@aelf-web-login/wallet-adapter-react';
+import { formatTimestamp } from 'utils/time';
 
 const menus = [
   {
@@ -101,9 +102,7 @@ function LatestTrade() {
         key: 'timestamp',
         width: 80,
         align: 'right',
-        render: (timestamp: string) => (
-          <span className="last-trade-table-cell">{moment(timestamp).format('HH:mm:ss')}</span>
-        ),
+        render: (timestamp: string) => <span className="last-trade-table-cell">{formatTimestamp(timestamp)}</span>,
       },
     ];
   }, [t, pairInfo?.token1.symbol, pairInfo?.token0?.symbol, pairInfo?.feeRate]);
