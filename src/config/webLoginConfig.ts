@@ -15,7 +15,7 @@ let CHAIN_ID = tDVV.chainId as TChainId,
   NETWORK_TYPE = 'MAINNET' as NetworkType,
   RPC_SERVER = tDVV.rpcUrl,
   portkeyService = PORTKEY_SERVICE.main,
-  WEBSITE_ICON = 'https://awaken.finance/favicon.ico',
+  WEBSITE_ICON = 'https://app.awaken.finance/favicon.ico',
   TELEGRAM_BOT_ID = '7354497113';
 
 switch (API_ENV) {
@@ -26,7 +26,7 @@ switch (API_ENV) {
     NETWORK_TYPE = 'TESTNET';
     RPC_SERVER = tDVW.rpcUrl;
     portkeyService = PORTKEY_SERVICE.preview;
-    WEBSITE_ICON = 'https://test.awaken.finance/favicon.ico';
+    WEBSITE_ICON = 'https://test-app.awaken.finance/favicon.ico';
     TELEGRAM_BOT_ID = '7387260361';
     break;
 }

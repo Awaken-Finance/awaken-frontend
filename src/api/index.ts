@@ -44,7 +44,8 @@ export { API_LIST, baseRequest, request };
 
 export function spliceUrl(baseUrl: string, extendArg?: string) {
   let base = '';
-  if (NODE_ENV === 'production' && REACT_APP_API_ENV && baseUrl.slice(0, 4) === '/api')
+  const prefix = baseUrl.slice(0, 4);
+  if (NODE_ENV === 'production' && REACT_APP_API_ENV && (prefix === '/api' || prefix === '/cms'))
     base = PROD_API[REACT_APP_API_ENV] || '';
   return base + (extendArg ? baseUrl + '/' + extendArg : baseUrl);
 }
