@@ -16,7 +16,8 @@ let CHAIN_ID = tDVV.chainId as TChainId,
   RPC_SERVER = tDVV.rpcUrl,
   portkeyService = PORTKEY_SERVICE.main,
   WEBSITE_ICON = 'https://app.awaken.finance/favicon.ico',
-  TELEGRAM_BOT_ID = '7354497113';
+  TELEGRAM_BOT_ID = '7354497113',
+  tgBotLink = 'https://t.me/AwakenSwap_Bot';
 
 switch (API_ENV) {
   case 'preview':
@@ -28,6 +29,7 @@ switch (API_ENV) {
     portkeyService = PORTKEY_SERVICE.preview;
     WEBSITE_ICON = 'https://test-app.awaken.finance/favicon.ico';
     TELEGRAM_BOT_ID = '7387260361';
+    tgBotLink = 'https://t.me/AwakenSwap_Test_Bot';
     break;
 }
 
@@ -106,3 +108,5 @@ export const WEB_LOGIN_CONFIG = {
   baseConfig,
   wallets,
 } as IConfigProps;
+
+export const TG_BOT_LINK = tgBotLink;
