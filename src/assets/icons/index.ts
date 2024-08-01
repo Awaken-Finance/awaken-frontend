@@ -44,6 +44,7 @@ import { ReactComponent as IconQuestionHover } from './icon-question-hover.svg';
 import { ReactComponent as IconSwitch } from './icon-switch.svg';
 import { ReactComponent as IconDiscord } from './icon-discord.svg';
 import { ReactComponent as IconTelegram } from './icon-telegram.svg';
+import { ReactComponent as IconTgBot } from './icon-tg-bot.svg';
 import { ReactComponent as IconX } from './icon-X.svg';
 import { ReactComponent as IconSwapDefault } from './icon-swap-default.svg';
 import { ReactComponent as IconSwapHover } from './icon-swap-hover.svg';
@@ -97,6 +98,7 @@ export {
   IconSwitch,
   IconDiscord,
   IconTelegram,
+  IconTgBot,
   IconX,
   IconSwapDefault,
   IconSwapHover,

@@ -1,5 +1,6 @@
-import { IconDiscord, IconLogo, IconTelegram, IconX } from 'assets/icons';
+import { IconDiscord, IconLogo, IconTelegram, IconTgBot, IconX } from 'assets/icons';
 import Font from 'components/Font';
+import { TG_BOT_LINK } from 'config/webLoginConfig';
 import { useTranslation } from 'react-i18next';
 
 type TMenuItem = {
@@ -28,6 +29,11 @@ const MEDIA_LIST: Required<TMenuItem>[] = [
     icon: IconTelegram,
     title: 'Telegram',
     link: 'https://t.me/AwakenSwap',
+  },
+  {
+    icon: IconTgBot,
+    title: 'TelegramBot',
+    link: TG_BOT_LINK,
   },
 ];
 
