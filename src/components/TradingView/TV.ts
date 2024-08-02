@@ -374,10 +374,10 @@ export default class TV {
     const isReversed = this.pairData.isReversed;
     const d = {
       ..._d,
-      close: _d.closeWithoutFee ?? _d.close,
-      high: _d.highWithoutFee ?? _d.high,
-      low: _d.lowWithoutFee ?? _d.low,
-      open: _d.openWithoutFee ?? _d.open,
+      close: _d.closeWithoutFee || _d.close,
+      high: _d.highWithoutFee || _d.high,
+      low: _d.lowWithoutFee || _d.low,
+      open: _d.openWithoutFee || _d.open,
     };
     if (isReversed) {
       d.close = ONE.div(d.close).toNumber();
