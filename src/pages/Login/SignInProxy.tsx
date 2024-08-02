@@ -4,7 +4,7 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { useLocation } from 'react-use';
 import { isNightElfApp, isPortkeyAppWithDiscover } from 'utils/isApp';
-import { isMobileDevices } from 'utils/isMobile';
+import { isMobileSize } from 'utils/isMobile';
 
 export default React.forwardRef((props, ref) => {
   const { pathname } = useLocation();
@@ -47,7 +47,7 @@ export default React.forwardRef((props, ref) => {
   );
 
   useEffect(() => {
-    if (isMobileDevices()) return;
+    if (isMobileSize()) return;
     const dom = document.getElementById('awaken-portkey-sdk-root');
     if (dom) {
       dom.style.width = width;
