@@ -23,7 +23,7 @@ import './sentry';
 import './index.css';
 import './App.less';
 import './assets/js/telegram-web-app';
-import { isMobileDevices, useIsTelegram } from 'utils/isMobile';
+import { isMobileDevice, useIsTelegram } from 'utils/isMobile';
 
 message.config({
   maxCount: 1,
@@ -49,7 +49,7 @@ function RootApp() {
   const isTelegram = useIsTelegram();
 
   const bridgeAPI = useMemo(() => {
-    const isMobile = isMobileDevices();
+    const isMobile = isMobileDevice();
     return init({
       ...WEB_LOGIN_CONFIG,
       baseConfig: {
