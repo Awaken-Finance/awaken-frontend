@@ -40,6 +40,10 @@ export interface SKItem {
   high: number;
   low: number;
   close: number;
+  openWithoutFee?: number;
+  highWithoutFee?: number;
+  lowWithoutFee?: number;
+  closeWithoutFee?: number;
   volume: number;
   timestamp?: number;
 }

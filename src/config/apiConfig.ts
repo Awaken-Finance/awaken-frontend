@@ -15,11 +15,11 @@ const apiConfig: { [key: string]: ApiConfig } = {
     explorer: 'http://192.168.66.216:8000/swagger/index.html?',
   },
   preview: {
-    socket: 'https://test.awaken.finance',
+    socket: 'https://test-app.awaken.finance',
     explorer: 'http://explorer-test-side02.aelf.io',
   },
   mainnet: {
-    socket: 'https://awaken.finance',
+    socket: 'https://app.awaken.finance',
     explorer: 'https://tdvv-explorer.aelf.io',
   },
 };
