@@ -187,9 +187,13 @@ export function useMobile() {
   return useMemo(() => !!mobile, [mobile]);
 }
 
-export function isMobileDevices() {
+export function isMobileDevice() {
   const isM = isMobile();
-  return isM.apple.device || isM.android.device || window.innerWidth <= MOBILE_DEVICE_WIDTH;
+  return isM.apple.device || isM.android.device;
+}
+
+export function isMobileSize() {
+  return isMobileDevice() || window.innerWidth <= MOBILE_DEVICE_WIDTH;
 }
 
 export function useIsTelegram() {
