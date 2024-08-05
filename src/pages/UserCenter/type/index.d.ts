@@ -1,6 +1,7 @@
 import { IContract, TokenInfo } from 'types';
 import { RAISE_STATUS } from 'pages/IDO/utils/getRaiseStatus';
 import { PairItem } from 'hooks/Exchange/useTradePair';
+import { TPercentInfo } from 'pages/Swap/types';
 
 import { BaseFarmItem, FarmItemPool, LPToken, BaseToken } from 'pages/Farms/type';
 import BigNumber from 'bignumber.js';
@@ -161,6 +162,7 @@ export interface RecentTransaction {
   id?: string;
   totalPriceInUsd?: number;
   totalFee?: number;
+  percentRoutes?: TPercentInfo[];
 }
 
 export interface GetRecentTransactionParams {

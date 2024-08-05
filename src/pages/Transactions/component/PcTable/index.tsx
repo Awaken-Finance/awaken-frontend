@@ -31,6 +31,8 @@ import { stringMidShort } from 'utils/string';
 import CommonButton from 'components/CommonButton';
 import { IconArrowLeft } from 'assets/icons';
 import { useHistory } from 'react-router-dom';
+import CommonTooltip from 'components/CommonTooltip';
+import { SwapOrderRouting } from 'pages/Swap/components/SwapOrderRouting';
 
 export default function PcTable({
   dataSource,
@@ -105,8 +107,22 @@ export default function PcTable({
                 weight="medium"
               />
             </div>
-            <div>
-              <FeeRate useBg>{formatPercentage(tradePair?.feeRate * 100)}</FeeRate>
+            <div className="swap-order-routing-tip-wrap">
+              {record.side === 2 ? (
+                <CommonTooltip
+                  width={'400px'}
+                  placement="top"
+                  title={<SwapOrderRouting percentRoutes={record.percentRoutes} />}
+                  getPopupContainer={(v) => v}
+                  buttonTitle={t('ok')}
+                  headerDesc={t('Order Routing')}>
+                  <FeeRate useBg usePercent={false}>
+                    {`${formatPercentage(tradePair?.feeRate * 100)}%...`}
+                  </FeeRate>
+                </CommonTooltip>
+              ) : (
+                <FeeRate useBg>{formatPercentage(tradePair?.feeRate * 100)}</FeeRate>
+              )}
             </div>
           </div>
         ),

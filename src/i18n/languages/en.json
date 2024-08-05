@@ -618,7 +618,7 @@
     "feeDescription": "The accumulated fee share of this trading pair’s positions.",
     "transactionFeeDescription": "Network Cost are the miner fees paid in order for transactions to proceed.",
 
-    "awakenDescription": "AwakenSwap is a decentralized exchange based on the aelf chain, offering users one-stop DeFi services including trading, swapping, lending, staking, asset management, and more.",
+    "awakenDescription": "AwakenSwap is a decentralized exchange based on the aelf chain, offering users one-stop DeFi services including trading, swapping, lending, staking, asset management, etc.",
     "Positions": "Positions",
     "Details": "Details",
     "Explore Market": "Explore Market",
