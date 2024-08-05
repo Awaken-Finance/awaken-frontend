@@ -9,7 +9,7 @@ import './styles.less';
 import { useMobile } from 'utils/isMobile';
 import { IconArrowRight3, IconClose2 } from 'assets/icons';
 import notification from 'utils/notificationNew';
-import { useConnectWallet } from '@aelf-web-login/wallet-adapter-react';
+import { useIsConnected } from 'hooks/useLogin';
 
 export const Portfolio = () => {
   const { t } = useTranslation();
@@ -19,7 +19,7 @@ export const Portfolio = () => {
   const onTransactionsClick = useCallback(() => {
     history.push('/transactions');
   }, [history]);
-  const { isConnected } = useConnectWallet();
+  const isConnected = useIsConnected();
 
   const [isTipsShow, setIsTipsShow] = useState(false);
   useEffect(() => {

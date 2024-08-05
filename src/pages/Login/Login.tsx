@@ -5,13 +5,16 @@ import { useMobile } from 'utils/isMobile';
 import useQuery from 'hooks/useQuery';
 import { sleep } from 'utils';
 import { useConnectWallet } from '@aelf-web-login/wallet-adapter-react';
+import { useIsConnected } from 'hooks/useLogin';
 // import { message } from 'antd';
 
 export default function Login() {
   const query = useQuery();
   const history = useHistory();
   const isMobile = useMobile();
-  const { isConnected, isLocking, connectWallet } = useConnectWallet();
+  const { isLocking, connectWallet } = useConnectWallet();
+  const isConnected = useIsConnected();
+
   const [tryLogin, setTryLogin] = useState(true);
   const redirect = useMemo(() => {
     return query.get('redirect') || '/';
