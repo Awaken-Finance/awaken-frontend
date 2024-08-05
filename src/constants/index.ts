@@ -186,8 +186,7 @@ export const SWAP_HOOK_CONTRACT_ADDRESS = (() => {
     case 'preview':
       return '2vahJs5WeWVJruzd1DuTAu3TwK8jktpJ2NNeALJJWEbPQCUW4Y';
     default:
-      // TODO: 2.8.0
-      return '';
+      return 'T3mdFC35CQSatUXQ5bQ886pULo2TnzS9rfXxmsoZSGnTq2a2S';
   }
 })();
 
