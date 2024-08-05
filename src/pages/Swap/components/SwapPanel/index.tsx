@@ -35,6 +35,7 @@ import './styles.less';
 import { CircleProcess, CircleProcessInterface } from 'components/CircleProcess';
 import { formatPrice } from 'utils/price';
 import { useConnectWallet } from '@aelf-web-login/wallet-adapter-react';
+import { useIsConnected } from 'hooks/useLogin';
 
 export type TSwapInfo = {
   tokenIn?: Currency;
@@ -433,7 +434,9 @@ export const SwapPanel = () => {
     return false;
   }, [currencyBalances, gasFee, swapInfo]);
 
-  const { isConnected, isLocking } = useConnectWallet();
+  const { isLocking } = useConnectWallet();
+  const isConnected = useIsConnected();
+
   const swapBtnInfo = useMemo<{
     active?: boolean;
     label: string;

@@ -12,7 +12,7 @@ import useSelectedKeys from 'components/Header/hooks/useSelectedKeys';
 import { useTranslation } from 'react-i18next';
 import { useModal } from 'contexts/useModal';
 import CommonButton from 'components/CommonButton';
-import useLogin from 'hooks/useLogin';
+import useLogin, { useIsConnected } from 'hooks/useLogin';
 
 import './styles.less';
 import Font from 'components/Font';
@@ -23,7 +23,8 @@ import { useConnectWallet } from '@aelf-web-login/wallet-adapter-react';
 
 function PcHeader() {
   const { selectedKeys } = useSelectedKeys();
-  const { walletInfo, isConnected, isLocking } = useConnectWallet();
+  const { walletInfo, isLocking } = useConnectWallet();
+  const isConnected = useIsConnected();
   const { chainId } = useChainId();
   const pathname = useLocation().pathname;
   const { t } = useTranslation();

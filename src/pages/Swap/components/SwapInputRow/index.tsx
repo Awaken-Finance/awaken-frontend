@@ -18,7 +18,7 @@ import PriceUSDDigits from 'components/PriceUSDDigits';
 import getFontStyle from 'utils/getFontStyle';
 import { useMobile } from 'utils/isMobile';
 import clsx from 'clsx';
-import { useConnectWallet } from '@aelf-web-login/wallet-adapter-react';
+import { useIsConnected } from 'hooks/useLogin';
 
 interface Props extends Omit<InputProps, 'onChange'> {
   token?: Currency;
@@ -57,7 +57,7 @@ export default function SwapInputRow(props: Props) {
   const isMobile = useMobile();
 
   const inputRef = useRef<InputRef>(null);
-  const { isConnected } = useConnectWallet();
+  const isConnected = useIsConnected();
 
   const tokenPrice = useTokenPrice({
     symbol: token?.symbol,

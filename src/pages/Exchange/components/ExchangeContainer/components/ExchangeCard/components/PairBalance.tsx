@@ -10,7 +10,7 @@ import { Currency } from '@awaken/sdk-core';
 import { useMobile } from 'utils/isMobile';
 import { showValueWrapper } from 'utils/price';
 import { formatSymbol } from 'utils/token';
-import { useConnectWallet } from '@aelf-web-login/wallet-adapter-react';
+import { useIsConnected } from 'hooks/useLogin';
 
 interface PairBalanceProps {
   token?: Currency;
@@ -20,7 +20,7 @@ interface PairBalanceProps {
 function PairBalance({ token, balance }: PairBalanceProps) {
   const { t } = useTranslation();
   const isMobile = useMobile();
-  const { isConnected } = useConnectWallet();
+  const isConnected = useIsConnected();
 
   return (
     <Row gutter={[6, 0]}>

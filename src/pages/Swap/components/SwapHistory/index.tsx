@@ -23,7 +23,7 @@ import CommonList from 'components/CommonList';
 import { Col, Row } from 'antd';
 import { useHistory } from 'react-router-dom';
 import { SWAP_TIME_INTERVAL } from 'constants/misc';
-import { useConnectWallet } from '@aelf-web-login/wallet-adapter-react';
+import { useIsConnected } from 'hooks/useLogin';
 
 export function SwapTransactionItem({
   item: { tradePair, timestamp, side, token0Amount, token1Amount, transactionHash, totalPriceInUsd },
@@ -134,7 +134,7 @@ export const SwapHistory = () => {
   const { account, chainId } = useActiveWeb3React();
   const isMobile = useMobile();
   const { t } = useTranslation();
-  const { isConnected } = useConnectWallet();
+  const isConnected = useIsConnected();
 
   const [list, setList] = useState<RecentTransaction[]>([]);
   const dataSource = useMemo(() => {
