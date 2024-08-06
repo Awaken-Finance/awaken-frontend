@@ -592,7 +592,7 @@
 
     "TotalValue": "Total Value",
     "Average Price": "Average Price",
-    "Fee": "Fee",
+    "LP Fee": "LP Fee",
     "transactionID": "Txn ID",
     "pooled": "Pooled Tokens",
     "ok": "OK",
@@ -615,7 +615,8 @@
 
     "Swap": "Swap",
     "SwapNotSupportedContent": "The {{symbolIn}} and {{symbolOut}} you selected are not directly or indirectly supported by the liquidity pool. You can create this trading pair liquidity pool yourself. Do you want to create it?",
-    "feeDescription": "The accumulated fee share of this trading pair’s positions.",
+    "profitDescription": "The accumulated fee share of this trading pair’s positions.",
+    "lpFeeDescription": "This fee is charged by the platform to ensure the best experience on Awaken.",
     "transactionFeeDescription": "Network Cost are the miner fees paid in order for transactions to proceed.",
 
     "awakenDescription": "AwakenSwap is a decentralized exchange based on the aelf chain, offering users one-stop DeFi services including trading, swapping, lending, staking, asset management, etc.",
@@ -630,8 +631,8 @@
     "My Portfolio": "My Portfolio",
     "Overview": "Overview",
     "Total Positions": "Total Positions",
-    "Total Fees": "Total Fees",
-    "totalFeesDescription": "The transaction fee share accumulated from all your current positions",
+    "Total Profit": "Total Profit",
+    "totalProfitDescription": "The transaction fee share accumulated from all your current positions",
     "By Pool": "By Pool",
     "By Token": "By Token",
     "Idle Tokens": "Idle Tokens",
@@ -640,7 +641,7 @@
     "My LP Token": "My LP Token",
     "Pool Liquidity": "Pool Liquidity",
     "24h Volume": "24h Volume",
-    "Fees": "Fees",
+    "Profit": "Profit",
     "Cumulative net addition": "Cumulative net addition",
     "cumulativeDescription": "Cumulative net addition = cumulative addition - cumulative removal",
     "Estimated APR": "Estimated APR",

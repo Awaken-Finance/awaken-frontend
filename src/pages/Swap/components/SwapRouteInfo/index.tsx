@@ -144,15 +144,15 @@ export const SwapRouteInfo = ({
       <Row align={'middle'} justify={'space-between'}>
         <Col className="swap-route-info-title">
           <Font color="two" size={14} lineHeight={22}>
-            {t('Fee')}
+            {t('LP Fee')}
           </Font>
           {isTipShow && (
             <CommonTooltip
               placement="top"
-              title={t('feeDescription')}
+              title={t('lpFeeDescription')}
               getPopupContainer={(v) => v}
               buttonTitle={t('ok')}
-              headerDesc={t('Fee')}
+              headerDesc={t('LP Fee')}
             />
           )}
         </Col>

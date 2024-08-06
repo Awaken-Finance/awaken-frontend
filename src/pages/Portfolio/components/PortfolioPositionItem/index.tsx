@@ -283,15 +283,15 @@ export const PortfolioPositionItem = ({ item }: TPortfolioPositionItemProps) => 
               <Row align="middle" gutter={[4, 0]}>
                 <Col>
                   <Font size={16} lineHeight={24} color="two" weight="medium">
-                    {t('Fees')}
+                    {t('Profit')}
                   </Font>
                 </Col>
                 <Col>
                   <CommonTooltip
                     placement="top"
-                    title={t('feeDescription')}
+                    title={t('profitDescription')}
                     buttonTitle={t('ok')}
-                    headerDesc={t('Fees')}
+                    headerDesc={t('Profit')}
                   />
                 </Col>
               </Row>
