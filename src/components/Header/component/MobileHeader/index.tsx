@@ -12,7 +12,7 @@ import CommonButton from 'components/CommonButton';
 import { IconCheckPrimary, IconClose, IconMenu, IconUser } from 'assets/icons';
 import { useModal } from 'contexts/useModal';
 import { useHistory, useLocation } from 'react-router-dom';
-import useLogin from 'hooks/useLogin';
+import useLogin, { useIsConnected } from 'hooks/useLogin';
 import clsx from 'clsx';
 import CommonModal from 'components/CommonModal';
 
@@ -23,7 +23,8 @@ function MobileHeader() {
   const { t } = useTranslation();
   const history = useHistory();
   const location = useLocation();
-  const { isConnected, isLocking } = useConnectWallet();
+  const { isLocking } = useConnectWallet();
+  const isConnected = useIsConnected();
   const { language, changeLanguage } = useLanguage();
   const [openKeyList, setOpenKeyList] = useState(['']);
   const [visible, setVisible] = useState(false);

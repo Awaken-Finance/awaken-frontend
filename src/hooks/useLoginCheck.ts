@@ -1,5 +1,5 @@
 import { useConnectWallet } from '@aelf-web-login/wallet-adapter-react';
-import useLogin from './useLogin';
+import useLogin, { useIsConnected } from './useLogin';
 import { basicModalView } from 'contexts/useModal/actions';
 import { useModalDispatch } from 'contexts/useModal/hooks';
 import { useCallback } from 'react';
@@ -14,7 +14,9 @@ export default function useLoginCheck<T = any>(
   callback?: (arg: T) => void,
   onGotoLogin?: () => void,
 ) {
-  const { isConnected, walletType, walletInfo, getWalletSyncIsCompleted } = useConnectWallet();
+  const { walletType, walletInfo, getWalletSyncIsCompleted } = useConnectWallet();
+  const isConnected = useIsConnected();
+
   const { toLogin } = useLogin(options.redirect);
 
   const dispatch = useModalDispatch();
