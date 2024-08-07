@@ -179,4 +179,15 @@ export const networkList = (() => {
   }
 })();
 
+export const SWAP_HOOK_CONTRACT_ADDRESS = (() => {
+  switch (API_ENV) {
+    case 'local':
+    case 'test':
+    case 'preview':
+      return '2vahJs5WeWVJruzd1DuTAu3TwK8jktpJ2NNeALJJWEbPQCUW4Y';
+    default:
+      return 'T3mdFC35CQSatUXQ5bQ886pULo2TnzS9rfXxmsoZSGnTq2a2S';
+  }
+})();
+
 export const currentDividendSymbol: string | undefined = '';

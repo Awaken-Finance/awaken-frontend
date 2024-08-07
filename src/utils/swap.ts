@@ -250,12 +250,12 @@ export async function swapSuccess({
   const Logs = getLogs(result);
   const log = getLog(Logs, 'Swap');
 
-  const { amountIn, symbolIn } = log[0];
-  let { amountOut, symbolOut } = log[0];
+  let { amountIn, amountOut } = log[0];
   if (isSwap) {
-    const lastLog = log[log.length - 1];
-    amountOut = lastLog.amountOut;
-    symbolOut = lastLog.symbolOut;
+    const inList = log.filter((item) => item.symbolIn === tokenB?.symbol);
+    amountIn = inList.reduce((p, c) => p.plus(c.amountIn), ZERO);
+    const outList = log.filter((item) => item.symbolOut === tokenA?.symbol);
+    amountOut = outList.reduce((p, c) => p.plus(c.amountOut), ZERO);
   }
 
   try {
@@ -264,8 +264,8 @@ export async function swapSuccess({
       {
         message: t('swapSuccess'),
         description: t('swapSuccessDescription', {
-          token1: `${divDecimals(amountIn, tokenB?.decimals).dp(8).toFixed()} ${formatSymbol(symbolIn)}`,
-          token2: `${divDecimals(amountOut, tokenA?.decimals).dp(8).toFixed()} ${formatSymbol(symbolOut)}`,
+          token1: `${divDecimals(amountIn, tokenB?.decimals).dp(8).toFixed()} ${formatSymbol(tokenB?.symbol)}`,
+          token2: `${divDecimals(amountOut, tokenA?.decimals).dp(8).toFixed()} ${formatSymbol(tokenA?.symbol)}`,
         }),
         txId: transactionId,
       },
@@ -274,7 +274,7 @@ export async function swapSuccess({
   } catch (error: any) {
     formatSwapError(error, {
       amount: divDecimals(amountIn, tokenB?.decimals).dp(8).toFixed(),
-      symbol: symbolIn,
+      symbol: tokenB?.symbol,
     });
   }
 }

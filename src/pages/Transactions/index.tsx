@@ -185,14 +185,19 @@ export default function Transactions() {
   };
 
   const { account, chainId } = useActiveWeb3React();
+  const refresh = useCallback(() => {
+    getList(pageInfo.current, searchVal, menu);
+  }, [getList, menu, searchVal]);
+  const refreshRef = useRef(refresh);
+  refreshRef.current = refresh;
+
   useEffect(() => {
     if (account && chainId) {
       setIsInit(true);
     }
-    getList(pageInfo.current, searchVal, menu);
-  }, [account, chainId, getList, menu, searchVal]);
 
-  console.log('isInit', isInit, account, chainId);
+    refreshRef.current();
+  }, [account, chainId]);
 
   return renderContent();
 }

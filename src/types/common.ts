@@ -3,3 +3,8 @@ export type GenerateType<T> = {
 };
 
 export type PartialOption<T, K extends keyof T> = GenerateType<Partial<Pick<T, K>> & Omit<T, K>>;
+
+export type TCommonAPIResult<T> = {
+  code: number;
+  data: T;
+};

@@ -1,7 +1,7 @@
 import { Col, Row } from 'antd';
 import CommonTooltip from 'components/CommonTooltip';
 import Font from 'components/Font';
-import { TSwapRouteInfo } from 'pages/Swap/types';
+import { TSwapRoute } from 'pages/Swap/types';
 import { useTranslation } from 'react-i18next';
 import { useUserSettings } from 'contexts/useUserSettings';
 import { useMemo } from 'react';
@@ -18,7 +18,7 @@ import './styles.less';
 
 export type TSwapRouteInfoProps = {
   swapInfo: TSwapInfo;
-  routeInfo: TSwapRouteInfo | undefined;
+  swapRoute?: TSwapRoute;
   gasFee: string | 0;
   isTipShow?: boolean;
   isRoutingShow?: boolean;
@@ -26,7 +26,7 @@ export type TSwapRouteInfoProps = {
 
 export const SwapRouteInfo = ({
   swapInfo,
-  routeInfo,
+  swapRoute,
   gasFee,
   isTipShow = true,
   isRoutingShow = true,
@@ -42,30 +42,43 @@ export const SwapRouteInfo = ({
   }, [swapInfo, userSlippageTolerance]);
 
   const priceImpact = useMemo(() => {
-    if (!routeInfo) return '-';
-    const impactList = routeInfo.recordList.map((item) => {
-      return getPriceImpactWithBuy(
-        ZERO.plus(item.tokenOutReserve),
-        ZERO.plus(item.tokenInReserve),
-        item.valueIn,
-        ZERO.plus(item.valueOut),
-      ).toFixed();
+    if (!swapRoute) return '-';
+
+    const impactList: BigNumber[] = [];
+    swapRoute.distributions.forEach((path) => {
+      for (let i = 0; i < path.tokens.length - 1; i++) {
+        const tradePairExtension = path.tradePairExtensions[i];
+        const tokenIn = path.tokens[i];
+        const tokenOut = path.tokens[i + 1];
+        const tokenInReserve = ZERO.plus(tradePairExtension.valueLocked0);
+        const tokenOutReserve = ZERO.plus(tradePairExtension.valueLocked1);
+        const valueIn = divDecimals(path.amounts[i], tokenIn.decimals);
+        const valueOut = divDecimals(path.amounts[i + 1], tokenOut.decimals);
+        const _impact = getPriceImpactWithBuy(tokenOutReserve, tokenInReserve, valueIn, valueOut);
+        impactList.push(_impact);
+      }
     });
 
     return `${bigNumberToString(BigNumber.max(...impactList), 2)}%`;
-  }, [routeInfo]);
+  }, [swapRoute]);
 
   const swapFeeValue = useMemo(() => {
     const { tokenIn, valueIn } = swapInfo;
-    if (!routeInfo || !tokenIn || !valueIn) return '-';
-    const pathLength = routeInfo.route.path.length;
-    const feeRate = routeInfo.route.feeRate;
 
-    return `${ZERO.plus(valueIn)
-      .times(ONE.minus(ONE.minus(feeRate).pow(pathLength)))
-      .dp(tokenIn.decimals)
-      .toFixed()} ${formatSymbol(tokenIn.symbol)}`;
-  }, [routeInfo, swapInfo]);
+    if (!swapRoute || !tokenIn || !valueIn) return '-';
+
+    let totalFee = ZERO;
+    swapRoute.distributions.forEach((path) => {
+      const { amountIn, feeRates } = path;
+      const reserveRate = feeRates.reduce((p, c) => p.times(ONE.minus(c)), ONE);
+      const totalFeeRate = ONE.minus(reserveRate);
+      const feeAmount = ZERO.plus(amountIn).times(totalFeeRate);
+      const fee = divDecimals(feeAmount, tokenIn.decimals).dp(tokenIn.decimals);
+      totalFee = totalFee.plus(fee);
+    });
+
+    return `${totalFee.toFixed()} ${formatSymbol(tokenIn.symbol)}`;
+  }, [swapInfo, swapRoute]);
 
   const gasFeeValue = useMemo(() => {
     return divDecimals(ZERO.plus(gasFee), 8);
@@ -131,15 +144,15 @@ export const SwapRouteInfo = ({
       <Row align={'middle'} justify={'space-between'}>
         <Col className="swap-route-info-title">
           <Font color="two" size={14} lineHeight={22}>
-            {t('Fee')}
+            {t('LP Fee')}
           </Font>
           {isTipShow && (
             <CommonTooltip
               placement="top"
-              title={t('feeDescription')}
+              title={t('lpFeeDescription')}
               getPopupContainer={(v) => v}
               buttonTitle={t('ok')}
-              headerDesc={t('Fee')}
+              headerDesc={t('LP Fee')}
             />
           )}
         </Col>
@@ -198,8 +211,8 @@ export const SwapRouteInfo = ({
           <Col className="swap-order-routing-tip-wrap">
             <CommonTooltip
               width={'400px'}
-              placement="right"
-              title={<SwapOrderRouting route={routeInfo?.route} />}
+              placement="top"
+              title={<SwapOrderRouting swapRoute={swapRoute} />}
               getPopupContainer={(v) => v}
               buttonTitle={t('ok')}
               headerDesc={t('Order Routing')}>

@@ -1,18 +1,17 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { sleep } from 'utils';
-import { useGetRouteList } from '../../hooks';
-import { TPairRoute, TSwapRouteInfo } from '../../types';
+import { StatusCodeEnum, TPairRoute, TSwapRoute } from '../../types';
 import { SWAP_TIME_INTERVAL, ZERO } from 'constants/misc';
-import { getRouteInfoWithValueIn, getRouteInfoWithValueOut } from '../../utils';
+import { getSwapRoutes as getSwapRoutesInstant } from '../../utils';
 import Font from 'components/Font';
 import { ChainConstants } from 'constants/ChainConstants';
 import { Currency } from '@awaken/sdk-core';
 import { useCurrencyBalancesV2 } from 'hooks/useBalances';
-import { bigNumberToUPString, getCurrencyAddress, parseUserSlippageTolerance } from 'utils/swap';
+import { getCurrencyAddress, parseUserSlippageTolerance } from 'utils/swap';
 import SwapSelectTokenButton from '../SwapSelectTokenButton';
 import SwapInputRow from '../SwapInputRow';
 import { IconArrowDown2, IconPriceSwitch, IconSettingFee, IconSwapDefault, IconSwapHover } from 'assets/icons';
-import { useReturnLastCallback } from 'hooks';
+import { useDebounceCallback, useReturnLastCallback } from 'hooks';
 import { Col, Row } from 'antd';
 import clsx from 'clsx';
 import CommonTooltip from 'components/CommonTooltip';
@@ -21,7 +20,7 @@ import SettingFee from 'Buttons/SettingFeeBtn';
 import { useUserSettings } from 'contexts/useUserSettings';
 import { useRequest } from 'ahooks';
 import { getTransactionFee } from 'pages/Exchange/apis/getTransactionFee';
-import { divDecimals } from 'utils/calculate';
+import { divDecimals, timesDecimals } from 'utils/calculate';
 import AuthBtn from 'Buttons/AuthBtn';
 import { FontColor } from 'utils/getFontStyle';
 import { SwapRouteInfo } from '../SwapRouteInfo';
@@ -46,18 +45,9 @@ export type TSwapInfo = {
   isFocusValueIn: boolean;
 };
 
-type TCalculateCbResult =
-  | {
-      valueIn: string;
-      valueOut: string;
-      routeInfo?: TSwapRouteInfo;
-    }
-  | undefined;
-
 export const SwapPanel = () => {
   const { t } = useTranslation();
-  const _getRouteList = useGetRouteList();
-  const getRouteList = useReturnLastCallback(_getRouteList, [_getRouteList]);
+  const getSwapRoutes = useReturnLastCallback(getSwapRoutesInstant, []);
 
   const circleProcessRef = useRef<CircleProcessInterface>();
   const swapConfirmModalRef = useRef<SwapConfirmModalInterface>();
@@ -77,7 +67,8 @@ export const SwapPanel = () => {
   const refreshTokenValueRef = useRef<typeof refreshTokenValue>();
 
   const routeListRef = useRef<TPairRoute[]>();
-  const [optimumRouteInfo, setOptimumRouteInfo] = useState<TSwapRouteInfo>();
+
+  const [swapRoute, setSwapRoute] = useState<TSwapRoute>();
 
   const [isPriceReverse, setIsPriceReverse] = useState(false);
   const resetIsPriceReverse = useCallback(() => {
@@ -85,113 +76,23 @@ export const SwapPanel = () => {
   }, []);
 
   const [isRouteEmpty, setIsRouteEmpty] = useState(false);
-  // const preRoutePair = useRef(`${swapInfo.tokenIn?.symbol}_${swapInfo.tokenOut?.symbol}`);
-  const executeCb = useCallback(
-    async (isRefreshTokenValue = true) => {
-      const { tokenIn, tokenOut } = swapInfoRef.current;
-      if (!tokenIn || !tokenOut) return;
+  const executeCb = useCallback(async () => {
+    const { tokenIn, tokenOut } = swapInfoRef.current;
+    if (!tokenIn || !tokenOut) return;
 
-      // const nowRoutePair = `${tokenIn.symbol}_${tokenOut.symbol}`;
-      // if (preRoutePair.current !== nowRoutePair) {
-      //   setIsRouteEmpty(false);
-      // }
-      // preRoutePair.current = nowRoutePair;
-
-      try {
-        const routeList = await getRouteList({
-          startSymbol: tokenIn.symbol,
-          endSymbol: tokenOut.symbol,
-        });
-
-        if (
-          tokenIn.symbol !== swapInfoRef.current.tokenIn?.symbol ||
-          tokenOut.symbol !== swapInfoRef.current.tokenOut?.symbol
-        ) {
-          console.log('executeCb: to exceed the time limit');
-          return undefined;
-        }
-        if (!routeList || routeList.length === 0) {
-          setIsRouteEmpty(true);
-        } else {
-          setIsRouteEmpty(false);
-        }
-        routeListRef.current = routeList;
-        console.log('routeList', routeList);
-        isRefreshTokenValue && refreshTokenValueRef.current?.();
-        return routeList;
-      } catch (error) {
-        console.log('executeCb error', error);
-      }
-      return undefined;
-    },
-    [getRouteList],
-  );
+    try {
+      refreshTokenValueRef.current?.();
+    } catch (error) {
+      console.log('executeCb error', error);
+    }
+    return undefined;
+  }, []);
   const executeCbRef = useRef(executeCb);
   executeCbRef.current = executeCb;
 
-  const calculateCb = useReturnLastCallback(
-    async ({ tokenIn, tokenOut, valueIn, valueOut, isFocusValueIn }: TSwapInfo, isRefreshRouteList = false) => {
-      console.log('calculateCb', isRefreshRouteList);
-      let routeList = routeListRef.current;
-      if (!routeList || isRefreshRouteList) {
-        routeList = await executeCbRef.current(!isRefreshRouteList);
-        if (!routeList) return;
-      }
-      console.log('calculateCb start');
-
-      let winRoute: TSwapRouteInfo | undefined = undefined;
-      if (isFocusValueIn) {
-        const result = getRouteInfoWithValueIn(routeList, valueIn);
-        if (result.length === 0) {
-          return {
-            valueIn,
-            valueOut: '',
-          };
-        }
-        let maxValueOut = ZERO;
-        result.forEach((item) => {
-          const bigReceive = ZERO.plus(item.valueOut);
-          if (bigReceive.gt(maxValueOut)) {
-            winRoute = item;
-            maxValueOut = bigReceive;
-          }
-        });
-        console.log('winRoute', winRoute);
-        return {
-          valueIn,
-          valueOut: bigNumberToUPString(maxValueOut, tokenOut?.decimals),
-          routeInfo: winRoute,
-        };
-      } else {
-        const result = getRouteInfoWithValueOut(routeList, valueOut);
-        if (result.length === 0) {
-          return {
-            valueIn: '',
-            valueOut,
-          };
-        }
-        let minValueIn = ZERO.plus(result[0]?.valueIn || 0);
-        winRoute = result[0];
-        result.forEach((item) => {
-          const bigReceive = ZERO.plus(item.valueIn);
-          if (bigReceive.lt(minValueIn)) {
-            winRoute = item;
-            minValueIn = bigReceive;
-          }
-        });
-        return {
-          valueIn: bigNumberToUPString(minValueIn, tokenIn?.decimals),
-          valueOut,
-          routeInfo: winRoute,
-        };
-      }
-    },
-    [],
-  );
-
   const [isInvalidParis, setIsInvalidParis] = useState(false);
   const refreshTokenValue = useCallback(
-    async (isRefresh = false) => {
+    async (isInstant = false) => {
       const { tokenIn, tokenOut, valueIn, valueOut, isFocusValueIn } = swapInfoRef.current;
       if ((isFocusValueIn && valueIn === '') || (!isFocusValueIn && valueOut === '')) {
         setSwapInfo((pre) => ({
@@ -199,28 +100,31 @@ export const SwapPanel = () => {
           valueIn: '',
           valueOut: '',
         }));
-        setOptimumRouteInfo(undefined);
+        setSwapRoute(undefined);
         return;
       }
 
       if ((isFocusValueIn && ZERO.eq(valueIn)) || (!isFocusValueIn && ZERO.eq(valueOut))) {
         setIsInvalidParis(false);
-        setOptimumRouteInfo(undefined);
+        setSwapRoute(undefined);
         return;
       }
 
+      if (!tokenIn || !tokenOut) {
+        console.log('refreshTokenValue error', tokenIn, tokenOut);
+        return;
+      }
+
+      const _getSwapRoutes = isInstant ? getSwapRoutesInstant : getSwapRoutes;
+
       try {
-        const result: TCalculateCbResult = await calculateCb(
-          {
-            tokenIn,
-            tokenOut,
-            valueIn,
-            valueOut,
-            isFocusValueIn,
-          },
-          isRefresh,
-        );
-        if (!result) return;
+        const { routes, statusCode } = await _getSwapRoutes({
+          symbolIn: tokenIn.symbol,
+          symbolOut: tokenOut.symbol,
+          isFocusValueIn,
+          amountIn: isFocusValueIn ? timesDecimals(valueIn, tokenIn.decimals).toFixed() : undefined,
+          amountOut: isFocusValueIn ? undefined : timesDecimals(valueOut, tokenOut.decimals).toFixed(),
+        });
 
         const _swapInfo = swapInfoRef.current;
         if (
@@ -233,25 +137,35 @@ export const SwapPanel = () => {
           return;
         }
 
-        if (!result.valueIn || !result.valueOut) {
-          setIsInvalidParis(true);
-        } else {
-          setIsInvalidParis(false);
-        }
+        setIsRouteEmpty(statusCode === StatusCodeEnum.NoRouteFound);
+        setIsInvalidParis(statusCode === StatusCodeEnum.InsufficientLiquidity);
+        const route = routes[0];
+
+        const result = {
+          valueIn: divDecimals(route.amountIn, tokenIn.decimals).toFixed(),
+          valueOut: divDecimals(route.amountOut, tokenOut.decimals).toFixed(),
+          swapRoute: route,
+        };
+
         setSwapInfo((pre) => ({
           ...pre,
           valueIn: result.valueIn,
           valueOut: result.valueOut,
         }));
-        setOptimumRouteInfo(result.routeInfo);
+        setSwapRoute(route);
+
+        console.log('refreshTokenValue routes', route);
+
         return result;
       } catch (error) {
-        console.log('refreshTokenValue', error);
+        console.log('refreshTokenValue error', error);
       }
     },
-    [calculateCb],
+    [getSwapRoutes],
   );
+
   refreshTokenValueRef.current = refreshTokenValue;
+  const refreshTokenValueDebounce = useDebounceCallback(refreshTokenValue, [refreshTokenValue]);
 
   const timerRef = useRef<NodeJS.Timeout>();
 
@@ -296,24 +210,23 @@ export const SwapPanel = () => {
         valueOut: '',
         isFocusValueIn: true,
       }));
-      await sleep(100);
-      refreshTokenValue();
+      refreshTokenValueDebounce();
     },
-    [refreshTokenValue],
+    [refreshTokenValueDebounce],
   );
   const setValueOut = useCallback(
     async (value: string) => {
       setSwapInfo((pre) => ({ ...pre, valueOut: value, valueIn: '', isFocusValueIn: false }));
-      await sleep(100);
-      refreshTokenValue();
+      refreshTokenValueDebounce();
     },
-    [refreshTokenValue],
+    [refreshTokenValueDebounce],
   );
 
   const onTokenChange = useCallback(async () => {
     resetIsPriceReverse();
-    setOptimumRouteInfo(undefined);
+    setSwapRoute(undefined);
     setIsRouteEmpty(false);
+    setIsInvalidParis(false);
     await sleep(100);
     registerTimer();
   }, [registerTimer, resetIsPriceReverse]);
@@ -489,12 +402,12 @@ export const SwapPanel = () => {
     try {
       const result = await _refreshTokenValue(true);
       // can not get routeInfo
-      if (!result || !result.routeInfo) return;
+      if (!result || !result.swapRoute) return;
 
-      const routeInfo = result.routeInfo;
-      const { route } = routeInfo;
-      const routeSymbolIn = route.rawPath?.[0]?.symbol;
-      const routeSymbolOut = route.rawPath?.[route.rawPath?.length - 1]?.symbol;
+      const route = result.swapRoute;
+      const _tokens = route.distributions[0]?.tokens;
+      const routeSymbolIn = _tokens[0].symbol;
+      const routeSymbolOut = _tokens[_tokens.length - 1]?.symbol;
       // swapInfo do not match routeInfo
       if (tokenIn.symbol !== routeSymbolIn || tokenOut.symbol !== routeSymbolOut) return;
 
@@ -504,7 +417,7 @@ export const SwapPanel = () => {
           valueIn: result.valueIn,
           valueOut: result.valueOut,
         },
-        routeInfo,
+        swapRoute: route,
         priceLabel,
       });
     } catch (error) {
@@ -521,7 +434,7 @@ export const SwapPanel = () => {
       valueIn: '',
       valueOut: '',
     }));
-    setOptimumRouteInfo(undefined);
+    setSwapRoute(undefined);
     registerTimer();
   }, [registerTimer]);
 
@@ -689,7 +602,7 @@ export const SwapPanel = () => {
                 </Row>
               </Row>
 
-              {optimumRouteInfo && <SwapRouteInfo swapInfo={swapInfo} routeInfo={optimumRouteInfo} gasFee={gasFee} />}
+              {swapRoute && <SwapRouteInfo swapInfo={swapInfo} swapRoute={swapRoute} gasFee={gasFee} />}
             </div>
           </>
         )}

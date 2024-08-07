@@ -7,10 +7,28 @@
 
   .swap-order-content {
     display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .swap-order-route-wrap {
+    display: flex;
     flex-direction: row;
     justify-content: space-between;
     position: relative;
     align-items: center;
+
+    .swap-order-route-content {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-evenly;
+      align-items: center;
+      flex: 1;
+    }
+
+    .swap-order-route-percent {
+      margin-left: 20px;
+    }
 
     .swap-order-token-icon {
       font-size: 0;
@@ -39,6 +57,16 @@
       width: 100%;
       transform: translate3d(0, -50%, 0);
       z-index: 0;
+    }
+  }
+}
+
+.mobile-site-content {
+  .swap-order-routing {
+    .swap-order-route-wrap {
+      .swap-order-route-percent {
+        margin-left: 12px;
+      }
     }
   }
 }

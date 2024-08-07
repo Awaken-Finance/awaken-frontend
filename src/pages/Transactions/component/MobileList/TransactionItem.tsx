@@ -19,6 +19,8 @@ import { useMemo } from 'react';
 import { getRealReceivePriceWithDexFee } from 'utils/calculate';
 import { ONE, ZERO } from 'constants/misc';
 import { stringMidShort } from 'utils/string';
+import CommonTooltip from 'components/CommonTooltip';
+import { SwapOrderRouting } from 'pages/Swap/components/SwapOrderRouting';
 
 export default function TransactionItem({
   item: {
@@ -32,6 +34,7 @@ export default function TransactionItem({
     transactionHash,
     totalPriceInUsd,
     totalFee,
+    percentRoutes,
   },
 }: {
   item: RecentTransaction;
@@ -98,7 +101,21 @@ export default function TransactionItem({
                 />
               </Col>
               <Col>
-                <FeeRate useBg>{formatPercentage(tradePair?.feeRate * 100)}</FeeRate>
+                {side === 2 ? (
+                  <CommonTooltip
+                    width={'400px'}
+                    placement="top"
+                    title={<SwapOrderRouting percentRoutes={percentRoutes} />}
+                    getPopupContainer={(v) => v}
+                    buttonTitle={t('ok')}
+                    headerDesc={t('Order Routing')}>
+                    <FeeRate useBg usePercent={false}>
+                      {`${formatPercentage(tradePair?.feeRate * 100)}%...`}
+                    </FeeRate>
+                  </CommonTooltip>
+                ) : (
+                  <FeeRate useBg>{formatPercentage(tradePair?.feeRate * 100)}</FeeRate>
+                )}
               </Col>
             </Row>
           </Col>
@@ -170,7 +187,7 @@ export default function TransactionItem({
 
       <Col span={12} className="height-20">
         <Font lineHeight={20} color="two">
-          {t('Fee')}
+          {t('LP Fee')}
         </Font>
       </Col>
       <Col span={12} className="align-right height-20">

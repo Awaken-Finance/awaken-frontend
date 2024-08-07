@@ -1,7 +1,6 @@
 import { useCallback } from 'react';
-import { Row, Col, Menu } from 'antd';
+import { Menu } from 'antd';
 import { RecentTransaction, LiquidityRecord } from 'pages/UserCenter/type';
-import CommonMenu from 'components/CommonMenu';
 import TransactionItem from './TransactionItem';
 import LiquidityRecordItem from './LiquidityRecordItem';
 import CommonList from 'components/CommonList';
