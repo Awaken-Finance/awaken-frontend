@@ -48,12 +48,19 @@ export const SwapRouteInfo = ({
     swapRoute.distributions.forEach((path) => {
       for (let i = 0; i < path.tokens.length - 1; i++) {
         const tradePairExtension = path.tradePairExtensions[i];
+        const tradePair = path.tradePairs[i];
         const tokenIn = path.tokens[i];
         const tokenOut = path.tokens[i + 1];
-        const tokenInReserve = ZERO.plus(tradePairExtension.valueLocked0);
-        const tokenOutReserve = ZERO.plus(tradePairExtension.valueLocked1);
+        let tokenInReserve = ZERO.plus(tradePairExtension.valueLocked0);
+        let tokenOutReserve = ZERO.plus(tradePairExtension.valueLocked1);
+        if (tokenIn.symbol !== tradePair.token0.symbol) {
+          tokenInReserve = ZERO.plus(tradePairExtension.valueLocked1);
+          tokenOutReserve = ZERO.plus(tradePairExtension.valueLocked0);
+        }
+
         const valueIn = divDecimals(path.amounts[i], tokenIn.decimals);
         const valueOut = divDecimals(path.amounts[i + 1], tokenOut.decimals);
+
         const _impact = getPriceImpactWithBuy(tokenOutReserve, tokenInReserve, valueIn, valueOut);
         impactList.push(_impact);
       }
@@ -144,15 +151,15 @@ export const SwapRouteInfo = ({
       <Row align={'middle'} justify={'space-between'}>
         <Col className="swap-route-info-title">
           <Font color="two" size={14} lineHeight={22}>
-            {t('Fee')}
+            {t('LP Fee')}
           </Font>
           {isTipShow && (
             <CommonTooltip
               placement="top"
-              title={t('feeDescription')}
+              title={t('lpFeeDescription')}
               getPopupContainer={(v) => v}
               buttonTitle={t('ok')}
-              headerDesc={t('Fee')}
+              headerDesc={t('LP Fee')}
             />
           )}
         </Col>

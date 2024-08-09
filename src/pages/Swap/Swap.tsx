@@ -6,14 +6,14 @@ import { SwapPanel } from './components/SwapPanel';
 
 import './styles.less';
 import { SwapHistory } from './components/SwapHistory';
-import { useConnectWallet } from '@aelf-web-login/wallet-adapter-react';
 import { useGoBack } from 'hooks/route';
+import { useIsConnected } from 'hooks/useLogin';
 
 export const Swap = () => {
   const { t } = useTranslation();
   const isMobile = useMobile();
   const isTelegram = useIsTelegram();
-  const { isConnected } = useConnectWallet();
+  const isConnected = useIsConnected();
   const goBack = useGoBack();
 
   return (

@@ -13,6 +13,7 @@ import { useUser } from 'contexts/useUser';
 import { getPairReversed } from 'utils/pair';
 import { useConnectWallet } from '@aelf-web-login/wallet-adapter-react';
 import { WalletTypeEnum } from '@aelf-web-login/wallet-adapter-base';
+import { useIsConnected } from 'hooks/useLogin';
 
 interface PageInfoParams {
   pageNum?: number;
@@ -37,7 +38,8 @@ export default function useSearchPairList(
 
   const [{ favChangeItem }] = useUser();
 
-  const { walletType, isConnected } = useConnectWallet();
+  const { walletType } = useConnectWallet();
+  const isConnected = useIsConnected();
 
   const pageInfo = useRef<PageInfoParams>({
     pageNum: 1,

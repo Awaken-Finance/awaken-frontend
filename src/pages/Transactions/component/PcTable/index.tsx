@@ -264,7 +264,7 @@ export default function PcTable({
       {
         title: (
           <>
-            {isAll && <div>{t('Fee')}</div>}
+            {isAll && <div>{t('LP Fee')}</div>}
             <div>{t('transactionFee')}</div>
           </>
         ),

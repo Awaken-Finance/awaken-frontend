@@ -20,6 +20,7 @@ import AuthBtn from 'Buttons/AuthBtn';
 import './index.less';
 import { formatSymbol } from 'utils/token';
 import { useConnectWallet } from '@aelf-web-login/wallet-adapter-react';
+import { useIsConnected } from 'hooks/useLogin';
 
 interface SellBtnProps {
   sell?: boolean;
@@ -129,7 +130,8 @@ export default function SellBtn({
   isFixState = false,
 }: Omit<SellBtnProps, 'amountBN' | 'rate' | 'tokenA' | 'tokenB' | 'onTradeSuccess'> & { isFixState?: boolean }) {
   const { t } = useTranslation();
-  const { isConnected, isLocking } = useConnectWallet();
+  const { isLocking } = useConnectWallet();
+  const isConnected = useIsConnected();
 
   const btnTxt = useMemo(() => {
     const symbolStr = formatSymbol(symbolA);
