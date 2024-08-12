@@ -27,7 +27,7 @@ import { getCID, sleep } from 'utils';
 
 export type TSwapConfirmModalProps = {
   onSuccess?: () => void;
-  gasFee: string | 0;
+  gasFee: number;
   tokenInPrice: string;
   tokenOutPrice: string;
 };
@@ -160,12 +160,10 @@ export const SwapConfirmModal = forwardRef(
       routeContract?.address,
     );
     const onConfirmClick = useCallback(async () => {
-      console.log('onConfirmClick', swapInfo, routeContract);
       if (!swapInfo || !routeContract) return;
 
       const { tokenIn, tokenOut, valueIn, valueOut } = swapInfo;
       if (!tokenIn || !tokenOut || !valueIn || !valueOut) return;
-      console.log(2);
 
       setIsSwapping(true);
       try {

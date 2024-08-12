@@ -73,11 +73,16 @@ export function usePair(pairAddress?: string, routerAddress?: string) {
     const contract = routerContract;
     if (!contract) return;
     const { token0, token1, reserve0, reserve1, totalSupply } = await getPairInfo(contract, pairAddress);
-    setPairReserves({
+    const _reserves = {
       [token0]: reserve0 || '0',
       [token1]: reserve1 || '0',
-    });
+    };
+    setPairReserves(_reserves);
     setTotalSupply(totalSupply);
+    return {
+      reserves: _reserves,
+      totalSupply,
+    };
   }, [pairAddress, routerAddress, routerContract, setPairReserves, setTotalSupply]);
   useInterval(
     () => {

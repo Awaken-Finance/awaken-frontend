@@ -14,8 +14,7 @@ import { useTranslation } from 'react-i18next';
 import { REQ_CODE, ZERO } from 'constants/misc';
 import PriceAdnLiquidityPool from 'components/PriceAndLiquidityPool';
 import HoldLiquidity from './HoldLiquidity';
-import { getTransactionFee } from 'pages/Exchange/apis/getTransactionFee';
-import { useDebounceFn, useRequest } from 'ahooks';
+import { useDebounceFn } from 'ahooks';
 import { useRouterContract } from 'hooks/useContract';
 import CommonButton from 'components/CommonButton';
 
@@ -28,6 +27,7 @@ import { isZeroDecimalsNFT } from 'utils/NFT';
 import clsx from 'clsx';
 
 import '../styles.less';
+import { useTransactionFee } from 'contexts/useStore/hooks';
 
 export default function Add({ pairInfo }: { pairInfo: PairInfo }) {
   const { t } = useTranslation();
@@ -37,7 +37,7 @@ export default function Add({ pairInfo }: { pairInfo: PairInfo }) {
   const { tokenA, tokenB, feeRate } = pairInfo || {};
   const rate = feeRate ? SupportedSwapRateMap[feeRate] : SupportedSwapRate.percent_0_05;
   const { leftToken, rightToken } = useSelectPair(tokenA || ChainConstants.constants.COMMON_BASES[0], tokenB);
-  const { data: transactionFee = 0 } = useRequest(getTransactionFee);
+  const transactionFee = useTransactionFee();
 
   const currencyBalances = useCurrencyBalances([leftToken, rightToken]);
   const routerContract = useRouterContract(rate);

@@ -34,23 +34,17 @@ import { useMobile } from 'utils/isMobile';
 import CommonBlockProgress from 'components/CommonBlockProgress';
 import { isZeroDecimalsNFT } from 'utils/NFT';
 import { formatSymbol } from 'utils/token';
+import { useTransactionFee } from 'contexts/useStore/hooks';
 
-export default function RightCard({
-  tokenA,
-  tokenB,
-  balances,
-  reserves,
-  rate,
-  getReserves,
-}: {
-  setToken?: (currency?: Currency | undefined) => void;
+export type TRightCardProps = {
   rate: string;
   tokenA?: Currency;
   tokenB?: Currency;
   balances?: CurrencyBalances;
   reserves?: Reserves;
   getReserves: () => void;
-}) {
+};
+export default function RightCard({ tokenA, tokenB, balances, reserves, rate, getReserves }: TRightCardProps) {
   const isMobile = useMobile();
 
   const balance = balances?.[getCurrencyAddress(tokenA)];
@@ -63,7 +57,7 @@ export default function RightCard({
 
   const [showZeroInputTips, setShowZeroInputTips] = useState(false);
 
-  const [transactionFee, setTransactionFee] = useState<BigNumber.Value>(0);
+  const transactionFee = useTransactionFee();
 
   const maxBalanceAmount = useMemo(() => {
     if (tokenA?.symbol === 'ELF' && balance?.gt(transactionFee)) {
@@ -86,16 +80,14 @@ export default function RightCard({
     [maxReserveTotal, total, userSlippageTolerance],
   );
 
-  const priceImpact = useMemo(
-    () =>
-      getPriceImpactWithSell(
-        divDecimals(reserves?.[getCurrencyAddress(tokenA)], tokenA?.decimals),
-        divDecimals(reserves?.[getCurrencyAddress(tokenB)], tokenB?.decimals),
-        amount,
-        amountOutMin,
-      ),
-    [amount, amountOutMin, reserves, tokenA, tokenB],
-  );
+  const priceImpact = useMemo(() => {
+    return getPriceImpactWithSell(
+      divDecimals(reserves?.[getCurrencyAddress(tokenA)], tokenA?.decimals),
+      divDecimals(reserves?.[getCurrencyAddress(tokenB)], tokenB?.decimals),
+      amount,
+      ZERO.plus(total),
+    );
+  }, [amount, reserves, tokenA, tokenB, total]);
 
   const amountError = useMemo(() => {
     const bigInput = new BigNumber(amount);
@@ -278,7 +270,7 @@ export default function RightCard({
             <PriceImpact value={priceImpact} />
           </Col>
           <Col span={24}>
-            <TransactionFee onChange={(val) => setTransactionFee(val)} />
+            <TransactionFee />
           </Col>
         </Row>
       </Col>

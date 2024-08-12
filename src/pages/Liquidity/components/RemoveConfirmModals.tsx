@@ -6,12 +6,11 @@ import CurrencyRow from './CurrencyRow';
 import { Currency } from '@awaken/sdk-core';
 import { useTranslation } from 'react-i18next';
 import { useMobile } from 'utils/isMobile';
-import { useRequest } from 'ahooks';
-import { getTransactionFee } from 'pages/Exchange/apis/getTransactionFee';
 import BigNumber from 'bignumber.js';
 import { divDecimals } from 'utils/calculate';
 import { useUserSettings } from 'contexts/useUserSettings';
 import { parseUserSlippageTolerance } from 'utils/swap';
+import { useTransactionFee } from 'contexts/useStore/hooks';
 
 export function RemoveConfirmModal({
   tokenA,
@@ -34,7 +33,7 @@ export function RemoveConfirmModal({
   const isMobile = useMobile();
   const width = isMobile ? '320px' : '420px';
 
-  const { data: transactionFee = 0 } = useRequest(getTransactionFee);
+  const transactionFee = useTransactionFee();
 
   const [{ userSlippageTolerance }] = useUserSettings();
 

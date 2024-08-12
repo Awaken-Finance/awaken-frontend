@@ -190,4 +190,16 @@ export const SWAP_HOOK_CONTRACT_ADDRESS = (() => {
   }
 })();
 
+export const LIMIT_CONTRACT_ADDRESS = (() => {
+  switch (API_ENV) {
+    case 'local':
+    case 'test':
+    case 'preview':
+      return '2BC4BosozC1x27izqrSFJ51gYYtyVByjKGZvmitY7EBFDDPYHN';
+    default:
+      // TODO: 300
+      return '';
+  }
+})();
+
 export const currentDividendSymbol: string | undefined = '';

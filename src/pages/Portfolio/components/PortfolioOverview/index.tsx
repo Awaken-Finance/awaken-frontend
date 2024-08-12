@@ -56,7 +56,6 @@ export const PortfolioOverview = () => {
   }, [account, chainId, getIdleTokens]);
 
   const executeCb = useCallback(async () => {
-    console.log('executeCb');
     if (!account || !chainId) return;
     refreshUserPortfolio();
     refreshIdleTokens();

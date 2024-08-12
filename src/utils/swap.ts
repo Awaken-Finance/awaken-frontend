@@ -33,6 +33,12 @@ export const getDeadline = (): number | PBTimestamp => {
   return seconds;
 };
 
+export const getDeadlineWithTime = (time: number) => {
+  const seconds = Math.ceil(time / 1000);
+  if (ChainConstants.chainType === 'ELF') return { seconds: seconds, nanos: 0 };
+  return seconds;
+};
+
 export const quote = (amountA?: BigNumber, reserveA?: BigNumber | string, reserveB?: BigNumber | string): BigNumber => {
   if (!(amountA && reserveB && reserveA)) return ZERO;
   return amountA.times(reserveB).div(reserveA);

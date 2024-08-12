@@ -15,7 +15,6 @@ export type TSwapOrderRoutingProps = {
 export const SwapOrderRouting = ({ swapRoute, percentRoutes }: TSwapOrderRoutingProps) => {
   const isMobile = useMobile();
   const { t } = useTranslation();
-  console.log('percentRoutes', percentRoutes);
 
   const routeList = useMemo(() => {
     if (swapRoute) {
@@ -53,8 +52,6 @@ export const SwapOrderRouting = ({ swapRoute, percentRoutes }: TSwapOrderRouting
     }
     return [];
   }, [swapRoute, percentRoutes]);
-
-  console.log('routeList', routeList);
 
   const firstToken = useMemo(() => {
     if (swapRoute) return swapRoute?.distributions[0]?.tokens[0];
