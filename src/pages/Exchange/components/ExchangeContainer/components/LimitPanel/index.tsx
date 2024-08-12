@@ -13,9 +13,8 @@ export type TLimitPanelProps = {
   tokenB?: Currency;
   balances?: CurrencyBalances;
   reserves?: Reserves;
-  getReserves: () => void;
 };
-export const LimitPanel = memo(function ({ rate, tokenA, tokenB, balances, reserves, getReserves }: TLimitPanelProps) {
+export const LimitPanel = memo(function ({ rate, tokenA, tokenB, balances, reserves }: TLimitPanelProps) {
   return (
     <Row className="exchange-panel-box" gutter={[32, 0]}>
       <Col span={12}>

@@ -7,7 +7,7 @@ import CommonButton from 'components/CommonButton';
 
 import './styles.less';
 import { useActiveWeb3React } from 'hooks/web3';
-import { getCID, sleep } from 'utils';
+import { sleep } from 'utils';
 import { useMobile } from 'utils/isMobile';
 import Font from 'components/Font';
 import { CurrencyLogo } from 'components/CurrencyLogo';
@@ -88,18 +88,15 @@ export const LimitConfirmModal = forwardRef(({ onSuccess }: TLimitConfirmModalPr
   }, []);
   useImperativeHandle(ref, () => ({ show }));
 
+  const [isLoading, setIsLoading] = useState(false);
+  const isLoadingRef = useRef(false);
+
   const onCancel = useCallback(() => {
+    if (isLoadingRef.current) return;
     setIsVisible(false);
   }, []);
 
-  const [isLoading, setIsLoading] = useState(false);
   const { account } = useActiveWeb3React();
-  // const { approve, checkAllowance } = useAllowanceAndApprove(
-  //   ChainConstants.constants.TOKEN_CONTRACT,
-  //   tokenInAddress,
-  //   account || undefined,
-  //   routeContract?.address,
-  // );
   const limitContract = useAElfContract(LIMIT_CONTRACT_ADDRESS);
   const hookContract = useAElfContract(SWAP_HOOK_CONTRACT_ADDRESS);
 
@@ -113,6 +110,7 @@ export const LimitConfirmModal = forwardRef(({ onSuccess }: TLimitConfirmModalPr
   const onConfirmClick = useCallback(async () => {
     if (!info || !limitContract || !hookContract) return;
     setIsLoading(true);
+    isLoadingRef.current = true;
     try {
       const { amountIn, amountOut, tokenIn, tokenOut } = info;
       const maxPrice = await getContractMaxPrice({
@@ -125,6 +123,8 @@ export const LimitConfirmModal = forwardRef(({ onSuccess }: TLimitConfirmModalPr
       const maxBufferPrice = ZERO.plus(maxPrice).times(LIMIT_MAX_BUFFER_RATIO);
       if (curPrice.gt(maxBufferPrice)) {
         // TODO: 300
+        setIsLoading(false);
+        isLoadingRef.current = false;
         return;
       }
 
@@ -150,6 +150,7 @@ export const LimitConfirmModal = forwardRef(({ onSuccess }: TLimitConfirmModalPr
         args,
       });
       if (req !== REQ_CODE.UserDenied) {
+        isLoadingRef.current = false;
         onSuccess?.();
         onCancel();
         return true;
@@ -158,6 +159,7 @@ export const LimitConfirmModal = forwardRef(({ onSuccess }: TLimitConfirmModalPr
       console.log('LimitConfirmModal error', error);
     } finally {
       setIsLoading(false);
+      isLoadingRef.current = false;
     }
   }, [info, limitContract, hookContract, checkAllowance, expiryTime, account, t, approve, onSuccess, onCancel]);
 

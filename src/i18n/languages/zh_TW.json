@@ -603,6 +603,7 @@
     "The total value of the liquidity you have added to AwakenSwap": "您添加至AwakenSwap的流動性總量。",
     "GET_USER_LIQUIDITY_RECORDS_ERROR": "獲取流動性列表失敗。請重試。",
     "GET_RECENT_TRANSACTION_LIST_ERROR": "獲取交易列表失敗。請重試。",
+    "GET_LIMIT_LIST_ERROR": "獲取限價單列表失敗。請重試。",
     "Failed to get the latest block height": "獲取區塊高度失敗。請重試。",
     "Failed to get token list": "獲取代幣列表失敗。請重試。",
     "Failed to log in using NightELF. Please try it again": "登錄失敗。請重試。",

@@ -3,12 +3,12 @@ import useChainId from 'hooks/useChainId';
 import { useActiveWeb3React } from './web3';
 import { useCallback, useEffect, useState } from 'react';
 import { useInterval } from 'react-use';
-import { RecentTransaction } from 'pages/UserCenter/type';
-import { getTransactionList } from 'pages/UserCenter/apis/recentTransaction';
 import { getUserCombinedAssetsApi } from 'api/utils/userCenter';
 import { TUserCombinedAssets } from 'types/userCenter';
 import { getLiquidityPositionApi } from 'api/utils/portfolio';
 import { TTLiquidityPositionResult } from 'types/portfolio';
+import { RecentTransaction } from 'types/transactions';
+import { getTransactionList } from 'api/utils/recentTransaction';
 
 export type UserAssetTokenInfo = {
   symbol: string;

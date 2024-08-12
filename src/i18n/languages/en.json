@@ -605,6 +605,7 @@
     "The total value of the liquidity you have added to AwakenSwap": "Total value of the liquidity you have added to AwakenSwap.",
     "GET_USER_LIQUIDITY_RECORDS_ERROR": "Failed to get liquidity list. Please try again.",
     "GET_RECENT_TRANSACTION_LIST_ERROR": "Failed to get transaction list. Please try again.",
+    "GET_LIMIT_LIST_ERROR": "Failed to get limit list. Please try again.",
     "Failed to get the latest block height": "Failed to get block height. Please try again.",
     "Failed to get token list": "Failed to get token list. Please try again.",
     "Failed to log in using NightELF. Please try it again": "Failed to log in. Please try again.",
@@ -655,6 +656,7 @@
     "portfolioTipsDescription": "Liquidity providers earn a 0.05%, 0.1%, 0.3%, 3%, 5%  fee(Varies for different liquidity pools) on all trades proportional to their share of the pool. Fees are added to the pool, accrue in real time and can be claimed by withdrawing your liquidity.",
     "portfolioTipsCloseToast": "Closed, you can go to the Help Center to view",
     "Learn more": "Learn more",
-    "noticeContent1": "· You currently have <span>{{orderNum}}</span> limit order, the remaining authorization amount is <span>{{remainAmount}}</span>, and the current transaction amount is <span>{{currentAmount}}</span>. Since the new authorization will overwrite the original authorization, <span>{{requireAmount}}</span> is required for this transaction."
+    "noticeContent1": "· You currently have <span>{{orderNum}}</span> limit order, the remaining authorization amount is <span>{{remainAmount}}</span>, and the current transaction amount is <span>{{currentAmount}}</span>. Since the new authorization will overwrite the original authorization, <span>{{requireAmount}}</span> is required for this transaction.",
+    "limitCancelContent": "Your limit could execute before cancellation is processed. Your network costs cannot be refunded. Do you wish to proceed?<br />Canceling a limit has a network cost."
   }
 }

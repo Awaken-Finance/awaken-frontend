@@ -1,11 +1,9 @@
-import { memo, useEffect, useMemo, useState } from 'react';
+import { memo, useMemo, useState } from 'react';
 import { Row } from 'antd';
 import { useTranslation } from 'react-i18next';
-
 import Font from 'components/Font';
 import CommonCard from 'components/CommonCard';
 import SettingFee from 'Buttons/SettingFeeBtn';
-
 import './styles.less';
 import { MobileTradePanel, TradePanel } from '../TradePanel';
 import clsx from 'clsx';
@@ -80,14 +78,24 @@ export default memo(function ExchangePanel() {
           <SettingFee />
         </Row>
       }>
-      <LimitPanel
-        getReserves={getReserves}
-        rate={rate}
-        tokenA={tokenList[0]}
-        tokenB={tokenList[1]}
-        reserves={reserves}
-        balances={currencyBalances}
-      />
+      {switchValue === ExchangeSwitchEnum.Trade ? (
+        <TradePanel
+          rate={rate}
+          tokenA={tokenList[0]}
+          tokenB={tokenList[1]}
+          balances={currencyBalances}
+          reserves={reserves}
+          getReserves={getReserves}
+        />
+      ) : (
+        <LimitPanel
+          rate={rate}
+          tokenA={tokenList[0]}
+          tokenB={tokenList[1]}
+          reserves={reserves}
+          balances={currencyBalances}
+        />
+      )}
     </CommonCard>
   );
 });

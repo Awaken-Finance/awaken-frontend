@@ -4,10 +4,11 @@ import { FetchParam } from 'types/requeset';
 import { useDebounceFn } from 'ahooks';
 import PcTable from './component/PcTable';
 import MobileList from './component/MobileList';
-import useGetList, { PageInfoParams } from './hooks/useGetList';
+import useGetList, { PageInfoParams, TranslationMenuEnum } from './hooks/useGetList';
 import { useTranslation } from 'react-i18next';
 import { LiquidityRecord, RecentTransaction } from 'pages/UserCenter/type';
 import { useActiveWeb3React } from 'hooks/web3';
+import { TLimitRecordItem } from 'types/transactions';
 
 export default function Transactions() {
   const isMobile = useMobile();
@@ -15,7 +16,7 @@ export default function Transactions() {
   const preDataSource = useRef<LiquidityRecord[] | RecentTransaction[]>([]);
   const clearDataSource = useRef<boolean>(false);
 
-  const [menu, setMenu] = useState<string | number>('all');
+  const [menu, setMenu] = useState<TranslationMenuEnum>(TranslationMenuEnum.trade);
 
   const [searchVal, setSearchVal] = useState('');
 
@@ -28,15 +29,19 @@ export default function Transactions() {
   const menuList = [
     {
       name: t('RecentTransactionTrade'),
-      key: 'all',
+      key: TranslationMenuEnum.trade,
+    },
+    {
+      name: t('Limits'),
+      key: TranslationMenuEnum.limit,
     },
     {
       name: t('RecentTransactionAdd'),
-      key: 0,
+      key: TranslationMenuEnum.add,
     },
     {
       name: t('RecentTransactionRemove'),
-      key: 1,
+      key: TranslationMenuEnum.remove,
     },
   ];
 
@@ -48,7 +53,7 @@ export default function Transactions() {
     order: null,
   });
 
-  const { run: searchDebunce } = useDebounceFn(
+  const { run: searchDebounce } = useDebounceFn(
     () => {
       pageInfo.current = {
         pageNum: 1,
@@ -65,10 +70,10 @@ export default function Transactions() {
 
   const searchChange = useCallback(
     (val: string) => {
-      searchDebunce();
+      searchDebounce();
       setSearchVal(val);
     },
-    [searchDebunce],
+    [searchDebounce],
   );
 
   const menuChange = useCallback(
@@ -85,7 +90,7 @@ export default function Transactions() {
       clearDataSource.current = true;
       getList(pageInfo.current, '', val);
       setSearchVal('');
-      setMenu(val);
+      setMenu(val as TranslationMenuEnum);
     },
     [getList],
   );
@@ -94,7 +99,7 @@ export default function Transactions() {
     const { page, pageSize, order, field, filter } = params;
 
     // page size change
-    if (pageInfo.current.pageSize !== pageSize) {
+    if (pageSize !== undefined && pageInfo.current.pageSize !== pageSize) {
       pageInfo.current = {
         pageNum: 1,
         pageSize: pageSize,
@@ -129,8 +134,10 @@ export default function Transactions() {
       return getList(pageInfo.current, searchVal, menu);
     }
 
-    // page num change
-    pageInfo.current.pageNum = page;
+    if (page !== undefined) {
+      // page num change
+      pageInfo.current.pageNum = page;
+    }
     clearDataSource.current = false;
     getList(pageInfo.current, searchVal, menu);
   };
@@ -138,7 +145,10 @@ export default function Transactions() {
   const dataSource = useMemo(() => {
     if (isMobile && !clearDataSource.current) {
       preDataSource.current = [...preDataSource.current, ...(list ?? [])].reduce(
-        (preList: LiquidityRecord[] | RecentTransaction[], cur: LiquidityRecord | RecentTransaction) => {
+        (
+          preList: LiquidityRecord[] | RecentTransaction[] | TLimitRecordItem[],
+          cur: LiquidityRecord | RecentTransaction | TLimitRecordItem,
+        ) => {
           if (preList.some((item) => item.transactionHash === cur.transactionHash)) {
             return preList;
           }
