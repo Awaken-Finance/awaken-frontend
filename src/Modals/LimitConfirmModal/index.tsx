@@ -19,7 +19,7 @@ import { REQ_CODE, ZERO } from 'constants/misc';
 import moment from 'moment';
 import useAllowanceAndApprove from 'hooks/useApprove';
 import { ChainConstants } from 'constants/ChainConstants';
-import { getCurrencyAddress, getDeadlineWithTime } from 'utils/swap';
+import { getCurrencyAddress, getDeadlineWithSec } from 'utils/swap';
 import { useAElfContract } from 'hooks/useContract';
 import { LIMIT_CONTRACT_ADDRESS, SWAP_HOOK_CONTRACT_ADDRESS } from 'constants/index';
 import { timesDecimals } from 'utils/calculate';
@@ -36,6 +36,7 @@ export type TLimitConfirmModalInfo = {
   amountIn: string;
   amountOut: string;
   expiryValue: ExpiryEnum;
+  unfilledValue: string;
   isPriceReverse?: boolean;
 };
 export interface LimitConfirmModalInterface {
@@ -140,7 +141,7 @@ export const LimitConfirmModal = forwardRef(({ onSuccess }: TLimitConfirmModalPr
         symbolIn: tokenIn.symbol,
         amountOut: timesDecimals(amountOut, tokenOut.decimals).toFixed(),
         symbolOut: tokenOut.symbol,
-        deadline: getDeadlineWithTime(expiryTime),
+        deadline: getDeadlineWithSec(expiryTime),
       };
       console.log('commitLimit', args);
       const req = await commitLimit({

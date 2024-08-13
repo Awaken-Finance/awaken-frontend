@@ -657,6 +657,7 @@
     "portfolioTipsCloseToast": "Closed, you can go to the Help Center to view",
     "Learn more": "Learn more",
     "noticeContent1": "· You currently have <span>{{orderNum}}</span> limit order, the remaining authorization amount is <span>{{remainAmount}}</span>, and the current transaction amount is <span>{{currentAmount}}</span>. Since the new authorization will overwrite the original authorization, <span>{{requireAmount}}</span> is required for this transaction.",
-    "limitCancelContent": "Your limit could execute before cancellation is processed. Your network costs cannot be refunded. Do you wish to proceed?<br />Canceling a limit has a network cost."
+    "limitCancelContent": "Your limit could execute before cancellation is processed. Your network costs cannot be refunded. Do you wish to proceed?<br />Canceling a limit has a network cost.",
+    "limitListTips": "Notice: Please keep your wallet balance sufficient, and do not modify the authorization amount by yourself, otherwise the transaction will fail."
   }
 }

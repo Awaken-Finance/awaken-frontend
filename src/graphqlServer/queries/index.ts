@@ -11,3 +11,11 @@ export const PAIR_SYNC_RECORDS_QUERY = gql`
     }
   }
 `;
+
+export const LIMIT_ORDER_REMAINING_UNFILLED_QUERY = gql`
+  query limitOrderRemainingUnfilled($dto: GetLimitOrderRemainingUnfilledDto) {
+    limitOrderRemainingUnfilled(dto: $dto) {
+      value
+    }
+  }
+`;

@@ -11,6 +11,9 @@ import { useConnectWallet } from '@aelf-web-login/wallet-adapter-react';
 import { useIsConnected } from 'hooks/useLogin';
 import { ExpiryEnum } from 'pages/Exchange/components/ExchangeContainer/components/LimitCard/components/LimitExpiry';
 import { LimitConfirmModal, LimitConfirmModalInterface } from 'Modals/LimitConfirmModal';
+import { useGetLimitOrderRemainingUnfilled } from 'graphqlServer/hooks';
+import { DEFAULT_CHAIN } from 'constants/index';
+import { useActiveWeb3React } from 'hooks/web3';
 
 interface LimitSellBtnProps {
   sell?: boolean;
@@ -41,33 +44,41 @@ export function LimitSellBtnWithPay({
 }: LimitSellBtnProps) {
   const { t } = useTranslation();
   const limitConfirmModalRef = useRef<LimitConfirmModalInterface>();
+  const getUnfilled = useGetLimitOrderRemainingUnfilled();
+  const { account } = useActiveWeb3React();
 
   const buttonDisabled = useMemo(() => {
     return disabled || !tokenIn || !tokenOut || !tokenIn?.symbol || !tokenOut?.symbol;
   }, [disabled, tokenIn, tokenOut]);
 
   const [isLoading, setIsLoading] = useState(false);
-  const handleClick = useCallback(() => {
+  const handleClick = useCallback(async () => {
     onClick?.();
     if (ZERO.gte(amountIn || 0) || ZERO.gte(amountOut || 0) || !tokenIn || !tokenOut) return;
     setIsLoading(true);
     try {
-      //
+      const result = await getUnfilled({
+        dto: {
+          chainId: DEFAULT_CHAIN,
+          makerAddress: account,
+          tokenSymbol: tokenIn.symbol,
+        },
+      });
+      limitConfirmModalRef.current?.show({
+        tokenIn,
+        tokenOut,
+        amountIn,
+        amountOut,
+        expiryValue,
+        isPriceReverse,
+        unfilledValue: result.data.limitOrderRemainingUnfilled.value,
+      });
     } catch (error) {
       console.log('LimitSellBtnWithPay error', error);
     } finally {
       setIsLoading(false);
     }
-
-    limitConfirmModalRef.current?.show({
-      tokenIn,
-      tokenOut,
-      amountIn,
-      amountOut,
-      expiryValue,
-      isPriceReverse,
-    });
-  }, [amountIn, amountOut, expiryValue, isPriceReverse, onClick, tokenIn, tokenOut]);
+  }, [account, amountIn, amountOut, expiryValue, getUnfilled, isPriceReverse, onClick, tokenIn, tokenOut]);
 
   return (
     <>

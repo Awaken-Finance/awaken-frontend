@@ -17,3 +17,20 @@ export type TGetPairSyncRecords = (
   client: TGraphQLClient,
   params: TGetPairSyncRecordsParams,
 ) => TCommonGraphQLResult<TGetPairSyncRecordsResult>;
+
+export type TGetLimitOrderRemainingUnfilledParams = {
+  dto: {
+    chainId: string;
+    makerAddress: string;
+    tokenSymbol: string;
+  };
+};
+export type TGetLimitOrderRemainingUnfilledResult = {
+  limitOrderRemainingUnfilled: {
+    value: string;
+  };
+};
+export type TGetLimitOrderRemainingUnfilled = (
+  client: TGraphQLClient,
+  params: TGetLimitOrderRemainingUnfilledParams,
+) => TCommonGraphQLResult<TGetLimitOrderRemainingUnfilledResult>;

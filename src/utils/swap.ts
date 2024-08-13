@@ -33,8 +33,7 @@ export const getDeadline = (): number | PBTimestamp => {
   return seconds;
 };
 
-export const getDeadlineWithTime = (time: number) => {
-  const seconds = Math.ceil(time / 1000);
+export const getDeadlineWithSec = (seconds: number) => {
   if (ChainConstants.chainType === 'ELF') return { seconds: seconds, nanos: 0 };
   return seconds;
 };
