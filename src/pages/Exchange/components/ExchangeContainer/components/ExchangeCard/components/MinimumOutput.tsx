@@ -11,15 +11,7 @@ import { bigNumberToString } from 'utils/swap';
 import { formatSymbol } from 'utils/token';
 import CommonTooltip from 'components/CommonTooltip';
 
-export default function MinimumOutput({
-  value,
-  token,
-  sell = false,
-}: {
-  value?: BigNumber.Value;
-  token?: Currency;
-  sell?: boolean;
-}) {
+export default function MinimumOutput({ value, token }: { value?: BigNumber.Value; token?: Currency }) {
   const { t } = useTranslation();
   const isMobile = useMobile();
 
@@ -34,7 +26,7 @@ export default function MinimumOutput({
       <Row gutter={[2, 0]} align="middle">
         <Col>
           <Font size={isMobile ? 12 : 14} lineHeight={isMobile ? 18 : 20} color="two">
-            {sell ? t('minEaring') : t('maxPay')}
+            {t('minEaring')}
           </Font>
         </Col>
         <Col>
@@ -43,7 +35,7 @@ export default function MinimumOutput({
             title={t(
               'Min.Received refers to the exchange result at the price corresponding to the Max.Slippage you set.Generally, it will be more.',
             )}
-            headerDesc={sell ? t('minEaring') : t('maxPay')}
+            headerDesc={t('minEaring')}
             buttonTitle={t('ok')}
           />
         </Col>

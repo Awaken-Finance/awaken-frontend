@@ -1,31 +1,31 @@
-import { forwardRef, useCallback, useEffect, useImperativeHandle, useMemo, useRef, useState } from 'react';
-import { Trans, useTranslation } from 'react-i18next';
+import { forwardRef, useCallback, useImperativeHandle, useMemo, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import CommonModal from 'components/CommonModal';
-import CommonButton from 'components/CommonButton';
 import './styles.less';
-import { useActiveWeb3React } from 'hooks/web3';
-import { getExploreLink, sleep } from 'utils';
-import { useMobile } from 'utils/isMobile';
-import { useAElfContract } from 'hooks/useContract';
-import { LIMIT_CONTRACT_ADDRESS } from 'constants/index';
-import { TLimitDetailItem, TLimitRecordItem } from 'types/transactions';
-import { cancelLimit } from 'utils/limit';
-import { REQ_CODE } from 'constants/misc';
+import { getExploreLink } from 'utils';
+import { LimitOrderStatusEnum, TLimitDetailItem, TLimitRecordItem } from 'types/transactions';
+import { ZERO } from 'constants/misc';
 import { CommonTable } from 'components/CommonTable';
-import { getLimitDetailList } from 'api/utils/recentTransaction';
+import { getLimitDetailList as _getLimitDetailList } from 'api/utils/recentTransaction';
 import { ColumnsType } from 'antd/es/table';
 import Font from 'components/Font';
 import moment from 'moment';
 import { stringMidShort } from 'utils/string';
 import CommonCopy from 'components/CommonCopy';
 import { FetchParam } from 'types/requeset';
+import PriceDigits from 'components/PriceDigits';
+import getFontStyle from 'utils/getFontStyle';
+import { formatSymbol } from 'utils/token';
+import { LimitDetailStatusMap } from 'constants/limit';
+import PriceUSDDigits from 'components/PriceUSDDigits';
+import { useReturnLastCallback } from 'hooks';
 
 export type TLimitDetailModalProps = {};
 
 export type TLimitDetailModalInfo = {
-  orderId: number;
+  record: TLimitRecordItem;
 };
-export interface LimitCancelModalInterface {
+export interface LimitDetailModalInterface {
   show: (params: TLimitDetailModalInfo) => void;
 }
 
@@ -48,7 +48,10 @@ export const LimitDetailModal = forwardRef((_: TLimitDetailModalProps, ref) => {
     if (isLoadingRef.current) return;
     setIsVisible(false);
     setPagination({ ...INIT_PAGINATION });
+    orderIdRef.current = 0;
   }, []);
+
+  const getLimitDetailList = useReturnLastCallback(_getLimitDetailList, []);
 
   const [list, setList] = useState<TLimitDetailItem[]>([]);
 
@@ -56,43 +59,44 @@ export const LimitDetailModal = forwardRef((_: TLimitDetailModalProps, ref) => {
   const paginationRef = useRef(pagination);
   paginationRef.current = pagination;
 
-  const getData = useCallback(async (params?: FetchParam) => {
-    let page = 1,
-      pageSize = paginationRef.current.pageSize;
-    setIsLoading(true);
-    try {
-      if (params) {
+  const getData = useCallback(
+    async (params?: FetchParam) => {
+      let page = 1,
+        pageSize = paginationRef.current.pageSize;
+      setIsLoading(true);
+      try {
+        if (params) {
+          setPagination((pre) => ({
+            ...pre,
+            pageSize: params.pageSize ?? pre.pageSize,
+            page: params.page ?? pre.page,
+          }));
+          page = params.page ?? page;
+          pageSize = params.pageSize ?? pageSize;
+        }
+
+        const result = await getLimitDetailList({
+          orderId: orderIdRef.current,
+          skipCount: (page - 1) * pageSize,
+          maxResultCount: pageSize,
+        });
+        setList(result.items || []);
         setPagination((pre) => ({
           ...pre,
-          pageSize: params.pageSize ?? pre.pageSize,
-          page: params.page ?? pre.page,
+          total: result.totalCount || 0,
         }));
-        page = params.page ?? page;
-        pageSize = params.pageSize ?? pageSize;
+      } catch (error) {
+        console.log('LimitDetailModal', error);
+      } finally {
+        setIsLoading(false);
       }
-
-      const result = await getLimitDetailList({
-        orderId: 1,
-        skipCount: (page - 1) * pageSize,
-        maxResultCount: pageSize,
-      });
-      setList(result.items || []);
-      setPagination((pre) => ({
-        ...pre,
-        total: result.totalCount || 0,
-      }));
-    } catch (error) {
-      console.log('LimitDetailModal', error);
-    } finally {
-      setIsLoading(false);
-    }
-  }, []);
+    },
+    [getLimitDetailList],
+  );
   const getDataRef = useRef(getData);
   getDataRef.current = getData;
 
-  useEffect(() => {
-    // getData();
-  }, []);
+  const [record, setRecord] = useState<TLimitRecordItem>();
 
   const columns = useMemo<ColumnsType<TLimitDetailItem>>(() => {
     const columnList: ColumnsType<TLimitDetailItem> = [
@@ -113,11 +117,25 @@ export const LimitDetailModal = forwardRef((_: TLimitDetailModalProps, ref) => {
         dataIndex: 'amountInFilled',
         width: 160,
         align: 'left',
-        render: (amountInFilled: string, record: TLimitDetailItem) => (
-          <Font lineHeight={20} size={14}>
-            {1}
-          </Font>
-        ),
+        render: (_amountInFilled: string, _record: TLimitDetailItem) => {
+          if (_record.status !== LimitOrderStatusEnum.PartiallyFilling)
+            return (
+              <Font lineHeight={20} size={14}>
+                {'-'}
+              </Font>
+            );
+          return (
+            <>
+              <PriceDigits
+                className={getFontStyle({ lineHeight: 20 })}
+                price={ZERO.plus(_record.amountOutFilled).div(_record.amountInFilled)}
+              />
+              <Font lineHeight={20} size={14}>
+                {` ${formatSymbol(record?.symbolIn)}/${formatSymbol(record?.symbolOut)}`}
+              </Font>
+            </>
+          );
+        },
       },
       {
         title: t('Pay'),
@@ -125,13 +143,19 @@ export const LimitDetailModal = forwardRef((_: TLimitDetailModalProps, ref) => {
         dataIndex: 'amountInFilled',
         width: 160,
         align: 'left',
-        // sorter: true,
-        // sortOrder: field === 'tradePair' ? order : null,
-        render: (amountInFilled: string, record: TLimitDetailItem) => (
-          <Font lineHeight={20} size={14}>
-            {1}
-          </Font>
-        ),
+        render: (amountInFilled: string, _record: TLimitDetailItem) => {
+          if (_record.status !== LimitOrderStatusEnum.PartiallyFilling)
+            return (
+              <Font lineHeight={20} size={14}>
+                {'-'}
+              </Font>
+            );
+          return (
+            <Font lineHeight={20} size={14}>
+              {`${ZERO.plus(amountInFilled).toFixed()} ${formatSymbol(record?.symbolIn)}`}
+            </Font>
+          );
+        },
       },
       {
         title: t('Receive'),
@@ -139,11 +163,19 @@ export const LimitDetailModal = forwardRef((_: TLimitDetailModalProps, ref) => {
         dataIndex: 'amountOutFilled',
         width: 160,
         align: 'left',
-        render: (amountOutFilled: string, record: TLimitDetailItem) => (
-          <Font lineHeight={20} size={14}>
-            {1}
-          </Font>
-        ),
+        render: (amountOutFilled: string, _record: TLimitDetailItem) => {
+          if (_record.status !== LimitOrderStatusEnum.PartiallyFilling)
+            return (
+              <Font lineHeight={20} size={14}>
+                {'-'}
+              </Font>
+            );
+          return (
+            <Font lineHeight={20} size={14}>
+              {`${ZERO.plus(amountOutFilled).toFixed()} ${formatSymbol(record?.symbolOut)}`}
+            </Font>
+          );
+        },
       },
       {
         title: t('Total value'),
@@ -151,11 +183,15 @@ export const LimitDetailModal = forwardRef((_: TLimitDetailModalProps, ref) => {
         dataIndex: 'amountOutFilledUSD',
         width: 100,
         align: 'left',
-        render: (amountOutFilledUSD: string, record: TLimitDetailItem) => (
-          <Font lineHeight={20} size={14}>
-            {1}
-          </Font>
-        ),
+        render: (amountOutFilledUSD: string, _record: TLimitDetailItem) => {
+          if (_record.status !== LimitOrderStatusEnum.PartiallyFilling)
+            return (
+              <Font lineHeight={20} size={14}>
+                {'-'}
+              </Font>
+            );
+          return <PriceUSDDigits className={getFontStyle({ lineHeight: 24 })} price={amountOutFilledUSD} />;
+        },
       },
       {
         title: (
@@ -168,11 +204,35 @@ export const LimitDetailModal = forwardRef((_: TLimitDetailModalProps, ref) => {
         width: 100,
         dataIndex: 'totalFee',
         align: 'left',
-        render: (totalFee: string, record: TLimitDetailItem) => {
+        render: (totalFee: string, _record: TLimitDetailItem) => {
+          if (_record.status !== LimitOrderStatusEnum.PartiallyFilling)
+            return (
+              <>
+                <div>
+                  <Font lineHeight={20} size={14}>
+                    {'-'}
+                  </Font>
+                </div>
+                <div>
+                  <Font lineHeight={20} size={14}>
+                    {'-'}
+                  </Font>
+                </div>
+              </>
+            );
           return (
-            <Font lineHeight={20} size={14}>
-              {1}
-            </Font>
+            <>
+              <div>
+                <Font lineHeight={20} size={14}>
+                  {`${ZERO.plus(totalFee).toFixed()} ${formatSymbol('ELF')}`}
+                </Font>
+              </div>
+              <div>
+                <Font lineHeight={20} size={14}>
+                  {`${ZERO.plus(_record.networkFee).toFixed()} ${formatSymbol('ELF')}`}
+                </Font>
+              </div>
+            </>
           );
         },
       },
@@ -182,9 +242,9 @@ export const LimitDetailModal = forwardRef((_: TLimitDetailModalProps, ref) => {
         dataIndex: 'status',
         width: 60,
         align: 'left',
-        render: (status: number, record: TLimitDetailItem) => (
-          <Font lineHeight={20} size={14}>
-            {1}
+        render: (status: LimitOrderStatusEnum) => (
+          <Font lineHeight={20} size={14} color={LimitDetailStatusMap[status].color}>
+            {t(LimitDetailStatusMap[status].label)}
           </Font>
         ),
       },
@@ -208,10 +268,12 @@ export const LimitDetailModal = forwardRef((_: TLimitDetailModalProps, ref) => {
     ];
 
     return columnList;
-  }, [t]);
+  }, [record?.symbolIn, record?.symbolOut, t]);
 
-  const show = useCallback<LimitCancelModalInterface['show']>(async ({ orderId }) => {
-    orderIdRef.current = orderId;
+  const show = useCallback<LimitDetailModalInterface['show']>(async ({ record }) => {
+    console.log('limitDetailModalRef');
+    orderIdRef.current = record.orderId;
+    setRecord(record);
     getDataRef.current();
     setIsVisible(true);
   }, []);

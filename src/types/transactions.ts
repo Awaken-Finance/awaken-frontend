@@ -159,7 +159,7 @@ export enum LimitOrderStatusEnum {
 export type TLimitRecordItem = {
   tradePair: TTradePair;
   chainId: string;
-  orderId: string;
+  orderId: number;
   makerAddress: string;
   symbolIn: string;
   symbolOut: string;
@@ -189,7 +189,7 @@ export type TLimitDetailItem = {
   amountOutFilled: string;
   amountOutFilledUSD: string;
   networkFee: string;
-  status: number;
+  status: LimitOrderStatusEnum;
   takerAddress: null | string;
   totalFee: string;
   transactionHash: string;

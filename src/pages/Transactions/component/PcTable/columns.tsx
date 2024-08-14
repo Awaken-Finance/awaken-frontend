@@ -27,6 +27,7 @@ import { CurrencyLogos } from 'components/CurrencyLogo';
 import PriceUSDDigits from 'components/PriceUSDDigits';
 import { ONE, ZERO } from 'constants/misc';
 import { LimitCancelModalInterface } from 'Modals/LimitCancelModal';
+import { LimitDetailModalInterface } from 'Modals/LimitDetailModal';
 
 export type TUseTransactionColumnsProps = {
   menu?: string | number;
@@ -294,8 +295,9 @@ export const useTransactionColumns = ({ menu, field, order, side }: TUseTransact
 
 export type TUseLimitColumnsProps = {
   limitCancelModalRef: MutableRefObject<LimitCancelModalInterface | undefined>;
+  limitDetailModalRef: MutableRefObject<LimitDetailModalInterface | undefined>;
 };
-export const useLimitColumns = ({ limitCancelModalRef }: TUseLimitColumnsProps) => {
+export const useLimitColumns = ({ limitCancelModalRef, limitDetailModalRef }: TUseLimitColumnsProps) => {
   const { t } = useTranslation();
 
   return useMemo<ColumnsType<TLimitRecordItem>>(() => {
@@ -322,11 +324,12 @@ export const useLimitColumns = ({ limitCancelModalRef }: TUseLimitColumnsProps) 
         // sorter: true,
         // sortOrder: field === 'tradePair' ? order : null,
         render: (_tradePair: TTradePair, record: TLimitRecordItem) => (
-          <Font lineHeight={20} size={14}>
-            {`${getLimitOrderPrice(record).toFixed(LIMIT_PRICE_DECIMAL)} ${formatSymbol(
-              record.symbolOut,
-            )}/${formatSymbol(record.symbolIn)}`}
-          </Font>
+          <>
+            <PriceDigits className={getFontStyle({ lineHeight: 20 })} price={getLimitOrderPrice(record)} />
+            <Font lineHeight={20} size={14}>
+              {`${formatSymbol(record.symbolOut)}/${formatSymbol(record.symbolIn)}`}
+            </Font>
+          </>
         ),
       },
       {
@@ -462,12 +465,14 @@ export const useLimitColumns = ({ limitCancelModalRef }: TUseLimitColumnsProps) 
                 <div className="limit-operation-split" />
               </>
             )}
-            <div className="limit-operation-btn">{t('Details')}</div>
+            <div className="limit-operation-btn" onClick={() => limitDetailModalRef?.current?.show({ record })}>
+              {t('Details')}
+            </div>
           </div>
         ),
       },
     ];
 
     return columnList;
-  }, [limitCancelModalRef, t]);
+  }, [limitCancelModalRef, limitDetailModalRef, t]);
 };

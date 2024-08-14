@@ -264,7 +264,7 @@ export default function RightCard({ tokenA, tokenB, balances, reserves, rate, ge
             <Slippage value={parseUserSlippageTolerance(userSlippageTolerance)} />
           </Col>
           <Col span={24}>
-            <MinimumOutput sell value={amountOutMin} token={tokenB} />
+            <MinimumOutput value={amountOutMin} token={tokenB} />
           </Col>
           <Col span={24}>
             <PriceImpact value={priceImpact} />

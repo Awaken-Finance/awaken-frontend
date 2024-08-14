@@ -61,13 +61,11 @@ export default function LeftCard({ tokenA, tokenB, balances, reserves, rate, get
   const [showZeroInputTips, setShowZeroInputTips] = useState(false);
 
   const maxBalanceTotal = useMemo(() => {
-    let balanceBN = ZERO;
     if (tokenB?.symbol === 'ELF' && balance?.gt(transactionFee)) {
-      balanceBN = divDecimals(balance?.minus(transactionFee), tokenB?.decimals);
+      return divDecimals(balance?.minus(transactionFee), tokenB?.decimals);
     }
-    balanceBN = divDecimals(balance, tokenB?.decimals);
-    return minimumAmountOut(balanceBN, userSlippageTolerance);
-  }, [balance, tokenB?.decimals, tokenB?.symbol, transactionFee, userSlippageTolerance]);
+    return divDecimals(balance, tokenB?.decimals);
+  }, [balance, tokenB, transactionFee]);
 
   const maxReserveAmount = useMemo(
     () => divDecimals(reserves?.[getCurrencyAddress(tokenA)], tokenA?.decimals),
@@ -90,12 +88,9 @@ export default function LeftCard({ tokenA, tokenB, balances, reserves, rate, get
     return +inputToSide(amount, maxAmount).toFixed(0);
   }, [amount, maxAmount]);
 
-  const amountInMax = useMemo(
-    () =>
-      BigNumber.min(
-        maximumAmountIn(new BigNumber(total), userSlippageTolerance).dp(tokenB?.decimals || 0, BigNumber.ROUND_CEIL),
-      ),
-    [tokenB?.decimals, total, userSlippageTolerance],
+  const amountOutMin = useMemo(
+    () => BigNumber.min(minimumAmountOut(new BigNumber(amount), userSlippageTolerance), maxReserveAmount),
+    [amount, maxReserveAmount, userSlippageTolerance],
   );
 
   const priceImpact = useMemo(() => {
@@ -280,7 +275,7 @@ export default function LeftCard({ tokenA, tokenB, balances, reserves, rate, get
             <Slippage value={parseUserSlippageTolerance(userSlippageTolerance)} />
           </Col>
           <Col span={24}>
-            <MinimumOutput value={amountInMax} token={tokenB} />
+            <MinimumOutput value={amountOutMin} token={tokenA} />
           </Col>
           <Col span={24}>
             <PriceImpact value={priceImpact} />

@@ -1,7 +1,7 @@
 import { useMemo, useState } from 'react';
 import clsx from 'clsx';
 import { Currency } from '@awaken/sdk-core';
-import { REQ_CODE, ZERO } from 'constants/misc';
+import { ONE, REQ_CODE, ZERO } from 'constants/misc';
 import { useTranslation } from 'react-i18next';
 import Font from 'components/Font';
 import { onSwap } from 'utils/swapContract';
@@ -9,7 +9,7 @@ import { timesDecimals } from 'utils/calculate';
 import { useActiveWeb3React } from 'hooks/web3';
 import { useAElfContract } from 'hooks/useContract';
 import useAllowanceAndApprove from 'hooks/useApprove';
-import { getCurrencyAddress, getDeadline, maximumAmountIn, minimumAmountOut } from 'utils/swap';
+import { getCurrencyAddress, getDeadline, minimumAmountOut } from 'utils/swap';
 import { ChainConstants } from 'constants/ChainConstants';
 import AuthBtn from 'Buttons/AuthBtn';
 
@@ -77,18 +77,14 @@ export function SellBtnWithPay({
     try {
       const valueInAmountBN = timesDecimals(valueIn, tokenIn.decimals);
       const valueOutAmountBN = timesDecimals(valueOut, tokenOut.decimals);
-      const amountMinOutAmountBN = minimumAmountOut(valueOutAmountBN, userSlippageTolerance);
-      const amountMaxInAmountBN = maximumAmountIn(valueInAmountBN, userSlippageTolerance).dp(0, BigNumber.ROUND_CEIL);
+      const amountMinOutAmountBN = BigNumber.max(
+        minimumAmountOut(valueOutAmountBN, userSlippageTolerance).dp(0, BigNumber.ROUND_DOWN),
+        ONE,
+      );
 
       const allowance = await checkAllowance();
-      if (sell) {
-        if (valueInAmountBN.gt(allowance)) {
-          await approve(valueInAmountBN);
-        }
-      } else {
-        if (amountMaxInAmountBN.gt(allowance)) {
-          await approve(amountMaxInAmountBN);
-        }
+      if (valueInAmountBN.gt(allowance)) {
+        await approve(valueInAmountBN);
       }
 
       const deadline = getDeadline();
@@ -99,22 +95,13 @@ export function SellBtnWithPay({
         routerContract: contract,
         tokenA: tokenOut,
         tokenB: tokenIn,
-        amountIn: sell ? valueInAmountBN : amountMaxInAmountBN,
-        amountOutMin: sell ? amountMinOutAmountBN : valueOutAmountBN,
-        methodName: sell ? 'swapExactTokensForTokens' : 'SwapTokensForExactTokens',
+        amountIn: valueInAmountBN,
+        amountOutMin: amountMinOutAmountBN,
+        methodName: 'swapExactTokensForTokens',
         swapTokens: [
           {
-            ...(() => {
-              return sell
-                ? {
-                    amountIn: valueInAmountBN.toFixed(),
-                    amountOutMin: amountMinOutAmountBN.toFixed(),
-                  }
-                : {
-                    amountOut: valueOutAmountBN.toFixed(),
-                    amountInMax: amountMaxInAmountBN.toFixed(),
-                  };
-            })(),
+            amountIn: valueInAmountBN.toFixed(),
+            amountOutMin: amountMinOutAmountBN.toFixed(),
             channel,
             deadline,
             path: [tokenIn.symbol, tokenOut.symbol],

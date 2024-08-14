@@ -15,7 +15,7 @@ import { TranslationMenuEnum } from 'pages/Transactions/hooks/useGetList';
 import { RecentTransaction } from 'types/transactions';
 import { LimitCancelModal, LimitCancelModalInterface } from 'Modals/LimitCancelModal';
 import { useLimitColumns, useTransactionColumns } from './columns';
-import { LimitDetailModal } from 'Modals/LimitDetailModal';
+import { LimitDetailModal, LimitDetailModalInterface } from 'Modals/LimitDetailModal';
 
 export default function PcTable({
   dataSource,
@@ -50,6 +50,7 @@ export default function PcTable({
 }) {
   const { t } = useTranslation();
   const limitCancelModalRef = useRef<LimitCancelModalInterface>();
+  const limitDetailModalRef = useRef<LimitDetailModalInterface>();
 
   const columns = useTransactionColumns({
     menu,
@@ -59,6 +60,7 @@ export default function PcTable({
   });
   const limitColumns = useLimitColumns({
     limitCancelModalRef,
+    limitDetailModalRef,
   });
 
   const history = useHistory();
@@ -115,7 +117,7 @@ export default function PcTable({
         }}
       />
 
-      <LimitDetailModal />
+      <LimitDetailModal ref={limitDetailModalRef} />
     </div>
   );
 }
