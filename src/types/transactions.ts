@@ -182,3 +182,16 @@ export type TLimitRecordItem = {
   totalFee: string;
   networkFee: string;
 };
+
+export type TLimitDetailItem = {
+  amountInFilled: string;
+  amountInFilledUSD: string;
+  amountOutFilled: string;
+  amountOutFilledUSD: string;
+  networkFee: string;
+  status: number;
+  takerAddress: null | string;
+  totalFee: string;
+  transactionHash: string;
+  transactionTime: number;
+};

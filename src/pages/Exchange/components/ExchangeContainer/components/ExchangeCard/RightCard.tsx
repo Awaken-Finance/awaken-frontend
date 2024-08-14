@@ -264,7 +264,7 @@ export default function RightCard({ tokenA, tokenB, balances, reserves, rate, ge
             <Slippage value={parseUserSlippageTolerance(userSlippageTolerance)} />
           </Col>
           <Col span={24}>
-            <MinimumOutput value={amountOutMin} token={tokenB} />
+            <MinimumOutput sell value={amountOutMin} token={tokenB} />
           </Col>
           <Col span={24}>
             <PriceImpact value={priceImpact} />
@@ -276,15 +276,14 @@ export default function RightCard({ tokenA, tokenB, balances, reserves, rate, ge
       </Col>
       <Col span={24}>
         <SellBtnWithPay
-          disabled={amountError.error || totalError.error}
-          tokenA={tokenA}
-          tokenB={tokenB}
           sell
+          disabled={amountError.error || totalError.error}
+          tokenIn={tokenA}
+          tokenOut={tokenB}
           rate={rate}
-          amountBN={amount ? new BigNumber(amount) : ZERO}
-          amountOutMin={amountOutMin}
-          amount={amount.toString()}
           onClick={onClickSellBtn}
+          valueIn={amount}
+          valueOut={total}
           onTradeSuccess={() => {
             setAmount('');
             setTotal('');

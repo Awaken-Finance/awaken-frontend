@@ -8,6 +8,23 @@ import './styles.less';
 import { SwapHistory } from './components/SwapHistory';
 import { useGoBack } from 'hooks/route';
 import { useIsConnected } from 'hooks/useLogin';
+import { useState } from 'react';
+import clsx from 'clsx';
+
+enum SwapTabEnum {
+  swap = 1,
+  limit,
+}
+const SWAP_TAB_LIST = [
+  {
+    value: SwapTabEnum.swap,
+    label: 'Swap',
+  },
+  {
+    value: SwapTabEnum.limit,
+    label: 'Limit',
+  },
+];
 
 export const Swap = () => {
   const { t } = useTranslation();
@@ -15,19 +32,34 @@ export const Swap = () => {
   const isTelegram = useIsTelegram();
   const isConnected = useIsConnected();
   const goBack = useGoBack();
+  const [tab, setTab] = useState(SwapTabEnum.limit);
 
   return (
     <>
       <CommonPanelPage
         className="swap-page"
         onCancel={goBack}
-        title={t('Swap')}
+        title={() => (
+          <div className="swap-page-title">
+            {SWAP_TAB_LIST.map((item) => (
+              <div
+                className={clsx(['swap-page-title-btn', item.value === tab && 'swap-page-title-btn-active'])}
+                key={item.value}
+                onClick={() => {
+                  setTab(item.value);
+                }}>
+                {t(item.label)}
+                <div className="swap-page-title-btn-border" />
+              </div>
+            ))}
+          </div>
+        )}
         extraTitle={<SettingFee />}
         isCancelHide={!isMobile || isTelegram}>
-        <SwapPanel />
+        {tab === SwapTabEnum.swap ? <SwapPanel /> : <></>}
       </CommonPanelPage>
 
-      {isConnected && <SwapHistory />}
+      {isConnected && tab === SwapTabEnum.swap && <SwapHistory />}
     </>
   );
 };

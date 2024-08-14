@@ -22,7 +22,7 @@ import { ChainConstants } from 'constants/ChainConstants';
 import { getCurrencyAddress, getDeadlineWithSec } from 'utils/swap';
 import { useAElfContract } from 'hooks/useContract';
 import { LIMIT_CONTRACT_ADDRESS, SWAP_HOOK_CONTRACT_ADDRESS } from 'constants/index';
-import { timesDecimals } from 'utils/calculate';
+import { divDecimals, timesDecimals } from 'utils/calculate';
 import { commitLimit, getContractMaxPrice } from 'utils/limit';
 import { LIMIT_MAX_BUFFER_RATIO, LIMIT_PRICE_DECIMAL } from 'constants/limit';
 
@@ -55,6 +55,17 @@ export const LimitConfirmModal = forwardRef(({ onSuccess }: TLimitConfirmModalPr
   const [expiryTime, setExpiryTime] = useState(0);
 
   const expiryTimeStr = useMemo(() => moment.unix(expiryTime).format('MMMM DD, YYYY [at] h:mm A'), [expiryTime]);
+
+  const approveInfo = useMemo(() => {
+    if (!info) return undefined;
+    const { unfilledValue, tokenIn, amountIn } = info;
+    const remainAmountBN = divDecimals(unfilledValue, tokenIn.decimals);
+    return {
+      remainAmount: remainAmountBN.toFixed(),
+      currentAmount: amountIn,
+      requireAmount: remainAmountBN.plus(amountIn).toFixed(),
+    };
+  }, [info]);
 
   const priceIn = useMemo(() => {
     if (tokenInPrice === '0') return '-';
@@ -109,7 +120,7 @@ export const LimitConfirmModal = forwardRef(({ onSuccess }: TLimitConfirmModalPr
     limitContract?.address,
   );
   const onConfirmClick = useCallback(async () => {
-    if (!info || !limitContract || !hookContract) return;
+    if (!info || !limitContract || !hookContract || !approveInfo) return;
     setIsLoading(true);
     isLoadingRef.current = true;
     try {
@@ -129,8 +140,7 @@ export const LimitConfirmModal = forwardRef(({ onSuccess }: TLimitConfirmModalPr
         return;
       }
 
-      const valueInAmountBN = timesDecimals(amountIn, tokenIn.decimals);
-      // TODO: 300
+      const valueInAmountBN = timesDecimals(approveInfo.requireAmount, tokenIn.decimals);
       const allowance = await checkAllowance();
       if (valueInAmountBN.gt(allowance)) {
         await approve(valueInAmountBN);
@@ -162,7 +172,19 @@ export const LimitConfirmModal = forwardRef(({ onSuccess }: TLimitConfirmModalPr
       setIsLoading(false);
       isLoadingRef.current = false;
     }
-  }, [info, limitContract, hookContract, checkAllowance, expiryTime, account, t, approve, onSuccess, onCancel]);
+  }, [
+    info,
+    limitContract,
+    hookContract,
+    approveInfo,
+    checkAllowance,
+    expiryTime,
+    account,
+    t,
+    approve,
+    onSuccess,
+    onCancel,
+  ]);
 
   return (
     <CommonModal
@@ -279,9 +301,9 @@ export const LimitConfirmModal = forwardRef(({ onSuccess }: TLimitConfirmModalPr
             i18nKey="noticeContent1"
             values={{
               orderNum: 1,
-              remainAmount: `100 ${formatSymbol(info?.tokenIn.symbol)}`,
-              currentAmount: `200 ${formatSymbol(info?.tokenIn.symbol)}`,
-              requireAmount: `300 ${formatSymbol(info?.tokenIn.symbol)}`,
+              remainAmount: `${approveInfo?.remainAmount} ${formatSymbol(info?.tokenIn.symbol)}`,
+              currentAmount: `${approveInfo?.currentAmount} ${formatSymbol(info?.tokenIn.symbol)}`,
+              requireAmount: `${approveInfo?.requireAmount} ${formatSymbol(info?.tokenIn.symbol)}`,
             }}
             components={{ span: <span /> }}
           />

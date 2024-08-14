@@ -254,6 +254,7 @@ export async function swapSuccess({
 }) {
   const Logs = getLogs(result);
   const log = getLog(Logs, 'Swap');
+  const logTransferred = getLog(Logs, 'Transferred');
 
   let { amountIn, amountOut } = log[0];
   if (isSwap) {
@@ -459,8 +460,14 @@ export function getPriceImpactSeverity(priceImpact?: string | BigNumber) {
 
 export function minimumAmountOut(outputAmount: BigNumber, slippageTolerance = DEFAULT_SLIPPAGE_TOLERANCE) {
   if (slippageTolerance === '') slippageTolerance = DEFAULT_SLIPPAGE_TOLERANCE;
-  return outputAmount.times(ONE.div(ONE.plus(slippageTolerance)));
+  return outputAmount.div(ONE.plus(slippageTolerance));
 }
+
+export function maximumAmountIn(inputAmount: BigNumber, slippageTolerance = DEFAULT_SLIPPAGE_TOLERANCE) {
+  if (slippageTolerance === '') slippageTolerance = DEFAULT_SLIPPAGE_TOLERANCE;
+  return inputAmount.times(ONE.plus(slippageTolerance));
+}
+
 export function sortLPSymbol(symbol: string) {
   const list = symbol?.split('-');
   return list?.sort().join('-');

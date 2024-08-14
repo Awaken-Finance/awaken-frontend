@@ -166,6 +166,30 @@
         }
       }
     },
+    "Transferred": {
+      "fields": {
+        "from": {
+          "type": "Address",
+          "id": 1
+        },
+        "to": {
+          "type": "Address",
+          "id": 2
+        },
+        "symbol": {
+          "type": "string",
+          "id": 3
+        },
+        "amount": {
+          "type": "int64",
+          "id": 4
+        },
+        "memo": {
+          "type": "string",
+          "id": 5
+        }
+      }
+    },
     "google": {
       "nested": {
         "protobuf": {

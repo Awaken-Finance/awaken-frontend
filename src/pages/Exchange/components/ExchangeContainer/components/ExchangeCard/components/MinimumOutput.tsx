@@ -14,10 +14,11 @@ import CommonTooltip from 'components/CommonTooltip';
 export default function MinimumOutput({
   value,
   token,
+  sell = false,
 }: {
   value?: BigNumber.Value;
   token?: Currency;
-  maxValue?: BigNumber.Value;
+  sell?: boolean;
 }) {
   const { t } = useTranslation();
   const isMobile = useMobile();
@@ -33,7 +34,7 @@ export default function MinimumOutput({
       <Row gutter={[2, 0]} align="middle">
         <Col>
           <Font size={isMobile ? 12 : 14} lineHeight={isMobile ? 18 : 20} color="two">
-            {t('minEaring')}
+            {sell ? t('minEaring') : t('maxPay')}
           </Font>
         </Col>
         <Col>
@@ -42,7 +43,7 @@ export default function MinimumOutput({
             title={t(
               'Min.Received refers to the exchange result at the price corresponding to the Max.Slippage you set.Generally, it will be more.',
             )}
-            headerDesc={t('minEaring')}
+            headerDesc={sell ? t('minEaring') : t('maxPay')}
             buttonTitle={t('ok')}
           />
         </Col>

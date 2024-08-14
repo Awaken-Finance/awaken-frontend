@@ -258,6 +258,7 @@ type SwapProps = {
   amountIn: BigNumber;
   amountOutMin: BigNumber;
   swapTokens?: TContractSwapToken[];
+  methodName?: string;
   t: TFunction<'translation'>;
 };
 
@@ -269,6 +270,7 @@ export const onSwap: (param: SwapProps) => Promise<boolean | any> = async ({
   tokenA,
   tokenB,
   swapTokens,
+  methodName: methodNameProp,
   t,
 }) => {
   if (amountOutMin.lt(1)) amountOutMin = ZERO.plus(1);
@@ -283,7 +285,7 @@ export const onSwap: (param: SwapProps) => Promise<boolean | any> = async ({
   const isSwap = !!swapTokens;
 
   if (isSwap) {
-    methodName = 'swapExactTokensForTokens';
+    methodName = methodNameProp || 'swapExactTokensForTokens';
     args = [swapTokens];
   } else if (tokenA?.isNative) {
     methodName = 'swapExactTokensForETH';

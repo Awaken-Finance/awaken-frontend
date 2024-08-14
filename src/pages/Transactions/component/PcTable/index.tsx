@@ -15,6 +15,7 @@ import { TranslationMenuEnum } from 'pages/Transactions/hooks/useGetList';
 import { RecentTransaction } from 'types/transactions';
 import { LimitCancelModal, LimitCancelModalInterface } from 'Modals/LimitCancelModal';
 import { useLimitColumns, useTransactionColumns } from './columns';
+import { LimitDetailModal } from 'Modals/LimitDetailModal';
 
 export default function PcTable({
   dataSource,
@@ -113,6 +114,8 @@ export default function PcTable({
           getData({});
         }}
       />
+
+      <LimitDetailModal />
     </div>
   );
 }

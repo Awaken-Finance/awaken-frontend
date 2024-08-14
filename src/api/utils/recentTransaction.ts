@@ -6,6 +6,7 @@ import {
   LiquidityRecordParams,
   TLimitRecordParams,
   TLimitRecordItem,
+  TLimitDetailItem,
 } from 'types/transactions';
 import { message } from 'antd';
 import i18n from 'i18next';
@@ -96,3 +97,19 @@ export async function getLimitList(params: TLimitRecordParams) {
 
   return res.data;
 }
+
+export type TGetLimitDetailListParams = {
+  orderId: number;
+  skipCount?: number;
+  maxResultCount?: number;
+};
+export const getLimitDetailList = async (params: TGetLimitDetailListParams) => {
+  const res: {
+    data: TransactionListResult<TLimitDetailItem>;
+    error: any;
+    code?: number;
+  } = await request.userCenter.GET_LIMIT_DETAIL_LIST({
+    params,
+  });
+  return res.data;
+};
