@@ -111,8 +111,8 @@ export function SellBtnWithPay({
                     amountOutMin: amountMinOutAmountBN.toFixed(),
                   }
                 : {
-                    amountOut: amountMaxInAmountBN.toFixed(),
-                    amountInMax: valueOutAmountBN.toFixed(),
+                    amountOut: valueOutAmountBN.toFixed(),
+                    amountInMax: amountMaxInAmountBN.toFixed(),
                   };
             })(),
             channel,
