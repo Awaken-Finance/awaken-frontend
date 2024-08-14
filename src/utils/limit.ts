@@ -109,7 +109,7 @@ export type TCancelLimitParams = {
   contract: ContractInterface;
   account: string;
   args: {
-    orderId: string;
+    orderId: number;
   };
   t: TFunction<'translation'>;
 };

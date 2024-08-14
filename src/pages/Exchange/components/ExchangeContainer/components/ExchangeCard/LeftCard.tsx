@@ -17,7 +17,6 @@ import {
   getPriceImpactWithBuy,
   getAmountOut,
   bigNumberToString,
-  maximumAmountIn,
 } from 'utils/swap';
 import { useUpdateEffect } from 'react-use';
 
