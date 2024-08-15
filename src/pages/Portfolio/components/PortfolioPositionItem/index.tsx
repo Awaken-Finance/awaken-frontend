@@ -58,7 +58,7 @@ export const PortfolioPositionItemValue = ({
       <Col>
         <Row gutter={[8, 0]} wrap={false}>
           <Col className="portfolio-position-item-value-logo">
-            <CurrencyLogo address={tokenInfo.address} symbol={tokenInfo.symbol} size={isMobile ? 20 : 24} />
+            <CurrencyLogo currency={tokenInfo} size={isMobile ? 20 : 24} />
           </Col>
           <Col>
             <Font
