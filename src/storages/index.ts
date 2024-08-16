@@ -12,4 +12,5 @@ export default {
   userChainId: 'awaken-user-chain-id',
   contractsFileDescriptorBase64: 'contracts-file-descriptor-base64',
   awakenAssetSymbol: 'awaken-asset-symbol',
+  userTokenImg: 'awaken-user-token-img',
 };

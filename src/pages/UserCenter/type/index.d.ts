@@ -7,18 +7,8 @@ import { BaseFarmItem, FarmItemPool, LPToken, BaseToken } from 'pages/Farms/type
 import BigNumber from 'bignumber.js';
 
 export interface TradePair {
-  token0: {
-    address: string;
-    symbol: string;
-    decimals: number;
-    id: string;
-  };
-  token1: {
-    address: string;
-    symbol: string;
-    decimals: number;
-    id: string;
-  };
+  token0: TokenInfo;
+  token1: TokenInfo;
   address: string;
   feeRate: number;
   id: string;

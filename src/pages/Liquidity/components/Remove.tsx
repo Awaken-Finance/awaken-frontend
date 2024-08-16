@@ -231,7 +231,7 @@ export default function Remove({ pairInfo }: { pairInfo: PairInfo }) {
           <Col span={24}>
             <Row gutter={[4, 0]} align="middle">
               <Col>
-                <CurrencyLogo src={getELFChainTokenURL(tokenA?.symbol)} symbol={tokenA?.symbol} />
+                <CurrencyLogo currency={tokenA} />
               </Col>
               <Col flex={1}>
                 <Pair lineHeight={20} symbol={tokenA?.symbol} />
@@ -252,7 +252,7 @@ export default function Remove({ pairInfo }: { pairInfo: PairInfo }) {
           <Col span={24}>
             <Row gutter={[4, 0]} align="middle">
               <Col>
-                <CurrencyLogo src={getELFChainTokenURL(tokenB?.symbol)} symbol={tokenB?.symbol} />
+                <CurrencyLogo currency={tokenB} />
               </Col>
               <Col flex={1}>
                 <Pair lineHeight={20} symbol={tokenB?.symbol} />

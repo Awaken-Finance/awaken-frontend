@@ -5,6 +5,7 @@ import { useUser } from '.';
 import { SerializedToken } from './actions';
 import { Token } from 'types';
 import { isELFChain } from 'utils/aelfUtils';
+import { DEFAULT_CHAIN } from 'constants/index';
 function deserializeToken(serializedToken: SerializedToken): Token {
   const chainId = isELFChain(serializedToken.chainId);
   if (chainId) {
@@ -35,6 +36,20 @@ export function useUserAddedTokens(): Token[] {
 export function useAddUserToken() {
   const [, { addToken }] = useUser();
   return useCallback(addToken, [addToken]);
+}
+
+export function useGetTokenImage() {
+  const [{ tokenImageMap }] = useUser();
+  return useCallback(
+    (symbol: string) => {
+      return tokenImageMap?.[`${DEFAULT_CHAIN}_${symbol}`];
+    },
+    [tokenImageMap],
+  );
+}
+export function useAddTokenImage() {
+  const [, { addTokenImage }] = useUser();
+  return useCallback(addTokenImage, [addTokenImage]);
 }
 export function useRemoveUserAddedToken() {
   const [, { removeToken }] = useUser();
