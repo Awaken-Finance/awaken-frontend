@@ -11,7 +11,7 @@ const mainNetApi = {
 };
 
 const testNetApi = {
-  nodeApi: 'https://test.awaken.finance',
+  nodeApi: 'https://test-app.awaken.finance',
   webApi: 'https://test-app.awaken.finance',
   cmsApi: 'https://test-cms.awaken.finance',
   awakenIndexer: 'https://test-dapp.awaken.finance',

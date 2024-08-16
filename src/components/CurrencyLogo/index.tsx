@@ -8,6 +8,9 @@ import './index.less';
 import clsx from 'clsx';
 import { NATIVE_LOGO } from 'assets/logo';
 import { getPairsLogoOrderByTokenWeights } from 'utils/pair';
+import { TokenInfo } from 'types';
+import { useGetTokenImage } from 'contexts/useUser/hooks';
+import { TCurrency } from 'types/common';
 export function CurrencyLogo({
   currency,
   address,
@@ -19,26 +22,34 @@ export function CurrencyLogo({
   className,
   symbol,
 }: {
-  currency?: Currency | null;
+  currency?: TCurrency | TokenInfo | null;
   address?: string;
   size?: number;
   symbol?: string;
 } & ImageProps) {
+  const getTokenImage = useGetTokenImage();
+
   const srcs: string[] = useMemo(() => {
     if (src) return [src];
+
+    if (currency) {
+      const _srcs: string[] = [];
+      if ((currency as Currency).isNative) return [NATIVE_LOGO[currency.symbol || 'ETH']];
+      if (currency.imageUri) _srcs.push(currency.imageUri as string);
+      const key = (currency as Currency).isToken ? (currency as any).address : currency.symbol;
+      if (getTokenImage(currency.symbol)) _srcs.push(getTokenImage(currency.symbol));
+      const defaultUrls = [..._srcs, ...getTokenLogoURLs(key)];
+      return defaultUrls;
+    }
+
     if (address) {
       const { symbol: basesSymbol } = ChainConstants.constants.COMMON_BASES[0] || {};
       if (basesSymbol && address.includes(basesSymbol)) return [NATIVE_LOGO[basesSymbol]];
       const key = ChainConstants.chainType === 'ELF' ? symbol : address;
       return [...getTokenLogoURLs(key)];
     }
-    if (!currency) return [];
-    if (currency?.isNative) return [NATIVE_LOGO[currency.symbol || 'ETH']];
-
-    const key = currency.isToken ? currency.address : currency.symbol;
-    const defaultUrls = [...getTokenLogoURLs(key)];
-    return defaultUrls;
-  }, [address, currency, src, symbol]);
+    return [];
+  }, [address, currency, getTokenImage, src, symbol]);
   return (
     <Logo
       className={className}
@@ -51,7 +62,7 @@ export function CurrencyLogo({
       }}
       size={size}
       srcs={srcs}
-      alt={alt || (currency?.isNative ? 'ethereum logo' : currency?.symbol) || 'error logo'}
+      alt={alt || ((currency as any)?.isNative ? 'ethereum logo' : currency?.symbol) || 'error logo'}
       symbol={symbol || currency?.symbol}
     />
   );
@@ -94,7 +105,7 @@ export function CurrencyLogos({
             key={k}
             size={size}
             src={src}
-            currency={currency}
+            currency={currency || (i as any)}
             address={address}
             preview={preview}
             symbol={symbol || currency?.symbol}

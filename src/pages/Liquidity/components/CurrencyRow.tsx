@@ -3,7 +3,6 @@ import { Col, Row } from 'antd';
 import { CurrencyLogo } from 'components/CurrencyLogo';
 import Font from 'components/Font';
 import { Pair } from 'components/Pair';
-import { getELFChainTokenURL } from 'utils';
 import { formatLiquidity } from 'utils/price';
 
 export default function CurrencyRow({
@@ -18,7 +17,7 @@ export default function CurrencyRow({
   return (
     <Row gutter={[2, 0]} align="middle">
       <Col flex={'25px'}>
-        <CurrencyLogo symbol={token?.symbol} src={getELFChainTokenURL(token?.symbol)} />
+        <CurrencyLogo currency={token} />
       </Col>
       <Col flex={1}>
         <Pair symbol={token?.symbol} />
