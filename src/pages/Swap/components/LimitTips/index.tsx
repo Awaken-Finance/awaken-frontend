@@ -14,7 +14,7 @@ export const LimitTips = () => {
       </Col>
       <Col>
         <Font size={14} lineHeight={22} color="two">
-          {t('Limits may not be executed exactly when tokens reach the specified price.')}
+          {t('limitTips')}
         </Font>
       </Col>
     </Row>

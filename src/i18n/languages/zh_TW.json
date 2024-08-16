@@ -686,6 +686,7 @@
     "Limits": "限價單",
     "limitLowPriceDescription": "您的限價比市價低，請調整您的限價以繼續。",
     "limitHighPriceDescription": "您的限價比市價高，請調整您的限價以繼續。",
+    "limitTips": "當代幣達到指定價格時，限價單可能不會準確執行。",
     "Notice": "注意",
     "noticeContent1": "1. 你目前有<span>{{orderNum}}</span>筆限價單，原授權額度為<span>{{remainAmount}}</span>，本次交易金額為<span>{{currentAmount}}</span>，因新授權會覆蓋原授權，故本次交易需授權<span>{{requireAmount}}</span>。",
     "noticeContent2": "2. 請保持錢包餘額充足，請勿自行修改授權額度，否則將導致交易失敗。",
