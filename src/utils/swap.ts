@@ -24,6 +24,7 @@ import { getLog } from './protoUtils';
 import getTransactionId, { getLogs } from './contractResult';
 import { formatSwapError } from './formatError';
 import { formatSymbol } from './token';
+import { TCurrency } from 'types/common';
 export const getDeadline = (): number | PBTimestamp => {
   const deadline = new BigNumber(JSON.parse(localStorage.getItem(storages.userExpiration) || ''));
   const seconds =
@@ -424,13 +425,16 @@ export function getCurrency(
     address: string;
     symbol: string;
     decimals: number;
+    imageUri?: string;
   },
   chainId: number | string,
 ) {
-  const { symbol, decimals } = token || {};
+  const { symbol, decimals, imageUri } = token || {};
   const checkedSymbol = isElfChainSymbol(symbol);
   if (typeof chainId === 'string' && checkedSymbol) {
-    return new ELFChainToken(chainId, symbol, decimals, symbol, symbol);
+    const _token: TCurrency = new ELFChainToken(chainId, symbol, decimals, symbol, symbol);
+    if (imageUri) _token.imageUri = imageUri;
+    return _token;
   }
 }
 

@@ -35,7 +35,7 @@ function CapitalPool() {
             <Col>
               <Row gutter={[8, 0]} align="middle">
                 <Col>
-                  <CurrencyLogo size={24} {...pairInfo?.token0} />
+                  <CurrencyLogo size={24} currency={pairInfo?.token0} />
                 </Col>
                 <Col>
                   <Pair symbol={pairInfo?.token0} size={16} lineHeight={24} />
