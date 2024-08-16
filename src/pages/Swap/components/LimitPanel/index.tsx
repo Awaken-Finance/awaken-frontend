@@ -266,7 +266,7 @@ export const LimitPanel = () => {
     if (!tokenIn || !tokenOut) return { label: t('selectAToken'), fontColor: 'two' };
     if (isReserveError) return { label: t('Go To Create'), active: true, type: 'primary' };
     if (!tokenPriceInfo.price || ZERO.eq(tokenPriceInfo.price) || pairPriceError.error)
-      return { label: t('Enter an price'), fontColor: 'two' };
+      return { label: t('Enter a price'), fontColor: 'two' };
     if (isFocusValueIn && (!valueIn || ZERO.eq(valueIn))) return { label: t('Enter an amount'), fontColor: 'two' };
     if (!isFocusValueIn && (!valueOut || ZERO.eq(valueOut))) return { label: t('Enter an amount'), fontColor: 'two' };
 

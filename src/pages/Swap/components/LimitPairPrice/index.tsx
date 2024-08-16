@@ -36,7 +36,7 @@ type TPriceBtn = {
 
 const PRICE_BTN_LIST: TPriceBtn[] = [
   {
-    label: 'Market',
+    label: 'marketPrice',
     value: 0,
     key: PriceBtnKeyEnum.market,
   },
@@ -217,7 +217,7 @@ export const LimitPairPrice = forwardRef(
       if (!_isReverse) {
         if (maxValue.lt(price)) {
           return {
-            text: `Your limit price is  higher than market,adjust your limit price to proceed.`,
+            text: t(`limitHighPriceDescription`),
             error: true,
           };
         }
@@ -225,7 +225,7 @@ export const LimitPairPrice = forwardRef(
         const minValue = ONE.div(maxValue).dp(LIMIT_PRICE_DECIMAL, BigNumber.ROUND_CEIL);
         if (minValue.gt(price) && maxValue.gt(ZERO)) {
           return {
-            text: minValue.toFixed(),
+            text: t('limitLowPriceDescription'),
             error: true,
           };
         }
@@ -234,7 +234,7 @@ export const LimitPairPrice = forwardRef(
         text: '',
         error: false,
       };
-    }, [isZeroShow, price]);
+    }, [isZeroShow, price, t]);
     useEffect(() => {
       onErrorChange?.(amountError);
     }, [amountError, onErrorChange]);
@@ -360,7 +360,7 @@ export const LimitPairPrice = forwardRef(
                         onClick(item);
                       }}>
                       <Font size={12} color="one">
-                        {`${item.key !== PriceBtnKeyEnum.market ? (!isReverse ? '-' : '+') : ''}${item.label}`}
+                        {`${item.key !== PriceBtnKeyEnum.market ? (!isReverse ? '-' : '+') : ''}${t(item.label)}`}
                       </Font>
                     </div>
                   ))}

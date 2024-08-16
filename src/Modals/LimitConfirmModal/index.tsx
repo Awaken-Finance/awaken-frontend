@@ -290,7 +290,7 @@ export const LimitConfirmModal = forwardRef(({ onSuccess, onPriceError }: TLimit
           <Row align={'middle'} justify={'space-between'}>
             <Col className="limit-detail-title">
               <Font color="two" size={14} lineHeight={22}>
-                {t('Network Cost')}
+                {t('transactionFee')}
               </Font>
             </Col>
 
@@ -320,11 +320,7 @@ export const LimitConfirmModal = forwardRef(({ onSuccess, onPriceError }: TLimit
             components={{ span: <span /> }}
           />
         </div>
-        <div className="limit-confirm-modal-notice-content">
-          {t(
-            '· Please keep your wallet balance sufficient, and do not modify the authorization amount by yourself, otherwise the transaction will fail.',
-          )}
-        </div>
+        <div className="limit-confirm-modal-notice-content">{t('noticeContent2')}</div>
       </div>
       <CommonButton onClick={onConfirmClick} loading={isLoading} className="limit-confirm-modal-btn" type="primary">
         {t('Place Order')}

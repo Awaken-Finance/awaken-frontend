@@ -28,7 +28,7 @@ export const LimitOrderStatusMap: Record<LimitOrderStatusEnum, TLimitOrderStatus
   },
   [LimitOrderStatusEnum.Cancelled]: {
     value: LimitOrderStatusEnum.Cancelled,
-    label: 'Canceled',
+    label: 'Cancelled',
     color: 'fall',
   },
   [LimitOrderStatusEnum.Expired]: {
@@ -63,7 +63,7 @@ export const LimitDetailStatusMap: Record<LimitOrderStatusEnum, TLimitOrderStatu
   },
   [LimitOrderStatusEnum.Cancelled]: {
     value: LimitOrderStatusEnum.Cancelled,
-    label: 'Canceled',
+    label: 'Cancelled',
     color: 'fall',
   },
   [LimitOrderStatusEnum.Expired]: {

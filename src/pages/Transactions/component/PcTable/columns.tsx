@@ -335,7 +335,7 @@ export const useLimitColumns = ({ limitCancelModalRef, limitDetailModalRef }: TU
       {
         title: (
           <>
-            <div>{`${t('Filled/')}/`}</div>
+            <div>{`${t('Filled')}/`}</div>
             <div>{t('Pay')}</div>
           </>
         ),
@@ -400,7 +400,7 @@ export const useLimitColumns = ({ limitCancelModalRef, limitDetailModalRef }: TU
         title: (
           <>
             <div>{`${t('Fee')}/`}</div>
-            <div>{t('Network Cost')}</div>
+            <div>{t('transactionFee')}</div>
           </>
         ),
         key: 'totalFee',
@@ -460,7 +460,7 @@ export const useLimitColumns = ({ limitCancelModalRef, limitDetailModalRef }: TU
             {LimitOrderCancelAllowStatus.includes(val) && (
               <>
                 <div className="limit-operation-btn" onClick={() => limitCancelModalRef?.current?.show({ record })}>
-                  {t('Cancel')}
+                  {t('cancel')}
                 </div>
                 <div className="limit-operation-split" />
               </>

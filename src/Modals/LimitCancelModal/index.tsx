@@ -95,7 +95,7 @@ export const LimitCancelModal = forwardRef(({ onSuccess }: TLimitCancelModalProp
       </div>
       <div className="limit-cancel-footer">
         <CommonButton onClick={onCancel} className="limit-cancel-modal-btn">
-          {t('Nevermind')}
+          {t('Ignore it')}
         </CommonButton>
         <CommonButton onClick={onConfirmClick} loading={isLoading} className="limit-cancel-modal-btn" type="primary">
           {t('Proceed')}

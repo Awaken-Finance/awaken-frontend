@@ -197,7 +197,7 @@ export const LimitDetailModal = forwardRef((_: TLimitDetailModalProps, ref) => {
         title: (
           <>
             <div>{`${t('Fee')}/`}</div>
-            <div>{t('Network Cost')}</div>
+            <div>{t('transactionFee')}</div>
           </>
         ),
         key: 'totalFee',
