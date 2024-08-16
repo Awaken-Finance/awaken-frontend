@@ -9,7 +9,7 @@ import notification from './notification';
 import { TFunction } from 'react-i18next';
 import getTransactionId from './contractResult';
 import { TLimitRecordItem } from 'types/transactions';
-import { getTokenFromPair } from './pair';
+import { LIMIT_MAX_BUFFER_RATIO, LIMIT_PRICE_DECIMAL } from 'constants/limit';
 
 export type TGetContractReversesParams = {
   contract: ContractInterface;
@@ -51,13 +51,24 @@ export const getContractReverses = async ({
   });
 };
 
-export const getContractMaxPrice = async (params: TGetContractReversesParams) => {
-  const reverses = await getContractReverses(params);
+export const getContractMaxBufferPrice = async (params: TGetContractReversesParams) => {
   const { tokenIn, tokenOut } = params;
-  const prices = reverses.map((item) =>
-    divDecimals(item.reverseIn, tokenIn.decimals).div(divDecimals(item.reverseOut, tokenOut.decimals)).toFixed(),
-  );
-  return BigNumber.max(...prices).toFixed();
+  const reverses = await getContractReverses(params);
+  let maxReserveProduct = ZERO;
+  let maxReverse: TReverseItem | undefined;
+  reverses.forEach((item) => {
+    const reserveProduct = ZERO.plus(item.reverseIn).times(item.reverseOut);
+    if (reserveProduct.lte(maxReserveProduct)) return;
+    maxReserveProduct = reserveProduct;
+    maxReverse = item;
+  });
+
+  if (!maxReverse) throw new Error('getContractMaxBufferPrice error');
+  return divDecimals(maxReverse.reverseIn, tokenIn.decimals)
+    .div(divDecimals(maxReverse.reverseOut, tokenOut.decimals))
+    .times(LIMIT_MAX_BUFFER_RATIO)
+    .dp(LIMIT_PRICE_DECIMAL, BigNumber.ROUND_DOWN)
+    .toFixed();
 };
 
 export type TCommitLimitParams = {
@@ -142,7 +153,5 @@ export const cancelLimit = async ({ contract, account, args, t }: TCancelLimitPa
 };
 
 export const getLimitOrderPrice = (record: TLimitRecordItem) => {
-  const tokenIn = getTokenFromPair(record.tradePair, record.symbolIn);
-  const tokenOut = getTokenFromPair(record.tradePair, record.symbolOut);
-  return divDecimals(record.amountOut, tokenOut.decimals).div(divDecimals(record.amountIn, tokenIn.decimals));
+  return ZERO.plus(record.amountOut).div(record.amountIn);
 };

@@ -10,6 +10,7 @@ import { useGoBack } from 'hooks/route';
 import { useIsConnected } from 'hooks/useLogin';
 import { useState } from 'react';
 import clsx from 'clsx';
+import { LimitPanel } from './components/LimitPanel';
 
 enum SwapTabEnum {
   swap = 1,
@@ -32,7 +33,7 @@ export const Swap = () => {
   const isTelegram = useIsTelegram();
   const isConnected = useIsConnected();
   const goBack = useGoBack();
-  const [tab, setTab] = useState(SwapTabEnum.limit);
+  const [tab, setTab] = useState(SwapTabEnum.swap);
 
   return (
     <>
@@ -57,6 +58,7 @@ export const Swap = () => {
         extraTitle={<SettingFee />}
         isCancelHide={!isMobile || isTelegram}>
         {tab === SwapTabEnum.swap ? <SwapPanel /> : <></>}
+        {tab === SwapTabEnum.limit ? <LimitPanel /> : <></>}
       </CommonPanelPage>
 
       {isConnected && tab === SwapTabEnum.swap && <SwapHistory />}

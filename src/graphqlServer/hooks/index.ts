@@ -1,4 +1,4 @@
-import { getLimitOrderRemainingUnfilled, getPairSyncRecords } from '../request';
+import { getLimitOrderRemainingUnfilled, getPairReserve, getPairSyncRecords } from '../request';
 import { getGraphQLClient } from '../client';
 import { useCallback, useMemo } from 'react';
 import { TGraphQLParamsType } from '../types';
@@ -34,4 +34,9 @@ export const useGetLimitOrderRemainingUnfilled = () => {
       getLimitOrderRemainingUnfilled(client, params),
     [client],
   );
+};
+
+export const useGetPairReserve = () => {
+  const client = useGraphQLClient();
+  return useCallback((params: TGraphQLParamsType<typeof getPairReserve>) => getPairReserve(client, params), [client]);
 };

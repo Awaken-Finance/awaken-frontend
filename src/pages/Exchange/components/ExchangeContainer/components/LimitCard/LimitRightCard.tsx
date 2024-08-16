@@ -19,10 +19,10 @@ import TransactionFee from '../ExchangeCard/components/TransactionFee';
 import { LimitPairPrice } from './components/LimitPairPrice';
 import { LimitMaxValue } from './components/LimitMaxValue';
 import { ExpiryEnum, LimitExpiry } from './components/LimitExpiry';
-import { LimitFee } from './components/LimitFee';
 import { useTransactionFee } from 'contexts/useStore/hooks';
 import { LimitSellBtnWithPay } from 'Buttons/LimitSellBtn';
-import { LimitTips } from './components/LimitTips';
+import { LimitTips } from 'pages/Swap/components/LimitTips';
+import { LimitFee } from 'pages/Swap/components/LimitFee';
 
 export type TLimitRightCardProps = {
   rate: string;
@@ -143,7 +143,7 @@ export const LimitRightCard = ({ tokenA, tokenB, balances, reserves, rate }: TLi
       let totalStr = '';
       if (val) {
         totalStr = ZERO.plus(val)
-          .div(price)
+          .times(ONE.div(price).dp(4))
           .dp(tokenB?.decimals || 0)
           .toFixed();
       }

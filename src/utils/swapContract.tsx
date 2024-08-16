@@ -320,6 +320,7 @@ export const onSwap: (param: SwapProps) => Promise<boolean | any> = async ({
   }
   try {
     const result = await contract.callSendMethod(methodName, account, args, sendOptions);
+    console.log('swap result', result);
     if (result.error) {
       formatSwapError(result.error, {
         amount: divDecimals(amountIn, tokenB?.decimals).dp(8).toFixed(),
@@ -331,6 +332,7 @@ export const onSwap: (param: SwapProps) => Promise<boolean | any> = async ({
     swapSuccess({ tokenB, tokenA, result, t, isSwap });
     return REQ_CODE.Success;
   } catch (error: any) {
+    console.log('onSwap error', error);
     formatSwapError(error, {
       amount: divDecimals(amountIn, tokenB?.decimals).dp(8).toFixed(),
       symbol: tokenB?.symbol,

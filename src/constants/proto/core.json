@@ -190,6 +190,34 @@
         }
       }
     },
+    "LimitOrderTotalFilled": {
+      "fields": {
+        "symbolIn": {
+          "type": "string",
+          "id": 1
+        },
+        "symbolOut": {
+          "type": "string",
+          "id": 2
+        },
+        "amountInFilled": {
+          "type": "int64",
+          "id": 3
+        },
+        "amountOutFilled": {
+          "type": "int64",
+          "id": 4
+        },
+        "sender": {
+          "type": "Address",
+          "id": 5
+        },
+        "to": {
+          "type": "Address",
+          "id": 6
+        }
+      }
+    },
     "google": {
       "nested": {
         "protobuf": {

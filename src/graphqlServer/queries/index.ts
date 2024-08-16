@@ -19,3 +19,17 @@ export const LIMIT_ORDER_REMAINING_UNFILLED_QUERY = gql`
     }
   }
 `;
+
+export const PAIR_RESERVE_QUERY = gql`
+  query pairReserve($dto: GetPairReserveDto) {
+    pairReserve(dto: $dto) {
+      syncRecords {
+        pairAddress
+        symbolA
+        symbolB
+        reserveA
+        reserveB
+      }
+    }
+  }
+`;

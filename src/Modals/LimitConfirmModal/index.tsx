@@ -23,11 +23,14 @@ import { getCurrencyAddress, getDeadlineWithSec } from 'utils/swap';
 import { useAElfContract } from 'hooks/useContract';
 import { LIMIT_CONTRACT_ADDRESS, SWAP_HOOK_CONTRACT_ADDRESS } from 'constants/index';
 import { divDecimals, timesDecimals } from 'utils/calculate';
-import { commitLimit, getContractMaxPrice } from 'utils/limit';
-import { LIMIT_MAX_BUFFER_RATIO, LIMIT_PRICE_DECIMAL } from 'constants/limit';
+import { commitLimit, getContractMaxBufferPrice } from 'utils/limit';
+import { LIMIT_PRICE_DECIMAL } from 'constants/limit';
+import notification from 'utils/notification';
+import BigNumber from 'bignumber.js';
 
 export type TLimitConfirmModalProps = {
   onSuccess?: () => void;
+  onPriceError?: () => void;
 };
 
 export type TLimitConfirmModalInfo = {
@@ -43,7 +46,7 @@ export interface LimitConfirmModalInterface {
   show: (params: TLimitConfirmModalInfo) => void;
 }
 
-export const LimitConfirmModal = forwardRef(({ onSuccess }: TLimitConfirmModalProps, ref) => {
+export const LimitConfirmModal = forwardRef(({ onSuccess, onPriceError }: TLimitConfirmModalProps, ref) => {
   const { t } = useTranslation();
   const isMobile = useMobile();
   const transactionFeeStr = useTransactionFeeStr();
@@ -85,11 +88,13 @@ export const LimitConfirmModal = forwardRef(({ onSuccess }: TLimitConfirmModalPr
     if (info?.isPriceReverse) {
       return `1 ${formatSymbol(info?.tokenIn.symbol)} = ${ZERO.plus(info?.amountOut || 0)
         .div(info?.amountIn || 1)
-        .toFixed(LIMIT_PRICE_DECIMAL)} ${formatSymbol(info?.tokenOut.symbol)}`;
+        .dp(LIMIT_PRICE_DECIMAL, BigNumber.ROUND_FLOOR)
+        .toFixed()} ${formatSymbol(info?.tokenOut.symbol)}`;
     }
     return `1 ${formatSymbol(info?.tokenOut.symbol)} = ${ZERO.plus(info?.amountIn || 0)
       .div(info?.amountOut || 1)
-      .toFixed(LIMIT_PRICE_DECIMAL)} ${formatSymbol(info?.tokenIn.symbol)}`;
+      .dp(LIMIT_PRICE_DECIMAL, BigNumber.ROUND_CEIL)
+      .toFixed()} ${formatSymbol(info?.tokenIn.symbol)}`;
   }, [info?.amountIn, info?.amountOut, info?.isPriceReverse, info?.tokenIn.symbol, info?.tokenOut.symbol]);
 
   const show = useCallback<LimitConfirmModalInterface['show']>(async (info) => {
@@ -125,18 +130,24 @@ export const LimitConfirmModal = forwardRef(({ onSuccess }: TLimitConfirmModalPr
     isLoadingRef.current = true;
     try {
       const { amountIn, amountOut, tokenIn, tokenOut } = info;
-      const maxPrice = await getContractMaxPrice({
+      const maxBufferPrice = await getContractMaxBufferPrice({
         contract: hookContract,
         tokenIn,
         tokenOut,
       });
 
       const curPrice = ZERO.plus(amountIn).div(amountOut);
-      const maxBufferPrice = ZERO.plus(maxPrice).times(LIMIT_MAX_BUFFER_RATIO);
+
+      console.log('maxBufferPrice', maxBufferPrice, curPrice.toFixed());
       if (curPrice.gt(maxBufferPrice)) {
-        // TODO: 300
+        onPriceError?.();
         setIsLoading(false);
         isLoadingRef.current = false;
+        notification.error({
+          message: '',
+          description: t('limitPriceError'),
+        });
+        onCancel();
         return;
       }
 
@@ -181,6 +192,7 @@ export const LimitConfirmModal = forwardRef(({ onSuccess }: TLimitConfirmModalPr
     expiryTime,
     account,
     t,
+    onPriceError,
     approve,
     onSuccess,
     onCancel,

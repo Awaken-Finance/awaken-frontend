@@ -239,7 +239,7 @@ type SwapResult = {
   TransactionId?: string;
   transactionId?: string;
 };
-// TODO
+
 export async function swapSuccess({
   result,
   tokenB,
@@ -255,14 +255,36 @@ export async function swapSuccess({
 }) {
   const Logs = getLogs(result);
   const log = getLog(Logs, 'Swap');
-  const logTransferred = getLog(Logs, 'Transferred');
+  const limitLogs = getLog(Logs, 'LimitOrderTotalFilled');
 
-  let { amountIn, amountOut } = log[0];
+  let amountIn = ZERO,
+    amountOut = ZERO;
   if (isSwap) {
     const inList = log.filter((item) => item.symbolIn === tokenB?.symbol);
     amountIn = inList.reduce((p, c) => p.plus(c.amountIn), ZERO);
     const outList = log.filter((item) => item.symbolOut === tokenA?.symbol);
     amountOut = outList.reduce((p, c) => p.plus(c.amountOut), ZERO);
+  } else {
+    const { _amountIn, _amountOut } = log[0] || {};
+    if (_amountIn) {
+      amountIn = amountIn.plus(_amountIn || 0);
+    }
+    if (_amountOut) {
+      amountOut = amountOut.plus(_amountOut || 0);
+    }
+  }
+
+  if (limitLogs && limitLogs.length) {
+    const limitLog = limitLogs[0];
+    if (limitLog.symbolOut === tokenA?.symbol) {
+      console.log(1);
+      amountIn = amountIn.plus(limitLog.amountInFilled);
+      amountOut = amountOut.plus(limitLog.amountOutFilled);
+    } else {
+      console.log(2);
+      amountIn = amountIn.plus(limitLog.amountOutFilled);
+      amountOut = amountOut.plus(limitLog.amountInFilled);
+    }
   }
 
   try {

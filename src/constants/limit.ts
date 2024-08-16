@@ -1,7 +1,7 @@
 import { LimitOrderStatusEnum } from 'types/transactions';
 import { FontColor } from 'utils/getFontStyle';
 
-export const LIMIT_PRICE_DECIMAL = 4;
+export const LIMIT_PRICE_DECIMAL = 8;
 
 export const LIMIT_MAX_BUFFER_RATIO = 1.005;
 
@@ -77,3 +77,5 @@ export const LimitDetailStatusMap: Record<LimitOrderStatusEnum, TLimitOrderStatu
     color: 'fall',
   },
 };
+
+export const LIMIT_TIME_INTERVAL = 10 * 1000;

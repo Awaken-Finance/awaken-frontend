@@ -92,16 +92,19 @@ export const LimitPairPrice = ({
       const realValue = tokenOutMarketPriceBN.times(ONE.minus(priceBtn?.value || 0));
 
       if (!isReverse) {
-        value = realValue;
+        value = realValue.dp(LIMIT_PRICE_DECIMAL, BigNumber.ROUND_DOWN);
       } else {
         if (ZERO.eq(tokenOutMarketPrice)) value = ZERO;
-        else value = ONE.div(tokenOutMarketPriceBN).times(ONE.plus(priceBtn?.value || 0));
+        else
+          value = ONE.div(tokenOutMarketPriceBN)
+            .times(ONE.plus(priceBtn?.value || 0))
+            .dp(LIMIT_PRICE_DECIMAL, BigNumber.ROUND_CEIL);
       }
 
-      const valueStr = value.dp(LIMIT_PRICE_DECIMAL).toFixed();
+      const valueStr = value.toFixed();
       setPrice(valueStr);
 
-      return realValue.toFixed();
+      return realValue.toFixed(LIMIT_PRICE_DECIMAL, BigNumber.ROUND_DOWN);
     },
     [isReverse, tokenOutMarketPrice],
   );
@@ -145,7 +148,7 @@ export const LimitPairPrice = ({
 
       const value = parseInputChange(event.target.value, min.current, LIMIT_PRICE_DECIMAL);
       setPrice(value);
-      onChange?.(!isReverse ? value : ONE.div(value).dp(LIMIT_PRICE_DECIMAL).toFixed());
+      onChange?.(!isReverse ? value : ONE.div(value).toFixed(LIMIT_PRICE_DECIMAL));
     },
     [isReverse, onChange],
   );

@@ -1,0 +1,122 @@
+.limit-pair-price {
+  // padding: 8px 12px;
+  border-radius: 4px;
+  background-color: var(--ant-input-bg-color);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+
+  .common-input {
+    height: 72px;
+    .ant-input-prefix {
+      align-items: flex-start;
+    }
+    .ant-input {
+      height: 30px;
+    }
+    .ant-input-suffix {
+      align-items: flex-start;
+    }
+  }
+
+  .limit-pair-price-suffix {
+    height: 30px;
+    .limit-pair-price-suffix-token {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      gap: 8px;
+    }
+  }
+
+  .limit-price-btn-area {
+    position: absolute;
+    bottom: 4px;
+    left: 4px;
+    right: 4px;
+    // margin-bottom: -32px;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    gap: 8px;
+
+    .limit-price-btn {
+      height: 24px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border: 1px solid #393d47;
+      padding: 0 8px;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    .limit-price-btn-active {
+      background-color: #2a2e3a;
+    }
+  }
+}
+
+.limit-pair-price.limit-pair-price-swap {
+  margin-bottom: 6px;
+
+  .common-input {
+    padding: 48px 12px 50px;
+    height: auto;
+    border-radius: 6px;
+
+    .ant-input {
+      font-size: 30px !important;
+      height: 40px;
+    }
+  }
+
+  .limit-pair-price-suffix {
+    height: 40px;
+    display: flex;
+    align-items: center;
+  }
+
+  .limit-price-btn-area {
+    left: 12px;
+    right: 12px;
+    bottom: 20px;
+    justify-content: flex-start;
+  }
+
+  .limit-pair-price-header {
+    position: absolute;
+    top: 20px;
+    left: 12px;
+    right: 12px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    height: 22px;
+
+    .limit-pair-price-header-left {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      gap: 12px;
+
+      .limit-pair-price-header-unit {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: 6px;
+        img {
+          line-height: 16px;
+          vertical-align: baseline;
+        }
+        .first-letter {
+          line-height: 16px;
+        }
+      }
+    }
+
+    .limit-pair-price-switch {
+      cursor: pointer;
+    }
+  }
+}

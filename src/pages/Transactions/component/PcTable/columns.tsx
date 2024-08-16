@@ -7,7 +7,7 @@ import { TTradePair } from 'types/pair';
 import { getLimitOrderPrice } from 'utils/limit';
 import { formatSymbol, getTokenWeights } from 'utils/token';
 import { useTranslation } from 'react-i18next';
-import { LIMIT_PRICE_DECIMAL, LimitOrderCancelAllowStatus, LimitOrderStatusMap } from 'constants/limit';
+import { LimitOrderCancelAllowStatus, LimitOrderStatusMap } from 'constants/limit';
 import { stringMidShort } from 'utils/string';
 import { getExploreLink } from 'utils';
 import CommonCopy from 'components/CommonCopy';
@@ -391,7 +391,7 @@ export const useLimitColumns = ({ limitCancelModalRef, limitDetailModalRef }: TU
         render: (deadline: number) => {
           return (
             <Font lineHeight={20} size={14}>
-              {`${moment.unix(deadline).format('MMMM DD, YYYY [at] h:mm A')}`}
+              {`${moment(deadline).format('MMMM DD, YYYY [at] h:mm A')}`}
             </Font>
           );
         },

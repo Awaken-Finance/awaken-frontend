@@ -35,7 +35,8 @@ import { ReactComponent as IconNotificationSuccess } from './icon-notification-s
 import { ReactComponent as IconNotificationError } from './icon-notification-error.svg';
 import { ReactComponent as IconNotificationWarning } from './icon-notification-warning.svg';
 import { ReactComponent as IconNotificationInfo } from './icon-notification-info.svg';
-import { ReactComponent as IconSwitchPair } from './switch-pair.svg';
+import { ReactComponent as IconSwitchPair } from './icon-switch-pair.svg';
+import { ReactComponent as IconSwitchPair2 } from './icon-switch-pair2.svg';
 import { ReactComponent as IconSelected } from './icon-selected.svg';
 import { ReactComponent as IconQuestion } from './icon-question.svg';
 import { ReactComponent as IconLogo } from './icon-logo.svg';
@@ -90,6 +91,7 @@ export {
   IconNotificationInfo,
   IconNotificationCopy,
   IconSwitchPair,
+  IconSwitchPair2,
   IconSelected,
   IconQuestion,
   IconLogo,
