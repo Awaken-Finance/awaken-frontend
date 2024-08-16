@@ -9,6 +9,7 @@ import { useTranslation } from 'react-i18next';
 import { LiquidityRecord, RecentTransaction } from 'pages/UserCenter/type';
 import { useActiveWeb3React } from 'hooks/web3';
 import { TLimitRecordItem } from 'types/transactions';
+import { useRouteMatch } from 'react-router-dom';
 
 export default function Transactions() {
   const isMobile = useMobile();
@@ -16,7 +17,11 @@ export default function Transactions() {
   const preDataSource = useRef<LiquidityRecord[] | RecentTransaction[]>([]);
   const clearDataSource = useRef<boolean>(false);
 
-  const [menu, setMenu] = useState<TranslationMenuEnum>(TranslationMenuEnum.trade);
+  const match = useRouteMatch<{ menu: string }>('/transactions/:menu');
+  const { menu: routeMenu } = match?.params || {};
+  const [menu, setMenu] = useState<TranslationMenuEnum>(
+    TranslationMenuEnum[routeMenu as keyof typeof TranslationMenuEnum] ?? TranslationMenuEnum.trade,
+  );
 
   const [searchVal, setSearchVal] = useState('');
 

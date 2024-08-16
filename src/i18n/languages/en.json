@@ -688,6 +688,9 @@
     "Revoked": "Revoked",
     "Operation": "Operation",
     "limitListTips": "Notice: Please keep your wallet balance sufficient, and do not modify the authorization amount by yourself, otherwise the transaction will fail.",
-    "limitPriceError": "The current market price has changed, and the limit order price you set has deviated from the allowed range. Please return and reset it."
+    "limitPriceError": "The current market price has changed, and the limit order price you set has deviated from the allowed range. Please return and reset it.",
+    "No Limits yet": "No Limits yet",
+    "noLimitDescription": "You can create a limit order by selecting it on the Trade or Swap page.",
+    "Create a limit order": "Create a limit order"
   }
 }

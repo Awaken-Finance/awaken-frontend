@@ -17,7 +17,7 @@ export enum TranslationMenuEnum {
   trade = 'all',
   add = 1,
   remove,
-  limit,
+  limit = 'limit',
 }
 
 export default function useGetList() {

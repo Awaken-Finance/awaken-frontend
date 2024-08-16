@@ -713,6 +713,9 @@
     "Revoked": "Revoked",
     "Operation": "操作",
     "limitListTips": "注意：請保持錢包餘額充足，請勿自行修改授權額度，否則將導致交易失敗。",
-    "limitPriceError": "目前市價已發生變化，你設定的限價單價格已經偏離允許範圍，請返回重新設定。"
+    "limitPriceError": "目前市價已發生變化，你設定的限價單價格已經偏離允許範圍，請返回重新設定。",
+    "No Limits yet": "暫無限價單",
+    "noLimitDescription": "你可在Trade或Swap頁面，選擇限價單進行創建",
+    "Create a limit order": "建立限價單"
   }
 }

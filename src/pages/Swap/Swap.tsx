@@ -11,6 +11,7 @@ import { useIsConnected } from 'hooks/useLogin';
 import { useState } from 'react';
 import clsx from 'clsx';
 import { LimitPanel } from './components/LimitPanel';
+import { useRouteMatch } from 'react-router-dom';
 
 enum SwapTabEnum {
   swap = 1,
@@ -33,7 +34,9 @@ export const Swap = () => {
   const isTelegram = useIsTelegram();
   const isConnected = useIsConnected();
   const goBack = useGoBack();
-  const [tab, setTab] = useState(SwapTabEnum.swap);
+  const match = useRouteMatch<{ tab: string }>('/swap/:tab');
+  const { tab: routeTab } = match?.params || {};
+  const [tab, setTab] = useState(SwapTabEnum[routeTab as keyof typeof SwapTabEnum] ?? SwapTabEnum.swap);
 
   return (
     <>

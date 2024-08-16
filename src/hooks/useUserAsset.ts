@@ -7,8 +7,8 @@ import { getUserCombinedAssetsApi } from 'api/utils/userCenter';
 import { TUserCombinedAssets } from 'types/userCenter';
 import { getLiquidityPositionApi } from 'api/utils/portfolio';
 import { TTLiquidityPositionResult } from 'types/portfolio';
-import { RecentTransaction } from 'types/transactions';
-import { getTransactionList } from 'api/utils/recentTransaction';
+import { RecentTransaction, TLimitRecordItem } from 'types/transactions';
+import { getLimitList, getTransactionList } from 'api/utils/recentTransaction';
 
 export type UserAssetTokenInfo = {
   symbol: string;
@@ -187,5 +187,45 @@ export function useUserCombinedAssets(shouldFetchInterval = false) {
   return {
     data,
     refresh: fetchList,
+  };
+}
+
+export function useUserLimits(shouldFetchInterval = false) {
+  const { chainId } = useChainId();
+  const { account } = useActiveWeb3React();
+  const [list, setList] = useState<TLimitRecordItem[]>();
+
+  const fetchList = useCallback(async () => {
+    if (!account || !chainId) return;
+    try {
+      const data = await getLimitList({
+        makerAddress: account,
+        skipCount: 0,
+        maxResultCount: 5,
+      });
+      setList(data.items);
+      return data;
+    } catch (error) {
+      console.log('useUserLimits error', error);
+    }
+  }, [account, chainId]);
+
+  useInterval(() => {
+    if (shouldFetchInterval) {
+      fetchList();
+    }
+  }, ASSET_INTERVAL);
+
+  useEffect(() => {
+    if (shouldFetchInterval) fetchList();
+  }, [fetchList, shouldFetchInterval]);
+
+  useEffect(() => {
+    setList(undefined);
+    fetchList();
+  }, [fetchList]);
+
+  return {
+    list,
   };
 }

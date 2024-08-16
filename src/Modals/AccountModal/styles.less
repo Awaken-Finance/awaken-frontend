@@ -174,6 +174,7 @@
       align-items: center;
       justify-content: center;
       gap: 4px;
+      padding: 0 16px;
     }
 
     img {
@@ -205,7 +206,7 @@
   .account-modal-position-list {
     display: flex;
     flex-direction: column;
-    padding: 0 16px 30px;
+    padding: 0 16px 36px;
   }
 
   .account-modal-position-item {
@@ -216,7 +217,6 @@
 
     .account-modal-position-item-middle {
       margin-left: 8px;
-      margin-right: 12px;
       flex: 1;
       display: flex;
       flex-direction: column;
@@ -229,6 +229,7 @@
       }
     }
     .account-modal-position-item-right {
+      margin-left: 12px;
       flex: 1;
       display: flex;
       flex-direction: column;
@@ -237,6 +238,21 @@
       .price-digits-wrapper {
         line-height: 16px;
       }
+    }
+  }
+
+  .account-modal-limit-middle {
+    gap: 2px;
+    .account-modal-limit-header {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+    }
+    .account-modal-limit-content {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      gap: 8px;
     }
   }
 }
