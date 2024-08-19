@@ -197,8 +197,7 @@ export const LIMIT_CONTRACT_ADDRESS = (() => {
     case 'preview':
       return '2BC4BosozC1x27izqrSFJ51gYYtyVByjKGZvmitY7EBFDDPYHN';
     default:
-      // TODO: 300
-      return '';
+      return 'BEakVbMWHXqQAn3oj3nj2dPk8jfFeJeTg9C99rPZiYTBhGB1a';
   }
 })();
 

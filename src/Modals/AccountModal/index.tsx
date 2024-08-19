@@ -247,11 +247,12 @@ function AccountModal() {
         <div className="account-modal-position-list">
           {limitList?.map((item) => (
             <div key={item.orderId} className="account-modal-position-item">
-              <CurrencyLogos size={24} tokens={[item.tradePair.token0, item.tradePair.token1]} />
+              <CurrencyLogos isSortToken={false} size={24} tokens={[item.tradePair.token0, item.tradePair.token1]} />
               <div className="account-modal-position-item-middle account-modal-limit-middle">
                 <div className="account-modal-limit-header">
                   <Font size={12} lineHeight={16} color="two">{`${t(`When`)} `}</Font>
                   <PriceDigits
+                    wrapperClassName={getFontStyle({ lineHeight: 16, size: 12, color: 'two' })}
                     className={getFontStyle({ lineHeight: 16, size: 12, color: 'two' })}
                     price={getLimitOrderPrice(item)}
                   />

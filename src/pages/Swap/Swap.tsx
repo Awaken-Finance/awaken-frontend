@@ -58,7 +58,7 @@ export const Swap = () => {
             ))}
           </div>
         )}
-        extraTitle={<SettingFee />}
+        extraTitle={tab === SwapTabEnum.swap && <SettingFee />}
         isCancelHide={!isMobile || isTelegram}>
         {tab === SwapTabEnum.swap ? <SwapPanel /> : <></>}
         {tab === SwapTabEnum.limit ? <LimitPanel /> : <></>}

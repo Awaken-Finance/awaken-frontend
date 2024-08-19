@@ -29,7 +29,7 @@ export const useGetPairMaxReserve = () => {
       let reserveIn = '0',
         reserveOut = '0',
         maxReserveProduct = ZERO;
-      console.log('syncRecords', syncRecords);
+      console.log('useGetPairMaxReserve', syncRecords);
 
       syncRecords.forEach((item) => {
         const reserveProduct = ZERO.plus(item.reserveA).times(item.reserveB);
@@ -78,10 +78,11 @@ export const usePairMaxReserve = (symbolIn?: string, symbolOut?: string) => {
     try {
       await refresh();
     } catch (error: any) {
+      console.log('usePairMaxReserve error', error);
+
       if (error.name === 'ApolloError') {
         setIsError(true);
       }
-      console.log('usePairMaxReserve executeCb error', error);
     }
   }, [refresh]);
   const executeCbRef = useRef(executeCb);
@@ -98,7 +99,6 @@ export const usePairMaxReserve = (symbolIn?: string, symbolOut?: string) => {
   const registerTimer = useCallback(() => {
     clearTimer();
     if (key === '_') return;
-    console.log('usePairMaxReserve registerTimer');
     setIsError(false);
     executeCbRef.current();
     timerRef.current = setInterval(() => {

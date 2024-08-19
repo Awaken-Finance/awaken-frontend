@@ -20,6 +20,7 @@ import { getPairTokenRatio } from 'utils/swap';
 import clsx from 'clsx';
 import { CurrencyLogo } from 'components/CurrencyLogo';
 import { IconSwitchPair2 } from 'assets/icons';
+import { useMobile } from 'utils/isMobile';
 
 enum PriceBtnKeyEnum {
   market = 1,
@@ -65,6 +66,7 @@ type TDiffPercentInfo = {
 
 export type TLimitPairPriceError = {
   text: string;
+  btnText: string;
   error: boolean;
 };
 
@@ -100,6 +102,7 @@ export const LimitPairPrice = forwardRef(
     ref,
   ) => {
     const { t } = useTranslation();
+    const isMobile = useMobile();
 
     // const [priceKey, setPriceKey] = useState(PriceBtnKeyEnum.market);
     const [isReverse, setIsReverse] = useState(isReverseInit);
@@ -200,7 +203,8 @@ export const LimitPairPrice = forwardRef(
     const amountError = useMemo<TLimitPairPriceError>(() => {
       if (isZeroShow && ZERO.gte(price)) {
         return {
-          text: 'Please enter price',
+          text: '',
+          btnText: t('Please enter a price'),
           error: true,
         };
       }
@@ -218,6 +222,7 @@ export const LimitPairPrice = forwardRef(
         if (maxValue.lt(price)) {
           return {
             text: t(`limitHighPriceDescription`),
+            btnText: t('limitHighPriceBtnText'),
             error: true,
           };
         }
@@ -226,12 +231,14 @@ export const LimitPairPrice = forwardRef(
         if (minValue.gt(price) && maxValue.gt(ZERO)) {
           return {
             text: t('limitLowPriceDescription'),
+            btnText: t('limitLowPriceBtnText'),
             error: true,
           };
         }
       }
       return {
         text: '',
+        btnText: '',
         error: false,
       };
     }, [isZeroShow, price, t]);
@@ -271,7 +278,7 @@ export const LimitPairPrice = forwardRef(
           prefix: '',
         };
       }
-      const absPercentStr = `${diffPercent.abs().toFixed(2, BigNumber.ROUND_HALF_CEIL)}%`;
+      const absPercentStr = `${diffPercent.abs().times(100).toFixed(2, BigNumber.ROUND_HALF_CEIL)}%`;
       if (ZERO.gt(diffPercent)) {
         return {
           color: 'fall',
@@ -324,10 +331,9 @@ export const LimitPairPrice = forwardRef(
                     <div className="limit-pair-price-header-unit">
                       <CurrencyLogo size={16} currency={!isReverse ? tokenOut : tokenIn} />
                       <Font size={14}>{`1 ${symbolAStr}`}</Font>
-                      <Font size={14}>{t('≈')}</Font>
                     </div>
                     <Font size={14} color="two">
-                      {t('worth')}
+                      {t('is worth')}
                     </Font>
                   </div>
                   <IconSwitchPair2 className="limit-pair-price-switch" onClick={switchReverse} />
@@ -337,8 +343,8 @@ export const LimitPairPrice = forwardRef(
             suffix={
               <div className="limit-pair-price-suffix">
                 <div className="limit-pair-price-suffix-token">
-                  {isSwap && <CurrencyLogo size={24} currency={!isReverse ? tokenIn : tokenOut} />}
-                  <Font color="one" size={20} lineHeight={24}>
+                  {isSwap && <CurrencyLogo size={isMobile ? 16 : 24} currency={!isReverse ? tokenIn : tokenOut} />}
+                  <Font color="one" size={isMobile ? 16 : 20} lineHeight={isMobile ? 22 : 24} weight="medium">
                     {symbolBStr || ''}
                   </Font>
                 </div>

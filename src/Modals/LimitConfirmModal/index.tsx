@@ -57,7 +57,7 @@ export const LimitConfirmModal = forwardRef(({ onSuccess, onPriceError }: TLimit
   const tokenOutPrice = useTokenPrice({ symbol: info?.tokenOut.symbol });
   const [expiryTime, setExpiryTime] = useState(0);
 
-  const expiryTimeStr = useMemo(() => moment.unix(expiryTime).format('MMMM DD, YYYY [at] h:mm A'), [expiryTime]);
+  const expiryTimeStr = useMemo(() => moment.unix(expiryTime).format('YYYY-MM-DD HH:mm:ss'), [expiryTime]);
 
   const approveInfo = useMemo(() => {
     if (!info) return undefined;

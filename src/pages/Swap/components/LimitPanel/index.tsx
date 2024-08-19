@@ -37,6 +37,7 @@ import { Col, Row } from 'antd';
 import TransactionFee from 'pages/Exchange/components/ExchangeContainer/components/ExchangeCard/components/TransactionFee';
 import { LimitTips } from '../LimitTips';
 import { LimitFee } from '../LimitFee';
+import { useMobile } from 'utils/isMobile';
 
 export type TLimitInfo = {
   tokenIn?: Currency;
@@ -54,6 +55,7 @@ type TPriceInfo = {
 
 export const LimitPanel = () => {
   const { t } = useTranslation();
+  const isMobile = useMobile();
   const gasFee = useTransactionFee();
   const limitPairPriceRef = useRef<ILimitPairPrice>();
 
@@ -252,6 +254,7 @@ export const LimitPanel = () => {
   const isConnected = useIsConnected();
   const [pairPriceError, setPairPriceError] = useState<TLimitPairPriceError>({
     text: '',
+    btnText: '',
     error: false,
   });
   const swapBtnInfo = useMemo<{
@@ -265,8 +268,8 @@ export const LimitPanel = () => {
     const { tokenIn, tokenOut, isFocusValueIn, valueIn, valueOut } = limitInfo;
     if (!tokenIn || !tokenOut) return { label: t('selectAToken'), fontColor: 'two' };
     if (isReserveError) return { label: t('Go To Create'), active: true, type: 'primary' };
-    if (!tokenPriceInfo.price || ZERO.eq(tokenPriceInfo.price) || pairPriceError.error)
-      return { label: t('Enter a price'), fontColor: 'two' };
+    if (!tokenPriceInfo.price || ZERO.eq(tokenPriceInfo.price)) return { label: t('Enter a price'), fontColor: 'two' };
+    if (pairPriceError.error) return { label: pairPriceError.btnText, fontColor: 'two' };
     if (isFocusValueIn && (!valueIn || ZERO.eq(valueIn))) return { label: t('Enter an amount'), fontColor: 'two' };
     if (!isFocusValueIn && (!valueOut || ZERO.eq(valueOut))) return { label: t('Enter an amount'), fontColor: 'two' };
 
@@ -287,6 +290,7 @@ export const LimitPanel = () => {
     isLocking,
     isReserveError,
     limitInfo,
+    pairPriceError.btnText,
     pairPriceError.error,
     t,
     tokenPriceInfo.price,
@@ -306,6 +310,7 @@ export const LimitPanel = () => {
         basicModalView.setSwapNotSupported.actions({
           tokenIn,
           tokenOut,
+          isLimit: true,
         }),
       );
       return;
@@ -403,6 +408,17 @@ export const LimitPanel = () => {
         }
       />
 
+      {isReserveError && (
+        <div className="route-empty-warning">
+          <div className="route-empty-warning-icon-wrap">
+            <span className="route-empty-warning-icon" />
+          </div>
+          <Font color="two" lineHeight={20}>
+            {t('The current transaction is not supported, You can create the pair yourself.')}
+          </Font>
+        </div>
+      )}
+
       <div className="swap-btn-wrap">
         <AuthBtn
           type={swapBtnInfo.type}
@@ -425,11 +441,13 @@ export const LimitPanel = () => {
           <LimitFee />
         </Col>
         <Col span={24}>
-          <TransactionFee lineHeight={22} />
+          <TransactionFee lineHeight={isMobile ? undefined : 22} />
         </Col>
-        <Col span={24}>
-          <LimitTips />
-        </Col>
+        {!isReserveError && (
+          <Col span={24}>
+            <LimitTips />
+          </Col>
+        )}
       </Row>
 
       <LimitConfirmModal ref={limitConfirmModalRef} onSuccess={onTradeSuccess} onPriceError={onPriceError} />

@@ -8,7 +8,7 @@ import Font from 'components/Font';
 import CommonButton from 'components/CommonButton';
 import { Col, Row } from 'antd';
 import { formatSymbol } from 'utils/token';
-import { useCallback } from 'react';
+import { useCallback, useMemo } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useMobile } from 'utils/isMobile';
 
@@ -27,6 +27,28 @@ export default function SwapNotSupportedModal() {
     history.push(`/create-pair/${swapNotSupportedModal?.tokenIn.symbol}_${swapNotSupportedModal?.tokenOut.symbol}`);
   }, [history, onCancel, swapNotSupportedModal?.tokenIn.symbol, swapNotSupportedModal?.tokenOut.symbol]);
 
+  const title = useMemo(
+    () => (swapNotSupportedModal?.isLimit ? t('LimitNotSupportedTitle') : t('Swap is not supported')),
+    [swapNotSupportedModal?.isLimit, t],
+  );
+
+  const content = useMemo(() => {
+    if (swapNotSupportedModal?.isLimit)
+      return t('LimitNotSupportedContent', {
+        symbolIn: formatSymbol(swapNotSupportedModal?.tokenIn.symbol),
+        symbolOut: formatSymbol(swapNotSupportedModal?.tokenOut.symbol),
+      });
+    return t('SwapNotSupportedContent', {
+      symbolIn: formatSymbol(swapNotSupportedModal?.tokenIn.symbol),
+      symbolOut: formatSymbol(swapNotSupportedModal?.tokenOut.symbol),
+    });
+  }, [
+    swapNotSupportedModal?.isLimit,
+    swapNotSupportedModal?.tokenIn.symbol,
+    swapNotSupportedModal?.tokenOut.symbol,
+    t,
+  ]);
+
   return (
     <CommonModal
       width="420px"
@@ -36,15 +58,12 @@ export default function SwapNotSupportedModal() {
       closable={true}
       centered={isMobile}
       visible={!!swapNotSupportedModal}
-      title={t('Swap is not supported')}
+      title={title}
       className={'swap-not-supported-modal'}
       onCancel={onCancel}>
       <div className="swap-not-supported-modal-content">
         <Font size={14} lineHeight={20}>
-          {t('SwapNotSupportedContent', {
-            symbolIn: formatSymbol(swapNotSupportedModal?.tokenIn.symbol),
-            symbolOut: formatSymbol(swapNotSupportedModal?.tokenOut.symbol),
-          })}
+          {content}
         </Font>
       </div>
       <Row gutter={[12, 0]}>

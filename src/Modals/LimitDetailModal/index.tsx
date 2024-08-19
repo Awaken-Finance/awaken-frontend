@@ -16,7 +16,7 @@ import { FetchParam } from 'types/requeset';
 import PriceDigits from 'components/PriceDigits';
 import getFontStyle from 'utils/getFontStyle';
 import { formatSymbol } from 'utils/token';
-import { LimitDetailStatusMap } from 'constants/limit';
+import { LIMIT_STATUS_WITH_GAS, LimitDetailStatusMap } from 'constants/limit';
 import PriceUSDDigits from 'components/PriceUSDDigits';
 import { useReturnLastCallback } from 'hooks';
 
@@ -205,31 +205,20 @@ export const LimitDetailModal = forwardRef((_: TLimitDetailModalProps, ref) => {
         dataIndex: 'totalFee',
         align: 'left',
         render: (totalFee: string, _record: TLimitDetailItem) => {
-          if (_record.status !== LimitOrderStatusEnum.PartiallyFilling)
-            return (
-              <>
-                <div>
-                  <Font lineHeight={20} size={14}>
-                    {'-'}
-                  </Font>
-                </div>
-                <div>
-                  <Font lineHeight={20} size={14}>
-                    {'-'}
-                  </Font>
-                </div>
-              </>
-            );
           return (
             <>
               <div>
                 <Font lineHeight={20} size={14}>
-                  {`${ZERO.plus(totalFee).toFixed()} ${formatSymbol('ELF')}`}
+                  {_record.status !== LimitOrderStatusEnum.PartiallyFilling
+                    ? ' -'
+                    : `${ZERO.plus(totalFee).toFixed()} ${formatSymbol('ELF')}`}
                 </Font>
               </div>
               <div>
                 <Font lineHeight={20} size={14}>
-                  {`${ZERO.plus(_record.networkFee).toFixed()} ${formatSymbol('ELF')}`}
+                  {LIMIT_STATUS_WITH_GAS.includes(_record.status)
+                    ? `${ZERO.plus(_record.networkFee).toFixed()} ${formatSymbol('ELF')}`
+                    : '-'}
                 </Font>
               </div>
             </>

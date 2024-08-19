@@ -391,7 +391,7 @@ export const useLimitColumns = ({ limitCancelModalRef, limitDetailModalRef }: TU
         render: (deadline: number) => {
           return (
             <Font lineHeight={20} size={14}>
-              {`${moment(deadline).format('MMMM DD, YYYY [at] h:mm A')}`}
+              {`${moment(deadline).format('YYYY-MM-DD HH:mm:ss')}`}
             </Font>
           );
         },

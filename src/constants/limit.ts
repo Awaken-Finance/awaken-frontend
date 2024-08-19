@@ -79,3 +79,5 @@ export const LimitDetailStatusMap: Record<LimitOrderStatusEnum, TLimitOrderStatu
 };
 
 export const LIMIT_TIME_INTERVAL = 10 * 1000;
+
+export const LIMIT_STATUS_WITH_GAS = [LimitOrderStatusEnum.PartiallyFilling, LimitOrderStatusEnum.Cancelled];
