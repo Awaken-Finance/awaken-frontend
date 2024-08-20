@@ -333,6 +333,7 @@ export const LimitPanel = () => {
         amountOut: valueOut,
         expiryValue,
         isPriceReverse: tokenPriceInfo.isReverse,
+        unfilledCount: result.data.limitOrderRemainingUnfilled.orderCount,
         unfilledValue: result.data.limitOrderRemainingUnfilled.value,
       });
     } catch (error) {

@@ -6,21 +6,25 @@ import PcTable from './component/PcTable';
 import MobileList from './component/MobileList';
 import useGetList, { PageInfoParams, TranslationMenuEnum } from './hooks/useGetList';
 import { useTranslation } from 'react-i18next';
-import { LiquidityRecord, RecentTransaction } from 'pages/UserCenter/type';
+
 import { useActiveWeb3React } from 'hooks/web3';
-import { TLimitRecordItem } from 'types/transactions';
-import { useRouteMatch } from 'react-router-dom';
+import { LiquidityRecord, RecentTransaction, TLimitRecordItem } from 'types/transactions';
+import { useHistory, useRouteMatch } from 'react-router-dom';
 
 export default function Transactions() {
   const isMobile = useMobile();
 
-  const preDataSource = useRef<LiquidityRecord[] | RecentTransaction[]>([]);
+  const preDataSource = useRef<LiquidityRecord[] | RecentTransaction[] | TLimitRecordItem[]>([]);
   const clearDataSource = useRef<boolean>(false);
 
   const match = useRouteMatch<{ menu: string }>('/transactions/:menu');
   const { menu: routeMenu } = match?.params || {};
-  const [menu, setMenu] = useState<TranslationMenuEnum>(
-    TranslationMenuEnum[routeMenu as keyof typeof TranslationMenuEnum] ?? TranslationMenuEnum.trade,
+  // const [menu, setMenu] = useState<TranslationMenuEnum>(
+  //   TranslationMenuEnum[routeMenu as keyof typeof TranslationMenuEnum] ?? TranslationMenuEnum.trade,
+  // );
+  const menu = useMemo(
+    () => TranslationMenuEnum[routeMenu as keyof typeof TranslationMenuEnum] ?? TranslationMenuEnum.trade,
+    [routeMenu],
   );
 
   const [searchVal, setSearchVal] = useState('');
@@ -81,6 +85,7 @@ export default function Transactions() {
     [searchDebounce],
   );
 
+  const history = useHistory();
   const menuChange = useCallback(
     (val: string | number) => {
       pageInfo.current = {
@@ -95,9 +100,13 @@ export default function Transactions() {
       clearDataSource.current = true;
       getList(pageInfo.current, '', val);
       setSearchVal('');
-      setMenu(val as TranslationMenuEnum);
+      if (val === TranslationMenuEnum.trade) {
+        history.push(`/transactions`);
+      } else {
+        history.push(`/transactions/${TranslationMenuEnum[val as any]}`);
+      }
     },
-    [getList],
+    [getList, history],
   );
 
   const getData = (params: FetchParam): void => {

@@ -16,6 +16,7 @@ export const LIMIT_ORDER_REMAINING_UNFILLED_QUERY = gql`
   query limitOrderRemainingUnfilled($dto: GetLimitOrderRemainingUnfilledDto) {
     limitOrderRemainingUnfilled(dto: $dto) {
       value
+      orderCount
     }
   }
 `;

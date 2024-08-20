@@ -36,6 +36,7 @@ export type TGetLimitOrderRemainingUnfilledParams = {
 export type TGetLimitOrderRemainingUnfilledResult = {
   limitOrderRemainingUnfilled: {
     value: string;
+    orderCount: number;
   };
 };
 export type TGetLimitOrderRemainingUnfilled = (

@@ -40,6 +40,7 @@ export type TLimitConfirmModalInfo = {
   amountOut: string;
   expiryValue: ExpiryEnum;
   unfilledValue: string;
+  unfilledCount: number;
   isPriceReverse?: boolean;
 };
 export interface LimitConfirmModalInterface {
@@ -312,7 +313,7 @@ export const LimitConfirmModal = forwardRef(({ onSuccess, onPriceError }: TLimit
           <Trans
             i18nKey="noticeContent1"
             values={{
-              orderNum: 1,
+              orderNum: info?.unfilledCount || 0,
               remainAmount: `${approveInfo?.remainAmount} ${formatSymbol(info?.tokenIn.symbol)}`,
               currentAmount: `${approveInfo?.currentAmount} ${formatSymbol(info?.tokenIn.symbol)}`,
               requireAmount: `${approveInfo?.requireAmount} ${formatSymbol(info?.tokenIn.symbol)}`,

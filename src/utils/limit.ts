@@ -153,5 +153,5 @@ export const cancelLimit = async ({ contract, account, args, t }: TCancelLimitPa
 };
 
 export const getLimitOrderPrice = (record: TLimitRecordItem) => {
-  return ZERO.plus(record.amountOut).div(record.amountIn);
+  return ZERO.plus(record.amountIn).div(record.amountOut);
 };

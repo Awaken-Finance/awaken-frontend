@@ -71,6 +71,7 @@ export function LimitSellBtnWithPay({
         amountOut,
         expiryValue,
         isPriceReverse,
+        unfilledCount: result.data.limitOrderRemainingUnfilled.orderCount,
         unfilledValue: result.data.limitOrderRemainingUnfilled.value,
       });
     } catch (error) {

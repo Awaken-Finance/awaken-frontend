@@ -251,7 +251,7 @@ function AccountModal() {
               <div className="account-modal-position-item-middle account-modal-limit-middle">
                 <div className="account-modal-limit-header">
                   <Font size={12} lineHeight={16} color="two">
-                    {t(`When`)}
+                    {t(`When 1 ${formatSymbol(item.symbolOut)} = `)}
                   </Font>
                   <PriceDigits
                     wrapperClassName={getFontStyle({ lineHeight: 16, size: 12, color: 'two' })}
@@ -259,7 +259,7 @@ function AccountModal() {
                     price={getLimitOrderPrice(item)}
                   />
                   <Font lineHeight={16} size={12} color="two">
-                    {`${formatSymbol(item.symbolOut)}/${formatSymbol(item.symbolIn)}`}
+                    {`${formatSymbol(item.symbolIn)}`}
                   </Font>
                 </div>
                 <div className="account-modal-limit-content">
