@@ -327,7 +327,7 @@ export const useLimitColumns = ({ limitCancelModalRef, limitDetailModalRef }: TU
           <>
             <PriceDigits className={getFontStyle({ lineHeight: 20 })} price={getLimitOrderPrice(record)} />
             <Font lineHeight={20} size={14}>
-              {`${formatSymbol(record.symbolOut)}/${formatSymbol(record.symbolIn)}`}
+              {` ${formatSymbol(record.symbolOut)}/${formatSymbol(record.symbolIn)}`}
             </Font>
           </>
         ),

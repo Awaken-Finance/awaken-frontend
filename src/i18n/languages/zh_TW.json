@@ -722,6 +722,10 @@
     "Create a limit order": "建立限價單",
     "is worth": "價格為",
     "LimitNotSupportedTitle": "不支援掛單",
-    "LimitNotSupportedContent": "您選擇的{{symbolIn}}代幣和{{symbolOut}}代幣，當前流動性池不支援掛單。您可以自行建立該交易對流動性池。你想創建它嗎？"
+    "LimitNotSupportedContent": "您選擇的{{symbolIn}}代幣和{{symbolOut}}代幣，當前流動性池不支援掛單。您可以自行建立該交易對流動性池。你想創建它嗎？",
+    "Limit Price": "限價單價格",
+    "Submit Order": "提交限價單",
+    "Review Order": "檢查限價單",
+    "Enter a price": "輸入價格"
   }
 }

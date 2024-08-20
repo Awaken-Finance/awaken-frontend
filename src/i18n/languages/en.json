@@ -697,6 +697,10 @@
     "Create a limit order": "Create a limit order",
     "is worth": "is worth",
     "LimitNotSupportedTitle": "Orders not supported",
-    "LimitNotSupportedContent": "The current liquidity pool does not support orders for the {{symbolIn}} token and {{symbolOut}} token you selected. You can create a liquidity pool for this trading pair yourself. Do you want to create it?"
+    "LimitNotSupportedContent": "The current liquidity pool does not support orders for the {{symbolIn}} token and {{symbolOut}} token you selected. You can create a liquidity pool for this trading pair yourself. Do you want to create it?",
+    "Limit Price": "Limit Price",
+    "Submit Order": "Submit Order",
+    "Review Order": "Review Order",
+    "Enter a price": "Enter a price"
   }
 }
