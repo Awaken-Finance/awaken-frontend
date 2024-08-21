@@ -31,15 +31,15 @@ export default function LimitRecordItem({
   item: {
     tradePair,
     commitTime,
-    symbolIn,
-    symbolOut,
-    amountIn,
-    amountOut,
-    amountInFilled,
-    amountOutFilled,
+    symbolIn = '',
+    symbolOut = '',
+    amountIn = '',
+    amountOut = '',
+    amountInFilled = '',
+    amountOutFilled = '',
     deadline,
     totalFee,
-    networkFee,
+    networkFee = '',
     limitOrderStatus,
     transactionHash,
   },
@@ -62,9 +62,6 @@ export default function LimitRecordItem({
               isAutoOrder={false}
             />
           </Col>
-          <Col>
-            <FeeRate useBg>{formatPercentage(tradePair?.feeRate * 100)}</FeeRate>
-          </Col>
         </Row>
       </Col>
 
@@ -86,8 +83,9 @@ export default function LimitRecordItem({
       </Col>
       <Col span={12} className="align-right height-20 line-height-20">
         <PriceDigits className={getFontStyle({ lineHeight: 20 })} price={ZERO.plus(amountIn).div(amountOut)} />
+        &nbsp;
         <Font lineHeight={20} size={14}>
-          {` ${formatSymbol(symbolIn)}/${formatSymbol(symbolOut)}`}
+          {`${formatSymbol(symbolIn)}/${formatSymbol(symbolOut)}`}
         </Font>
       </Col>
 

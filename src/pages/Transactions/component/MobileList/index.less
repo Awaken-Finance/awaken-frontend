@@ -24,9 +24,11 @@
   .transaction-mobile-menu-headers {
     background: #1e212b;
     margin-bottom: 16px;
+    padding-left: 8px;
 
     &.ant-menu-horizontal > .ant-menu-item {
       line-height: 40px;
+      padding: 0 8px;
 
       & a,
       & .ant-menu-title-content {
@@ -150,4 +152,9 @@
 }
 .transaction-list-wrapper .ant-list {
   min-height: 400px;
+  .common-loading {
+    .ant-spin {
+      top: 100px;
+    }
+  }
 }

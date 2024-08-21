@@ -110,7 +110,7 @@ export default function TransactionItem({
                     buttonTitle={t('ok')}
                     headerDesc={t('Order Routing')}>
                     <FeeRate useBg usePercent={false}>
-                      {`${formatPercentage(tradePair?.feeRate * 100)}%...`}
+                      {`Swap`}
                     </FeeRate>
                   </CommonTooltip>
                 ) : (
@@ -140,7 +140,7 @@ export default function TransactionItem({
       <Col span={12} className="align-right height-20 line-height-20">
         <PriceDigits price={realPrice} className={getFontStyle({ lineHeight: 20 })} />
         &nbsp;
-        <Pair lineHeight={24} symbol={priceSymbol} />
+        <Pair lineHeight={20} symbol={priceSymbol} />
       </Col>
 
       <Col span={12} className="height-20 line-height-20">
