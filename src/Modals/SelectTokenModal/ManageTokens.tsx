@@ -14,7 +14,7 @@ import { useTokenContract } from 'hooks/useContract';
 
 import CommonEmpty from 'components/CommonEmpty';
 import { useMobile } from 'utils/isMobile';
-import { formatSymbol } from 'utils/token';
+import { formatSymbol, getImageFromTokenInfo } from 'utils/token';
 
 export default function ManageTokens() {
   const { t } = useTranslation();
@@ -48,9 +48,10 @@ export default function ManageTokens() {
         setSearchTokenInfo(undefined);
         return;
       }
+
       tokenInfo.chainId = chainId;
       tokenInfo.address = tokenInfo.symbol;
-      tokenInfo.imageUri = tokenInfo?.externalInfo?.value?.__ft_image_uri;
+      tokenInfo.imageUri = getImageFromTokenInfo(tokenInfo);
       setSearchTokenInfo(tokenInfo);
     },
     [chainId, tokenContract],
@@ -85,7 +86,7 @@ export default function ManageTokens() {
 
   const onClickAddToken = (token: Token) => {
     addToken(token);
-    addTokenImage(token.symbol, (token as any)?.externalInfo?.value?.__ft_image_uri);
+    addTokenImage(token.symbol, getImageFromTokenInfo(token));
   };
 
   return (

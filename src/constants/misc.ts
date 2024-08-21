@@ -1,4 +1,5 @@
 import BigNumber from 'bignumber.js';
+import { IS_MAIN_NET } from 'constants/index';
 
 // used for warning states
 export const ALLOWED_PRICE_IMPACT_LOW: BigNumber = new BigNumber(1).div(100); // 1%
@@ -43,3 +44,11 @@ export const SWAP_TIME_INTERVAL = 30 * 1000;
 export const MOBILE_DEVICE_WIDTH = 640;
 
 export const TEN_THOUSAND = 10000;
+
+export const IPFS_SYMBOL_MAP: Record<string, string> = {
+  SGR: IS_MAIN_NET
+    ? 'https://schrodinger-mainnet.s3.ap-northeast-1.amazonaws.com/watermarkimage'
+    : 'https://schrodinger-testnet.s3.amazonaws.com/watermarkimage',
+};
+
+export const IPFS_SYMBOL_LIST = ['SGR'];
