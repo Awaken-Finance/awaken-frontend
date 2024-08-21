@@ -64,8 +64,9 @@ export default function LimitDetailItem({
               className={getFontStyle({ lineHeight: 20 })}
               price={ZERO.plus(amountInFilled).div(amountOutFilled)}
             />
+            &nbsp;
             <Font lineHeight={20} size={14}>
-              {` ${formatSymbol(record?.symbolIn)}/${formatSymbol(record?.symbolOut)}`}
+              {`${formatSymbol(record?.symbolIn)}/${formatSymbol(record?.symbolOut)}`}
             </Font>
           </Col>
 
