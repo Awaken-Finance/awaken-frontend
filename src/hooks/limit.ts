@@ -77,6 +77,7 @@ export const usePairMaxReserve = (symbolIn?: string, symbolOut?: string) => {
   const executeCb = useCallback(async () => {
     try {
       await refresh();
+      setIsError(false);
     } catch (error: any) {
       console.log('usePairMaxReserve error', error);
 
