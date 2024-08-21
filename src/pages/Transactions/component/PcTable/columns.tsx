@@ -62,40 +62,46 @@ export const useTransactionColumns = ({ menu, field, order, side }: TUseTransact
         width: 214,
         align: 'left',
         sortOrder: field === 'tradePair' ? order : null,
-        render: (tradePair: TTradePair, record: RecentTransaction) => (
-          <div className="pair-area">
-            <div className="pair-logo-wrap">
-              <CurrencyLogos isSortToken={record.side !== 2} size={16} tokens={[tradePair.token0, tradePair.token1]} />
+        render: (tradePair: TTradePair, record: RecentTransaction) => {
+          return (
+            <div className="pair-area">
+              <div className="pair-logo-wrap">
+                <CurrencyLogos
+                  isSortToken={record.side !== 2}
+                  size={16}
+                  tokens={[tradePair.token0, tradePair.token1]}
+                />
+              </div>
+              <div className="pair-label-wrap">
+                <Pairs
+                  isAutoOrder={record.side !== 2}
+                  tokenA={tradePair?.token0}
+                  tokenB={tradePair?.token1}
+                  lineHeight={20}
+                  size={14}
+                  weight="medium"
+                />
+              </div>
+              <div className="swap-order-routing-tip-wrap">
+                {record.side === 2 ? (
+                  <CommonTooltip
+                    width={'400px'}
+                    placement="top"
+                    title={<SwapOrderRouting percentRoutes={record.percentRoutes} />}
+                    getPopupContainer={(v) => v}
+                    buttonTitle={t('ok')}
+                    headerDesc={t('Order Routing')}>
+                    <FeeRate useBg usePercent={false}>
+                      {`Swap`}
+                    </FeeRate>
+                  </CommonTooltip>
+                ) : (
+                  <FeeRate useBg>{formatPercentage(tradePair?.feeRate * 100)}</FeeRate>
+                )}
+              </div>
             </div>
-            <div className="pair-label-wrap">
-              <Pairs
-                isAutoOrder={record.side !== 2}
-                tokenA={tradePair?.token0}
-                tokenB={tradePair?.token1}
-                lineHeight={20}
-                size={14}
-                weight="medium"
-              />
-            </div>
-            <div className="swap-order-routing-tip-wrap">
-              {record.side === 2 ? (
-                <CommonTooltip
-                  width={'400px'}
-                  placement="top"
-                  title={<SwapOrderRouting percentRoutes={record.percentRoutes} />}
-                  getPopupContainer={(v) => v}
-                  buttonTitle={t('ok')}
-                  headerDesc={t('Order Routing')}>
-                  <FeeRate useBg usePercent={false}>
-                    {`${formatPercentage(tradePair?.feeRate * 100)}%...`}
-                  </FeeRate>
-                </CommonTooltip>
-              ) : (
-                <FeeRate useBg>{formatPercentage(tradePair?.feeRate * 100)}</FeeRate>
-              )}
-            </div>
-          </div>
-        ),
+          );
+        },
       },
       {
         title: t(getSideTitle(side)),

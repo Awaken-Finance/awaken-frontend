@@ -22,7 +22,6 @@ import { ExpiryEnum, LimitExpiry } from './components/LimitExpiry';
 
 import { LimitSellBtnWithPay } from 'Buttons/LimitSellBtn';
 import { useTransactionFee } from 'contexts/useStore/hooks';
-import { LimitTips } from 'pages/Swap/components/LimitTips';
 import { LimitFee } from 'pages/Swap/components/LimitFee';
 
 export type TLimitLeftCardProps = {
@@ -298,9 +297,6 @@ export const LimitLeftCard = ({ tokenA, tokenB, balances, reserves, rate }: TLim
           </Col>
           <Col span={24}>
             <TransactionFee />
-          </Col>
-          <Col span={24}>
-            <LimitTips />
           </Col>
         </Row>
       </Col>

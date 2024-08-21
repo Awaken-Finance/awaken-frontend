@@ -21,7 +21,6 @@ import { LimitMaxValue } from './components/LimitMaxValue';
 import { ExpiryEnum, LimitExpiry } from './components/LimitExpiry';
 import { useTransactionFee } from 'contexts/useStore/hooks';
 import { LimitSellBtnWithPay } from 'Buttons/LimitSellBtn';
-import { LimitTips } from 'pages/Swap/components/LimitTips';
 import { LimitFee } from 'pages/Swap/components/LimitFee';
 
 export type TLimitRightCardProps = {
@@ -296,9 +295,6 @@ export const LimitRightCard = ({ tokenA, tokenB, balances, reserves, rate }: TLi
           </Col>
           <Col span={24}>
             <TransactionFee />
-          </Col>
-          <Col span={24}>
-            <LimitTips />
           </Col>
         </Row>
       </Col>

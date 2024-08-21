@@ -35,7 +35,6 @@ import {
 import { Col, Row } from 'antd';
 
 import TransactionFee from 'pages/Exchange/components/ExchangeContainer/components/ExchangeCard/components/TransactionFee';
-import { LimitTips } from '../LimitTips';
 import { LimitFee } from '../LimitFee';
 import { useMobile } from 'utils/isMobile';
 
@@ -444,11 +443,6 @@ export const LimitPanel = () => {
         <Col span={24}>
           <TransactionFee lineHeight={isMobile ? undefined : 22} />
         </Col>
-        {!isReserveError && (
-          <Col span={24}>
-            <LimitTips />
-          </Col>
-        )}
       </Row>
 
       <LimitConfirmModal ref={limitConfirmModalRef} onSuccess={onTradeSuccess} onPriceError={onPriceError} />

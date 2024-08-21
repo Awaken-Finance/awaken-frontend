@@ -41,10 +41,11 @@ export const SwapOrderRouting = ({ swapRoute, percentRoutes }: TSwapOrderRouting
               tokenIn = item.tradePair?.token1;
               tokenOut = item.tradePair?.token0;
             }
+            const isLimit = !item.pairAddress;
 
             return {
               tokens: [tokenIn, tokenOut],
-              feeRate: `${ZERO.plus(item.tradePair?.feeRate).times(100).toFixed()}%`,
+              feeRate: isLimit ? 'Limit' : `${ZERO.plus(item.tradePair?.feeRate).times(100).toFixed()}%`,
             };
           }),
         };
