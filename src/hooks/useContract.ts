@@ -13,7 +13,7 @@ import { ChainConstants } from 'constants/ChainConstants';
 import { SupportedSwapRate } from 'constants/swap';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { AElfContract, IContract } from 'types';
-import { getContractMethods, isELFChain, transformArrayToMap } from 'utils/aelfUtils';
+import { callViewMethod, getContractMethods, isELFChain, transformArrayToMap } from 'utils/aelfUtils';
 import { ContractBasic, ContractInterface } from 'utils/contract';
 import { useActiveWeb3React } from './web3';
 import { useConnectWallet } from '@aelf-web-login/wallet-adapter-react';
@@ -82,7 +82,7 @@ export function useGetContractMethods(contractAddress?: string) {
 }
 
 export function useAElfContract(contractAddress?: string) {
-  const { callViewMethod, callSendMethod } = useConnectWallet();
+  const { callSendMethod } = useConnectWallet();
 
   const getContractMethods = useGetContractMethods(contractAddress);
 
@@ -109,7 +109,7 @@ export function useAElfContract(contractAddress?: string) {
           methodName,
           args: args,
         });
-        return result?.data;
+        return result;
       },
       callSendMethod: async (functionName: string, account: string, paramsOption: any, sendOptions: any) => {
         if (!contractAddress) {
@@ -148,7 +148,7 @@ export function useAElfContract(contractAddress?: string) {
       },
     };
     return contract;
-  }, [callSendMethod, callViewMethod, contractAddress, getContractMethods]);
+  }, [callSendMethod, contractAddress, getContractMethods]);
 }
 export function useERCContract(address: string | undefined, ABI: any) {
   const { library, chainId } = useActiveWeb3React();
