@@ -11,6 +11,7 @@ import { getPairsLogoOrderByTokenWeights } from 'utils/pair';
 import { TokenInfo } from 'types';
 import { useGetTokenImage } from 'contexts/useUser/hooks';
 import { TCurrency } from 'types/common';
+import { formatImageURI } from 'utils/token';
 export function CurrencyLogo({
   currency,
   address,
@@ -35,7 +36,7 @@ export function CurrencyLogo({
     if (currency) {
       const _srcs: string[] = [];
       if ((currency as Currency).isNative) return [NATIVE_LOGO[currency.symbol || 'ETH']];
-      if (currency.imageUri) _srcs.push(currency.imageUri as string);
+      if (currency.imageUri) _srcs.push(formatImageURI(currency.symbol, currency.imageUri as string));
       const key = (currency as Currency).isToken ? (currency as any).address : currency.symbol;
       if (getTokenImage(currency.symbol)) _srcs.push(getTokenImage(currency.symbol));
       const defaultUrls = [..._srcs, ...getTokenLogoURLs(key)];
