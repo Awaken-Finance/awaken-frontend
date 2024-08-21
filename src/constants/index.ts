@@ -179,6 +179,17 @@ export const networkList = (() => {
   }
 })();
 
+export const IS_MAIN_NET = (() => {
+  switch (API_ENV) {
+    case 'local':
+    case 'test':
+    case 'preview':
+      return false;
+    default:
+      return true;
+  }
+})();
+
 export const SWAP_HOOK_CONTRACT_ADDRESS = (() => {
   switch (API_ENV) {
     case 'local':
