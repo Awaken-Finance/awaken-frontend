@@ -309,18 +309,21 @@ export const LimitConfirmModal = forwardRef(({ onSuccess, onPriceError }: TLimit
         <Font size={14} lineHeight={22} color="one">
           {t('Notice')}
         </Font>
-        <div className="limit-confirm-modal-notice-content">
-          <Trans
-            i18nKey="noticeContent1"
-            values={{
-              orderNum: info?.unfilledCount || 0,
-              remainAmount: `${approveInfo?.remainAmount} ${formatSymbol(info?.tokenIn.symbol)}`,
-              currentAmount: `${approveInfo?.currentAmount} ${formatSymbol(info?.tokenIn.symbol)}`,
-              requireAmount: `${approveInfo?.requireAmount} ${formatSymbol(info?.tokenIn.symbol)}`,
-            }}
-            components={{ span: <span /> }}
-          />
-        </div>
+        {!!info?.unfilledCount && (
+          <div className="limit-confirm-modal-notice-content">
+            <Trans
+              i18nKey="noticeContent1"
+              values={{
+                orderNum: info?.unfilledCount || 0,
+                remainAmount: `${approveInfo?.remainAmount} ${formatSymbol(info?.tokenIn.symbol)}`,
+                currentAmount: `${approveInfo?.currentAmount} ${formatSymbol(info?.tokenIn.symbol)}`,
+                requireAmount: `${approveInfo?.requireAmount} ${formatSymbol(info?.tokenIn.symbol)}`,
+              }}
+              components={{ span: <span /> }}
+            />
+          </div>
+        )}
+
         <div className="limit-confirm-modal-notice-content">{t('noticeContent2')}</div>
       </div>
       <CommonButton onClick={onConfirmClick} loading={isLoading} className="limit-confirm-modal-btn" type="primary">
