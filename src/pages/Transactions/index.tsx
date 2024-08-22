@@ -88,25 +88,13 @@ export default function Transactions() {
   const history = useHistory();
   const menuChange = useCallback(
     (val: string | number) => {
-      pageInfo.current = {
-        pageNum: 1,
-        pageSize: 20,
-        side: -1,
-        field: null,
-        order: null,
-      };
-
-      preDataSource.current = [];
-      clearDataSource.current = true;
-      getList(pageInfo.current, '', val);
-      setSearchVal('');
       if (val === TranslationMenuEnum.trade) {
         history.replace(`/transactions`);
       } else {
         history.replace(`/transactions/${TranslationMenuEnum[val as any]}`);
       }
     },
-    [getList, history],
+    [history],
   );
 
   const getData = (params: FetchParam): void => {
@@ -209,19 +197,40 @@ export default function Transactions() {
   };
 
   const { account, chainId } = useActiveWeb3React();
-  const refresh = useCallback(() => {
+  const init = useCallback(() => {
     getList(pageInfo.current, searchVal, menu);
   }, [getList, menu, searchVal]);
-  const refreshRef = useRef(refresh);
-  refreshRef.current = refresh;
+  const initRef = useRef(init);
+  initRef.current = init;
 
   useEffect(() => {
     if (account && chainId) {
       setIsInit(true);
     }
 
-    refreshRef.current();
+    initRef.current();
   }, [account, chainId]);
+
+  const refresh = useCallback(() => {
+    if (!isInit) return;
+    pageInfo.current = {
+      pageNum: 1,
+      pageSize: 20,
+      side: -1,
+      field: null,
+      order: null,
+    };
+    preDataSource.current = [];
+    clearDataSource.current = true;
+    getList(pageInfo.current, '', menu);
+    setSearchVal('');
+  }, [getList, isInit, menu]);
+  const refreshRef = useRef(refresh);
+  refreshRef.current = refresh;
+
+  useEffect(() => {
+    refreshRef.current();
+  }, [menu]);
 
   return renderContent();
 }
