@@ -41,7 +41,7 @@ export const LimitDetailWebList = ({
   const columns = useMemo<ColumnsType<TLimitDetailItem>>(() => {
     const columnList: ColumnsType<TLimitDetailItem> = [
       {
-        title: t('Txn Time'),
+        title: t('time'),
         width: 144,
         key: 'transactionTime',
         dataIndex: 'transactionTime',
@@ -52,7 +52,7 @@ export const LimitDetailWebList = ({
         ),
       },
       {
-        title: t('Price'),
+        title: t('price'),
         key: 'price',
         dataIndex: 'amountInFilled',
         width: 160,
@@ -118,7 +118,7 @@ export const LimitDetailWebList = ({
         },
       },
       {
-        title: t('Total value'),
+        title: t('TotalValue'),
         key: 'amountOutFilledUSD',
         dataIndex: 'amountOutFilledUSD',
         width: 100,
