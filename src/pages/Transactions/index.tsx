@@ -101,9 +101,9 @@ export default function Transactions() {
       getList(pageInfo.current, '', val);
       setSearchVal('');
       if (val === TranslationMenuEnum.trade) {
-        history.push(`/transactions`);
+        history.replace(`/transactions`);
       } else {
-        history.push(`/transactions/${TranslationMenuEnum[val as any]}`);
+        history.replace(`/transactions/${TranslationMenuEnum[val as any]}`);
       }
     },
     [getList, history],

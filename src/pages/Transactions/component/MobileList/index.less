@@ -45,7 +45,13 @@
       .ant-menu-title-content {
         color: var(--ant-black-font-color-1);
       }
-
+    }
+    &.ant-menu-light .ant-menu-item:hover {
+      &::after {
+        border-bottom: 0.02rem solid transparent !important;
+      }
+    }
+    &.ant-menu-light .ant-menu-item-selected {
       &::after {
         background-color: var(--ant-primary-color);
       }
