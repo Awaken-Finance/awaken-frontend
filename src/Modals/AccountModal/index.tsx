@@ -36,6 +36,7 @@ import myEvents from 'utils/myEvent';
 import { getLimitOrderPrice } from 'utils/limit';
 import PriceDigits from 'components/PriceDigits';
 import { formatSymbol } from 'utils/token';
+import { LimitOrderStatusMap } from 'constants/limit';
 
 const MENU_LIST = [
   {
@@ -267,9 +268,14 @@ function AccountModal() {
                   <IconArrowRight4 />
                   <Font size={16} lineHeight={24}>{`${item.amountOut} ${formatSymbol(item.symbolOut)}`}</Font>
                 </div>
-                <Font size={12} lineHeight={16} color="two">{`${t('Expires')} ${moment(item.deadline).format(
-                  'YYYY-MM-DD HH:mm',
-                )}`}</Font>
+                <div className="account-modal-limit-content">
+                  <Font size={12} lineHeight={16} color="two">{`${t('Expires')} ${moment(item.deadline).format(
+                    'YYYY-MM-DD HH:mm',
+                  )}`}</Font>
+                  <Font size={12} lineHeight={16} color={LimitOrderStatusMap[item.limitOrderStatus]?.color}>
+                    {t(LimitOrderStatusMap[item.limitOrderStatus]?.label)}
+                  </Font>
+                </div>
               </div>
             </div>
           ))}
