@@ -15,6 +15,7 @@ import { stringMidShort } from 'utils/string';
 import { getExploreLink } from 'utils';
 import CommonCopy from 'components/CommonCopy';
 import { FetchParam } from 'types/requeset';
+import { formatPriceChange } from 'utils/price';
 
 export type TLimitDetailWebListProps = {
   record?: TLimitRecordItem;
@@ -91,7 +92,7 @@ export const LimitDetailWebList = ({
             );
           return (
             <Font lineHeight={20} size={14}>
-              {`${ZERO.plus(amountInFilled).toFixed()} ${formatSymbol(record?.symbolIn)}`}
+              {`${formatPriceChange(amountInFilled)} ${formatSymbol(record?.symbolIn)}`}
             </Font>
           );
         },
@@ -111,7 +112,7 @@ export const LimitDetailWebList = ({
             );
           return (
             <Font lineHeight={20} size={14}>
-              {`${ZERO.plus(amountOutFilled).toFixed()} ${formatSymbol(record?.symbolOut)}`}
+              {`${formatPriceChange(amountOutFilled)} ${formatSymbol(record?.symbolOut)}`}
             </Font>
           );
         },
@@ -150,13 +151,13 @@ export const LimitDetailWebList = ({
                 <Font lineHeight={20} size={14}>
                   {_record.status !== LimitOrderStatusEnum.PartiallyFilling
                     ? ' -'
-                    : `${ZERO.plus(totalFee).toFixed()} ${formatSymbol('ELF')}`}
+                    : `${formatPriceChange(totalFee)} ${formatSymbol('ELF')}`}
                 </Font>
               </div>
               <div>
                 <Font lineHeight={20} size={14}>
                   {LIMIT_STATUS_WITH_GAS.includes(_record.status)
-                    ? `${ZERO.plus(_record.networkFee).toFixed()} ${formatSymbol('ELF')}`
+                    ? `${formatPriceChange(_record.networkFee)} ${formatSymbol('ELF')}`
                     : '-'}
                 </Font>
               </div>

@@ -354,10 +354,10 @@ export const useLimitColumns = ({ limitCancelModalRef, limitDetailModalRef }: TU
           return (
             <>
               <div>
-                <Font lineHeight={20} size={14}>{`${record.amountInFilled} ${symbolIn}`}</Font>
+                <Font lineHeight={20} size={14}>{`${formatPriceChange(record.amountInFilled)} ${symbolIn}`}</Font>
               </div>
               <Font lineHeight={20} size={14}>
-                {`${amountIn} ${symbolIn}`}
+                {`${formatPriceChange(amountIn)} ${symbolIn}`}
               </Font>
             </>
           );
@@ -379,10 +379,10 @@ export const useLimitColumns = ({ limitCancelModalRef, limitDetailModalRef }: TU
           return (
             <>
               <div>
-                <Font lineHeight={20} size={14}>{`${record.amountOutFilled} ${symbolOut}`}</Font>
+                <Font lineHeight={20} size={14}>{`${formatPriceChange(record.amountOutFilled)} ${symbolOut}`}</Font>
               </div>
               <Font lineHeight={20} size={14}>
-                {`${amountOut} ${symbolOut}`}
+                {`${formatPriceChange(amountOut)} ${symbolOut}`}
               </Font>
             </>
           );
@@ -417,10 +417,10 @@ export const useLimitColumns = ({ limitCancelModalRef, limitDetailModalRef }: TU
           return (
             <>
               <div>
-                <Font lineHeight={20} size={14}>{`${totalFee} ELF`}</Font>
+                <Font lineHeight={20} size={14}>{`${formatPriceChange(totalFee)} ELF`}</Font>
               </div>
               <Font lineHeight={20} size={14}>
-                {`${record.networkFee} ELF`}
+                {`${formatPriceChange(record.networkFee)} ELF`}
               </Font>
             </>
           );

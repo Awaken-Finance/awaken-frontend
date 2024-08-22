@@ -4,8 +4,6 @@ import { useTranslation } from 'react-i18next';
 
 import Font from 'components/Font';
 import { Pairs } from 'components/Pair';
-import FeeRate from 'components/FeeRate';
-import { formatPercentage } from 'utils/price';
 import CommonCopy from 'components/CommonCopy';
 
 import './index.less';
@@ -20,6 +18,7 @@ import { LimitOrderCancelAllowStatus, LimitOrderStatusMap } from 'constants/limi
 import { MutableRefObject } from 'react';
 import { LimitCancelModalInterface } from 'Modals/LimitCancelModal';
 import { LimitDetailModalInterface } from 'Modals/LimitDetailModal';
+import { formatPriceChange } from 'utils/price';
 
 export type TLimitRecordItemProps = {
   item: TLimitRecordItem;
@@ -96,9 +95,9 @@ export default function LimitRecordItem({
       </Col>
       <Col span={12} className="align-right">
         <div className="transaction-list-item-two-row-wrap">
-          <Font lineHeight={20} size={14}>{`${amountInFilled} ${symbolIn}`}</Font>
+          <Font lineHeight={20} size={14}>{`${formatPriceChange(amountInFilled)} ${symbolIn}`}</Font>
           <Font lineHeight={20} size={14}>
-            {`${amountIn} ${symbolIn}`}
+            {`${formatPriceChange(amountIn)} ${symbolIn}`}
           </Font>
         </div>
       </Col>
@@ -110,9 +109,9 @@ export default function LimitRecordItem({
       </Col>
       <Col span={12} className="align-right">
         <div className="transaction-list-item-two-row-wrap">
-          <Font lineHeight={20} size={14}>{`${amountOutFilled} ${symbolOut}`}</Font>
+          <Font lineHeight={20} size={14}>{`${formatPriceChange(amountOutFilled)} ${symbolOut}`}</Font>
           <Font lineHeight={20} size={14}>
-            {`${amountOut} ${symbolOut}`}
+            {`${formatPriceChange(amountOut)} ${symbolOut}`}
           </Font>
         </div>
       </Col>
@@ -134,7 +133,7 @@ export default function LimitRecordItem({
         </Font>
       </Col>
       <Col span={12} className="align-right height-20 line-height-20">
-        <Font lineHeight={20} size={14}>{`${totalFee} ELF`}</Font>
+        <Font lineHeight={20} size={14}>{`${formatPriceChange(totalFee)} ELF`}</Font>
       </Col>
 
       <Col span={12} className="height-20 line-height-20">
@@ -144,7 +143,7 @@ export default function LimitRecordItem({
       </Col>
       <Col span={12} className="align-right height-20 line-height-20">
         <Font lineHeight={20} size={14}>
-          {`${networkFee} ELF`}
+          {`${formatPriceChange(networkFee)} ELF`}
         </Font>
       </Col>
 

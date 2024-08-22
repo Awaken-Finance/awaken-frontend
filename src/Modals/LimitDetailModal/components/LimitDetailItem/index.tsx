@@ -16,6 +16,7 @@ import { LIMIT_STATUS_WITH_GAS, LimitDetailStatusMap } from 'constants/limit';
 import PriceUSDDigits from 'components/PriceUSDDigits';
 import './styles.less';
 import { useMemo } from 'react';
+import { formatPriceChange } from 'utils/price';
 
 export type TLimitDetailItemProps = {
   item: TLimitDetailItem;
@@ -76,7 +77,7 @@ export default function LimitDetailItem({
             </Font>
           </Col>
           <Col span={12} className="align-right height-20 line-height-20">
-            <Font lineHeight={20} size={14}>{`${ZERO.plus(amountInFilled).toFixed()} ${formatSymbol(
+            <Font lineHeight={20} size={14}>{`${formatPriceChange(amountInFilled)} ${formatSymbol(
               record?.symbolIn,
             )}`}</Font>
           </Col>
@@ -87,7 +88,7 @@ export default function LimitDetailItem({
             </Font>
           </Col>
           <Col span={12} className="align-right height-20 line-height-20">
-            <Font lineHeight={20} size={14}>{`${ZERO.plus(amountOutFilled).toFixed()} ${formatSymbol(
+            <Font lineHeight={20} size={14}>{`${formatPriceChange(amountOutFilled)} ${formatSymbol(
               record?.symbolOut,
             )}`}</Font>
           </Col>
@@ -107,7 +108,7 @@ export default function LimitDetailItem({
             </Font>
           </Col>
           <Col span={12} className="align-right height-20 line-height-20">
-            <Font lineHeight={20} size={14}>{`${ZERO.plus(totalFee).toFixed()} ${formatSymbol('ELF')}`}</Font>
+            <Font lineHeight={20} size={14}>{`${formatPriceChange(totalFee)} ${formatSymbol('ELF')}`}</Font>
           </Col>
         </>
       )}
@@ -121,7 +122,7 @@ export default function LimitDetailItem({
           </Col>
           <Col span={12} className="align-right height-20 line-height-20">
             <Font lineHeight={20} size={14}>
-              {`${networkFee} ELF`}
+              {`${formatPriceChange(networkFee)} ELF`}
             </Font>
           </Col>
         </>
