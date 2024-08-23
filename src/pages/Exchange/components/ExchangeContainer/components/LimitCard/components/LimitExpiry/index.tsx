@@ -65,7 +65,8 @@ export const LimitExpiry = ({ value, onChange }: TLimitMaxValueProps) => {
         {EXPIRY_LIST.map((item) => (
           <div
             className={clsx('limit-expiry-btn', value === item.value && 'limit-expiry-btn-active')}
-            onClick={() => onChange?.(item.value)}>
+            onClick={() => onChange?.(item.value)}
+            key={item.value}>
             <Font size={12} lineHeight={20} color="two">
               {item.label}
             </Font>
