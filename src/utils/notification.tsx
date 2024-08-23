@@ -34,7 +34,7 @@ function successToExplorer(
             <br />
           </>
         )}
-        <Row gutter={[6, 0]}>
+        <Row gutter={[6, 0]} align={'middle'}>
           <Col>
             <Font size={14} color="two">
               {`${t('transactionID')}:`}

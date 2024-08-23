@@ -24,9 +24,11 @@
   .transaction-mobile-menu-headers {
     background: #1e212b;
     margin-bottom: 16px;
+    padding-left: 8px;
 
     &.ant-menu-horizontal > .ant-menu-item {
       line-height: 40px;
+      padding: 0 8px;
 
       & a,
       & .ant-menu-title-content {
@@ -43,7 +45,13 @@
       .ant-menu-title-content {
         color: var(--ant-black-font-color-1);
       }
-
+    }
+    &.ant-menu-light .ant-menu-item:hover {
+      &::after {
+        border-bottom: 0.02rem solid transparent !important;
+      }
+    }
+    &.ant-menu-light .ant-menu-item-selected {
       &::after {
         background-color: var(--ant-primary-color);
       }
@@ -107,6 +115,32 @@
     .transaction-list-item-pairs-wrap {
       min-width: 0;
     }
+
+    .transaction-list-item-two-row-wrap {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      align-items: flex-end;
+    }
+
+    .limit-operation-area {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 8px;
+
+      .limit-operation-btn {
+        cursor: pointer;
+        line-height: 20px;
+        font-size: 14px;
+        color: var(--ant-primary-font-color);
+      }
+      .limit-operation-split {
+        height: 12px;
+        width: 1px;
+        background-color: #343948;
+      }
+    }
   }
 
   .copy-address {
@@ -124,4 +158,9 @@
 }
 .transaction-list-wrapper .ant-list {
   min-height: 400px;
+  .common-loading {
+    .ant-spin {
+      top: 100px;
+    }
+  }
 }

@@ -5,7 +5,7 @@ import { TSwapRoute } from 'pages/Swap/types';
 import { useTranslation } from 'react-i18next';
 import { useUserSettings } from 'contexts/useUserSettings';
 import { useMemo } from 'react';
-import { bigNumberToString, getPriceImpactWithBuy, minimumAmountOut } from 'utils/swap';
+import { bigNumberToString, getPriceImpactWithBuy, getPriceImpactWithSell, minimumAmountOut } from 'utils/swap';
 import { ONE, ZERO } from 'constants/misc';
 import BigNumber from 'bignumber.js';
 import { divDecimals } from 'utils/calculate';
@@ -19,7 +19,7 @@ import './styles.less';
 export type TSwapRouteInfoProps = {
   swapInfo: TSwapInfo;
   swapRoute?: TSwapRoute;
-  gasFee: string | 0;
+  gasFee: number;
   isTipShow?: boolean;
   isRoutingShow?: boolean;
 };

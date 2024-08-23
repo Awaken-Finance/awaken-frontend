@@ -2,7 +2,6 @@ import { Row, Col } from 'antd';
 import moment from 'moment';
 import { useTranslation } from 'react-i18next';
 
-import { RecentTransaction } from 'pages/UserCenter/type';
 import Font from 'components/Font';
 import { Pair, Pairs } from 'components/Pair';
 import FeeRate from 'components/FeeRate';
@@ -21,6 +20,7 @@ import { ONE, ZERO } from 'constants/misc';
 import { stringMidShort } from 'utils/string';
 import CommonTooltip from 'components/CommonTooltip';
 import { SwapOrderRouting } from 'pages/Swap/components/SwapOrderRouting';
+import { RecentTransaction } from 'types/transactions';
 
 export default function TransactionItem({
   item: {
@@ -110,7 +110,7 @@ export default function TransactionItem({
                     buttonTitle={t('ok')}
                     headerDesc={t('Order Routing')}>
                     <FeeRate useBg usePercent={false}>
-                      {`${formatPercentage(tradePair?.feeRate * 100)}%...`}
+                      {`Swap`}
                     </FeeRate>
                   </CommonTooltip>
                 ) : (
@@ -132,65 +132,65 @@ export default function TransactionItem({
         </Col>
       </Col>
 
-      <Col span={12} className="height-20">
+      <Col span={12} className="height-20 line-height-20">
         <Font lineHeight={20} color="two">
           {t('price')}
         </Font>
       </Col>
-      <Col span={12} className="align-right height-20">
+      <Col span={12} className="align-right height-20 line-height-20">
         <PriceDigits price={realPrice} className={getFontStyle({ lineHeight: 20 })} />
         &nbsp;
-        <Pair lineHeight={24} symbol={priceSymbol} />
+        <Pair lineHeight={20} symbol={priceSymbol} />
       </Col>
 
-      <Col span={12} className="height-20">
+      <Col span={12} className="height-20 line-height-20">
         <Font lineHeight={20} color="two">
           {t('Pay')}
         </Font>
       </Col>
-      <Col span={12} className="align-right height-20">
+      <Col span={12} className="align-right height-20 line-height-20">
         <Font lineHeight={20}>{formatPriceChange(side === 0 ? token1Amount : token0Amount)}</Font>
         &nbsp;
         <Pair lineHeight={20} symbol={side === 0 ? tradePair?.token1?.symbol : tradePair?.token0?.symbol} />
       </Col>
 
-      <Col span={12} className="height-20">
+      <Col span={12} className="height-20 line-height-20">
         <Font lineHeight={20} color="two">
           {t('Receive')}
         </Font>
       </Col>
-      <Col span={12} className="align-right height-20">
+      <Col span={12} className="align-right height-20 line-height-20">
         <Font lineHeight={20}>{`${formatPriceChange(side === 0 ? token0Amount : token1Amount)}`}</Font>
         &nbsp;
         <Pair lineHeight={20} symbol={side === 0 ? tradePair?.token0?.symbol : tradePair?.token1?.symbol} />
       </Col>
 
-      <Col span={12} className="height-20">
+      <Col span={12} className="height-20 line-height-20">
         <Font lineHeight={20} color="two">
           {t('TotalValue')}
         </Font>
       </Col>
-      <Col span={12} className="align-right height-20">
+      <Col span={12} className="align-right height-20 line-height-20">
         <PriceUSDDigits className={getFontStyle({ lineHeight: 24 })} price={totalPriceInUsd} />,
       </Col>
 
-      <Col span={12} className="height-20">
+      <Col span={12} className="height-20 line-height-20">
         <Font lineHeight={20} color="two">
           {t('Average Price')}
         </Font>
       </Col>
-      <Col span={12} className="align-right height-20">
+      <Col span={12} className="align-right height-20 line-height-20">
         <PriceDigits price={receiveAveragePrice} className={getFontStyle({ lineHeight: 20 })} />
         &nbsp;
         <Pair lineHeight={24} symbol={priceSymbol} />
       </Col>
 
-      <Col span={12} className="height-20">
+      <Col span={12} className="height-20 line-height-20">
         <Font lineHeight={20} color="two">
           {t('LP Fee')}
         </Font>
       </Col>
-      <Col span={12} className="align-right height-20">
+      <Col span={12} className="align-right height-20 line-height-20">
         <Font lineHeight={20}>
           {`-${ZERO.plus(totalFee ?? 0)
             .dp(8)
@@ -200,12 +200,12 @@ export default function TransactionItem({
         <Pair lineHeight={20} symbol={tradePair?.[side === 0 ? 'token1' : 'token0']?.symbol} />
       </Col>
 
-      <Col span={12} className="height-20">
+      <Col span={12} className="height-20 line-height-20">
         <Font lineHeight={20} color="two">
           {t('transactionFee')}
         </Font>
       </Col>
-      <Col span={12} className="align-right height-20">
+      <Col span={12} className="align-right height-20 line-height-20">
         <Font lineHeight={20}>{`-${ZERO.plus(transactionFee ?? 0)
           .dp(8)
           .toFixed()}`}</Font>
@@ -213,12 +213,12 @@ export default function TransactionItem({
         <Pair lineHeight={20} symbol={'ELF'} />
       </Col>
 
-      <Col span={11} className="height-20">
+      <Col span={11} className="height-20 line-height-20">
         <Font lineHeight={20} color="two">
           {t('transactionID')}
         </Font>
       </Col>
-      <Col span={13} className="align-right height-20">
+      <Col span={13} className="align-right height-20 line-height-20">
         <Row>
           <Col>
             <a

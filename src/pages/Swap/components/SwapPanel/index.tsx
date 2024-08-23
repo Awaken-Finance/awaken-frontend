@@ -18,8 +18,6 @@ import CommonTooltip from 'components/CommonTooltip';
 import { useTranslation } from 'react-i18next';
 import SettingFee from 'Buttons/SettingFeeBtn';
 import { useUserSettings } from 'contexts/useUserSettings';
-import { useRequest } from 'ahooks';
-import { getTransactionFee } from 'pages/Exchange/apis/getTransactionFee';
 import { divDecimals, timesDecimals } from 'utils/calculate';
 import AuthBtn from 'Buttons/AuthBtn';
 import { FontColor } from 'utils/getFontStyle';
@@ -35,6 +33,7 @@ import { CircleProcess, CircleProcessInterface } from 'components/CircleProcess'
 import { formatPrice } from 'utils/price';
 import { useConnectWallet } from '@aelf-web-login/wallet-adapter-react';
 import { useIsConnected } from 'hooks/useLogin';
+import { useTransactionFee } from 'contexts/useStore/hooks';
 
 export type TSwapInfo = {
   tokenIn?: Currency;
@@ -51,7 +50,7 @@ export const SwapPanel = () => {
 
   const circleProcessRef = useRef<CircleProcessInterface>();
   const swapConfirmModalRef = useRef<SwapConfirmModalInterface>();
-  const { data: gasFee = 0 } = useRequest(getTransactionFee);
+  const gasFee = useTransactionFee();
 
   const [swapInfo, setSwapInfo] = useState<TSwapInfo>({
     tokenIn: ChainConstants.constants.COMMON_BASES[2],

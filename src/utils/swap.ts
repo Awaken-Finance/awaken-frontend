@@ -34,6 +34,11 @@ export const getDeadline = (): number | PBTimestamp => {
   return seconds;
 };
 
+export const getDeadlineWithSec = (seconds: number) => {
+  if (ChainConstants.chainType === 'ELF') return { seconds: seconds, nanos: 0 };
+  return seconds;
+};
+
 export const quote = (amountA?: BigNumber, reserveA?: BigNumber | string, reserveB?: BigNumber | string): BigNumber => {
   if (!(amountA && reserveB && reserveA)) return ZERO;
   return amountA.times(reserveB).div(reserveA);
@@ -234,7 +239,7 @@ type SwapResult = {
   TransactionId?: string;
   transactionId?: string;
 };
-// TODO
+
 export async function swapSuccess({
   result,
   tokenB,
@@ -250,13 +255,36 @@ export async function swapSuccess({
 }) {
   const Logs = getLogs(result);
   const log = getLog(Logs, 'Swap');
+  const limitLogs = getLog(Logs, 'LimitOrderTotalFilled');
 
-  let { amountIn, amountOut } = log[0];
+  let amountIn = ZERO,
+    amountOut = ZERO;
   if (isSwap) {
     const inList = log.filter((item) => item.symbolIn === tokenB?.symbol);
     amountIn = inList.reduce((p, c) => p.plus(c.amountIn), ZERO);
     const outList = log.filter((item) => item.symbolOut === tokenA?.symbol);
     amountOut = outList.reduce((p, c) => p.plus(c.amountOut), ZERO);
+  } else {
+    const { _amountIn, _amountOut } = log[0] || {};
+    if (_amountIn) {
+      amountIn = amountIn.plus(_amountIn || 0);
+    }
+    if (_amountOut) {
+      amountOut = amountOut.plus(_amountOut || 0);
+    }
+  }
+
+  if (limitLogs && limitLogs.length) {
+    const limitLog = limitLogs[0];
+    if (limitLog.symbolOut === tokenA?.symbol) {
+      console.log(1);
+      amountIn = amountIn.plus(limitLog.amountInFilled);
+      amountOut = amountOut.plus(limitLog.amountOutFilled);
+    } else {
+      console.log(2);
+      amountIn = amountIn.plus(limitLog.amountOutFilled);
+      amountOut = amountOut.plus(limitLog.amountInFilled);
+    }
   }
 
   try {
@@ -458,8 +486,14 @@ export function getPriceImpactSeverity(priceImpact?: string | BigNumber) {
 
 export function minimumAmountOut(outputAmount: BigNumber, slippageTolerance = DEFAULT_SLIPPAGE_TOLERANCE) {
   if (slippageTolerance === '') slippageTolerance = DEFAULT_SLIPPAGE_TOLERANCE;
-  return outputAmount.times(ONE.div(ONE.plus(slippageTolerance)));
+  return outputAmount.div(ONE.plus(slippageTolerance));
 }
+
+export function maximumAmountIn(inputAmount: BigNumber, slippageTolerance = DEFAULT_SLIPPAGE_TOLERANCE) {
+  if (slippageTolerance === '') slippageTolerance = DEFAULT_SLIPPAGE_TOLERANCE;
+  return inputAmount.times(ONE.plus(slippageTolerance));
+}
+
 export function sortLPSymbol(symbol: string) {
   const list = symbol?.split('-');
   return list?.sort().join('-');

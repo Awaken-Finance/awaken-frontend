@@ -50,6 +50,8 @@ export const USER_CENTER_API_LIST = {
   GET_USER_ASSET_TOKEN: '/api/app/user-assets-token',
   SET_USER_ASSET_TOKEN: '/api/app/user-assets-token',
   GET_USER_COMBINED_ASSETS: '/api/app/asset/user-combined-assets',
+  GET_LIMIT_RECORD: '/api/app/limit-order/my-orders',
+  GET_LIMIT_DETAIL_LIST: '/api/app/limit-order/fill-detail',
 };
 
 export const PORTFOLIO_API_LIST = {
