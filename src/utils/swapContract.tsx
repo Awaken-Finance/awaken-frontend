@@ -258,6 +258,7 @@ type SwapProps = {
   amountIn: BigNumber;
   amountOutMin: BigNumber;
   swapTokens?: TContractSwapToken[];
+  methodName?: string;
   t: TFunction<'translation'>;
 };
 
@@ -269,6 +270,7 @@ export const onSwap: (param: SwapProps) => Promise<boolean | any> = async ({
   tokenA,
   tokenB,
   swapTokens,
+  methodName: methodNameProp,
   t,
 }) => {
   if (amountOutMin.lt(1)) amountOutMin = ZERO.plus(1);
@@ -283,7 +285,7 @@ export const onSwap: (param: SwapProps) => Promise<boolean | any> = async ({
   const isSwap = !!swapTokens;
 
   if (isSwap) {
-    methodName = 'swapExactTokensForTokens';
+    methodName = methodNameProp || 'swapExactTokensForTokens';
     args = [swapTokens];
   } else if (tokenA?.isNative) {
     methodName = 'swapExactTokensForETH';
@@ -318,6 +320,7 @@ export const onSwap: (param: SwapProps) => Promise<boolean | any> = async ({
   }
   try {
     const result = await contract.callSendMethod(methodName, account, args, sendOptions);
+    console.log('swap result', result);
     if (result.error) {
       formatSwapError(result.error, {
         amount: divDecimals(amountIn, tokenB?.decimals).dp(8).toFixed(),
@@ -329,6 +332,7 @@ export const onSwap: (param: SwapProps) => Promise<boolean | any> = async ({
     swapSuccess({ tokenB, tokenA, result, t, isSwap });
     return REQ_CODE.Success;
   } catch (error: any) {
+    console.log('onSwap error', error);
     formatSwapError(error, {
       amount: divDecimals(amountIn, tokenB?.decimals).dp(8).toFixed(),
       symbol: tokenB?.symbol,

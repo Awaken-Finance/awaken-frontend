@@ -1,6 +1,5 @@
-import { useCallback } from 'react';
+import { useCallback, useRef } from 'react';
 import { Menu } from 'antd';
-import { RecentTransaction, LiquidityRecord } from 'pages/UserCenter/type';
 import TransactionItem from './TransactionItem';
 import LiquidityRecordItem from './LiquidityRecordItem';
 import CommonList from 'components/CommonList';
@@ -11,6 +10,11 @@ import CommonButton from 'components/CommonButton';
 import { IconArrowLeft } from 'assets/icons';
 import Font from 'components/Font';
 import { useHistory } from 'react-router-dom';
+import { TranslationMenuEnum } from 'pages/Transactions/hooks/useGetList';
+import LimitRecordItem from './LimitRecordItem';
+import { LiquidityRecord, RecentTransaction, TLimitRecordItem } from 'types/transactions';
+import { LimitCancelModal, LimitCancelModalInterface } from 'Modals/LimitCancelModal';
+import { LimitDetailModal, LimitDetailModalInterface } from 'Modals/LimitDetailModal';
 
 export default function MobileList({
   dataSource = [],
@@ -26,7 +30,7 @@ export default function MobileList({
   menuList,
   side,
 }: {
-  dataSource?: RecentTransaction[] | LiquidityRecord[] | undefined;
+  dataSource?: RecentTransaction[] | LiquidityRecord[] | TLimitRecordItem[] | undefined;
   total?: number;
   loading?: boolean;
   getData?: (args: any) => void;
@@ -40,25 +44,8 @@ export default function MobileList({
   menuList: any[];
 }) {
   const { t } = useTranslation();
-
-  // const [sidVisible, setSidVisible] = useState(false);
-  // const ref = useOutSideClick(
-  //   useCallback(() => {
-  //     setSidVisible(false);
-  //   }, []),
-  // );
-  // const sidChange = (val: number) => {
-  //   setSidVisible(false);
-  //   getData({
-  //     page: pageNum,
-  //     pageSize,
-  //     field,
-  //     order,
-  //     filter: {
-  //       side: [val],
-  //     },
-  //   });
-  // };
+  const limitCancelModalRef = useRef<LimitCancelModalInterface>();
+  const limitDetailModalRef = useRef<LimitDetailModalInterface>();
 
   const fetchList = useCallback(
     () =>
@@ -74,9 +61,20 @@ export default function MobileList({
     [getData, field, order, pageSize, pageNum, side],
   );
 
-  const renderItem = (item: LiquidityRecord | RecentTransaction) => {
-    if (menu === 'all') {
-      return <TransactionItem item={item} key={item?.transactionHash} />;
+  const renderItem = (item: LiquidityRecord | RecentTransaction | TLimitRecordItem) => {
+    if (menu === TranslationMenuEnum.trade) {
+      return <TransactionItem item={item as RecentTransaction} key={item?.transactionHash} />;
+    }
+
+    if (menu === TranslationMenuEnum.limit) {
+      return (
+        <LimitRecordItem
+          limitCancelModalRef={limitCancelModalRef}
+          limitDetailModalRef={limitDetailModalRef}
+          item={item as TLimitRecordItem}
+          key={item?.transactionHash}
+        />
+      );
     }
 
     return <LiquidityRecordItem item={item} key={item?.transactionHash} />;
@@ -146,6 +144,15 @@ export default function MobileList({
           pageNum={pageNum}
         />
       </div>
+
+      <LimitCancelModal
+        ref={limitCancelModalRef}
+        onSuccess={() => {
+          getData({ page: 1 });
+        }}
+      />
+
+      <LimitDetailModal ref={limitDetailModalRef} />
     </div>
   );
 }

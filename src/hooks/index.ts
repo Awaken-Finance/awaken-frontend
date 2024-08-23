@@ -73,9 +73,15 @@ export function useReturnLastCallback<T extends (...args: any[]) => any>(callbac
   return useCallback(async (...args: any) => {
     ++last.current;
     const id = last.current;
-    const req = await callback(...args);
-    if (last.current !== id) throw new Error('Not the latest request');
-    return req;
+    try {
+      const req = await callback(...args);
+      if (last.current !== id) throw new Error('Not the latest request');
+      return req;
+    } catch (error) {
+      if (last.current !== id) throw new Error('Not the latest request');
+      throw error;
+    }
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, deps) as T;
 }

@@ -56,8 +56,10 @@ export type TSwapRoute = {
 };
 
 export type TContractSwapToken = {
-  amountIn: string;
-  amountOutMin: string;
+  amountIn?: string;
+  amountOutMin?: string;
+  amountOut?: string;
+  amountInMax?: string;
   channel: string;
   deadline: number | PBTimestamp;
   path: string[];

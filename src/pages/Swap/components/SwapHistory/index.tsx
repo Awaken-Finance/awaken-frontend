@@ -5,8 +5,6 @@ import { useTranslation } from 'react-i18next';
 import { useMobile } from 'utils/isMobile';
 import { IconArrowRight2 } from 'assets/icons';
 import { useReturnLastCallback } from 'hooks';
-import { getTransactionList } from 'pages/UserCenter/apis/recentTransaction';
-import { LiquidityRecord, RecentTransaction } from 'pages/UserCenter/type';
 import { useActiveWeb3React } from 'hooks/web3';
 import { CommonTable } from 'components/CommonTable';
 import { ColumnsType } from 'antd/es/table';
@@ -24,6 +22,8 @@ import { Col, Row } from 'antd';
 import { useHistory } from 'react-router-dom';
 import { SWAP_TIME_INTERVAL } from 'constants/misc';
 import { useIsConnected } from 'hooks/useLogin';
+import { LiquidityRecord, RecentTransaction } from 'types/transactions';
+import { getTransactionList } from 'api/utils/recentTransaction';
 
 export function SwapTransactionItem({
   item: { tradePair, timestamp, side, token0Amount, token1Amount, transactionHash, totalPriceInUsd },

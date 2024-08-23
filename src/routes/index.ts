@@ -74,12 +74,21 @@ const routes: RoutesProps[] = [
     component: Swap,
   },
   {
+    path: '/swap/:tab',
+    component: Swap,
+  },
+  {
     path: '/portfolio',
     component: Portfolio,
     authComp: AuthComp,
   },
   {
     path: '/transactions',
+    component: Transactions,
+    authComp: AuthComp,
+  },
+  {
+    path: '/transactions/:menu',
     component: Transactions,
     authComp: AuthComp,
   },

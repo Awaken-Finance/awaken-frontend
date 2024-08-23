@@ -76,6 +76,7 @@ export default function Provider({ children }: { children: React.ReactNode }) {
 
   const addTokenImage: Actions['addTokenImage'] = useCallback(
     (symbol, imageUri) => {
+      if (!imageUri) return;
       let _tokenImgMap = tokenImageMap;
       if (!_tokenImgMap) _tokenImgMap = {};
 

@@ -34,30 +34,24 @@ import { useMobile } from 'utils/isMobile';
 import CommonBlockProgress from 'components/CommonBlockProgress';
 import { isZeroDecimalsNFT } from 'utils/NFT';
 import { formatSymbol } from 'utils/token';
+import { useTransactionFee } from 'contexts/useStore/hooks';
 
-export default function LeftCard({
-  tokenA,
-  tokenB,
-  balances,
-  reserves,
-  rate,
-  getReserves,
-}: {
-  setToken?: (currency?: Currency | undefined) => void;
+export type TLeftCardProps = {
   rate: string;
   tokenA?: Currency;
   tokenB?: Currency;
   balances?: CurrencyBalances;
   reserves?: Reserves;
   getReserves: () => void;
-}) {
+};
+export default function LeftCard({ tokenA, tokenB, balances, reserves, rate, getReserves }: TLeftCardProps) {
   const isMobile = useMobile();
 
   const balance = balances?.[getCurrencyAddress(tokenB)];
 
   const [{ userSlippageTolerance }] = useUserSettings();
 
-  const [transactionFee, setTransactionFee] = useState<BigNumber.Value>(0);
+  const transactionFee = useTransactionFee();
 
   const [amount, setAmount] = useState('');
 
@@ -73,9 +67,8 @@ export default function LeftCard({
   }, [balance, tokenB, transactionFee]);
 
   const maxReserveAmount = useMemo(
-    () =>
-      minimumAmountOut(divDecimals(reserves?.[getCurrencyAddress(tokenA)], tokenA?.decimals), userSlippageTolerance),
-    [reserves, tokenA, userSlippageTolerance],
+    () => divDecimals(reserves?.[getCurrencyAddress(tokenA)], tokenA?.decimals),
+    [reserves, tokenA],
   );
 
   const maxAmount = useMemo(() => {
@@ -86,7 +79,7 @@ export default function LeftCard({
       divDecimals(reserves?.[getCurrencyAddress(tokenA)], tokenA?.decimals),
     );
 
-    return BigNumber.min(maxBalanceAmount, maxReserveAmount).dp(tokenB?.decimals ?? 8);
+    return BigNumber.min(maxBalanceAmount, maxReserveAmount).dp(tokenA?.decimals ?? 8);
   }, [rate, maxBalanceTotal, reserves, tokenB, tokenA, maxReserveAmount]);
 
   const [progressValue, setProgressValue] = useState(0);
@@ -104,9 +97,9 @@ export default function LeftCard({
       divDecimals(reserves?.[getCurrencyAddress(tokenA)], tokenA?.decimals),
       divDecimals(reserves?.[getCurrencyAddress(tokenB)], tokenB?.decimals),
       total,
-      amountOutMin.dp(tokenA?.decimals ?? 18),
+      ZERO.plus(amount),
     );
-  }, [total, reserves, tokenA, tokenB, amountOutMin]);
+  }, [tokenA, tokenB, reserves, total, amount]);
 
   const amountError = useMemo(() => {
     const bigInput = new BigNumber(amount);
@@ -198,7 +191,7 @@ export default function LeftCard({
       }
 
       const newAmount = sideToInput(val, maxAmount);
-      const newAmountStr = bigNumberToString(newAmount, tokenB?.decimals);
+      const newAmountStr = bigNumberToString(newAmount, tokenA?.decimals);
       const newTotal = getAmountByInput(
         rate,
         new BigNumber(newAmount),
@@ -287,20 +280,19 @@ export default function LeftCard({
             <PriceImpact value={priceImpact} />
           </Col>
           <Col span={24}>
-            <TransactionFee onChange={(val) => setTransactionFee(val)} />
+            <TransactionFee />
           </Col>
         </Row>
       </Col>
       <Col span={24}>
         <SellBtnWithPay
           disabled={amountError.error || totalError.error}
-          tokenA={tokenA}
-          tokenB={tokenB}
+          tokenIn={tokenB}
+          tokenOut={tokenA}
           rate={rate}
           onClick={onClickSellBtn}
-          amountBN={total ? new BigNumber(total) : ZERO}
-          amountOutMin={amountOutMin}
-          amount={total}
+          valueIn={total}
+          valueOut={amount}
           onTradeSuccess={() => {
             setAmount('');
             setTotal('');

@@ -61,6 +61,7 @@ export type modalState = {
   swapNotSupportedModal?: {
     tokenIn: Currency;
     tokenOut: Currency;
+    isLimit?: boolean;
   };
   synchronizedAccountInfoModal: boolean;
 };
