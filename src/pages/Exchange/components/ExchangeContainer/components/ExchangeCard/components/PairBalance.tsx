@@ -33,7 +33,7 @@ function PairBalance({ token, balance }: PairBalanceProps) {
         <Font size={isMobile ? 12 : 14} lineHeight={isMobile ? 18 : 20} weight="medium">
           {showValueWrapper(
             isConnected ? token?.decimals : undefined,
-            unitConverter(divDecimals(balance, token?.decimals)),
+            unitConverter(divDecimals(balance, token?.decimals), token?.decimals),
           )}
         </Font>
       </Col>

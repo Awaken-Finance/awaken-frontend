@@ -6,9 +6,7 @@ import CurrencyRow from './CurrencyRow';
 import { Currency } from '@awaken/sdk-core';
 import { useTranslation } from 'react-i18next';
 import { useMobile } from 'utils/isMobile';
-import { useRequest } from 'ahooks';
 import BigNumber from 'bignumber.js';
-import { getTransactionFee } from 'pages/Exchange/apis/getTransactionFee';
 import { divDecimals, timesDecimals } from 'utils/calculate';
 import { usePair, usePairsAddress } from 'hooks/userPairs';
 import { getCurrencyAddress, getLiquidity, parseUserSlippageTolerance } from 'utils/swap';
@@ -18,6 +16,7 @@ import { unitConverter } from 'utils';
 import { ChainConstants } from 'constants/ChainConstants';
 import { useMemo } from 'react';
 import { LP_DECIMALS } from 'constants/misc';
+import { useTransactionFee } from 'contexts/useStore/hooks';
 
 export function AddConfirmModal({
   tokenA,
@@ -43,7 +42,7 @@ export function AddConfirmModal({
   const { t } = useTranslation();
   const isMobile = useMobile();
   const width = isMobile ? '320px' : '420px';
-  const { data: transactionFee = 0 } = useRequest(getTransactionFee);
+  const transactionFee = useTransactionFee();
 
   const pairAddress = usePairsAddress(rate, tokenA, tokenB);
 

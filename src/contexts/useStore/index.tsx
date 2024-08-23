@@ -11,10 +11,13 @@ import isMobile, { useIsTelegram } from 'utils/isMobile';
 import { switchNetwork } from 'utils/network';
 import { PortkeyDid } from '@aelf-web-login/wallet-adapter-bridge';
 import { MOBILE_DEVICE_WIDTH } from 'constants/misc';
+import { useRequest } from 'ahooks';
+import { getTransactionFee } from 'pages/Exchange/apis/getTransactionFee';
 const body = window.document.getElementsByTagName('body')[0];
 body.className = 'pc-site-content';
 const INITIAL_STATE = {
   refreshTimestamp: 0,
+  transactionFee: 0,
 };
 const StoreContext = createContext<any>(INITIAL_STATE);
 
@@ -27,6 +30,7 @@ declare type StoreState = {
   refreshTimestamp: number;
   mobile?: boolean;
   blockHeight?: number;
+  transactionFee: number;
 };
 export function useStore(): [StoreState] {
   return useContext(StoreContext);
@@ -56,6 +60,7 @@ export default function Provider({ children }: { children: React.ReactNode }) {
   const [mobile, setMobile] = useState<boolean>();
   const { language } = useLanguage();
   const isTelegram = useIsTelegram();
+  const { data: transactionFee = 0 } = useRequest(getTransactionFee);
 
   // isMobile
   useEffect(() => {
@@ -107,7 +112,8 @@ export default function Provider({ children }: { children: React.ReactNode }) {
   });
 
   return (
-    <StoreContext.Provider value={useMemo(() => [{ ...state, mobile }, { dispatch }], [state, mobile])}>
+    <StoreContext.Provider
+      value={useMemo(() => [{ ...state, mobile, transactionFee }, { dispatch }], [state, mobile, transactionFee])}>
       {children}
     </StoreContext.Provider>
   );

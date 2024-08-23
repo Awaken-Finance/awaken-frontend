@@ -11,14 +11,7 @@ import { bigNumberToString } from 'utils/swap';
 import { formatSymbol } from 'utils/token';
 import CommonTooltip from 'components/CommonTooltip';
 
-export default function MinimumOutput({
-  value,
-  token,
-}: {
-  value?: BigNumber.Value;
-  token?: Currency;
-  maxValue?: BigNumber.Value;
-}) {
+export default function MinimumOutput({ value, token }: { value?: BigNumber.Value; token?: Currency }) {
   const { t } = useTranslation();
   const isMobile = useMobile();
 

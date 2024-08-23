@@ -4,6 +4,7 @@ import { Currency } from '@awaken/sdk-core';
 import { ONE, ZERO } from 'constants/misc';
 import BigNumber from 'bignumber.js';
 import lodash from 'lodash';
+import { TTradePair } from 'types/pair';
 
 export function getPairsOrderByTokenWeights(
   token0?: TokenInfo | string,
@@ -75,4 +76,8 @@ export const getPairReversed = (_pair: PairItem) => {
   pair.tradeValue24h = _pair.volume24h;
 
   return pair;
+};
+
+export const getTokenFromPair = (pair: TTradePair, symbol: string) => {
+  return pair.token0.symbol === symbol ? pair.token0 : pair.token1;
 };

@@ -2,7 +2,6 @@ import { Row, Col } from 'antd';
 import moment from 'moment';
 import { useTranslation } from 'react-i18next';
 
-import { LiquidityRecord } from 'pages/UserCenter/type';
 import Font from 'components/Font';
 import { Pair, Pairs } from 'components/Pair';
 import FeeRate from 'components/FeeRate';
@@ -13,6 +12,7 @@ import './index.less';
 import { getExploreLink } from 'utils';
 import { stringMidShort } from 'utils/string';
 import { ZERO } from 'constants/misc';
+import { LiquidityRecord } from 'types/transactions';
 
 export default function LiquidityRecordItem({
   item: { tradePair, timestamp, token0Amount, token1Amount, transactionFee, transactionHash },
@@ -42,34 +42,34 @@ export default function LiquidityRecordItem({
         </Row>
       </Col>
 
-      <Col span={12} className="height-20" style={{ marginTop: '4px' }}>
+      <Col span={12} className="height-20 line-height-20" style={{ marginTop: '4px' }}>
         <Font lineHeight={20} color="two">
           {t('amount')}
         </Font>
       </Col>
-      <Col span={12} className="align-right height-20">
+      <Col span={12} className="align-right height-20 line-height-20">
         <Font lineHeight={20}>{formatPriceChange(token0Amount)}</Font>
         &nbsp;
         <Pair lineHeight={20} symbol={tradePair?.token0?.symbol} />
       </Col>
 
-      <Col span={12} className="height-20">
+      <Col span={12} className="height-20 line-height-20">
         <Font lineHeight={20} color="two">
           {t('amount')}
         </Font>
       </Col>
-      <Col span={12} className="align-right height-20">
+      <Col span={12} className="align-right height-20 line-height-20">
         <Font lineHeight={20}>{formatPriceChange(token1Amount)}</Font>
         &nbsp;
         <Pair lineHeight={20} symbol={tradePair?.token1?.symbol} />
       </Col>
 
-      <Col span={12} className="height-20">
+      <Col span={12} className="height-20 line-height-20">
         <Font lineHeight={20} color="two">
           {t('transactionFee')}
         </Font>
       </Col>
-      <Col span={12} className="align-right height-20">
+      <Col span={12} className="align-right height-20 line-height-20">
         <Font lineHeight={20}>{`-${ZERO.plus(transactionFee ?? 0)
           .dp(8)
           .toFixed()}`}</Font>
@@ -77,12 +77,12 @@ export default function LiquidityRecordItem({
         <Pair lineHeight={20} symbol={'ELF'} />
       </Col>
 
-      <Col span={11} className="height-20">
+      <Col span={11} className="height-20 line-height-20">
         <Font lineHeight={20} color="two">
           {t('transactionID')}
         </Font>
       </Col>
-      <Col span={13} className="align-right height-20">
+      <Col span={13} className="align-right height-20 line-height-20">
         <Row align="middle">
           <Col>
             <a

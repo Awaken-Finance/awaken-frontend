@@ -30,6 +30,31 @@ export function getWallet() {
   return wallet;
 }
 
+const CacheViewContracts: { [key: string]: any } = {};
+
+export const getViewContract = async (contractAddress: string, _wallet?: any): Promise<any> => {
+  const key = contractAddress;
+  if (!CacheViewContracts[key]) {
+    if (!_wallet) _wallet = getWallet();
+    const aelf = getAElf();
+    const contract = await aelf.chain.contractAt(contractAddress, _wallet);
+    CacheViewContracts[key] = contract;
+    return contract;
+  }
+
+  return CacheViewContracts[key];
+};
+
+export type TCallViewMethodParams = {
+  contractAddress: string;
+  methodName: string;
+  args: any;
+};
+export const callViewMethod = async ({ contractAddress, methodName, args }: TCallViewMethodParams) => {
+  const _contract = await getViewContract(contractAddress);
+  return _contract[methodName].call(args);
+};
+
 export const approveELF = async (
   address: string,
   tokenContract: ContractBasic,

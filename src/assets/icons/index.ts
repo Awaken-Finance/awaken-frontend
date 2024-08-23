@@ -15,6 +15,7 @@ import { ReactComponent as IconMenu } from './icon-menu.svg';
 import { ReactComponent as IconArrowRight } from './icon-arrow-right.svg';
 import { ReactComponent as IconArrowRight2 } from './icon-arrow-right2.svg';
 import { ReactComponent as IconArrowRight3 } from './icon-arrow-right3.svg';
+import { ReactComponent as IconArrowRight4 } from './icon-arrow-right4.svg';
 import { ReactComponent as IconArrowLeft } from './icon-arrow-left.svg';
 import { ReactComponent as IconArrowLeft2 } from './icon-arrow-left2.svg';
 import { ReactComponent as IconArrowUp } from './icon-arrow-up.svg';
@@ -35,7 +36,8 @@ import { ReactComponent as IconNotificationSuccess } from './icon-notification-s
 import { ReactComponent as IconNotificationError } from './icon-notification-error.svg';
 import { ReactComponent as IconNotificationWarning } from './icon-notification-warning.svg';
 import { ReactComponent as IconNotificationInfo } from './icon-notification-info.svg';
-import { ReactComponent as IconSwitchPair } from './switch-pair.svg';
+import { ReactComponent as IconSwitchPair } from './icon-switch-pair.svg';
+import { ReactComponent as IconSwitchPair2 } from './icon-switch-pair2.svg';
 import { ReactComponent as IconSelected } from './icon-selected.svg';
 import { ReactComponent as IconQuestion } from './icon-question.svg';
 import { ReactComponent as IconLogo } from './icon-logo.svg';
@@ -68,6 +70,7 @@ export {
   IconArrowRight,
   IconArrowRight2,
   IconArrowRight3,
+  IconArrowRight4,
   IconArrowLeft,
   IconArrowLeft2,
   IconArrowUp,
@@ -90,6 +93,7 @@ export {
   IconNotificationInfo,
   IconNotificationCopy,
   IconSwitchPair,
+  IconSwitchPair2,
   IconSelected,
   IconQuestion,
   IconLogo,

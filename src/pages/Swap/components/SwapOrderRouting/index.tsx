@@ -15,7 +15,6 @@ export type TSwapOrderRoutingProps = {
 export const SwapOrderRouting = ({ swapRoute, percentRoutes }: TSwapOrderRoutingProps) => {
   const isMobile = useMobile();
   const { t } = useTranslation();
-  console.log('percentRoutes', percentRoutes);
 
   const routeList = useMemo(() => {
     if (swapRoute) {
@@ -42,10 +41,11 @@ export const SwapOrderRouting = ({ swapRoute, percentRoutes }: TSwapOrderRouting
               tokenIn = item.tradePair?.token1;
               tokenOut = item.tradePair?.token0;
             }
+            const isLimit = !item.pairAddress;
 
             return {
               tokens: [tokenIn, tokenOut],
-              feeRate: `${ZERO.plus(item.tradePair?.feeRate).times(100).toFixed()}%`,
+              feeRate: isLimit ? 'Limit' : `${ZERO.plus(item.tradePair?.feeRate).times(100).toFixed()}%`,
             };
           }),
         };
@@ -53,8 +53,6 @@ export const SwapOrderRouting = ({ swapRoute, percentRoutes }: TSwapOrderRouting
     }
     return [];
   }, [swapRoute, percentRoutes]);
-
-  console.log('routeList', routeList);
 
   const firstToken = useMemo(() => {
     if (swapRoute) return swapRoute?.distributions[0]?.tokens[0];
