@@ -725,6 +725,8 @@
     "Limit Price": "限價單價格",
     "Submit Order": "提交限價單",
     "Review Order": "檢查限價單",
-    "Enter a price": "輸入價格"
+    "Enter a price": "輸入價格",
+    "Max. Buy": "最大購買量",
+    "Max. Receive": "最多獲得"
   }
 }

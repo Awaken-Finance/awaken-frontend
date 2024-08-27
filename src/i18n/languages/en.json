@@ -700,6 +700,8 @@
     "Limit Price": "Limit Price",
     "Submit Order": "Submit Order",
     "Review Order": "Review Order",
-    "Enter a price": "Enter a price"
+    "Enter a price": "Enter a price",
+    "Max. Buy": "Max. Buy",
+    "Max. Receive": "Max. Receive"
   }
 }
