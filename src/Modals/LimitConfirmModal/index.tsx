@@ -4,7 +4,6 @@ import { formatSymbol } from 'utils/token';
 import { Col, Row } from 'antd';
 import CommonModal from 'components/CommonModal';
 import CommonButton from 'components/CommonButton';
-
 import './styles.less';
 import { useActiveWeb3React } from 'hooks/web3';
 import { sleep } from 'utils';
@@ -23,9 +22,8 @@ import { getCurrencyAddress, getDeadlineWithSec } from 'utils/swap';
 import { useAElfContract } from 'hooks/useContract';
 import { LIMIT_CONTRACT_ADDRESS, SWAP_HOOK_CONTRACT_ADDRESS } from 'constants/index';
 import { divDecimals, timesDecimals } from 'utils/calculate';
-import { commitLimit, getContractMaxBufferPrice } from 'utils/limit';
+import { commitLimit } from 'utils/limit';
 import { LIMIT_PRICE_DECIMAL } from 'constants/limit';
-import notification from 'utils/notification';
 import BigNumber from 'bignumber.js';
 
 export type TLimitConfirmModalProps = {
@@ -131,26 +129,26 @@ export const LimitConfirmModal = forwardRef(({ onSuccess, onPriceError }: TLimit
     isLoadingRef.current = true;
     try {
       const { amountIn, amountOut, tokenIn, tokenOut } = info;
-      const maxBufferPrice = await getContractMaxBufferPrice({
-        contract: hookContract,
-        tokenIn,
-        tokenOut,
-      });
+      // const maxBufferPrice = await getContractMaxBufferPrice({
+      //   contract: hookContract,
+      //   tokenIn,
+      //   tokenOut,
+      // });
 
-      const curPrice = ZERO.plus(amountIn).div(amountOut);
+      // const curPrice = ZERO.plus(amountIn).div(amountOut);
 
-      console.log('maxBufferPrice', maxBufferPrice, curPrice.toFixed());
-      if (curPrice.gt(maxBufferPrice)) {
-        onPriceError?.();
-        setIsLoading(false);
-        isLoadingRef.current = false;
-        notification.error({
-          message: '',
-          description: t('limitPriceError'),
-        });
-        onCancel();
-        return;
-      }
+      // console.log('maxBufferPrice', maxBufferPrice, curPrice.toFixed());
+      // if (curPrice.gt(maxBufferPrice)) {
+      //   onPriceError?.();
+      //   setIsLoading(false);
+      //   isLoadingRef.current = false;
+      //   notification.error({
+      //     message: '',
+      //     description: t('limitPriceError'),
+      //   });
+      //   onCancel();
+      //   return;
+      // }
 
       const valueInAmountBN = timesDecimals(approveInfo.requireAmount, tokenIn.decimals);
       const allowance = await checkAllowance();
@@ -193,7 +191,6 @@ export const LimitConfirmModal = forwardRef(({ onSuccess, onPriceError }: TLimit
     expiryTime,
     account,
     t,
-    onPriceError,
     approve,
     onSuccess,
     onCancel,

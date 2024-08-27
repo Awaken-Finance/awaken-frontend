@@ -39,6 +39,7 @@ export default function ApproveBtn({
     symbol,
     walletInfo?.address,
     approveTargetAddress || tokenContractAddress,
+    true,
   );
 
   const allowanceBN = useMemo(() => {
