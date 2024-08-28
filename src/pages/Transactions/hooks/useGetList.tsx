@@ -15,8 +15,8 @@ export interface PageInfoParams {
 
 export enum TranslationMenuEnum {
   trade = 'all',
-  add = 1,
-  remove,
+  add = 0,
+  remove = 1,
   limit = 'limit',
 }
 
