@@ -74,7 +74,7 @@ export const LimitRightCard = ({ tokenA, tokenB, balances, reserves, rate }: TLi
 
   const maxTotal = useMemo(() => {
     if (ZERO.gte(tokenBPrice) || !tokenBPrice) return ZERO;
-    return maxBalanceAmount.div(tokenBPrice).dp(tokenB?.decimals || 0);
+    return maxBalanceAmount.times(tokenBPrice).dp(tokenB?.decimals || 0);
   }, [tokenBPrice, maxBalanceAmount, tokenB?.decimals]);
 
   const [progressValue, setProgressValue] = useState(0);
