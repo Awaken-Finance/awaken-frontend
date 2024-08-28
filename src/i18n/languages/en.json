@@ -620,7 +620,7 @@
     "lpFeeDescription": "This fee is collected by the pool and belongs to the LPs.",
     "transactionFeeDescription": "Network Cost are the miner fees paid in order for transactions to proceed.",
 
-    "awakenDescription": "AwakenSwap is a decentralized exchange based on the aelf chain, offering users one-stop DeFi services including trading, swapping, lending, staking, asset management, etc.",
+    "awakenDescription": "AwakenSwap is a decentralized exchange built on the aelf AI blockchain, offering one-stop DeFi services like trading, swapping,asset management,etc.",
     "Positions": "Positions",
     "Details": "Details",
     "Explore Market": "Explore Market",
