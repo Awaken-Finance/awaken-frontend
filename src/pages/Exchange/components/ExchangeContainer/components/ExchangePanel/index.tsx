@@ -75,7 +75,7 @@ export default memo(function ExchangePanel() {
             </div>
           </div>
 
-          <SettingFee />
+          {switchValue === ExchangeSwitchEnum.Trade && <SettingFee />}
         </Row>
       }>
       <>

@@ -188,7 +188,7 @@ export const LimitRightCard = ({ tokenA, tokenB, balances, reserves, rate }: TLi
       const newAmount = sideToInput(val, maxBalanceAmount);
       const newAmountStr = bigNumberToString(newAmount, tokenA?.decimals);
       const newTotal = ZERO.plus(newAmountStr)
-        .div(tokenBPrice)
+        .times(tokenBPrice)
         .dp(tokenB?.decimals || 0)
         .toFixed();
 
