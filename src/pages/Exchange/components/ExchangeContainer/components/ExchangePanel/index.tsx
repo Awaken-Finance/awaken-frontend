@@ -14,6 +14,7 @@ import { usePair, usePairsAddress } from 'hooks/userPairs';
 import { ChainConstants } from 'constants/ChainConstants';
 import { useCurrencyBalances } from 'hooks/useBalances';
 import { getTokenWeights } from 'utils/token';
+import { LimitPanel, MobileLimitPanel } from '../LimitPanel';
 
 enum ExchangeSwitchEnum {
   Trade = 1,
@@ -59,9 +60,9 @@ export default memo(function ExchangePanel() {
               <Font size={16} weight="bold" lineHeight={24} color="two">
                 {t('trade')}
               </Font>
-              {/* <div className="exchange-panel-switch-border" /> */}
+              <div className="exchange-panel-switch-border" />
             </div>
-            {/* <div
+            <div
               className={clsx([
                 'exchange-panel-switch',
                 switchValue === ExchangeSwitchEnum.Limit && 'exchange-panel-switch-active',
@@ -71,20 +72,32 @@ export default memo(function ExchangePanel() {
                 {t('Limit')}
               </Font>
               <div className="exchange-panel-switch-border" />
-            </div> */}
+            </div>
           </div>
 
-          <SettingFee />
+          {switchValue === ExchangeSwitchEnum.Trade && <SettingFee />}
         </Row>
       }>
-      <TradePanel
-        rate={rate}
-        tokenA={tokenList[0]}
-        tokenB={tokenList[1]}
-        balances={currencyBalances}
-        reserves={reserves}
-        getReserves={getReserves}
-      />
+      <>
+        {switchValue === ExchangeSwitchEnum.Trade ? (
+          <TradePanel
+            rate={rate}
+            tokenA={tokenList[0]}
+            tokenB={tokenList[1]}
+            balances={currencyBalances}
+            reserves={reserves}
+            getReserves={getReserves}
+          />
+        ) : (
+          <LimitPanel
+            rate={rate}
+            tokenA={tokenList[0]}
+            tokenB={tokenList[1]}
+            balances={currencyBalances}
+            reserves={reserves}
+          />
+        )}
+      </>
     </CommonCard>
   );
 });
@@ -92,19 +105,78 @@ export default memo(function ExchangePanel() {
 const MobileExchangePanel = memo(
   ({ sellType }: { sellType?: string }) => {
     const { t } = useTranslation();
+    const [switchValue, setSwitchValue] = useState(ExchangeSwitchEnum.Trade);
+    const { tokenA, tokenB, feeRate } = usePairTokens();
+    const { leftToken, rightToken } = useSelectPair(tokenA, tokenB);
+    const rate = useMemo(() => {
+      if (!feeRate) return SupportedSwapRate.percent_0_05;
+      return SupportedSwapRateMap[feeRate.toString()] || feeRate.toString();
+    }, [feeRate]);
+    const pairAddress = usePairsAddress(rate, leftToken, rightToken);
+    const routerAddress = ChainConstants.constants.ROUTER[rate];
+    const { reserves, getReserves } = usePair(pairAddress, routerAddress);
+    const currencyBalances = useCurrencyBalances([leftToken, rightToken]);
+
+    const tokenList = useMemo(() => {
+      const leftTokenWeight = getTokenWeights(leftToken?.symbol);
+      const rightTokenWeight = getTokenWeights(rightToken?.symbol);
+      if (rightTokenWeight > leftTokenWeight) return [leftToken, rightToken];
+      return [rightToken, leftToken];
+    }, [leftToken, rightToken]);
 
     return (
       <CommonCard
         className="exchange-panel-mobile"
         title={
-          <Row justify="space-between" className="exchange-panel-title" align="middle">
-            <Font size={16} weight="bold" lineHeight={24}>
-              {t('trade')}
-            </Font>
-            <SettingFee />
-          </Row>
+          <div className="exchange-panel-title">
+            <div className="exchange-panel-switch-area">
+              <div
+                className={clsx([
+                  'exchange-panel-switch',
+                  switchValue === ExchangeSwitchEnum.Trade && 'exchange-panel-switch-active',
+                ])}
+                onClick={() => setSwitchValue(ExchangeSwitchEnum.Trade)}>
+                <Font size={16} weight="bold" lineHeight={24} color="two">
+                  {t('trade')}
+                </Font>
+                <div className="exchange-panel-switch-border" />
+              </div>
+              <div
+                className={clsx([
+                  'exchange-panel-switch',
+                  switchValue === ExchangeSwitchEnum.Limit && 'exchange-panel-switch-active',
+                ])}
+                onClick={() => setSwitchValue(ExchangeSwitchEnum.Limit)}>
+                <Font size={16} weight="bold" lineHeight={24} color="two">
+                  {t('Limit')}
+                </Font>
+                <div className="exchange-panel-switch-border" />
+              </div>
+            </div>
+
+            {/* {switchValue === ExchangeSwitchEnum.Trade && <SettingFee />} */}
+          </div>
         }>
-        <MobileTradePanel sellType={sellType} />
+        {switchValue === ExchangeSwitchEnum.Trade ? (
+          <MobileTradePanel
+            sellType={sellType}
+            rate={rate}
+            tokenA={tokenList[0]}
+            tokenB={tokenList[1]}
+            balances={currencyBalances}
+            reserves={reserves}
+            getReserves={getReserves}
+          />
+        ) : (
+          <MobileLimitPanel
+            sellType={sellType}
+            rate={rate}
+            tokenA={tokenList[0]}
+            tokenB={tokenList[1]}
+            balances={currencyBalances}
+            reserves={reserves}
+          />
+        )}
       </CommonCard>
     );
   },

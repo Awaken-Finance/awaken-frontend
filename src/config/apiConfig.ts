@@ -7,20 +7,20 @@ export type ApiConfig = {
 
 const apiConfig: { [key: string]: ApiConfig } = {
   local: {
-    socket: 'http://192.168.67.146:5006',
-    explorer: 'http://192.168.66.216:8000/swagger/index.html?',
+    socket: 'https://test-app.awaken.finance',
+    explorer: 'https://testnet.aelfscan.io/tDVW',
   },
   test: {
-    socket: 'http://192.168.67.146:5006',
-    explorer: 'http://192.168.66.216:8000/swagger/index.html?',
+    socket: 'https://test-app.awaken.finance',
+    explorer: 'https://testnet.aelfscan.io/tDVW',
   },
   preview: {
     socket: 'https://test-app.awaken.finance',
-    explorer: 'http://explorer-test-side02.aelf.io',
+    explorer: 'https://testnet.aelfscan.io/tDVW',
   },
   mainnet: {
     socket: 'https://app.awaken.finance',
-    explorer: 'https://tdvv-explorer.aelf.io',
+    explorer: 'https://aelfscan.io/tDVV',
   },
 };
 

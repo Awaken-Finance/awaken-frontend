@@ -5,7 +5,6 @@ import CommonButton from 'components/CommonButton';
 import './styles.less';
 import { useActiveWeb3React } from 'hooks/web3';
 import { sleep } from 'utils';
-import { useMobile } from 'utils/isMobile';
 import { useAElfContract } from 'hooks/useContract';
 import { LIMIT_CONTRACT_ADDRESS } from 'constants/index';
 import { TLimitRecordItem } from 'types/transactions';
@@ -13,7 +12,7 @@ import { cancelLimit } from 'utils/limit';
 import { REQ_CODE } from 'constants/misc';
 
 export type TLimitCancelModalProps = {
-  onSuccess?: () => void;
+  onSuccess?: (orderId: number) => void;
 };
 
 export type TLimitCancelModalInfo = {
@@ -25,7 +24,6 @@ export interface LimitCancelModalInterface {
 
 export const LimitCancelModal = forwardRef(({ onSuccess }: TLimitCancelModalProps, ref) => {
   const { t } = useTranslation();
-  const isMobile = useMobile();
 
   const [isVisible, setIsVisible] = useState(false);
   const [record, setRecord] = useState<TLimitRecordItem>();
@@ -64,11 +62,15 @@ export const LimitCancelModal = forwardRef(({ onSuccess }: TLimitCancelModalProp
         t,
         args,
       });
-      if (req !== REQ_CODE.UserDenied) {
-        isLoadingRef.current = false;
-        onSuccess?.();
+
+      isLoadingRef.current = false;
+      if (req === REQ_CODE.Success) {
+        onSuccess?.(orderId);
         onCancel();
         return true;
+      } else {
+        onCancel();
+        return false;
       }
     } catch (error) {
       console.log('LimitCancelModal error', error);

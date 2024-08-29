@@ -1,4 +1,4 @@
-import { useCallback, useRef } from 'react';
+import { useCallback, useMemo, useRef, useState } from 'react';
 import { Menu } from 'antd';
 import TransactionItem from './TransactionItem';
 import LiquidityRecordItem from './LiquidityRecordItem';
@@ -12,12 +12,12 @@ import Font from 'components/Font';
 import { useHistory } from 'react-router-dom';
 import { TranslationMenuEnum } from 'pages/Transactions/hooks/useGetList';
 import LimitRecordItem from './LimitRecordItem';
-import { LiquidityRecord, RecentTransaction, TLimitRecordItem } from 'types/transactions';
+import { LimitOrderStatusEnum, LiquidityRecord, RecentTransaction, TLimitRecordItem } from 'types/transactions';
 import { LimitCancelModal, LimitCancelModalInterface } from 'Modals/LimitCancelModal';
 import { LimitDetailModal, LimitDetailModalInterface } from 'Modals/LimitDetailModal';
 
 export default function MobileList({
-  dataSource = [],
+  dataSource: _dataSource = [],
   total,
   loading,
   getData = () => null,
@@ -61,49 +61,50 @@ export default function MobileList({
     [getData, field, order, pageSize, pageNum, side],
   );
 
-  const renderItem = (item: LiquidityRecord | RecentTransaction | TLimitRecordItem) => {
-    if (menu === TranslationMenuEnum.trade) {
-      return <TransactionItem item={item as RecentTransaction} key={item?.transactionHash} />;
-    }
+  const renderItem = useCallback(
+    (item: LiquidityRecord | RecentTransaction | TLimitRecordItem) => {
+      if (menu === TranslationMenuEnum.trade) {
+        return <TransactionItem item={item as RecentTransaction} key={item?.transactionHash} />;
+      }
 
-    if (menu === TranslationMenuEnum.limit) {
-      return (
-        <LimitRecordItem
-          limitCancelModalRef={limitCancelModalRef}
-          limitDetailModalRef={limitDetailModalRef}
-          item={item as TLimitRecordItem}
-          key={item?.transactionHash}
-        />
-      );
-    }
+      if (menu === TranslationMenuEnum.limit) {
+        return (
+          <LimitRecordItem
+            limitCancelModalRef={limitCancelModalRef}
+            limitDetailModalRef={limitDetailModalRef}
+            item={item as TLimitRecordItem}
+            key={item?.transactionHash}
+          />
+        );
+      }
 
-    return <LiquidityRecordItem item={item} key={item?.transactionHash} />;
-  };
+      return <LiquidityRecordItem item={item} key={item?.transactionHash} />;
+    },
+    [menu],
+  );
 
   const history = useHistory();
   const onBack = useCallback(() => {
     history.goBack();
   }, [history]);
 
+  const [limitCanceledMap, setLimitCanceledMap] = useState<Record<string, boolean>>({});
+  const onLimitCanceled = useCallback((orderId: number) => {
+    setLimitCanceledMap((pre) => ({
+      ...pre,
+      [orderId]: true,
+    }));
+  }, []);
+  const dataSource = useMemo(() => {
+    return _dataSource.map((item) => {
+      const orderId = (item as TLimitRecordItem).orderId;
+      if (orderId === undefined || !limitCanceledMap[orderId]) return item;
+      return { ...item, limitOrderStatus: LimitOrderStatusEnum.Cancelled };
+    });
+  }, [_dataSource, limitCanceledMap]);
+
   return (
     <div className="transaction-list">
-      {/* <Row align="middle" justify="space-between" className="transaction-list-header">
-        <Col>
-          <CommonMenu menus={menuList} onChange={menuChange} value={menu} className="transaction-list-menu" />
-        </Col>
-        <Col>
-          {menu === 'all' && (
-            <div className="transaction-list-filter">
-              <IconFilter onClick={() => setSidVisible(true)} />
-              {sidVisible && (
-                <div ref={ref} className="transaction-list-filter-box">
-                  <Filter val={side} onChange={sidChange} />
-                </div>
-              )}
-            </div>
-          )}
-        </Col>
-      </Row> */}
       <div className="transaction-mobile-header">
         <CommonButton
           className="transaction-mobile-header-back"
@@ -145,12 +146,7 @@ export default function MobileList({
         />
       </div>
 
-      <LimitCancelModal
-        ref={limitCancelModalRef}
-        onSuccess={() => {
-          getData({ page: 1 });
-        }}
-      />
+      <LimitCancelModal ref={limitCancelModalRef} onSuccess={onLimitCanceled} />
 
       <LimitDetailModal ref={limitDetailModalRef} />
     </div>

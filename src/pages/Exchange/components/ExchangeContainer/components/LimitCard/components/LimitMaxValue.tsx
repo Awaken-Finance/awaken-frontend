@@ -17,7 +17,7 @@ export const LimitMaxValue = ({ token, value, isBuy = true }: TLimitMaxValueProp
   const isMobile = useMobile();
 
   const symbol = useMemo(() => formatSymbol(token?.symbol), [token?.symbol]);
-  const title = useMemo(() => (isBuy ? t('Max Buy') : t('Max Receive')), [isBuy, t]);
+  const title = useMemo(() => (isBuy ? t('Max. Buy') : t('Max. Receive')), [isBuy, t]);
   const valueStr = useMemo(() => value.toFixed(), [value]);
 
   return (

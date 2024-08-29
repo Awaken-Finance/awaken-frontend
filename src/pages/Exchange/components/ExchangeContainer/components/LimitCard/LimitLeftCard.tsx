@@ -1,12 +1,11 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useMemo, useRef, useState } from 'react';
 import { Currency } from '@awaken/sdk-core';
 import { Col, Row } from 'antd';
 import BigNumber from 'bignumber.js';
 import { CurrencyBalances, Reserves } from 'types/swap';
 import { divDecimals } from 'utils/calculate';
-import { getCurrencyAddress, inputToSide, sideToInput, bigNumberToString, getPairTokenRatio } from 'utils/swap';
+import { getCurrencyAddress, inputToSide, sideToInput, bigNumberToString } from 'utils/swap';
 import { useUpdateEffect } from 'react-use';
-
 import { ZERO } from 'constants/misc';
 import { useMobile } from 'utils/isMobile';
 import CommonBlockProgress from 'components/CommonBlockProgress';
@@ -16,13 +15,13 @@ import PairBalance from '../ExchangeCard/components/PairBalance';
 import InputAmount from '../ExchangeCard/components/InputAmount';
 import CommonSlider from 'components/CommonSlider';
 import TransactionFee from '../ExchangeCard/components/TransactionFee';
-import { LimitPairPrice } from './components/LimitPairPrice';
 import { LimitMaxValue } from './components/LimitMaxValue';
 import { ExpiryEnum, LimitExpiry } from './components/LimitExpiry';
 
 import { LimitSellBtnWithPay } from 'Buttons/LimitSellBtn';
 import { useTransactionFee } from 'contexts/useStore/hooks';
 import { LimitFee } from 'pages/Swap/components/LimitFee';
+import { LimitPairPrice } from 'pages/Swap/components/LimitPairPrice';
 
 export type TLimitLeftCardProps = {
   rate: string;
@@ -59,15 +58,13 @@ export const LimitLeftCard = ({ tokenA, tokenB, balances, reserves, rate }: TLim
     return _isAmountFocus;
   }, [_isAmountFocus, disabledAmount, disabledTotal]);
 
-  const tokenAMarketPrice = useMemo(() => {
-    return ZERO.plus(
-      getPairTokenRatio({
-        tokenA,
-        tokenB,
-        reserves,
-      }),
-    ).toFixed();
-  }, [tokenA, tokenB, reserves]);
+  const reserve = useMemo(() => {
+    if (!reserves) return undefined;
+    return {
+      reserveIn: reserves[tokenB?.symbol || ''],
+      reserveOut: reserves[tokenA?.symbol || ''],
+    };
+  }, [reserves, tokenA?.symbol, tokenB?.symbol]);
 
   const maxBalanceTotal = useMemo(() => {
     if (tokenB?.symbol === 'ELF' && balance?.gt(transactionFee)) {
@@ -145,7 +142,7 @@ export const LimitLeftCard = ({ tokenA, tokenB, balances, reserves, rate }: TLim
       let totalStr = '';
       if (val) {
         totalStr = ZERO.plus(val)
-          .times(ZERO.plus(price).dp(4))
+          .times(price)
           .dp(tokenB?.decimals || 0)
           .toFixed();
       }
@@ -244,9 +241,10 @@ export const LimitLeftCard = ({ tokenA, tokenB, balances, reserves, rate }: TLim
             <LimitPairPrice
               tokenIn={tokenB}
               tokenOut={tokenA}
-              tokenOutMarketPrice={tokenAMarketPrice}
+              reserve={reserve}
               onChange={onPairPriceChange}
               onFocus={() => setIsPriceZeroShow(false)}
+              isSwap={false}
               isZeroShow={isPriceZeroShow}
             />
           </Col>
