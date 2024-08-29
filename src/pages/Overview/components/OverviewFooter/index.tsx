@@ -43,15 +43,15 @@ const MENU_LIST: TMenuGroup[] = [
     list: [
       {
         title: 'Audit Report',
-        link: 'https://awakenswap.gitbook.io/help-en/learn-about-awakenswap/audit-report',
+        link: 'https://awakenfinance.gitbook.io/en/about-awakenswap/audit-report',
       },
       {
         title: 'Terms of Service',
-        link: 'https://awakenswap.gitbook.io/help-en/terms-and-privacy/awakenswap-terms-of-service',
+        link: 'https://awakenfinance.gitbook.io/en/terms-and-privacy/awakenswap-terms-of-service',
       },
       {
         title: 'Privacy Policy',
-        link: 'https://awakenswap.gitbook.io/help-en/terms-and-privacy/awakenswap-privacy-policy',
+        link: 'https://awakenfinance.gitbook.io/en/terms-and-privacy/awakenswap-privacy-policy',
       },
     ],
   },
@@ -60,15 +60,15 @@ const MENU_LIST: TMenuGroup[] = [
     list: [
       {
         title: 'About',
-        link: 'https://awakenswap.gitbook.io/help-en',
+        link: 'https://awakenfinance.gitbook.io/en',
       },
       {
         title: 'User Guide',
-        link: 'https://awakenswap.gitbook.io/help-en/user-guide/how-to-trade-on-awakenswap',
+        link: 'https://awakenfinance.gitbook.io/en/user-guide/how-to-trade-on-awakenswap',
       },
       {
         title: 'FAQ',
-        link: 'https://awakenswap.gitbook.io/help-en/general-faq/what-is-awakenswap',
+        link: 'https://awakenfinance.gitbook.io/en/i.-general-faq/what-is-awakenswap',
       },
     ],
   },
