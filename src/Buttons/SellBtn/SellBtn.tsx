@@ -21,6 +21,7 @@ import { SWAP_HOOK_CONTRACT_ADDRESS } from 'constants/index';
 import { getCID } from 'utils';
 import { useUserSettings } from 'contexts/useUserSettings';
 import BigNumber from 'bignumber.js';
+import { SWAP_LABS_FEE_RATE } from 'constants/swap';
 
 interface SellBtnProps {
   sell?: boolean;
@@ -98,17 +99,20 @@ export function SellBtnWithPay({
         amountIn: valueInAmountBN,
         amountOutMin: amountMinOutAmountBN,
         methodName: 'swapExactTokensForTokens',
-        swapTokens: [
-          {
-            amountIn: valueInAmountBN.toFixed(),
-            amountOutMin: amountMinOutAmountBN.toFixed(),
-            channel,
-            deadline,
-            path: [tokenIn.symbol, tokenOut.symbol],
-            to: account,
-            feeRates: [ZERO.plus(100).times(rate).toNumber()],
-          },
-        ],
+        swapArgs: {
+          swapTokens: [
+            {
+              amountIn: valueInAmountBN.toFixed(),
+              amountOutMin: amountMinOutAmountBN.toFixed(),
+              channel,
+              deadline,
+              path: [tokenIn.symbol, tokenOut.symbol],
+              to: account,
+              feeRates: [ZERO.plus(100).times(rate).toNumber()],
+            },
+          ],
+          labsFeeRate: SWAP_LABS_FEE_RATE,
+        },
         t,
       });
 

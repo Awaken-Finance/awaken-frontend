@@ -25,6 +25,7 @@ import { divDecimals, timesDecimals } from 'utils/calculate';
 import { commitLimit } from 'utils/limit';
 import { LIMIT_PRICE_DECIMAL } from 'constants/limit';
 import BigNumber from 'bignumber.js';
+import { LIMIT_LABS_FEE_RATE } from 'constants/swap';
 
 export type TLimitConfirmModalProps = {
   onSuccess?: () => void;
@@ -162,6 +163,7 @@ export const LimitConfirmModal = forwardRef(({ onSuccess, onPriceError }: TLimit
         amountOut: timesDecimals(amountOut, tokenOut.decimals).toFixed(),
         symbolOut: tokenOut.symbol,
         deadline: getDeadlineWithSec(expiryTime),
+        labsFeeRate: LIMIT_LABS_FEE_RATE,
       };
       console.log('commitLimit', args);
       const req = await commitLimit({

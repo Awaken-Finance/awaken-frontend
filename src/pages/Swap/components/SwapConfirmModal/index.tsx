@@ -24,6 +24,7 @@ import { onSwap } from 'utils/swapContract';
 import notification from 'utils/notificationNew';
 import { SWAP_HOOK_CONTRACT_ADDRESS } from 'constants/index';
 import { getCID, sleep } from 'utils';
+import { SWAP_LABS_FEE_RATE } from 'constants/swap';
 
 export type TSwapConfirmModalProps = {
   onSuccess?: () => void;
@@ -218,7 +219,10 @@ export const SwapConfirmModal = forwardRef(
         const req = await onSwap({
           account,
           routerContract: routeContract,
-          swapTokens,
+          swapArgs: {
+            swapTokens,
+            labsFeeRate: SWAP_LABS_FEE_RATE,
+          },
           amountIn: valueInAmountBN,
           amountOutMin: amountMinOutAmountBN,
           tokenB: tokenIn,

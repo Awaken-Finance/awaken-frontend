@@ -53,3 +53,7 @@ export const SIDE_LABEL_MAP: Record<number, string> = {
   [1]: 'sell',
   [2]: 'Swap',
 };
+
+export const SWAP_LABS_FEE_RATE = 15;
+
+export const LIMIT_LABS_FEE_RATE = 5;
