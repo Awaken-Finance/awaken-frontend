@@ -133,7 +133,9 @@ export default function LimitRecordItem({
         </Font>
       </Col>
       <Col span={12} className="align-right height-20 line-height-20">
-        <Font lineHeight={20} size={14}>{`${formatPriceChange(totalFee)} ELF`}</Font>
+        <Font lineHeight={20} size={14}>{`-${ZERO.plus(totalFee || 0)
+          .dp(tradePair.token1.decimals)
+          .toFixed()} ${formatSymbol(symbolOut)}`}</Font>
       </Col>
 
       <Col span={12} className="height-20 line-height-20">
@@ -143,7 +145,9 @@ export default function LimitRecordItem({
       </Col>
       <Col span={12} className="align-right height-20 line-height-20">
         <Font lineHeight={20} size={14}>
-          {`${formatPriceChange(networkFee)} ELF`}
+          {`-${ZERO.plus(networkFee ?? 0)
+            .dp(8)
+            .toFixed()} ELF`}
         </Font>
       </Col>
 
