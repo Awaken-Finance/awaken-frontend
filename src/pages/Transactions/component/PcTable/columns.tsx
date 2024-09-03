@@ -272,13 +272,11 @@ export const useTransactionColumns = ({ menu, field, order, side }: TUseTransact
                       .toFixed()}`}
                   </Font>
                   &nbsp;
-                  {
-                    <Pair
-                      lineHeight={20}
-                      size={12}
-                      symbol={record?.tradePair?.[record.side === 0 ? 'token0' : 'token1']?.symbol}
-                    />
-                  }
+                  <Pair
+                    lineHeight={20}
+                    size={12}
+                    symbol={record?.tradePair?.[record.side === 0 ? 'token0' : 'token1']?.symbol}
+                  />
                 </div>
               ) : (
                 <Font lineHeight={20} size={12}>

@@ -150,14 +150,18 @@ export const LimitDetailWebList = ({
               <div>
                 <Font lineHeight={20} size={14}>
                   {_record.status !== LimitOrderStatusEnum.PartiallyFilling
-                    ? ' -'
-                    : `${formatPriceChange(totalFee)} ${formatSymbol('ELF')}`}
+                    ? '-'
+                    : `-${ZERO.plus(totalFee || 0)
+                        .dp(record?.tradePair.token1.decimals || 0)
+                        .toFixed()} ${formatSymbol(record?.symbolOut)}`}
                 </Font>
               </div>
               <div>
                 <Font lineHeight={20} size={14}>
                   {LIMIT_STATUS_WITH_GAS.includes(_record.status)
-                    ? `${formatPriceChange(_record.networkFee)} ${formatSymbol('ELF')}`
+                    ? `-${ZERO.plus(_record.networkFee ?? 0)
+                        .dp(8)
+                        .toFixed()} ELF`
                     : '-'}
                 </Font>
               </div>
