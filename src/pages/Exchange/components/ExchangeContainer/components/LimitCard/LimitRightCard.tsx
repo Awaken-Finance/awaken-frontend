@@ -141,7 +141,7 @@ export const LimitRightCard = ({ tokenA, tokenB, balances, reserves, rate }: TLi
       if (val) {
         totalStr = ZERO.plus(val)
           .times(price)
-          .dp(tokenB?.decimals || 0)
+          .dp(tokenB?.decimals || 0, BigNumber.ROUND_FLOOR)
           .toFixed();
       }
       setTotal(totalStr);
@@ -165,7 +165,7 @@ export const LimitRightCard = ({ tokenA, tokenB, balances, reserves, rate }: TLi
       if (val) {
         amountStr = ZERO.plus(val)
           .div(price)
-          .dp(tokenA?.decimals || 0)
+          .dp(tokenA?.decimals || 0, BigNumber.ROUND_CEIL)
           .toFixed();
       }
 
@@ -190,7 +190,7 @@ export const LimitRightCard = ({ tokenA, tokenB, balances, reserves, rate }: TLi
       const newAmountStr = bigNumberToString(newAmount, tokenA?.decimals);
       const newTotal = ZERO.plus(newAmountStr)
         .times(tokenBPrice)
-        .dp(tokenB?.decimals || 0)
+        .dp(tokenB?.decimals || 0, BigNumber.ROUND_FLOOR)
         .toFixed();
 
       setTotal(newTotal);

@@ -96,7 +96,7 @@ export const LimitPanel = () => {
           if (!isReverse) {
             _valueOut = ZERO.plus(value)
               .div(price)
-              .dp(pre.tokenOut?.decimals || 0, BigNumber.ROUND_CEIL)
+              .dp(pre.tokenOut?.decimals || 0, BigNumber.ROUND_FLOOR)
               .toFixed();
           } else {
             _valueOut = ZERO.plus(value)
@@ -134,7 +134,7 @@ export const LimitPanel = () => {
           if (!isReverse) {
             _valueIn = ZERO.plus(value)
               .times(price)
-              .dp(pre.tokenIn?.decimals || 0, BigNumber.ROUND_FLOOR)
+              .dp(pre.tokenIn?.decimals || 0, BigNumber.ROUND_CEIL)
               .toFixed();
           } else {
             _valueIn = ZERO.plus(value)
