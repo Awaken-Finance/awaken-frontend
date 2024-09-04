@@ -11,6 +11,7 @@ export default function useAllowanceAndApprove(
   symbol?: string,
   account?: string,
   approveTargetAddress?: string,
+  isTokenInfoNeed = false,
 ) {
   const contract = useAElfContract(contractAddress);
   const destroyedRef = useRef(false);
@@ -40,10 +41,20 @@ export default function useAllowanceAndApprove(
     }
     setCheckingAllowance(true);
     try {
-      const [allowance, info] = await Promise.all([
-        contract.callViewMethod('GetAllowance', [symbol, account, approveTargetAddress || contractAddress]),
-        contract.callViewMethod('GetTokenInfo', [symbol]),
-      ]);
+      let allowance, info;
+      if (isTokenInfoNeed) {
+        [allowance, info] = await Promise.all([
+          contract.callViewMethod('GetAllowance', [symbol, account, approveTargetAddress || contractAddress]),
+          contract.callViewMethod('GetTokenInfo', [symbol]),
+        ]);
+      } else {
+        allowance = await contract.callViewMethod('GetAllowance', [
+          symbol,
+          account,
+          approveTargetAddress || contractAddress,
+        ]);
+      }
+
       if (destroyedRef.current) return ZERO;
 
       if (allowance.error) {

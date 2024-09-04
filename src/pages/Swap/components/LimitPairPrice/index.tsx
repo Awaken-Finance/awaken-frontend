@@ -14,7 +14,7 @@ import { divDecimals } from 'utils/calculate';
 import BigNumber from 'bignumber.js';
 import { formatSymbol } from 'utils/token';
 import { FontColor } from 'utils/getFontStyle';
-import { LIMIT_MAX_BUFFER_RATIO, LIMIT_PRICE_DECIMAL } from 'constants/limit';
+import { LIMIT_PRICE_DECIMAL } from 'constants/limit';
 import { TReserveInfo } from 'hooks/limit';
 import { getPairTokenRatio } from 'utils/swap';
 import clsx from 'clsx';
@@ -142,7 +142,7 @@ export const LimitPairPrice = forwardRef(
           else
             value = ONE.div(tokenOutMarketPriceBN)
               .times(ONE.plus(priceBtn?.value || 0))
-              .dp(LIMIT_PRICE_DECIMAL, BigNumber.ROUND_CEIL);
+              .dp(LIMIT_PRICE_DECIMAL, BigNumber.ROUND_DOWN);
         }
 
         const valueStr = value.toFixed();
@@ -201,41 +201,41 @@ export const LimitPairPrice = forwardRef(
     );
 
     const amountError = useMemo<TLimitPairPriceError>(() => {
-      if (isZeroShow && ZERO.gte(price)) {
+      if (isZeroShow && (ZERO.gte(price) || price === '')) {
         return {
-          text: '',
+          text: t('Please enter a price'),
           btnText: t('Please enter a price'),
           error: true,
         };
       }
 
-      const tokenOutMarketPriceBN = ZERO.plus(tokenOutMarketPriceRef.current).dp(
-        LIMIT_PRICE_DECIMAL,
-        BigNumber.ROUND_FLOOR,
-      );
-      const _isReverse = isReverseRef.current;
+      // const tokenOutMarketPriceBN = ZERO.plus(tokenOutMarketPriceRef.current).dp(
+      //   LIMIT_PRICE_DECIMAL,
+      //   BigNumber.ROUND_FLOOR,
+      // );
+      // const _isReverse = isReverseRef.current;
 
-      const maxValue = tokenOutMarketPriceBN
-        .times(LIMIT_MAX_BUFFER_RATIO)
-        .dp(LIMIT_PRICE_DECIMAL, BigNumber.ROUND_FLOOR);
-      if (!_isReverse) {
-        if (maxValue.lt(price)) {
-          return {
-            text: t(`limitHighPriceDescription`),
-            btnText: t('limitHighPriceBtnText'),
-            error: true,
-          };
-        }
-      } else {
-        const minValue = ONE.div(maxValue).dp(LIMIT_PRICE_DECIMAL, BigNumber.ROUND_CEIL);
-        if (minValue.gt(price) && maxValue.gt(ZERO)) {
-          return {
-            text: t('limitLowPriceDescription'),
-            btnText: t('limitLowPriceBtnText'),
-            error: true,
-          };
-        }
-      }
+      // const maxValue = tokenOutMarketPriceBN
+      //   .times(LIMIT_MAX_BUFFER_RATIO)
+      //   .dp(LIMIT_PRICE_DECIMAL, BigNumber.ROUND_FLOOR);
+      // if (!_isReverse) {
+      //   if (maxValue.lt(price)) {
+      //     return {
+      //       text: t(`limitHighPriceDescription`),
+      //       btnText: t('limitHighPriceBtnText'),
+      //       error: true,
+      //     };
+      //   }
+      // } else {
+      //   const minValue = ONE.div(maxValue).dp(LIMIT_PRICE_DECIMAL, BigNumber.ROUND_FLOOR);
+      //   if (minValue.gt(price) && maxValue.gt(ZERO)) {
+      //     return {
+      //       text: t('limitLowPriceDescription'),
+      //       btnText: t('limitLowPriceBtnText'),
+      //       error: true,
+      //     };
+      //   }
+      // }
       return {
         text: '',
         btnText: '',
@@ -269,7 +269,7 @@ export const LimitPairPrice = forwardRef(
       const marketPriceBN = !_isReverse ? tokenOutMarketPriceBN : ONE.div(tokenOutMarketPriceBN);
 
       const diffPercent = ZERO.plus(price).div(marketPriceBN).minus(1);
-      const isZero = diffPercent.dp(2, BigNumber.ROUND_HALF_CEIL).eq(ZERO);
+      const isZero = diffPercent.dp(4, BigNumber.ROUND_HALF_CEIL).eq(ZERO);
 
       if (isZero || ZERO.eq(tokenOutMarketPriceBN)) {
         return {
@@ -318,35 +318,44 @@ export const LimitPairPrice = forwardRef(
           <CommonInput
             prefix={
               <div className="limit-pair-price-prefix">
-                {!isSwap && (
+                {isSwap ? (
+                  <div className="limit-pair-price-header">
+                    <div className="limit-pair-price-header-left">
+                      <Font size={14} color="two">
+                        {t('When')}
+                      </Font>
+                      <div className="limit-pair-price-header-unit">
+                        <CurrencyLogo size={16} currency={!isReverse ? tokenOut : tokenIn} />
+                        <Font size={14}>{`1 ${symbolAStr}`}</Font>
+                      </div>
+                      <Font size={14} color="two">
+                        {t('is worth')}
+                      </Font>
+                    </div>
+                    <IconSwitchPair2 className="limit-pair-price-switch" onClick={switchReverse} />
+                  </div>
+                ) : (
                   <Font color="two" lineHeight={30}>
                     {t('Price')}
                   </Font>
                 )}
-                <div className="limit-pair-price-header">
-                  <div className="limit-pair-price-header-left">
-                    <Font size={14} color="two">
-                      {t('When')}
-                    </Font>
-                    <div className="limit-pair-price-header-unit">
-                      <CurrencyLogo size={16} currency={!isReverse ? tokenOut : tokenIn} />
-                      <Font size={14}>{`1 ${symbolAStr}`}</Font>
-                    </div>
-                    <Font size={14} color="two">
-                      {t('is worth')}
-                    </Font>
-                  </div>
-                  <IconSwitchPair2 className="limit-pair-price-switch" onClick={switchReverse} />
-                </div>
               </div>
             }
             suffix={
-              <div className="limit-pair-price-suffix">
+              <div className={clsx(['limit-pair-price-suffix', !isSwap && 'limit-pair-price-suffix-trade'])}>
                 <div className="limit-pair-price-suffix-token">
-                  {isSwap && <CurrencyLogo size={isMobile ? 16 : 24} currency={!isReverse ? tokenIn : tokenOut} />}
-                  <Font color="one" size={isMobile ? 16 : 20} lineHeight={isMobile ? 22 : 24} weight="medium">
-                    {symbolBStr || ''}
-                  </Font>
+                  {isSwap ? (
+                    <>
+                      <CurrencyLogo size={isMobile ? 16 : 24} currency={!isReverse ? tokenIn : tokenOut} />
+                      <Font color="one" size={isMobile ? 16 : 20} lineHeight={isMobile ? 22 : 24} weight="medium">
+                        {symbolBStr || ''}
+                      </Font>
+                    </>
+                  ) : (
+                    <Font color="one" size={isMobile ? 14 : 14} lineHeight={isMobile ? 20 : 20} weight="medium">
+                      {symbolBStr || ''}
+                    </Font>
+                  )}
                 </div>
 
                 <div className="limit-price-btn-area">

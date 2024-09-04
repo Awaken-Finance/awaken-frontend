@@ -4,10 +4,9 @@ import { Col, Row } from 'antd';
 import BigNumber from 'bignumber.js';
 import { CurrencyBalances, Reserves } from 'types/swap';
 import { divDecimals } from 'utils/calculate';
-import { getCurrencyAddress, inputToSide, sideToInput, bigNumberToString, getPairTokenRatio } from 'utils/swap';
+import { getCurrencyAddress, inputToSide, sideToInput, bigNumberToString } from 'utils/swap';
 import { useUpdateEffect } from 'react-use';
-
-import { ONE, ZERO } from 'constants/misc';
+import { ZERO } from 'constants/misc';
 import { useMobile } from 'utils/isMobile';
 import CommonBlockProgress from 'components/CommonBlockProgress';
 import { isZeroDecimalsNFT } from 'utils/NFT';
@@ -16,12 +15,12 @@ import PairBalance from '../ExchangeCard/components/PairBalance';
 import InputAmount from '../ExchangeCard/components/InputAmount';
 import CommonSlider from 'components/CommonSlider';
 import TransactionFee from '../ExchangeCard/components/TransactionFee';
-import { LimitPairPrice } from './components/LimitPairPrice';
 import { LimitMaxValue } from './components/LimitMaxValue';
 import { ExpiryEnum, LimitExpiry } from './components/LimitExpiry';
 import { useTransactionFee } from 'contexts/useStore/hooks';
 import { LimitSellBtnWithPay } from 'Buttons/LimitSellBtn';
 import { LimitFee } from 'pages/Swap/components/LimitFee';
+import { LimitPairPrice } from 'pages/Swap/components/LimitPairPrice';
 
 export type TLimitRightCardProps = {
   rate: string;
@@ -58,15 +57,13 @@ export const LimitRightCard = ({ tokenA, tokenB, balances, reserves, rate }: TLi
     return _isAmountFocus;
   }, [_isAmountFocus, disabledAmount, disabledTotal]);
 
-  const tokenBMarketPrice = useMemo(() => {
-    const price = getPairTokenRatio({
-      tokenA,
-      tokenB,
-      reserves,
-    });
-    if (price === '0') return '0';
-    return ONE.div(price).toFixed();
-  }, [tokenA, tokenB, reserves]);
+  const reserve = useMemo(() => {
+    if (!reserves) return undefined;
+    return {
+      reserveIn: reserves[tokenA?.symbol || ''],
+      reserveOut: reserves[tokenB?.symbol || ''],
+    };
+  }, [reserves, tokenA?.symbol, tokenB?.symbol]);
 
   const maxBalanceAmount = useMemo(() => {
     if (tokenA?.symbol === 'ELF' && balance?.gt(transactionFee)) {
@@ -77,7 +74,7 @@ export const LimitRightCard = ({ tokenA, tokenB, balances, reserves, rate }: TLi
 
   const maxTotal = useMemo(() => {
     if (ZERO.gte(tokenBPrice) || !tokenBPrice) return ZERO;
-    return maxBalanceAmount.div(tokenBPrice).dp(tokenB?.decimals || 0);
+    return maxBalanceAmount.times(tokenBPrice).dp(tokenB?.decimals || 0);
   }, [tokenBPrice, maxBalanceAmount, tokenB?.decimals]);
 
   const [progressValue, setProgressValue] = useState(0);
@@ -142,7 +139,7 @@ export const LimitRightCard = ({ tokenA, tokenB, balances, reserves, rate }: TLi
       let totalStr = '';
       if (val) {
         totalStr = ZERO.plus(val)
-          .times(ONE.div(price).dp(4))
+          .times(price)
           .dp(tokenB?.decimals || 0)
           .toFixed();
       }
@@ -166,7 +163,7 @@ export const LimitRightCard = ({ tokenA, tokenB, balances, reserves, rate }: TLi
       let amountStr = '';
       if (val) {
         amountStr = ZERO.plus(val)
-          .times(price)
+          .div(price)
           .dp(tokenA?.decimals || 0)
           .toFixed();
       }
@@ -191,7 +188,7 @@ export const LimitRightCard = ({ tokenA, tokenB, balances, reserves, rate }: TLi
       const newAmount = sideToInput(val, maxBalanceAmount);
       const newAmountStr = bigNumberToString(newAmount, tokenA?.decimals);
       const newTotal = ZERO.plus(newAmountStr)
-        .div(tokenBPrice)
+        .times(tokenBPrice)
         .dp(tokenB?.decimals || 0)
         .toFixed();
 
@@ -241,11 +238,12 @@ export const LimitRightCard = ({ tokenA, tokenB, balances, reserves, rate }: TLi
             <LimitPairPrice
               tokenIn={tokenA}
               tokenOut={tokenB}
-              tokenOutMarketPrice={tokenBMarketPrice}
+              reserve={reserve}
               onChange={onPairPriceChange}
               onFocus={() => setIsPriceZeroShow(false)}
               isZeroShow={isPriceZeroShow}
               isReverseInit={true}
+              isSwap={false}
             />
           </Col>
           <Col span={24}>

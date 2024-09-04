@@ -1,4 +1,4 @@
-import { useCallback, useRef } from 'react';
+import { useCallback, useMemo, useRef, useState } from 'react';
 import { Row, Col } from 'antd';
 import { useTranslation } from 'react-i18next';
 import { CommonTable } from 'components/CommonTable';
@@ -12,13 +12,13 @@ import CommonButton from 'components/CommonButton';
 import { IconArrowLeft, IconNotificationWarning } from 'assets/icons';
 import { useHistory } from 'react-router-dom';
 import { TranslationMenuEnum } from 'pages/Transactions/hooks/useGetList';
-import { RecentTransaction } from 'types/transactions';
+import { LimitOrderStatusEnum, RecentTransaction, TLimitRecordItem } from 'types/transactions';
 import { LimitCancelModal, LimitCancelModalInterface } from 'Modals/LimitCancelModal';
 import { useLimitColumns, useTransactionColumns } from './columns';
 import { LimitDetailModal, LimitDetailModalInterface } from 'Modals/LimitDetailModal';
 
 export default function PcTable({
-  dataSource,
+  dataSource: _dataSource,
   total,
   loading,
   getData,
@@ -68,6 +68,23 @@ export default function PcTable({
     history.goBack();
   }, [history]);
 
+  const [limitCanceledMap, setLimitCanceledMap] = useState<Record<string, boolean>>({});
+  const onLimitCanceled = useCallback((orderId: number) => {
+    setLimitCanceledMap((pre) => ({
+      ...pre,
+      [orderId]: true,
+    }));
+  }, []);
+  const dataSource = useMemo(() => {
+    if (!_dataSource) return undefined;
+
+    return _dataSource.map((item) => {
+      const orderId = (item as unknown as TLimitRecordItem).orderId;
+      if (orderId === undefined || !limitCanceledMap[orderId]) return item;
+      return { ...item, limitOrderStatus: LimitOrderStatusEnum.Cancelled };
+    });
+  }, [_dataSource, limitCanceledMap]);
+
   return (
     <div className="recent-tx-pc-table">
       <div className="pc-table-header">
@@ -110,12 +127,7 @@ export default function PcTable({
         />
       </div>
 
-      <LimitCancelModal
-        ref={limitCancelModalRef}
-        onSuccess={() => {
-          getData({});
-        }}
-      />
+      <LimitCancelModal ref={limitCancelModalRef} onSuccess={onLimitCanceled} />
 
       <LimitDetailModal ref={limitDetailModalRef} />
     </div>
