@@ -29,12 +29,14 @@ import TransactionFee from './components/TransactionFee';
 import MinimumOutput from './components/MinimumOutput';
 import PriceImpact from './components/PriceImpact';
 import { SellBtnWithPay } from 'Buttons/SellBtn/SellBtn';
-import { ZERO } from 'constants/misc';
+import { TEN_THOUSAND, ZERO } from 'constants/misc';
 import { useMobile } from 'utils/isMobile';
 import CommonBlockProgress from 'components/CommonBlockProgress';
 import { isZeroDecimalsNFT } from 'utils/NFT';
 import { formatSymbol } from 'utils/token';
 import { useTransactionFee } from 'contexts/useStore/hooks';
+import { FeeRow } from 'pages/Swap/components/FeeRow';
+import { SWAP_LABS_FEE_RATE, SWAP_RECEIVE_RATE } from 'constants/swap';
 
 export type TRightCardProps = {
   rate: string;
@@ -76,7 +78,10 @@ export default function RightCard({ tokenA, tokenB, balances, reserves, rate, ge
   const sliderValue = useMemo(() => +inputToSide(amount, maxBalanceAmount).toFixed(0), [amount, maxBalanceAmount]);
 
   const amountOutMin = useMemo(
-    () => BigNumber.min(minimumAmountOut(new BigNumber(total), userSlippageTolerance), maxReserveTotal),
+    () =>
+      BigNumber.min(minimumAmountOut(new BigNumber(total), userSlippageTolerance), maxReserveTotal).times(
+        SWAP_RECEIVE_RATE,
+      ),
     [maxReserveTotal, total, userSlippageTolerance],
   );
 
@@ -214,6 +219,15 @@ export default function RightCard({ tokenA, tokenB, balances, reserves, rate, ge
     setTotal('');
   }, [tokenA, tokenB, rate]);
 
+  const limitFeeValue = useMemo(() => {
+    if (!total) return '-';
+    return ZERO.plus(total)
+      .times(SWAP_LABS_FEE_RATE)
+      .div(TEN_THOUSAND)
+      .dp(tokenB?.decimals || 1, BigNumber.ROUND_CEIL)
+      .toFixed();
+  }, [total, tokenB?.decimals]);
+
   return (
     <Row gutter={[0, isMobile ? 12 : 16]}>
       <Col span={24}>
@@ -268,6 +282,9 @@ export default function RightCard({ tokenA, tokenB, balances, reserves, rate, ge
           </Col>
           <Col span={24}>
             <PriceImpact value={priceImpact} />
+          </Col>
+          <Col span={24}>
+            <FeeRow value={limitFeeValue} symbol={tokenB?.symbol || ''} />
           </Col>
           <Col span={24}>
             <TransactionFee />

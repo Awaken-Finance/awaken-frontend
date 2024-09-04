@@ -6,7 +6,7 @@ import { CurrencyBalances, Reserves } from 'types/swap';
 import { divDecimals } from 'utils/calculate';
 import { getCurrencyAddress, inputToSide, sideToInput, bigNumberToString } from 'utils/swap';
 import { useUpdateEffect } from 'react-use';
-import { ZERO } from 'constants/misc';
+import { TEN_THOUSAND, ZERO } from 'constants/misc';
 import { useMobile } from 'utils/isMobile';
 import CommonBlockProgress from 'components/CommonBlockProgress';
 import { isZeroDecimalsNFT } from 'utils/NFT';
@@ -19,8 +19,9 @@ import { LimitMaxValue } from './components/LimitMaxValue';
 import { ExpiryEnum, LimitExpiry } from './components/LimitExpiry';
 import { useTransactionFee } from 'contexts/useStore/hooks';
 import { LimitSellBtnWithPay } from 'Buttons/LimitSellBtn';
-import { LimitFee } from 'pages/Swap/components/LimitFee';
+import { FeeRow } from 'pages/Swap/components/FeeRow';
 import { LimitPairPrice } from 'pages/Swap/components/LimitPairPrice';
+import { LIMIT_LABS_FEE_RATE } from 'constants/swap';
 
 export type TLimitRightCardProps = {
   rate: string;
@@ -227,6 +228,15 @@ export const LimitRightCard = ({ tokenA, tokenB, balances, reserves, rate }: TLi
     setIsPriceZeroShow(!tokenBPrice);
   };
 
+  const limitFeeValue = useMemo(() => {
+    if (!total) return '-';
+    return ZERO.plus(total)
+      .times(LIMIT_LABS_FEE_RATE)
+      .div(TEN_THOUSAND)
+      .dp(tokenB?.decimals || 1, BigNumber.ROUND_CEIL)
+      .toFixed();
+  }, [total, tokenB?.decimals]);
+
   return (
     <Row gutter={[0, isMobile ? 12 : 16]}>
       <Col span={24}>
@@ -289,7 +299,7 @@ export const LimitRightCard = ({ tokenA, tokenB, balances, reserves, rate }: TLi
             <LimitExpiry value={expiryValue} onChange={setExpiryValue} />
           </Col>
           <Col span={24}>
-            <LimitFee />
+            <FeeRow value={limitFeeValue} symbol={tokenB?.symbol || ''} />
           </Col>
           <Col span={24}>
             <TransactionFee />

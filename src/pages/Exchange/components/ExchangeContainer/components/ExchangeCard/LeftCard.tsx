@@ -29,12 +29,14 @@ import TransactionFee from './components/TransactionFee';
 import MinimumOutput from './components/MinimumOutput';
 import PriceImpact from './components/PriceImpact';
 import { SellBtnWithPay } from 'Buttons/SellBtn/SellBtn';
-import { ZERO } from 'constants/misc';
+import { TEN_THOUSAND, ZERO } from 'constants/misc';
 import { useMobile } from 'utils/isMobile';
 import CommonBlockProgress from 'components/CommonBlockProgress';
 import { isZeroDecimalsNFT } from 'utils/NFT';
 import { formatSymbol } from 'utils/token';
 import { useTransactionFee } from 'contexts/useStore/hooks';
+import { FeeRow } from 'pages/Swap/components/FeeRow';
+import { SWAP_LABS_FEE_RATE, SWAP_RECEIVE_RATE } from 'constants/swap';
 
 export type TLeftCardProps = {
   rate: string;
@@ -88,7 +90,10 @@ export default function LeftCard({ tokenA, tokenB, balances, reserves, rate, get
   }, [amount, maxAmount]);
 
   const amountOutMin = useMemo(
-    () => BigNumber.min(minimumAmountOut(new BigNumber(amount), userSlippageTolerance), maxReserveAmount),
+    () =>
+      BigNumber.min(minimumAmountOut(new BigNumber(amount), userSlippageTolerance), maxReserveAmount).times(
+        SWAP_RECEIVE_RATE,
+      ),
     [amount, maxReserveAmount, userSlippageTolerance],
   );
 
@@ -224,6 +229,15 @@ export default function LeftCard({ tokenA, tokenB, balances, reserves, rate, get
     setTotal('');
   }, [tokenA, tokenB, rate]);
 
+  const limitFeeValue = useMemo(() => {
+    if (!amount) return '-';
+    return ZERO.plus(amount)
+      .times(SWAP_LABS_FEE_RATE)
+      .div(TEN_THOUSAND)
+      .dp(tokenA?.decimals || 1, BigNumber.ROUND_CEIL)
+      .toFixed();
+  }, [amount, tokenA?.decimals]);
+
   return (
     <Row gutter={[0, isMobile ? 12 : 16]}>
       <Col span={24}>
@@ -278,6 +292,9 @@ export default function LeftCard({ tokenA, tokenB, balances, reserves, rate, get
           </Col>
           <Col span={24}>
             <PriceImpact value={priceImpact} />
+          </Col>
+          <Col span={24}>
+            <FeeRow value={limitFeeValue} symbol={tokenA?.symbol || ''} />
           </Col>
           <Col span={24}>
             <TransactionFee />

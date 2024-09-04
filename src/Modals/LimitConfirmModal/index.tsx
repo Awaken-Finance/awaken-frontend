@@ -14,7 +14,7 @@ import { useTransactionFeeStr } from 'contexts/useStore/hooks';
 import { Currency } from '@awaken/sdk-core';
 import { ExpiryEnum } from 'pages/Exchange/components/ExchangeContainer/components/LimitCard/components/LimitExpiry';
 import { useTokenPrice } from 'contexts/useTokenPrice/hooks';
-import { REQ_CODE, ZERO } from 'constants/misc';
+import { REQ_CODE, TEN_THOUSAND, ZERO } from 'constants/misc';
 import moment from 'moment';
 import useAllowanceAndApprove from 'hooks/useApprove';
 import { ChainConstants } from 'constants/ChainConstants';
@@ -198,6 +198,15 @@ export const LimitConfirmModal = forwardRef(({ onSuccess, onPriceError }: TLimit
     onCancel,
   ]);
 
+  const limitFeeValue = useMemo(() => {
+    if (!info) return '-';
+    return `${ZERO.plus(info.amountOut)
+      .times(LIMIT_LABS_FEE_RATE)
+      .div(TEN_THOUSAND)
+      .dp(info.tokenOut?.decimals || 1, BigNumber.ROUND_CEIL)
+      .toFixed()} ${formatSymbol(info.tokenOut.symbol)}`;
+  }, [info]);
+
   return (
     <CommonModal
       width="420px"
@@ -281,7 +290,7 @@ export const LimitConfirmModal = forwardRef(({ onSuccess, onPriceError }: TLimit
             <Row gutter={[4, 0]} align="middle">
               <Col>
                 <Font size={14} lineHeight={22}>
-                  {'0 ELF'}
+                  {limitFeeValue}
                 </Font>
               </Col>
             </Row>
