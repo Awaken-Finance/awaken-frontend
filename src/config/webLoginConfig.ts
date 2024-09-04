@@ -55,6 +55,7 @@ const didConfig = {
   },
   networkType: networkType,
   referralInfo: {
+    referralCode: '',
     projectCode: '13005',
   },
 };
