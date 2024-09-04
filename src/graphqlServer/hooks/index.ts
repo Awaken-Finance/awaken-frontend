@@ -3,17 +3,14 @@ import { getGraphQLClient } from '../client';
 import { useCallback, useMemo } from 'react';
 import { TGraphQLParamsType } from '../types';
 
-const { NODE_ENV, REACT_APP_API_ENV } = process.env;
+const { REACT_APP_API_ENV } = process.env;
 const AWAKEN_GRAPHQL_URL_MAP: Record<string, string> = {
-  preview: 'https://test-dapp.awaken.finance/AElfIndexer_Swap/SwapIndexerSchema/graphql',
-  test: 'https://test-dapp.awaken.finance/AElfIndexer_Swap/SwapIndexerSchema/graphql',
+  preview: 'https://app-testnet.aefinder.io/awaken/3c6b3e6724ab4fbbb7315f4dae550061/graphql',
+  test: 'https://app-testnet.aefinder.io/awaken/3c6b3e6724ab4fbbb7315f4dae550061/graphql',
   mainNet: 'https://dapp.awaken.finance/AElfIndexer_Swap/SwapIndexerSchema/graphql',
 };
 
-const AWAKEN_GRAPHQL_URL =
-  NODE_ENV !== 'production'
-    ? '/AElfIndexer_Swap/SwapIndexerSchema/graphql'
-    : AWAKEN_GRAPHQL_URL_MAP[REACT_APP_API_ENV || ''] || AWAKEN_GRAPHQL_URL_MAP.mainNet;
+const AWAKEN_GRAPHQL_URL = AWAKEN_GRAPHQL_URL_MAP[REACT_APP_API_ENV || ''] || AWAKEN_GRAPHQL_URL_MAP.mainNet;
 
 export const useGraphQLClient = () => {
   return useMemo(() => getGraphQLClient(AWAKEN_GRAPHQL_URL), []);
