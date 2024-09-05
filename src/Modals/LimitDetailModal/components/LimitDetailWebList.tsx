@@ -201,7 +201,7 @@ export const LimitDetailWebList = ({
     ];
 
     return columnList;
-  }, [record?.symbolIn, record?.symbolOut, t]);
+  }, [record?.symbolIn, record?.symbolOut, record?.tradePair.token1.decimals, t]);
 
   return (
     <CommonTable
