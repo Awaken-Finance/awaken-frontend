@@ -30,6 +30,38 @@
 
     .common-table .ant-table {
       min-height: 332px;
+
+      .ant-table-thead {
+        & > tr > th {
+          padding: 0 6px;
+          height: 44px;
+          &:first-child {
+            padding-left: 16px;
+            padding-right: 6px;
+          }
+          &:last-child:not(.ant-table-cell-scrollbar) {
+            padding-right: 16px;
+            padding-left: 6px;
+          }
+        }
+      }
+
+      .ant-table-tbody {
+        & > tr > td {
+          max-width: 0;
+          padding-left: 6px;
+          padding-right: 6px;
+          vertical-align: middle;
+          &:first-child {
+            padding-left: 16px;
+            padding-right: 6px;
+          }
+          &:last-child {
+            padding-right: 16px;
+            padding-left: 6px;
+          }
+        }
+      }
     }
 
     .transaction-hash-wrap {

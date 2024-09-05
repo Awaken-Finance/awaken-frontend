@@ -141,7 +141,7 @@ export const LimitDetailWebList = ({
           </>
         ),
         key: 'totalFee',
-        width: 100,
+        width: 144,
         dataIndex: 'totalFee',
         align: 'left',
         render: (totalFee: string, _record: TLimitDetailItem) => {
@@ -173,7 +173,7 @@ export const LimitDetailWebList = ({
         title: t('Status'),
         key: 'status',
         dataIndex: 'status',
-        width: 60,
+        width: 72,
         align: 'left',
         render: (status: LimitOrderStatusEnum) => (
           <Font lineHeight={20} size={14} color={LimitDetailStatusMap[status].color}>
