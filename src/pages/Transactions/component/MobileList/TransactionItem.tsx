@@ -35,6 +35,7 @@ export default function TransactionItem({
     totalPriceInUsd,
     totalFee,
     percentRoutes,
+    labsFee,
   },
 }: {
   item: RecentTransaction;
@@ -198,6 +199,21 @@ export default function TransactionItem({
         </Font>
         &nbsp;
         <Pair lineHeight={20} symbol={tradePair?.[side === 0 ? 'token1' : 'token0']?.symbol} />
+      </Col>
+
+      <Col span={12} className="height-20 line-height-20">
+        <Font lineHeight={20} color="two">
+          {t('Fee')}
+        </Font>
+      </Col>
+      <Col span={12} className="align-right height-20 line-height-20">
+        <Font lineHeight={20}>
+          {`-${ZERO.plus(labsFee || 0)
+            .dp(tradePair?.[side === 0 ? 'token0' : 'token1']?.decimals)
+            .toFixed()}`}
+        </Font>
+        &nbsp;
+        <Pair lineHeight={20} symbol={tradePair?.[side === 0 ? 'token0' : 'token1']?.symbol} />
       </Col>
 
       <Col span={12} className="height-20 line-height-20">

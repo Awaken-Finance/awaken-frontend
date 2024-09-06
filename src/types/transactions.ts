@@ -90,6 +90,8 @@ export interface RecentTransaction {
   totalPriceInUsd?: number;
   totalFee?: number;
   percentRoutes?: TPercentInfo[];
+  labsFee?: number;
+  labsFeeSymbol?: string;
 }
 
 export interface GetRecentTransactionParams {
