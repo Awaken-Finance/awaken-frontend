@@ -5,8 +5,8 @@ import { TGraphQLParamsType } from '../types';
 
 const { REACT_APP_API_ENV } = process.env;
 const AWAKEN_GRAPHQL_URL_MAP: Record<string, string> = {
-  preview: 'https://app-testnet.aefinder.io/awaken/3c6b3e6724ab4fbbb7315f4dae550061/graphql',
-  test: 'https://app-testnet.aefinder.io/awaken/3c6b3e6724ab4fbbb7315f4dae550061/graphql',
+  preview: 'https://app-testnet.aefinder.io/awaken/e55a9e430bd14ebb95ef81378906fd5f/graphql',
+  test: 'https://app-testnet.aefinder.io/awaken/e55a9e430bd14ebb95ef81378906fd5f/graphql',
   mainNet: 'https://dapp.awaken.finance/AElfIndexer_Swap/SwapIndexerSchema/graphql',
 };
 
