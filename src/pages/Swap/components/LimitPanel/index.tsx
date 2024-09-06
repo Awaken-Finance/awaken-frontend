@@ -12,7 +12,7 @@ import SwapSelectTokenButton from '../SwapSelectTokenButton';
 import { getCurrencyAddress } from 'utils/swap';
 import { IconSwapDefault, IconSwapHover } from 'assets/icons';
 import { usePairMaxReserve } from 'hooks/limit';
-import { ZERO } from 'constants/misc';
+import { TEN_THOUSAND, ZERO } from 'constants/misc';
 import BigNumber from 'bignumber.js';
 import AuthBtn from 'Buttons/AuthBtn';
 import clsx from 'clsx';
@@ -35,8 +35,9 @@ import {
 import { Col, Row } from 'antd';
 
 import TransactionFee from 'pages/Exchange/components/ExchangeContainer/components/ExchangeCard/components/TransactionFee';
-import { LimitFee } from '../LimitFee';
+import { FeeRow } from '../FeeRow';
 import { useMobile } from 'utils/isMobile';
+import { LIMIT_LABS_FEE_RATE, LIMIT_RECEIVE_RATE } from 'constants/swap';
 
 export type TLimitInfo = {
   tokenIn?: Currency;
@@ -92,17 +93,16 @@ export const LimitPanel = () => {
       setLimitInfo((pre) => {
         let _valueOut = '';
         if (value) {
+          let valueOutBN = ZERO;
           if (!isReverse) {
-            _valueOut = ZERO.plus(value)
-              .div(price)
-              .dp(pre.tokenOut?.decimals || 0, BigNumber.ROUND_CEIL)
-              .toFixed();
+            valueOutBN = ZERO.plus(value).div(price);
           } else {
-            _valueOut = ZERO.plus(value)
-              .times(price)
-              .dp(pre.tokenOut?.decimals || 0, BigNumber.ROUND_FLOOR)
-              .toFixed();
+            valueOutBN = ZERO.plus(value).times(price);
           }
+          _valueOut = valueOutBN
+            .times(LIMIT_RECEIVE_RATE)
+            .dp(pre.tokenOut?.decimals || 0, BigNumber.ROUND_FLOOR)
+            .toFixed();
         }
 
         return {
@@ -130,17 +130,16 @@ export const LimitPanel = () => {
       setLimitInfo((pre) => {
         let _valueIn = '';
         if (value) {
+          let valueInBN = ZERO;
           if (!isReverse) {
-            _valueIn = ZERO.plus(value)
-              .times(price)
-              .dp(pre.tokenIn?.decimals || 0, BigNumber.ROUND_FLOOR)
-              .toFixed();
+            valueInBN = ZERO.plus(value).times(price);
           } else {
-            _valueIn = ZERO.plus(value)
-              .div(price)
-              .dp(pre.tokenIn?.decimals || 0, BigNumber.ROUND_CEIL)
-              .toFixed();
+            valueInBN = ZERO.plus(value).div(price);
           }
+          _valueIn = valueInBN
+            .div(LIMIT_RECEIVE_RATE)
+            .dp(pre.tokenIn?.decimals || 0, BigNumber.ROUND_CEIL)
+            .toFixed();
         }
 
         return {
@@ -355,6 +354,16 @@ export const LimitPanel = () => {
     refreshReserve();
   }, [refreshReserve]);
 
+  const limitFeeValue = useMemo(() => {
+    if (!limitInfo.valueOut) return '-';
+    return ZERO.plus(limitInfo.valueOut)
+      .div(LIMIT_RECEIVE_RATE)
+      .times(LIMIT_LABS_FEE_RATE)
+      .div(TEN_THOUSAND)
+      .dp(limitInfo.tokenOut?.decimals || 1, BigNumber.ROUND_DOWN)
+      .toFixed();
+  }, [limitInfo.tokenOut?.decimals, limitInfo.valueOut]);
+
   return (
     <div className="limit-panel">
       <LimitPairPrice
@@ -438,7 +447,7 @@ export const LimitPanel = () => {
           <LimitExpiry value={expiryValue} onChange={setExpiryValue} />
         </Col>
         <Col span={24}>
-          <LimitFee />
+          <FeeRow value={limitFeeValue} symbol={limitInfo.tokenOut?.symbol || ''} />
         </Col>
         <Col span={24}>
           <TransactionFee lineHeight={isMobile ? undefined : 22} />

@@ -42,7 +42,6 @@ export function LimitSellBtnWithPay({
   isFixState = false,
   isPriceReverse = false,
 }: LimitSellBtnProps) {
-  const { t } = useTranslation();
   const limitConfirmModalRef = useRef<LimitConfirmModalInterface>();
   const getUnfilled = useGetLimitOrderRemainingUnfilled();
   const { account } = useActiveWeb3React();

@@ -34,6 +34,8 @@ import { formatPrice } from 'utils/price';
 import { useConnectWallet } from '@aelf-web-login/wallet-adapter-react';
 import { useIsConnected } from 'hooks/useLogin';
 import { useTransactionFee } from 'contexts/useStore/hooks';
+import { SWAP_RECEIVE_RATE } from 'constants/swap';
+import BigNumber from 'bignumber.js';
 
 export type TSwapInfo = {
   tokenIn?: Currency;
@@ -122,7 +124,9 @@ export const SwapPanel = () => {
           symbolOut: tokenOut.symbol,
           isFocusValueIn,
           amountIn: isFocusValueIn ? timesDecimals(valueIn, tokenIn.decimals).toFixed() : undefined,
-          amountOut: isFocusValueIn ? undefined : timesDecimals(valueOut, tokenOut.decimals).toFixed(),
+          amountOut: isFocusValueIn
+            ? undefined
+            : timesDecimals(valueOut, tokenOut.decimals).div(SWAP_RECEIVE_RATE).toFixed(0, BigNumber.ROUND_DOWN),
         });
 
         const _swapInfo = swapInfoRef.current;
@@ -142,7 +146,10 @@ export const SwapPanel = () => {
 
         const result = {
           valueIn: divDecimals(route.amountIn, tokenIn.decimals).toFixed(),
-          valueOut: divDecimals(route.amountOut, tokenOut.decimals).toFixed(),
+          valueOut: divDecimals(
+            ZERO.plus(route.amountOut).times(SWAP_RECEIVE_RATE).dp(0, BigNumber.ROUND_CEIL),
+            tokenOut.decimals,
+          ).toFixed(),
           swapRoute: route,
         };
 
