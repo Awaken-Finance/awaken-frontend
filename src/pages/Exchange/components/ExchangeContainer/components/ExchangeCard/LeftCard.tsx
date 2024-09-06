@@ -81,7 +81,9 @@ export default function LeftCard({ tokenA, tokenB, balances, reserves, rate, get
       divDecimals(reserves?.[getCurrencyAddress(tokenA)], tokenA?.decimals),
     );
 
-    return BigNumber.min(maxBalanceAmount, maxReserveAmount).dp(tokenA?.decimals ?? 8);
+    return BigNumber.min(maxBalanceAmount, maxReserveAmount)
+      .times(SWAP_RECEIVE_RATE)
+      .dp(tokenA?.decimals ?? 8, BigNumber.ROUND_DOWN);
   }, [rate, maxBalanceTotal, reserves, tokenB, tokenA, maxReserveAmount]);
 
   const [progressValue, setProgressValue] = useState(0);
@@ -91,10 +93,11 @@ export default function LeftCard({ tokenA, tokenB, balances, reserves, rate, get
 
   const amountOutMin = useMemo(
     () =>
-      BigNumber.min(minimumAmountOut(new BigNumber(amount), userSlippageTolerance), maxReserveAmount).times(
-        SWAP_RECEIVE_RATE,
+      BigNumber.min(
+        minimumAmountOut(new BigNumber(amount), userSlippageTolerance),
+        maxReserveAmount.times(SWAP_RECEIVE_RATE).dp(tokenA?.decimals || 0, BigNumber.ROUND_CEIL),
       ),
-    [amount, maxReserveAmount, userSlippageTolerance],
+    [amount, maxReserveAmount, tokenA?.decimals, userSlippageTolerance],
   );
 
   const priceImpact = useMemo(() => {
@@ -116,7 +119,12 @@ export default function LeftCard({ tokenA, tokenB, balances, reserves, rate, get
       };
     }
 
-    const maxPool = divDecimals(reserves?.[getCurrencyAddress(tokenA)], tokenA?.decimals);
+    const maxPool = divDecimals(
+      ZERO.plus(reserves?.[getCurrencyAddress(tokenA)] || 0)
+        .times(SWAP_RECEIVE_RATE)
+        .dp(0, BigNumber.ROUND_CEIL),
+      tokenA?.decimals,
+    );
 
     if (bigInput.gt(maxPool)) {
       return {
@@ -151,9 +159,13 @@ export default function LeftCard({ tokenA, tokenB, balances, reserves, rate, get
     (val: string) => {
       let totalStr = '';
       if (val) {
+        const realVal = ZERO.plus(val)
+          .div(SWAP_RECEIVE_RATE)
+          .dp(tokenA?.decimals || 0);
+
         const totalValue = getAmountByInput(
           rate,
-          BigNumber.min(new BigNumber(val), maxReserveAmount),
+          BigNumber.min(realVal, maxReserveAmount),
           divDecimals(reserves?.[getCurrencyAddress(tokenA)], tokenA?.decimals),
           divDecimals(reserves?.[getCurrencyAddress(tokenB)], tokenB?.decimals),
         );
@@ -175,7 +187,7 @@ export default function LeftCard({ tokenA, tokenB, balances, reserves, rate, get
           new BigNumber(val),
           divDecimals(reserves?.[getCurrencyAddress(tokenB)], tokenB?.decimals),
           divDecimals(reserves?.[getCurrencyAddress(tokenA)], tokenA?.decimals),
-        );
+        ).times(SWAP_RECEIVE_RATE);
         amountStr = bigNumberToString(amountValue, tokenA?.decimals);
       }
 
@@ -196,14 +208,18 @@ export default function LeftCard({ tokenA, tokenB, balances, reserves, rate, get
       }
 
       const newAmount = sideToInput(val, maxAmount);
+      const realNewAmount = ZERO.plus(newAmount)
+        .div(SWAP_RECEIVE_RATE)
+        .dp(tokenA?.decimals || 0, BigNumber.ROUND_DOWN);
       const newAmountStr = bigNumberToString(newAmount, tokenA?.decimals);
+
       const newTotal = getAmountByInput(
         rate,
-        new BigNumber(newAmount),
+        new BigNumber(realNewAmount),
         divDecimals(reserves?.[getCurrencyAddress(tokenA)], tokenA?.decimals),
         divDecimals(reserves?.[getCurrencyAddress(tokenB)], tokenB?.decimals),
       );
-      const newTotalStr = bigNumberToString(newTotal, tokenB?.decimals);
+      const newTotalStr = bigNumberToUPString(newTotal, tokenB?.decimals);
 
       setTotal(newTotalStr);
       setAmount(newAmountStr);
@@ -232,9 +248,10 @@ export default function LeftCard({ tokenA, tokenB, balances, reserves, rate, get
   const limitFeeValue = useMemo(() => {
     if (!amount) return '-';
     return ZERO.plus(amount)
+      .div(SWAP_RECEIVE_RATE)
       .times(SWAP_LABS_FEE_RATE)
       .div(TEN_THOUSAND)
-      .dp(tokenA?.decimals || 1, BigNumber.ROUND_CEIL)
+      .dp(tokenA?.decimals || 1, BigNumber.ROUND_DOWN)
       .toFixed();
   }, [amount, tokenA?.decimals]);
 

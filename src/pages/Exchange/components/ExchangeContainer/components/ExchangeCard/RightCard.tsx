@@ -78,10 +78,7 @@ export default function RightCard({ tokenA, tokenB, balances, reserves, rate, ge
   const sliderValue = useMemo(() => +inputToSide(amount, maxBalanceAmount).toFixed(0), [amount, maxBalanceAmount]);
 
   const amountOutMin = useMemo(
-    () =>
-      BigNumber.min(minimumAmountOut(new BigNumber(total), userSlippageTolerance), maxReserveTotal).times(
-        SWAP_RECEIVE_RATE,
-      ),
+    () => BigNumber.min(minimumAmountOut(new BigNumber(total), userSlippageTolerance), maxReserveTotal),
     [maxReserveTotal, total, userSlippageTolerance],
   );
 
@@ -120,7 +117,12 @@ export default function RightCard({ tokenA, tokenB, balances, reserves, rate, ge
   const totalError = useMemo(() => {
     const bigTotal = new BigNumber(total);
 
-    const maxPool = divDecimals(reserves?.[getCurrencyAddress(tokenB)], tokenB?.decimals);
+    const maxPool = divDecimals(
+      ZERO.plus(reserves?.[getCurrencyAddress(tokenB)] || 0)
+        .times(SWAP_RECEIVE_RATE)
+        .dp(0, BigNumber.ROUND_CEIL),
+      tokenB?.decimals,
+    );
 
     if (bigTotal.gt(maxPool)) {
       return {
@@ -144,7 +146,7 @@ export default function RightCard({ tokenA, tokenB, balances, reserves, rate, ge
           new BigNumber(val),
           divDecimals(reserves?.[getCurrencyAddress(tokenA)], tokenA?.decimals),
           divDecimals(reserves?.[getCurrencyAddress(tokenB)], tokenB?.decimals),
-        );
+        ).times(SWAP_RECEIVE_RATE);
 
         totalStr = bigNumberToString(totalValue, tokenB?.decimals);
       }
@@ -160,9 +162,12 @@ export default function RightCard({ tokenA, tokenB, balances, reserves, rate, ge
     (val: string) => {
       let amountStr = '';
       if (val) {
+        const realVal = ZERO.plus(val)
+          .div(SWAP_RECEIVE_RATE)
+          .dp(tokenA?.decimals || 0);
         const amountValue = getAmountByInput(
           rate,
-          BigNumber.min(new BigNumber(val), maxReserveTotal),
+          BigNumber.min(new BigNumber(realVal), maxReserveTotal),
           divDecimals(reserves?.[getCurrencyAddress(tokenB)], tokenB?.decimals),
           divDecimals(reserves?.[getCurrencyAddress(tokenA)], tokenA?.decimals),
         );
@@ -192,7 +197,7 @@ export default function RightCard({ tokenA, tokenB, balances, reserves, rate, ge
         new BigNumber(newAmount),
         divDecimals(reserves?.[getCurrencyAddress(tokenA)], tokenA?.decimals),
         divDecimals(reserves?.[getCurrencyAddress(tokenB)], tokenB?.decimals),
-      );
+      ).times(SWAP_RECEIVE_RATE);
       const newTotalStr = bigNumberToString(newTotal, tokenB?.decimals);
 
       setTotal(newTotalStr);
@@ -222,9 +227,10 @@ export default function RightCard({ tokenA, tokenB, balances, reserves, rate, ge
   const limitFeeValue = useMemo(() => {
     if (!total) return '-';
     return ZERO.plus(total)
+      .div(SWAP_RECEIVE_RATE)
       .times(SWAP_LABS_FEE_RATE)
       .div(TEN_THOUSAND)
-      .dp(tokenB?.decimals || 1, BigNumber.ROUND_CEIL)
+      .dp(tokenB?.decimals || 1, BigNumber.ROUND_DOWN)
       .toFixed();
   }, [total, tokenB?.decimals]);
 
