@@ -33,8 +33,7 @@ const TOKEN_API_LIST = {
 };
 
 const CMS_API_LIST = {
-  GET_PINNED_TOKENS: '/cms/items/pinned_tokens',
-  GET_POOLS_TOP: '/cms/recommons', // '/api/app/trade-pairs/top',
+  GET_PINNED_TOKENS: '/items/pinned_tokens',
 };
 
 export const USER_CENTER_API_LIST = {
