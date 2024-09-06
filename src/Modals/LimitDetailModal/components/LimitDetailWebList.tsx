@@ -141,7 +141,7 @@ export const LimitDetailWebList = ({
           </>
         ),
         key: 'totalFee',
-        width: 100,
+        width: 144,
         dataIndex: 'totalFee',
         align: 'left',
         render: (totalFee: string, _record: TLimitDetailItem) => {
@@ -150,14 +150,18 @@ export const LimitDetailWebList = ({
               <div>
                 <Font lineHeight={20} size={14}>
                   {_record.status !== LimitOrderStatusEnum.PartiallyFilling
-                    ? ' -'
-                    : `${formatPriceChange(totalFee)} ${formatSymbol('ELF')}`}
+                    ? '-'
+                    : `-${ZERO.plus(totalFee || 0)
+                        .dp(record?.tradePair.token1.decimals || 0)
+                        .toFixed()} ${formatSymbol(record?.symbolOut)}`}
                 </Font>
               </div>
               <div>
                 <Font lineHeight={20} size={14}>
                   {LIMIT_STATUS_WITH_GAS.includes(_record.status)
-                    ? `${formatPriceChange(_record.networkFee)} ${formatSymbol('ELF')}`
+                    ? `-${ZERO.plus(_record.networkFee ?? 0)
+                        .dp(8)
+                        .toFixed()} ELF`
                     : '-'}
                 </Font>
               </div>
@@ -169,7 +173,7 @@ export const LimitDetailWebList = ({
         title: t('Status'),
         key: 'status',
         dataIndex: 'status',
-        width: 60,
+        width: 72,
         align: 'left',
         render: (status: LimitOrderStatusEnum) => (
           <Font lineHeight={20} size={14} color={LimitDetailStatusMap[status].color}>
@@ -197,7 +201,7 @@ export const LimitDetailWebList = ({
     ];
 
     return columnList;
-  }, [record?.symbolIn, record?.symbolOut, t]);
+  }, [record?.symbolIn, record?.symbolOut, record?.tradePair.token1.decimals, t]);
 
   return (
     <CommonTable

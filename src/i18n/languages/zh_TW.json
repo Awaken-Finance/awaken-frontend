@@ -698,7 +698,7 @@
     "Expiry": "有效期限",
     "expiryDescription": "限價單的有效期限，到期後未完全成交則自動取消。",
     "Fee": "費用",
-    "feeDescription": "此費用由平台收取，以確保Awaken 的最佳體驗。",
+    "feeDescription": "此費用由平台收取，以確保Awaken的最佳體驗。<a href=\"https://awakenfinance.gitbook.io/en/ii.-trader-faq/what-is-a-swap-trade/what-is-the-fee\" target=\"_blank\" rel=\"noopener noreferrer\">了解更多</a>",
     "Cancel Limit": "取消限價單",
     "limitCancelContent": "您的限價單可能會在取消處理之前執行。您的網路費用無法退還。您是否希望繼續？<br />取消限價單會產生網路成本。",
     "Ignore it": "忽略它",

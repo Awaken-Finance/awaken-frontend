@@ -108,7 +108,9 @@ export default function LimitDetailItem({
             </Font>
           </Col>
           <Col span={12} className="align-right height-20 line-height-20">
-            <Font lineHeight={20} size={14}>{`${formatPriceChange(totalFee)} ${formatSymbol('ELF')}`}</Font>
+            <Font lineHeight={20} size={14}>{`-${ZERO.plus(totalFee || 0)
+              .dp(record?.tradePair.token1.decimals || 0)
+              .toFixed()} ${formatSymbol(record?.symbolOut)}`}</Font>
           </Col>
         </>
       )}
@@ -122,7 +124,9 @@ export default function LimitDetailItem({
           </Col>
           <Col span={12} className="align-right height-20 line-height-20">
             <Font lineHeight={20} size={14}>
-              {`${formatPriceChange(networkFee)} ELF`}
+              {`-${ZERO.plus(networkFee ?? 0)
+                .dp(8)
+                .toFixed()} ELF`}
             </Font>
           </Col>
         </>

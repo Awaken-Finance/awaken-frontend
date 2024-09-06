@@ -14,7 +14,7 @@ import { useTransactionFeeStr } from 'contexts/useStore/hooks';
 import { Currency } from '@awaken/sdk-core';
 import { ExpiryEnum } from 'pages/Exchange/components/ExchangeContainer/components/LimitCard/components/LimitExpiry';
 import { useTokenPrice } from 'contexts/useTokenPrice/hooks';
-import { REQ_CODE, ZERO } from 'constants/misc';
+import { REQ_CODE, TEN_THOUSAND, ZERO } from 'constants/misc';
 import moment from 'moment';
 import useAllowanceAndApprove from 'hooks/useApprove';
 import { ChainConstants } from 'constants/ChainConstants';
@@ -25,6 +25,7 @@ import { divDecimals, timesDecimals } from 'utils/calculate';
 import { commitLimit } from 'utils/limit';
 import { LIMIT_PRICE_DECIMAL } from 'constants/limit';
 import BigNumber from 'bignumber.js';
+import { LIMIT_LABS_FEE_RATE, LIMIT_RECEIVE_RATE } from 'constants/swap';
 
 export type TLimitConfirmModalProps = {
   onSuccess?: () => void;
@@ -45,7 +46,7 @@ export interface LimitConfirmModalInterface {
   show: (params: TLimitConfirmModalInfo) => void;
 }
 
-export const LimitConfirmModal = forwardRef(({ onSuccess, onPriceError }: TLimitConfirmModalProps, ref) => {
+export const LimitConfirmModal = forwardRef(({ onSuccess }: TLimitConfirmModalProps, ref) => {
   const { t } = useTranslation();
   const isMobile = useMobile();
   const transactionFeeStr = useTransactionFeeStr();
@@ -86,12 +87,14 @@ export const LimitConfirmModal = forwardRef(({ onSuccess, onPriceError }: TLimit
   const price = useMemo(() => {
     if (info?.isPriceReverse) {
       return `1 ${formatSymbol(info?.tokenIn.symbol)} = ${ZERO.plus(info?.amountOut || 0)
+        .div(LIMIT_RECEIVE_RATE)
         .div(info?.amountIn || 1)
         .dp(LIMIT_PRICE_DECIMAL, BigNumber.ROUND_FLOOR)
         .toFixed()} ${formatSymbol(info?.tokenOut.symbol)}`;
     }
     return `1 ${formatSymbol(info?.tokenOut.symbol)} = ${ZERO.plus(info?.amountIn || 0)
       .div(info?.amountOut || 1)
+      .times(LIMIT_RECEIVE_RATE)
       .dp(LIMIT_PRICE_DECIMAL, BigNumber.ROUND_CEIL)
       .toFixed()} ${formatSymbol(info?.tokenIn.symbol)}`;
   }, [info?.amountIn, info?.amountOut, info?.isPriceReverse, info?.tokenIn.symbol, info?.tokenOut.symbol]);
@@ -156,12 +159,16 @@ export const LimitConfirmModal = forwardRef(({ onSuccess, onPriceError }: TLimit
         await approve(valueInAmountBN);
       }
 
+      const realAmountOutBN = timesDecimals(amountOut, tokenOut.decimals)
+        .div(LIMIT_RECEIVE_RATE)
+        .dp(0, BigNumber.ROUND_DOWN);
       const args = {
         amountIn: timesDecimals(amountIn, tokenIn.decimals).toFixed(),
         symbolIn: tokenIn.symbol,
-        amountOut: timesDecimals(amountOut, tokenOut.decimals).toFixed(),
+        amountOut: realAmountOutBN.toFixed(),
         symbolOut: tokenOut.symbol,
         deadline: getDeadlineWithSec(expiryTime),
+        labsFeeRate: LIMIT_LABS_FEE_RATE,
       };
       console.log('commitLimit', args);
       const req = await commitLimit({
@@ -195,6 +202,17 @@ export const LimitConfirmModal = forwardRef(({ onSuccess, onPriceError }: TLimit
     onSuccess,
     onCancel,
   ]);
+
+  const limitFeeValue = useMemo(() => {
+    if (!info) return '-';
+
+    return `${ZERO.plus(info.amountOut)
+      .div(LIMIT_RECEIVE_RATE)
+      .times(LIMIT_LABS_FEE_RATE)
+      .div(TEN_THOUSAND)
+      .dp(info.tokenOut?.decimals || 1, BigNumber.ROUND_DOWN)
+      .toFixed()} ${formatSymbol(info.tokenOut.symbol)}`;
+  }, [info]);
 
   return (
     <CommonModal
@@ -279,7 +297,7 @@ export const LimitConfirmModal = forwardRef(({ onSuccess, onPriceError }: TLimit
             <Row gutter={[4, 0]} align="middle">
               <Col>
                 <Font size={14} lineHeight={22}>
-                  {'0 ELF'}
+                  {limitFeeValue}
                 </Font>
               </Col>
             </Row>

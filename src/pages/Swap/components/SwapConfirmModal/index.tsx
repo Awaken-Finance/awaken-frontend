@@ -24,6 +24,8 @@ import { onSwap } from 'utils/swapContract';
 import notification from 'utils/notificationNew';
 import { SWAP_HOOK_CONTRACT_ADDRESS } from 'constants/index';
 import { getCID, sleep } from 'utils';
+import { SWAP_LABS_FEE_RATE, SWAP_RECEIVE_RATE } from 'constants/swap';
+import BigNumber from 'bignumber.js';
 
 export type TSwapConfirmModalProps = {
   onSuccess?: () => void;
@@ -82,10 +84,14 @@ export const SwapConfirmModal = forwardRef(
           contract: routeContract,
           swapRoute,
         });
-        if (!amountOutAmount) return;
-        const amountOutValue = divDecimals(amountOutAmount, tokenOut.decimals).toFixed();
 
-        console.log('SwapConfirmModal amountOutValue', amountOutValue);
+        console.log('SwapConfirmModal amountOutValue', amountOutAmount);
+
+        const amountOutValue = divDecimals(
+          ZERO.plus(amountOutAmount).times(SWAP_RECEIVE_RATE).dp(0, BigNumber.ROUND_CEIL),
+          tokenOut.decimals,
+        ).toFixed();
+
         setSwapInfo((pre) => {
           if (!pre) return pre;
           return {
@@ -218,7 +224,10 @@ export const SwapConfirmModal = forwardRef(
         const req = await onSwap({
           account,
           routerContract: routeContract,
-          swapTokens,
+          swapArgs: {
+            swapTokens,
+            labsFeeRate: SWAP_LABS_FEE_RATE,
+          },
           amountIn: valueInAmountBN,
           amountOutMin: amountMinOutAmountBN,
           tokenB: tokenIn,
