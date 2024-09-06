@@ -21,7 +21,7 @@ import { useTransactionFee } from 'contexts/useStore/hooks';
 import { LimitSellBtnWithPay } from 'Buttons/LimitSellBtn';
 import { FeeRow } from 'pages/Swap/components/FeeRow';
 import { LimitPairPrice } from 'pages/Swap/components/LimitPairPrice';
-import { LIMIT_LABS_FEE_RATE } from 'constants/swap';
+import { LIMIT_LABS_FEE_RATE, LIMIT_RECEIVE_RATE } from 'constants/swap';
 
 export type TLimitRightCardProps = {
   rate: string;
@@ -75,7 +75,10 @@ export const LimitRightCard = ({ tokenA, tokenB, balances, reserves, rate }: TLi
 
   const maxTotal = useMemo(() => {
     if (ZERO.gte(tokenBPrice) || !tokenBPrice) return ZERO;
-    return maxBalanceAmount.times(tokenBPrice).dp(tokenB?.decimals || 0);
+    return maxBalanceAmount
+      .times(tokenBPrice)
+      .times(LIMIT_RECEIVE_RATE)
+      .dp(tokenB?.decimals || 0, BigNumber.ROUND_FLOOR);
   }, [tokenBPrice, maxBalanceAmount, tokenB?.decimals]);
 
   const [progressValue, setProgressValue] = useState(0);
@@ -141,6 +144,7 @@ export const LimitRightCard = ({ tokenA, tokenB, balances, reserves, rate }: TLi
       if (val) {
         totalStr = ZERO.plus(val)
           .times(price)
+          .times(LIMIT_RECEIVE_RATE)
           .dp(tokenB?.decimals || 0, BigNumber.ROUND_FLOOR)
           .toFixed();
       }
@@ -163,7 +167,10 @@ export const LimitRightCard = ({ tokenA, tokenB, balances, reserves, rate }: TLi
       }
       let amountStr = '';
       if (val) {
-        amountStr = ZERO.plus(val)
+        const realVal = ZERO.plus(val)
+          .div(LIMIT_RECEIVE_RATE)
+          .dp(tokenA?.decimals || 0);
+        amountStr = realVal
           .div(price)
           .dp(tokenA?.decimals || 0, BigNumber.ROUND_CEIL)
           .toFixed();
@@ -190,6 +197,7 @@ export const LimitRightCard = ({ tokenA, tokenB, balances, reserves, rate }: TLi
       const newAmountStr = bigNumberToString(newAmount, tokenA?.decimals);
       const newTotal = ZERO.plus(newAmountStr)
         .times(tokenBPrice)
+        .times(LIMIT_RECEIVE_RATE)
         .dp(tokenB?.decimals || 0, BigNumber.ROUND_FLOOR)
         .toFixed();
 
@@ -231,9 +239,10 @@ export const LimitRightCard = ({ tokenA, tokenB, balances, reserves, rate }: TLi
   const limitFeeValue = useMemo(() => {
     if (!total) return '-';
     return ZERO.plus(total)
+      .div(LIMIT_RECEIVE_RATE)
       .times(LIMIT_LABS_FEE_RATE)
       .div(TEN_THOUSAND)
-      .dp(tokenB?.decimals || 1, BigNumber.ROUND_CEIL)
+      .dp(tokenB?.decimals || 1, BigNumber.ROUND_DOWN)
       .toFixed();
   }, [total, tokenB?.decimals]);
 

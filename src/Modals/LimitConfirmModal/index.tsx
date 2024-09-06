@@ -25,7 +25,7 @@ import { divDecimals, timesDecimals } from 'utils/calculate';
 import { commitLimit } from 'utils/limit';
 import { LIMIT_PRICE_DECIMAL } from 'constants/limit';
 import BigNumber from 'bignumber.js';
-import { LIMIT_LABS_FEE_RATE } from 'constants/swap';
+import { LIMIT_LABS_FEE_RATE, LIMIT_RECEIVE_RATE } from 'constants/swap';
 
 export type TLimitConfirmModalProps = {
   onSuccess?: () => void;
@@ -46,7 +46,7 @@ export interface LimitConfirmModalInterface {
   show: (params: TLimitConfirmModalInfo) => void;
 }
 
-export const LimitConfirmModal = forwardRef(({ onSuccess, onPriceError }: TLimitConfirmModalProps, ref) => {
+export const LimitConfirmModal = forwardRef(({ onSuccess }: TLimitConfirmModalProps, ref) => {
   const { t } = useTranslation();
   const isMobile = useMobile();
   const transactionFeeStr = useTransactionFeeStr();
@@ -87,12 +87,14 @@ export const LimitConfirmModal = forwardRef(({ onSuccess, onPriceError }: TLimit
   const price = useMemo(() => {
     if (info?.isPriceReverse) {
       return `1 ${formatSymbol(info?.tokenIn.symbol)} = ${ZERO.plus(info?.amountOut || 0)
+        .div(LIMIT_RECEIVE_RATE)
         .div(info?.amountIn || 1)
         .dp(LIMIT_PRICE_DECIMAL, BigNumber.ROUND_FLOOR)
         .toFixed()} ${formatSymbol(info?.tokenOut.symbol)}`;
     }
     return `1 ${formatSymbol(info?.tokenOut.symbol)} = ${ZERO.plus(info?.amountIn || 0)
       .div(info?.amountOut || 1)
+      .times(LIMIT_RECEIVE_RATE)
       .dp(LIMIT_PRICE_DECIMAL, BigNumber.ROUND_CEIL)
       .toFixed()} ${formatSymbol(info?.tokenIn.symbol)}`;
   }, [info?.amountIn, info?.amountOut, info?.isPriceReverse, info?.tokenIn.symbol, info?.tokenOut.symbol]);
@@ -157,10 +159,13 @@ export const LimitConfirmModal = forwardRef(({ onSuccess, onPriceError }: TLimit
         await approve(valueInAmountBN);
       }
 
+      const realAmountOutBN = timesDecimals(amountOut, tokenOut.decimals)
+        .div(LIMIT_RECEIVE_RATE)
+        .dp(0, BigNumber.ROUND_DOWN);
       const args = {
         amountIn: timesDecimals(amountIn, tokenIn.decimals).toFixed(),
         symbolIn: tokenIn.symbol,
-        amountOut: timesDecimals(amountOut, tokenOut.decimals).toFixed(),
+        amountOut: realAmountOutBN.toFixed(),
         symbolOut: tokenOut.symbol,
         deadline: getDeadlineWithSec(expiryTime),
         labsFeeRate: LIMIT_LABS_FEE_RATE,
@@ -200,10 +205,12 @@ export const LimitConfirmModal = forwardRef(({ onSuccess, onPriceError }: TLimit
 
   const limitFeeValue = useMemo(() => {
     if (!info) return '-';
+
     return `${ZERO.plus(info.amountOut)
+      .div(LIMIT_RECEIVE_RATE)
       .times(LIMIT_LABS_FEE_RATE)
       .div(TEN_THOUSAND)
-      .dp(info.tokenOut?.decimals || 1, BigNumber.ROUND_CEIL)
+      .dp(info.tokenOut?.decimals || 1, BigNumber.ROUND_DOWN)
       .toFixed()} ${formatSymbol(info.tokenOut.symbol)}`;
   }, [info]);
 

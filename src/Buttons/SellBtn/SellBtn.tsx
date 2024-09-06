@@ -21,7 +21,7 @@ import { SWAP_HOOK_CONTRACT_ADDRESS } from 'constants/index';
 import { getCID } from 'utils';
 import { useUserSettings } from 'contexts/useUserSettings';
 import BigNumber from 'bignumber.js';
-import { SWAP_LABS_FEE_RATE } from 'constants/swap';
+import { SWAP_LABS_FEE_RATE, SWAP_RECEIVE_RATE } from 'constants/swap';
 
 interface SellBtnProps {
   sell?: boolean;
@@ -77,12 +77,11 @@ export function SellBtnWithPay({
     setTrading(true);
     try {
       const valueInAmountBN = timesDecimals(valueIn, tokenIn.decimals);
-      const valueOutAmountBN = timesDecimals(valueOut, tokenOut.decimals);
+      const valueOutAmountBN = timesDecimals(valueOut, tokenOut.decimals).div(SWAP_RECEIVE_RATE);
       const amountMinOutAmountBN = BigNumber.max(
         minimumAmountOut(valueOutAmountBN, userSlippageTolerance).dp(0, BigNumber.ROUND_DOWN),
         ONE,
       );
-
       const allowance = await checkAllowance();
       if (valueInAmountBN.gt(allowance)) {
         await approve(valueInAmountBN);

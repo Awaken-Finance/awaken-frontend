@@ -38,10 +38,7 @@ export const SwapRouteInfo = ({
   const amountOutMinValue = useMemo(() => {
     const { valueOut, tokenOut } = swapInfo;
     if (!valueOut || !tokenOut) return '-';
-    const _value = bigNumberToString(
-      minimumAmountOut(ZERO.plus(valueOut), userSlippageTolerance).times(SWAP_RECEIVE_RATE),
-      tokenOut.decimals,
-    );
+    const _value = bigNumberToString(minimumAmountOut(ZERO.plus(valueOut), userSlippageTolerance), tokenOut.decimals);
     return `${_value} ${formatSymbol(tokenOut.symbol)}`;
   }, [swapInfo, userSlippageTolerance]);
 
@@ -79,9 +76,10 @@ export const SwapRouteInfo = ({
     if (!swapInfo.valueOut) return `- ${_symbol}`;
 
     return `${ZERO.plus(swapInfo.valueOut)
+      .div(SWAP_RECEIVE_RATE)
       .times(SWAP_LABS_FEE_RATE)
       .div(TEN_THOUSAND)
-      .dp(swapInfo.tokenOut?.decimals || 1, BigNumber.ROUND_CEIL)
+      .dp(swapInfo.tokenOut?.decimals || 1, BigNumber.ROUND_DOWN)
       .toFixed()} ${_symbol}`;
   }, [swapInfo]);
 

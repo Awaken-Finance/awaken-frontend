@@ -59,3 +59,5 @@ export const SWAP_LABS_FEE_RATE = 15;
 export const SWAP_RECEIVE_RATE = 0.9985;
 
 export const LIMIT_LABS_FEE_RATE = 5;
+
+export const LIMIT_RECEIVE_RATE = 0.9995;
