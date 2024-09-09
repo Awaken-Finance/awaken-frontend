@@ -727,6 +727,8 @@
     "Review Order": "檢查限價單",
     "Enter a price": "輸入價格",
     "Max. Buy": "最大購買量",
-    "Max. Receive": "最多獲得"
+    "Max. Receive": "最多獲得",
+    "limitReceiveDescription": "已成交和得到的數量包含了費用",
+    "limitDetailReceiveDescription": "得到的數量包含了費用"
   }
 }
