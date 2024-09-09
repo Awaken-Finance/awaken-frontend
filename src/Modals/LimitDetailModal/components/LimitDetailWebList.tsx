@@ -16,6 +16,7 @@ import { getExploreLink } from 'utils';
 import CommonCopy from 'components/CommonCopy';
 import { FetchParam } from 'types/requeset';
 import { formatPriceChange } from 'utils/price';
+import CommonTooltip from 'components/CommonTooltip';
 
 export type TLimitDetailWebListProps = {
   record?: TLimitRecordItem;
@@ -98,7 +99,17 @@ export const LimitDetailWebList = ({
         },
       },
       {
-        title: t('Receive'),
+        title: (
+          <div className="limit-detail-table-tip-wrap">
+            <div>{t('Receive')}</div>
+            <CommonTooltip
+              placement="topLeft"
+              title={t('limitDetailReceiveDescription')}
+              headerDesc={t('Receive')}
+              buttonTitle={t('ok')}
+            />
+          </div>
+        ),
         key: 'amountOutFilled',
         dataIndex: 'amountOutFilled',
         width: 160,
