@@ -257,7 +257,7 @@ type SwapProps = {
   tokenB?: Currency;
   amountIn: BigNumber;
   amountOutMin: BigNumber;
-  swapTokens?: TContractSwapToken[];
+  swapArgs?: any;
   methodName?: string;
   t: TFunction<'translation'>;
 };
@@ -269,7 +269,7 @@ export const onSwap: (param: SwapProps) => Promise<boolean | any> = async ({
   routerContract,
   tokenA,
   tokenB,
-  swapTokens,
+  swapArgs,
   methodName: methodNameProp,
   t,
 }) => {
@@ -282,11 +282,11 @@ export const onSwap: (param: SwapProps) => Promise<boolean | any> = async ({
     };
 
   const contract = routerContract;
-  const isSwap = !!swapTokens;
+  const isSwap = !!swapArgs;
 
   if (isSwap) {
     methodName = methodNameProp || 'swapExactTokensForTokens';
-    args = [swapTokens];
+    args = swapArgs;
   } else if (tokenA?.isNative) {
     methodName = 'swapExactTokensForETH';
     args = [

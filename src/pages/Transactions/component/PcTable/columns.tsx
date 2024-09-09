@@ -241,7 +241,7 @@ export const useTransactionColumns = ({ menu, field, order, side }: TUseTransact
         title: (
           <>
             {isTrade && <div>{t('LP Fee')}</div>}
-            <div>{t('transactionFee')}</div>
+            {isTrade ? <div>{t('Fee')}</div> : <div>{t('transactionFee')}</div>}
           </>
         ),
         key: 'totalFee',
@@ -249,14 +249,14 @@ export const useTransactionColumns = ({ menu, field, order, side }: TUseTransact
         align: 'left',
         width: 114,
         render: (val: number, record: RecentTransaction) => {
-          const transactionFee = ZERO.plus(record.transactionFee || 0)
-            .dp(8)
-            .toFixed();
           return (
             <>
               {isTrade && (
                 <div>
-                  <Font lineHeight={20} size={12}>{`-${ZERO.plus(val).dp(8).toFixed()}`}</Font>&nbsp;
+                  <Font lineHeight={20} size={12}>{`-${ZERO.plus(val)
+                    .dp(record?.tradePair?.[record.side === 0 ? 'token1' : 'token0']?.decimals)
+                    .toFixed()}`}</Font>
+                  &nbsp;
                   <Pair
                     lineHeight={20}
                     size={12}
@@ -264,29 +264,63 @@ export const useTransactionColumns = ({ menu, field, order, side }: TUseTransact
                   />
                 </div>
               )}
-              <Font lineHeight={20} size={12}>
-                {`-${transactionFee} ELF`}
-              </Font>
+              {isTrade ? (
+                <div>
+                  <Font lineHeight={20} size={12}>
+                    {`-${ZERO.plus(record.labsFee || 0)
+                      .dp(record?.tradePair?.[record.side === 0 ? 'token0' : 'token1']?.decimals)
+                      .toFixed()}`}
+                  </Font>
+                  &nbsp;
+                  <Pair
+                    lineHeight={20}
+                    size={12}
+                    symbol={record?.tradePair?.[record.side === 0 ? 'token0' : 'token1']?.symbol}
+                  />
+                </div>
+              ) : (
+                <Font lineHeight={20} size={12}>
+                  {`-${ZERO.plus(record.transactionFee || 0)
+                    .dp(8)
+                    .toFixed()} ELF`}
+                </Font>
+              )}
             </>
           );
         },
       },
       {
-        title: t('transactionID'),
+        title: (
+          <>
+            <div>{t('transactionID')}</div>
+            {isTrade && <div>{t('transactionFee')}</div>}
+          </>
+        ),
         key: 'transactionHash',
         dataIndex: 'transactionHash',
         align: 'right',
         width: 110,
-        render: (val: string) => (
-          <div className="transaction-hash-wrap">
-            <div className="transaction-hash-label">
-              <a target="_blank" href={getExploreLink(val, 'transaction')} className="transaction-hash-link">
-                {stringMidShort(val)}
-              </a>
-            </div>
-            <CommonCopy copyInfo="" copyValue={val} className="copy-address" />
-          </div>
-        ),
+        render: (val: string, record: RecentTransaction) => {
+          return (
+            <>
+              <div className="transaction-hash-wrap">
+                <div className="transaction-hash-label">
+                  <a target="_blank" href={getExploreLink(val, 'transaction')} className="transaction-hash-link">
+                    {stringMidShort(val)}
+                  </a>
+                </div>
+                <CommonCopy copyInfo="" copyValue={val} className="copy-address" />
+              </div>
+              {isTrade && (
+                <Font lineHeight={20} size={12}>
+                  {`-${ZERO.plus(record.transactionFee || 0)
+                    .dp(8)
+                    .toFixed()} ELF`}
+                </Font>
+              )}
+            </>
+          );
+        },
       },
     ];
 
@@ -417,10 +451,14 @@ export const useLimitColumns = ({ limitCancelModalRef, limitDetailModalRef }: TU
           return (
             <>
               <div>
-                <Font lineHeight={20} size={14}>{`${formatPriceChange(totalFee)} ELF`}</Font>
+                <Font lineHeight={20} size={14}>{`-${ZERO.plus(totalFee || 0)
+                  .dp(record.tradePair.token1.decimals)
+                  .toFixed()} ${formatSymbol(record.symbolOut)}`}</Font>
               </div>
               <Font lineHeight={20} size={14}>
-                {`${formatPriceChange(record.networkFee)} ELF`}
+                {`-${ZERO.plus(record.networkFee || 0)
+                  .dp(8)
+                  .toFixed()} ELF`}
               </Font>
             </>
           );

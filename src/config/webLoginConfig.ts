@@ -54,6 +54,10 @@ const didConfig = {
     loginMethodsOrder: ['Email', 'Google', 'Apple', 'Telegram', 'Scan'],
   },
   networkType: networkType,
+  referralInfo: {
+    referralCode: '',
+    projectCode: '13005',
+  },
 };
 
 const baseConfig = {

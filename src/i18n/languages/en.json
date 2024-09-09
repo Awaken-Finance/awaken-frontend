@@ -673,7 +673,7 @@
     "Expiry": "Expiry",
     "expiryDescription": "The validity period of the limit order. If it is not fully executed after the expiration date, it will be automatically cancelled.",
     "Fee": "Fee",
-    "feeDescription": "This fee is charged by the platform to ensure the best experience on Awaken.",
+    "feeDescription": "This fee is charged by the platform to ensure the best experience on Awaken. <a href=\"https://awakenfinance.gitbook.io/en/ii.-trader-faq/what-is-a-swap-trade/what-is-the-fee\" target=\"_blank\" rel=\"noopener noreferrer\">Learn more</a>",
     "Cancel Limit": "Cancel Limit",
     "limitCancelContent": "Your limit could execute before cancellation is processed. Your network costs cannot be refunded. Do you wish to proceed?<br />Canceling a limit has a network cost.",
     "Ignore it": "Ignore it",
