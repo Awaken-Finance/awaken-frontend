@@ -19,6 +19,7 @@ import { MutableRefObject } from 'react';
 import { LimitCancelModalInterface } from 'Modals/LimitCancelModal';
 import { LimitDetailModalInterface } from 'Modals/LimitDetailModal';
 import { formatPriceChange } from 'utils/price';
+import CommonTooltip from 'components/CommonTooltip';
 
 export type TLimitRecordItemProps = {
   item: TLimitRecordItem;
@@ -102,10 +103,16 @@ export default function LimitRecordItem({
         </div>
       </Col>
 
-      <Col span={12} className="height-20 line-height-20">
+      <Col span={12} className="height-20 line-height-20 transaction-table-tip-mobile-wrap">
         <Font lineHeight={20} color="two">
           {`${t('Filled')}/${t('Receive')}`}
         </Font>
+        <CommonTooltip
+          placement="topLeft"
+          title={t('limitReceiveDescription')}
+          headerDesc={`${t('Filled')}/${t('Receive')}`}
+          buttonTitle={t('ok')}
+        />
       </Col>
       <Col span={12} className="align-right">
         <div className="transaction-list-item-two-row-wrap">

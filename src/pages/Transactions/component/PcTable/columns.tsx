@@ -399,10 +399,18 @@ export const useLimitColumns = ({ limitCancelModalRef, limitDetailModalRef }: TU
       },
       {
         title: (
-          <>
-            <div>{`${t('Filled')}/`}</div>
-            <div>{t('Receive')}</div>
-          </>
+          <div className="transaction-table-tip-wrap">
+            <div>
+              <div>{`${t('Filled')}/`}</div>
+              <div>{t('Receive')}</div>
+            </div>
+            <CommonTooltip
+              placement="topLeft"
+              title={t('limitReceiveDescription')}
+              headerDesc={`${t('Filled')}/${t('Receive')}`}
+              buttonTitle={t('ok')}
+            />
+          </div>
         ),
         key: 'amountOut',
         width: 200,
