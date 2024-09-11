@@ -21,6 +21,7 @@ import useChainId from 'hooks/useChainId';
 import { shortenAddress } from 'utils';
 import { useConnectWallet } from '@aelf-web-login/wallet-adapter-react';
 import { DepositTipModal, DepositTipModalInterface } from 'Modals/DepositTipModal';
+import { useIsDepositPath } from 'hooks/route';
 
 function PcHeader() {
   const { selectedKeys } = useSelectedKeys();
@@ -41,6 +42,7 @@ function PcHeader() {
 
   useMonitorScroll();
 
+  const isDepositPath = useIsDepositPath();
   const onDepositClick = useCallback(() => {
     depositTipModalRef.current?.show();
   }, []);
@@ -111,15 +113,17 @@ function PcHeader() {
         </Col>
         <Col>
           <Row align="middle" gutter={[16, 0]}>
-            <Col>
-              <CommonButton
-                className="signup-btn"
-                style={{ fontWeight: '600' }}
-                type="primary"
-                onClick={onDepositClick}>
-                {t('deposit')}
-              </CommonButton>
-            </Col>
+            {!isDepositPath && (
+              <Col>
+                <CommonButton
+                  className="signup-btn"
+                  style={{ fontWeight: '600' }}
+                  type="primary"
+                  onClick={onDepositClick}>
+                  {t('deposit')}
+                </CommonButton>
+              </Col>
+            )}
             <Col>
               <Network />
             </Col>

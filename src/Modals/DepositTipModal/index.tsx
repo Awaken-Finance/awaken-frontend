@@ -3,7 +3,8 @@ import { Trans, useTranslation } from 'react-i18next';
 import CommonModal from 'components/CommonModal';
 import CommonButton from 'components/CommonButton';
 import './styles.less';
-import { useHistory, useLocation } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
+import { useIsDepositPath } from 'hooks/route';
 
 export type TDepositTipModalProps = {};
 
@@ -26,15 +27,15 @@ export const DepositTipModal = forwardRef((_props: TDepositTipModalProps, ref) =
   }, []);
 
   const history = useHistory();
-  const { pathname } = useLocation();
+  const isDepositPath = useIsDepositPath();
   const onConfirmClick = useCallback(async () => {
-    if (pathname === '/deposit' || pathname === '/withdraw') {
+    if (isDepositPath) {
       onCancel();
       return;
     }
     history.push(`/deposit`);
     onCancel();
-  }, [history, onCancel, pathname]);
+  }, [history, isDepositPath, onCancel]);
 
   return (
     <CommonModal

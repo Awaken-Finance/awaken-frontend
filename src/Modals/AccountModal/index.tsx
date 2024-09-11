@@ -38,6 +38,7 @@ import PriceDigits from 'components/PriceDigits';
 import { formatSymbol } from 'utils/token';
 import { LimitOrderStatusMap } from 'constants/limit';
 import { DepositTipModal, DepositTipModalInterface } from 'Modals/DepositTipModal';
+import { useIsDepositPath } from 'hooks/route';
 
 const MENU_LIST = [
   {
@@ -346,6 +347,7 @@ function AccountModal() {
     );
   }, [onTransactionsViewAll, t, userTxList]);
 
+  const isDepositPath = useIsDepositPath();
   const depositTipModalRef = useRef<DepositTipModalInterface>();
   const onDepositClick = useCallback(() => {
     depositTipModalRef.current?.show();
@@ -375,13 +377,15 @@ function AccountModal() {
                 price={userCombinedAssets?.valueInUsd ?? 0}
               />
 
-              <CommonButton
-                className="deposit-btn"
-                style={{ fontWeight: '600' }}
-                type="primary"
-                onClick={onDepositClick}>
-                {t('deposit')}
-              </CommonButton>
+              {!isDepositPath && (
+                <CommonButton
+                  className="deposit-btn"
+                  style={{ fontWeight: '600' }}
+                  type="primary"
+                  onClick={onDepositClick}>
+                  {t('deposit')}
+                </CommonButton>
+              )}
             </div>
 
             <div className="account-modal-menu-header">
