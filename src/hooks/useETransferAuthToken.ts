@@ -1,6 +1,6 @@
 import AElf from 'utils/aelf';
 import { useCallback, useEffect, useRef } from 'react';
-import { etransferEvents, recoverPubKeyBySignature, resetETransferJWT } from '@etransfer/utils';
+import { etransferEvents, recoverPubKeyBySignature, resetETransferJWT, removeELFAddressSuffix } from '@etransfer/utils';
 import { AuthTokenSource, PortkeyVersion } from '@etransfer/types';
 
 import { ETransferConfig, getETransferReCaptcha, WalletTypeEnum, etransferCore } from '@etransfer/ui-react';
@@ -10,12 +10,20 @@ import { getCaHashAndOriginChainIdByWallet, getManagerAddressByWallet } from 'ut
 import { useIsConnected } from './useLogin';
 import { APP_NAME } from 'config/webLoginConfig';
 import { TWalletType } from '@etransfer/types';
+import { useGetAccount } from './wallet';
 
+export type TSetETransferConfigParams = {
+  managerAddress: string;
+  caHash: string;
+  jwt: string;
+  isDeposit?: boolean;
+};
 export function useETransferAuthToken() {
-  const { getSignature, walletType, walletInfo } = useConnectWallet();
+  const { getSignature, walletType, walletInfo, callSendMethod } = useConnectWallet();
   const isLogin = useIsConnected();
   const isLoginRef = useRef(isLogin);
   isLoginRef.current = isLogin;
+  const accounts = useGetAccount();
 
   const handleGetSignature = useCallback(async () => {
     if (!walletInfo) return;
@@ -46,6 +54,7 @@ export function useETransferAuthToken() {
 
     try {
       const { caHash, originChainId } = await getCaHashAndOriginChainIdByWallet(walletInfo, walletType);
+      // TODO: cache caHash & originChainId
       const managerAddress = await getManagerAddressByWallet(walletInfo, walletType);
       console.log('etransferInfo', {
         caHash,
@@ -85,50 +94,96 @@ export function useETransferAuthToken() {
     [handleGetSignature, walletInfo, walletType],
   );
 
-  const getAuthToken = useCallback(async () => {
-    if (!walletInfo) throw new Error('Failed to obtain wallet information.');
-    if (!isLoginRef.current) throw new Error('You are not logged in.');
-    try {
-      const { caHash, managerAddress, originChainId } = await getUserInfo();
-
-      // 1: local storage has JWT token
-      const source = walletType === WalletTypeEnum.elf ? AuthTokenSource.NightElf : AuthTokenSource.Portkey;
-      const storageJwt = await etransferCore.getAuthTokenFromStorage({
-        walletType: (source as unknown as TWalletType) || TWalletType.Portkey,
-        caHash: caHash,
-        managerAddress: managerAddress,
-      });
-      if (storageJwt) {
+  const setETransferConfig = useCallback(
+    ({ managerAddress, caHash, jwt, isDeposit = true }: TSetETransferConfigParams) => {
+      if (isDeposit) {
         ETransferConfig.setConfig({
           authorization: {
-            jwt: storageJwt,
+            jwt,
           },
         });
         return;
       }
 
-      const { pubkey, signature, plainText, recaptchaToken } = await getSignatureInfo();
-      const jwt = await etransferCore.getAuthTokenFromApi({
-        pubkey,
-        signature,
-        plain_text: plainText,
-        ca_hash: caHash,
-        chain_id: originChainId,
-        managerAddress,
-        version: PortkeyVersion.v2,
-        source: source,
-        recaptchaToken: walletType === WalletTypeEnum.elf ? recaptchaToken : undefined,
-      });
-
+      const ownerAddress = walletInfo?.address || '';
+      if (!accounts) return;
       ETransferConfig.setConfig({
+        accountInfo: {
+          tokenContractCallSendMethod: (params) => {
+            const paramsFormat: any = params;
+            paramsFormat.args['networkType'] = ETransferConfig.getConfig('networkType');
+            return callSendMethod(params);
+          },
+          getSignature: (signInfo) =>
+            getSignature({
+              signInfo,
+              appName: APP_NAME,
+              address: removeELFAddressSuffix(ownerAddress),
+            }),
+          walletType: walletType,
+          accounts: accounts,
+          managerAddress: walletType === WalletTypeEnum.elf ? ownerAddress : managerAddress,
+          caHash: caHash,
+        },
         authorization: {
           jwt,
         },
       });
-    } catch (error) {
-      throw error || new Error('Failed to obtain etransfer authorization.');
-    }
-  }, [getSignatureInfo, getUserInfo, walletInfo, walletType]);
+    },
+    [accounts, callSendMethod, getSignature, walletInfo?.address, walletType],
+  );
+  const setETransferConfigRef = useRef(setETransferConfig);
+  setETransferConfigRef.current = setETransferConfig;
+
+  const getAuthToken = useCallback(
+    async (isDeposit = true) => {
+      if (!walletInfo) throw new Error('Failed to obtain wallet information.');
+      if (!isLoginRef.current) throw new Error('You are not logged in.');
+      try {
+        const { caHash, managerAddress, originChainId } = await getUserInfo();
+
+        // 1: local storage has JWT token
+        const source = walletType === WalletTypeEnum.elf ? AuthTokenSource.NightElf : AuthTokenSource.Portkey;
+        const storageJwt = await etransferCore.getAuthTokenFromStorage({
+          walletType: (source as unknown as TWalletType) || TWalletType.Portkey,
+          caHash: caHash,
+          managerAddress: managerAddress,
+        });
+        if (storageJwt) {
+          setETransferConfigRef.current({
+            caHash,
+            managerAddress,
+            jwt: storageJwt,
+            isDeposit,
+          });
+          return;
+        }
+
+        const { pubkey, signature, plainText, recaptchaToken } = await getSignatureInfo();
+        const jwt = await etransferCore.getAuthTokenFromApi({
+          pubkey,
+          signature,
+          plain_text: plainText,
+          ca_hash: caHash,
+          chain_id: originChainId,
+          managerAddress,
+          version: PortkeyVersion.v2,
+          source: source,
+          recaptchaToken: walletType === WalletTypeEnum.elf ? recaptchaToken : undefined,
+        });
+
+        setETransferConfigRef.current({
+          caHash,
+          managerAddress,
+          jwt,
+          isDeposit,
+        });
+      } catch (error) {
+        throw error || new Error('Failed to obtain etransfer authorization.');
+      }
+    },
+    [getSignatureInfo, getUserInfo, walletInfo, walletType],
+  );
 
   const getAuthTokenRef = useRef(getAuthToken);
   getAuthTokenRef.current = getAuthToken;

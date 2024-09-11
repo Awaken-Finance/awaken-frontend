@@ -15,6 +15,16 @@
     display: flex;
     align-items: center;
   }
+  .etransfer-ui-common-button-primary {
+    background: var(--etransfer-ui-brand);
+    border: 0.01rem solid var(--etransfer-ui-brand);
+    color: var(--etransfer-ui-white-text);
+  }
+  .etransfer-ui-common-button-middle {
+    height: 48px;
+    padding: 0 28px;
+  }
+
   #react-qrcode-logo {
     padding: 2px;
     border-radius: 4px;
@@ -57,6 +67,9 @@
   }
   .ant-dropdown-menu-item,
   .ant-dropdown-menu-submenu-title {
+    color: var(--etransfer-ui-primary-text);
+  }
+  .ant-form {
     color: var(--etransfer-ui-primary-text);
   }
   .ant-form-item-label > label {
@@ -128,6 +141,35 @@
   }
   .etransfer-ui-withdraw-form-balance-wrapper {
     margin-bottom: 12px;
+  }
+
+  .etransfer-ui-withdraw-form-submit-button {
+    width: 108px;
+    padding: 0 !important;
+  }
+  .etransfer-ui-withdraw-form-footer {
+    .etransfer-ui-withdraw-form-footer-main {
+      align-items: flex-end;
+    }
+    .etransfer-ui-withdraw-fee-info-label,
+    .etransfer-ui-withdraw-fee-info-value,
+    .etransfer-ui-withdraw-fee-info-unit {
+      font-size: 11px;
+      line-height: 16px;
+    }
+  }
+  .etransfer-ui-withdraw-footer-info-wrapper {
+    gap: 2px;
+  }
+
+  .etransfer-ui-withdraw-footer-info-wrapper .etransfer-ui-withdraw-receive-amount-wrapper .info-label {
+    font-size: 12px;
+    line-height: 16px;
+  }
+
+  .etransfer-ui-withdraw-footer-info-wrapper .etransfer-ui-withdraw-receive-amount-wrapper .info-value-big-font {
+    font-size: 16px;
+    line-height: 1.5;
   }
 
   .deposit-page {
