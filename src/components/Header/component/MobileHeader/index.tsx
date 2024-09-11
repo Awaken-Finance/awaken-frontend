@@ -19,6 +19,7 @@ import CommonModal from 'components/CommonModal';
 import './styles.less';
 import { useConnectWallet } from '@aelf-web-login/wallet-adapter-react';
 import { DepositTipModal, DepositTipModalInterface } from 'Modals/DepositTipModal';
+import { useIsDepositPath } from 'hooks/route';
 
 function MobileHeader() {
   const { t } = useTranslation();
@@ -85,6 +86,7 @@ function MobileHeader() {
     [location.pathname],
   );
 
+  const isDepositPath = useIsDepositPath();
   const depositTipModalRef = useRef<DepositTipModalInterface>();
   const onDepositClick = useCallback(() => {
     depositTipModalRef.current?.show();
@@ -99,9 +101,11 @@ function MobileHeader() {
             'header-right': true,
             'header-right-logined': isConnected,
           })}>
-          <CommonButton className="signup-btn" type="primary" style={{ fontWeight: '600' }} onClick={onDepositClick}>
-            {t('deposit')}
-          </CommonButton>
+          {!isDepositPath && (
+            <CommonButton className="signup-btn" type="primary" style={{ fontWeight: '600' }} onClick={onDepositClick}>
+              {t('deposit')}
+            </CommonButton>
+          )}
           <Network overlayClassName="network-wrap-mobile" />
           {renderLoginPart()}
           <CommonButton type="text" icon={<IconMenu />} onClick={onChangeVisible} />
