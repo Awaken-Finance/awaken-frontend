@@ -60,7 +60,7 @@ export default () => {
 
   useEffectOnce(() => {
     console.log('effect init');
-    getAuthToken();
+    getAuthToken(tab === DepositTabEnum.deposit);
   });
 
   return (
