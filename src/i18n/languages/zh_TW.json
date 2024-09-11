@@ -729,6 +729,10 @@
     "Max. Buy": "最大購買量",
     "Max. Receive": "最多獲得",
     "limitReceiveDescription": "已成交和得到的數量包含了費用",
-    "limitDetailReceiveDescription": "得到的數量包含了費用"
+    "limitDetailReceiveDescription": "得到的數量包含了費用",
+
+    "deposit": "儲值",
+    "depositTipTitle": "溫馨提示",
+    "depositTipContent": "即將使用第三方跨鍊服務ETransfer，使用該服務需要簽名（無需Gas費）。是否確認使用？"
   }
 }
