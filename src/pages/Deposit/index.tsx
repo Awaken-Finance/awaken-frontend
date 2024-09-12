@@ -2,6 +2,8 @@ import {
   ComponentStyle,
   Deposit,
   ETransferDepositProvider,
+  ETransferLayoutProvider,
+  ETransferStyleProvider,
   ETransferWithdrawProvider,
   Withdraw,
 } from '@etransfer/ui-react';
@@ -83,15 +85,27 @@ export default () => {
           ))}
         </div>
       )}>
-      <ETransferDepositProvider>
-        <ETransferWithdrawProvider>
-          {tab === DepositTabEnum.deposit ? (
-            <Deposit componentStyle={isMobile ? ComponentStyle.Mobile : ComponentStyle.Web} />
-          ) : (
-            <Withdraw componentStyle={isMobile ? ComponentStyle.Mobile : ComponentStyle.Web} />
-          )}
-        </ETransferWithdrawProvider>
-      </ETransferDepositProvider>
+      <ETransferStyleProvider>
+        <ETransferLayoutProvider>
+          <ETransferDepositProvider>
+            <ETransferWithdrawProvider>
+              {tab === DepositTabEnum.deposit ? (
+                <Deposit
+                  componentStyle={isMobile ? ComponentStyle.Mobile : ComponentStyle.Web}
+                  isListenNoticeAuto={false}
+                  isShowProcessingTip={false}
+                />
+              ) : (
+                <Withdraw
+                  componentStyle={isMobile ? ComponentStyle.Mobile : ComponentStyle.Web}
+                  isListenNoticeAuto={false}
+                  isShowProcessingTip={false}
+                />
+              )}
+            </ETransferWithdrawProvider>
+          </ETransferDepositProvider>
+        </ETransferLayoutProvider>
+      </ETransferStyleProvider>
     </CommonPanelPage>
   );
 };
