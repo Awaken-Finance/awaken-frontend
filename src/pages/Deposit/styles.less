@@ -106,6 +106,15 @@
       }
     }
   }
+
+  .deposit-history-btn {
+    position: absolute;
+    right: 32px;
+    top: 50%;
+    transform: translate3d(0, -50%, 0);
+    width: 80px;
+    height: 32px;
+  }
 }
 
 .pc-site-content {
@@ -124,6 +133,19 @@
 }
 
 .mobile-site-content {
+  .deposit-history-btn {
+    width: 72px;
+    height: 24px;
+    font-size: 14px;
+    line-height: 24px;
+    padding: 0;
+    right: 16px;
+  }
+  .common-panel-page .common-panel-page-header {
+    justify-content: flex-start;
+    padding-left: 45px;
+  }
+
   .etransfer-ui-withdraw-body {
     padding-left: 0;
     padding-right: 0;
@@ -189,23 +211,6 @@
   }
 }
 
-.etransfer-ui-common-tooltip-overlay {
-  .etransfer-ant-tooltip-inner {
-    padding: 12px 16px;
-    background-color: var(--ant-alert-bg-color);
-    color: var(--ant-black-font-color-1);
-    font-size: 12px;
-    line-height: 18px;
-    max-width: 240px;
-    border-radius: 4px;
-  }
-  .etransfer-ant-tooltip-arrow-content {
-    &::before {
-      background: var(--ant-alert-bg-color);
-    }
-  }
-}
-
 .etransfer-ant-message-notice-content {
   background: #2a2e3a !important;
 }
@@ -227,11 +232,5 @@
         }
       }
     }
-  }
-}
-
-.etransfer-ui-global-loading-modal {
-  .etransfer-ant-modal-content {
-    background-color: var(--ant-container-bg-color);
   }
 }

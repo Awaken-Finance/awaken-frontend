@@ -19,6 +19,7 @@ import { useTranslation } from 'react-i18next';
 import { useIsTelegram, useMobile } from 'utils/isMobile';
 import { useEffectOnce } from 'react-use';
 import { useGoBack } from 'hooks/route';
+import CommonButton from 'components/CommonButton';
 
 enum DepositTabEnum {
   deposit = 1,
@@ -65,6 +66,10 @@ export default () => {
     getAuthToken(tab === DepositTabEnum.deposit);
   });
 
+  const onHistoryClick = useCallback(() => {
+    history.push('/deposit-history');
+  }, [history]);
+
   return (
     <CommonPanelPage
       className="deposit-page"
@@ -84,7 +89,16 @@ export default () => {
             </div>
           ))}
         </div>
-      )}>
+      )}
+      extraTitle={
+        <CommonButton
+          className="deposit-history-btn"
+          type="primary"
+          style={{ fontWeight: '600' }}
+          onClick={onHistoryClick}>
+          {t('History')}
+        </CommonButton>
+      }>
       <ETransferStyleProvider>
         <ETransferLayoutProvider>
           <ETransferDepositProvider>

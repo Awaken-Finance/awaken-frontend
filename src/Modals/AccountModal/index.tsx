@@ -351,7 +351,8 @@ function AccountModal() {
   const depositTipModalRef = useRef<DepositTipModalInterface>();
   const onDepositClick = useCallback(() => {
     depositTipModalRef.current?.show();
-  }, []);
+    onClose();
+  }, [onClose]);
 
   return (
     <>
