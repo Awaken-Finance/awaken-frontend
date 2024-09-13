@@ -11,10 +11,6 @@
   .etransfer-ui-calculator .etransfer-ui-calculator-content .you-pay-main {
     background-color: var(--ant-input-bg-color);
   }
-  .etransfer-ui-common-svg {
-    display: flex;
-    align-items: center;
-  }
 
   .etransfer-ant-form {
     color: var(--etransfer-ui-primary-text);
@@ -115,15 +111,19 @@
     width: 80px;
     height: 32px;
   }
+
+  .etransfer-ant-form-item {
+    color: var(--etransfer-ui-primary-text);
+  }
 }
 
 .pc-site-content {
   .deposit-page {
     padding-bottom: 48px;
-  }
-  .common-panel-page-body {
-    .common-panel-page-header {
-      justify-content: flex-start;
+    .common-panel-page-body {
+      .common-panel-page-header {
+        justify-content: flex-start;
+      }
     }
   }
 
@@ -141,9 +141,18 @@
     padding: 0;
     right: 16px;
   }
-  .common-panel-page .common-panel-page-header {
-    justify-content: flex-start;
-    padding-left: 45px;
+
+  .deposit-page {
+    .deposit-page-title {
+      .deposit-page-title-btn {
+        font-size: 16px;
+      }
+    }
+
+    .common-panel-page .common-panel-page-header {
+      justify-content: flex-start;
+      padding-left: 45px;
+    }
   }
 
   .etransfer-ui-withdraw-body {
@@ -157,14 +166,6 @@
       align-items: flex-end;
     }
   }
-
-  .deposit-page {
-    .deposit-page-title {
-      .deposit-page-title-btn {
-        font-size: 16px;
-      }
-    }
-  }
 }
 
 .etransfer-ui-common-modal {
@@ -172,6 +173,14 @@
   .etransfer-ant-modal-header {
     background-color: var(--ant-container-bg-color);
     color: var(--ant-black-font-color-1);
+
+    .close-icon {
+      svg {
+        path {
+          fill: #e5e8ef;
+        }
+      }
+    }
   }
   .etransfer-ant-modal-header {
     border: none;
@@ -233,4 +242,9 @@
       }
     }
   }
+}
+
+.etransfer-ui-common-svg {
+  display: flex;
+  align-items: center;
 }

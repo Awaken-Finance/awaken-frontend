@@ -57,6 +57,68 @@
       }
     }
   }
+
+  .etransfer-ant-table-pagination.etransfer-ant-pagination {
+    align-items: center;
+    color: var(--ant-black-font-color-2);
+  }
+  .etransfer-ant-pagination-options-quick-jumper input {
+    background-color: var(--ant-input-bg-color);
+    color: var(--ant-black-font-color-2);
+    border: 1px solid var(--etransfer-ui-border) !important;
+    box-shadow: none;
+  }
+
+  .etransfer-ant-pagination-item a {
+    color: var(--ant-black-font-color-2);
+  }
+  .etransfer-ant-pagination-next .etransfer-ant-pagination-item-link,
+  .etransfer-ant-pagination-prev .etransfer-ant-pagination-item-link {
+    font-size: 0.11rem;
+    background-color: var(--ant-input-bg-color);
+    color: var(--ant-black-font-color-2);
+    border: none;
+  }
+
+  .etransfer-ant-pagination-jump-next,
+  .etransfer-ant-pagination-jump-prev,
+  .etransfer-ant-pagination-next,
+  .etransfer-ant-pagination-prev {
+    width: 0.24rem;
+    height: 0.24rem;
+    min-width: 0.24rem;
+    border: 0.01rem solid #393e4e;
+    box-sizing: border-box;
+    line-height: 0.22rem;
+    text-align: center;
+    background-color: var(--ant-input-bg-color);
+    color: var(--ant-black-font-color-2);
+    border-radius: 0.04rem;
+  }
+  .etransfer-ant-pagination-item {
+    width: 0.24rem;
+    height: 0.24rem;
+    min-width: 0.24rem;
+    border: 0.01rem solid #393e4e;
+    box-sizing: border-box;
+    line-height: 0.22rem;
+    text-align: center;
+    background-color: var(--ant-input-bg-color);
+    color: var(--ant-black-font-color-2);
+    border-radius: 0.04rem;
+  }
+  .etransfer-ant-pagination-item-active {
+    background-color: var(--ant-primary-color);
+    border: 0.01rem solid var(--ant-primary-color);
+    & > a {
+      color: var(--ant-black-font-color-1);
+    }
+  }
+
+  .etransfer-ant-pagination-jump-next .etransfer-ant-pagination-item-container .etransfer-ant-pagination-item-ellipsis,
+  .etransfer-ant-pagination-jump-prev .etransfer-ant-pagination-item-container .etransfer-ant-pagination-item-ellipsis {
+    color: var(--ant-black-font-color-2);
+  }
 }
 
 .emptybox-icon {
@@ -119,57 +181,63 @@
   }
 }
 
-.etransfer-ant-picker-panel-container {
-  background-color: var(--etransfer-ui-normal-bg) !important;
-
-  .etransfer-ant-picker-content th,
-  .etransfer-ant-picker-header-view button,
-  .etransfer-ant-picker-header button {
-    color: var(--etransfer-ui-secondary-text);
-  }
-  .etransfer-ant-picker-header,
-  .etransfer-ant-picker-panel,
-  .etransfer-ant-picker-panel .etransfer-ant-picker-footer {
-    border-color: var(--etransfer-ui-border);
-  }
-  .etransfer-ant-picker-cell {
-    color: var(--etransfer-ui-third-text);
+.etransfer-ant-picker-dropdown {
+  .etransfer-ant-picker-range-arrow::before {
+    background: var(--etransfer-ui-normal-bg) !important;
   }
 
-  .etransfer-ant-picker-cell-in-view {
-    color: var(--etransfer-ui-primary-text);
-  }
+  .etransfer-ant-picker-panel-container {
+    background-color: var(--etransfer-ui-normal-bg) !important;
 
-  .etransfer-ant-picker-cell-in-view.etransfer-ant-picker-cell-in-range.etransfer-ant-picker-cell-range-hover::before,
-  .etransfer-ant-picker-cell-in-view.etransfer-ant-picker-cell-range-end.etransfer-ant-picker-cell-range-hover::before,
-  .etransfer-ant-picker-cell-in-view.etransfer-ant-picker-cell-range-end:not(.etransfer-ant-picker-cell-range-end-single).etransfer-ant-picker-cell-range-hover-end::before,
-  .etransfer-ant-picker-cell-in-view.etransfer-ant-picker-cell-range-start.etransfer-ant-picker-cell-range-hover::before,
-  .etransfer-ant-picker-cell-in-view.etransfer-ant-picker-cell-range-start:not(.etransfer-ant-picker-cell-range-start-single).etransfer-ant-picker-cell-range-hover-start::before,
-  .etransfer-ant-picker-panel
-    > :not(.etransfer-ant-picker-date-panel)
-    .etransfer-ant-picker-cell-in-view.etransfer-ant-picker-cell-in-range.etransfer-ant-picker-cell-range-hover-end::before,
-  .etransfer-ant-picker-panel
-    > :not(.etransfer-ant-picker-date-panel)
-    .etransfer-ant-picker-cell-in-view.etransfer-ant-picker-cell-in-range.etransfer-ant-picker-cell-range-hover-start::before {
-    background-color: var(--etransfer-ui-hover) !important;
-  }
+    .etransfer-ant-picker-content th,
+    .etransfer-ant-picker-header-view button,
+    .etransfer-ant-picker-header button {
+      color: var(--etransfer-ui-secondary-text);
+    }
+    .etransfer-ant-picker-header,
+    .etransfer-ant-picker-panel,
+    .etransfer-ant-picker-panel .etransfer-ant-picker-footer {
+      border-color: var(--etransfer-ui-border);
+    }
+    .etransfer-ant-picker-cell {
+      color: var(--etransfer-ui-third-text);
+    }
 
-  .etransfer-ant-picker-date-panel
-    .etransfer-ant-picker-cell-in-view.etransfer-ant-picker-cell-in-range.etransfer-ant-picker-cell-range-hover-end
-    .etransfer-ant-picker-cell-inner::after,
-  .etransfer-ant-picker-date-panel
-    .etransfer-ant-picker-cell-in-view.etransfer-ant-picker-cell-in-range.etransfer-ant-picker-cell-range-hover-start
-    .etransfer-ant-picker-cell-inner::after {
-    background-color: var(--etransfer-ui-hover) !important;
-  }
+    .etransfer-ant-picker-cell-in-view {
+      color: var(--etransfer-ui-primary-text);
+    }
 
-  .etransfer-ant-picker-cell-in-view.etransfer-ant-picker-cell-in-range::before {
-    background: var(--etransfer-ui-hover) !important;
-  }
+    .etransfer-ant-picker-cell-in-view.etransfer-ant-picker-cell-in-range.etransfer-ant-picker-cell-range-hover::before,
+    .etransfer-ant-picker-cell-in-view.etransfer-ant-picker-cell-range-end.etransfer-ant-picker-cell-range-hover::before,
+    .etransfer-ant-picker-cell-in-view.etransfer-ant-picker-cell-range-end:not(.etransfer-ant-picker-cell-range-end-single).etransfer-ant-picker-cell-range-hover-end::before,
+    .etransfer-ant-picker-cell-in-view.etransfer-ant-picker-cell-range-start.etransfer-ant-picker-cell-range-hover::before,
+    .etransfer-ant-picker-cell-in-view.etransfer-ant-picker-cell-range-start:not(.etransfer-ant-picker-cell-range-start-single).etransfer-ant-picker-cell-range-hover-start::before,
+    .etransfer-ant-picker-panel
+      > :not(.etransfer-ant-picker-date-panel)
+      .etransfer-ant-picker-cell-in-view.etransfer-ant-picker-cell-in-range.etransfer-ant-picker-cell-range-hover-end::before,
+    .etransfer-ant-picker-panel
+      > :not(.etransfer-ant-picker-date-panel)
+      .etransfer-ant-picker-cell-in-view.etransfer-ant-picker-cell-in-range.etransfer-ant-picker-cell-range-hover-start::before {
+      background-color: var(--etransfer-ui-hover) !important;
+    }
 
-  .etransfer-ant-picker-cell:hover:not(.etransfer-ant-picker-cell-in-view) .etransfer-ant-picker-cell-inner,
-  .etransfer-ant-picker-cell:hover:not(.etransfer-ant-picker-cell-selected, .etransfer-ant-picker-cell-range-start, .etransfer-ant-picker-cell-range-end, .etransfer-ant-picker-cell-range-hover-start, .etransfer-ant-picker-cell-range-hover-end)
-    .etransfer-ant-picker-cell-inner {
-    background: var(--etransfer-ui-hover) !important;
+    .etransfer-ant-picker-date-panel
+      .etransfer-ant-picker-cell-in-view.etransfer-ant-picker-cell-in-range.etransfer-ant-picker-cell-range-hover-end
+      .etransfer-ant-picker-cell-inner::after,
+    .etransfer-ant-picker-date-panel
+      .etransfer-ant-picker-cell-in-view.etransfer-ant-picker-cell-in-range.etransfer-ant-picker-cell-range-hover-start
+      .etransfer-ant-picker-cell-inner::after {
+      background-color: var(--etransfer-ui-hover) !important;
+    }
+
+    .etransfer-ant-picker-cell-in-view.etransfer-ant-picker-cell-in-range::before {
+      background: var(--etransfer-ui-hover) !important;
+    }
+
+    .etransfer-ant-picker-cell:hover:not(.etransfer-ant-picker-cell-in-view) .etransfer-ant-picker-cell-inner,
+    .etransfer-ant-picker-cell:hover:not(.etransfer-ant-picker-cell-selected, .etransfer-ant-picker-cell-range-start, .etransfer-ant-picker-cell-range-end, .etransfer-ant-picker-cell-range-hover-start, .etransfer-ant-picker-cell-range-hover-end)
+      .etransfer-ant-picker-cell-inner {
+      background: var(--etransfer-ui-hover) !important;
+    }
   }
 }
