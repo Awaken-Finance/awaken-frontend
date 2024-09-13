@@ -17,6 +17,7 @@ import PriceUSDDigits from 'components/PriceUSDDigits';
 import './styles.less';
 import { useMemo } from 'react';
 import { formatPriceChange } from 'utils/price';
+import CommonTooltip from 'components/CommonTooltip';
 
 export type TLimitDetailItemProps = {
   item: TLimitDetailItem;
@@ -44,7 +45,7 @@ export default function LimitDetailItem({
     <Row className="limit-detail-list-item" gutter={[0, 8]}>
       <Col span={12} className="height-20 line-height-20">
         <Font lineHeight={20} color="two">
-          {t('Txn Time')}
+          {t('time')}
         </Font>
       </Col>
       <Col span={12} className="align-right height-20 line-height-20">
@@ -57,7 +58,7 @@ export default function LimitDetailItem({
         <>
           <Col span={12} className="height-20 line-height-20">
             <Font lineHeight={20} color="two">
-              {t('Price')}
+              {t('price')}
             </Font>
           </Col>
           <Col span={12} className="align-right height-20 line-height-20">
@@ -82,10 +83,16 @@ export default function LimitDetailItem({
             )}`}</Font>
           </Col>
 
-          <Col span={12} className="height-20 line-height-20">
+          <Col span={12} className="height-20 line-height-20 limit-detail-table-tip-mobile-wrap">
             <Font lineHeight={20} color="two">
               {t('Receive')}
             </Font>
+            <CommonTooltip
+              placement="topLeft"
+              title={t('limitDetailReceiveDescription')}
+              headerDesc={t('Receive')}
+              buttonTitle={t('ok')}
+            />
           </Col>
           <Col span={12} className="align-right height-20 line-height-20">
             <Font lineHeight={20} size={14}>{`${formatPriceChange(amountOutFilled)} ${formatSymbol(
@@ -95,7 +102,7 @@ export default function LimitDetailItem({
 
           <Col span={12} className="height-20 line-height-20">
             <Font lineHeight={20} color="two">
-              {t('Total value')}
+              {t('TotalValue')}
             </Font>
           </Col>
           <Col span={12} className="align-right height-20 line-height-20">

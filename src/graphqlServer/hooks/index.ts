@@ -7,7 +7,7 @@ const { REACT_APP_API_ENV } = process.env;
 const AWAKEN_GRAPHQL_URL_MAP: Record<string, string> = {
   preview: 'https://app-testnet.aefinder.io/awaken/e55a9e430bd14ebb95ef81378906fd5f/graphql',
   test: 'https://app-testnet.aefinder.io/awaken/e55a9e430bd14ebb95ef81378906fd5f/graphql',
-  mainNet: 'https://dapp.awaken.finance/AElfIndexer_Swap/SwapIndexerSchema/graphql',
+  mainNet: 'https://app.aefinder.io/awaken/995f8e7e957d43d6b1706a4e351e2e47/graphql',
 };
 
 const AWAKEN_GRAPHQL_URL = AWAKEN_GRAPHQL_URL_MAP[REACT_APP_API_ENV || ''] || AWAKEN_GRAPHQL_URL_MAP.mainNet;

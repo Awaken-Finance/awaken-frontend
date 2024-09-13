@@ -4,7 +4,7 @@ import clsx from 'clsx';
 import Network from 'components/Network';
 import { basicModalView } from 'contexts/useModal/actions';
 import { useModalDispatch } from 'contexts/useModal/hooks';
-import { memo, useMemo } from 'react';
+import { memo, useCallback, useMemo, useRef } from 'react';
 import LanguageMenu from '../LanguageMenu';
 import NavMenu from '../NavMenu';
 import { NavLink, useLocation } from 'react-router-dom';
@@ -20,6 +20,8 @@ import { useMonitorScroll } from 'hooks/useMonitorScroll';
 import useChainId from 'hooks/useChainId';
 import { shortenAddress } from 'utils';
 import { useConnectWallet } from '@aelf-web-login/wallet-adapter-react';
+import { DepositTipModal, DepositTipModalInterface } from 'Modals/DepositTipModal';
+import { useIsDepositPath } from 'hooks/route';
 
 function PcHeader() {
   const { selectedKeys } = useSelectedKeys();
@@ -28,6 +30,7 @@ function PcHeader() {
   const { chainId } = useChainId();
   const pathname = useLocation().pathname;
   const { t } = useTranslation();
+  const depositTipModalRef = useRef<DepositTipModalInterface>();
 
   const [modalState] = useModal();
   const modalDispatch = useModalDispatch();
@@ -38,6 +41,11 @@ function PcHeader() {
   };
 
   useMonitorScroll();
+
+  const isDepositPath = useIsDepositPath();
+  const onDepositClick = useCallback(() => {
+    depositTipModalRef.current?.show();
+  }, []);
 
   const isOpacity = useMemo(() => {
     return !(
@@ -105,6 +113,17 @@ function PcHeader() {
         </Col>
         <Col>
           <Row align="middle" gutter={[16, 0]}>
+            {!isDepositPath && (
+              <Col>
+                <CommonButton
+                  className="signup-btn"
+                  style={{ fontWeight: '600' }}
+                  type="primary"
+                  onClick={onDepositClick}>
+                  {t('deposit')}
+                </CommonButton>
+              </Col>
+            )}
             <Col>
               <Network />
             </Col>
@@ -115,6 +134,7 @@ function PcHeader() {
           </Row>
         </Col>
       </Row>
+      <DepositTipModal ref={depositTipModalRef} />
     </Layout.Header>
   );
 }

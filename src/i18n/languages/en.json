@@ -702,6 +702,12 @@
     "Review Order": "Review Order",
     "Enter a price": "Enter a price",
     "Max. Buy": "Max. Buy",
-    "Max. Receive": "Max. Receive"
+    "Max. Receive": "Max. Receive",
+    "limitReceiveDescription": "The amount filled and received includes Fee",
+    "limitDetailReceiveDescription": "The amount received includes Fee",
+
+    "deposit": "Deposit",
+    "depositTipTitle": "Friendly reminder",
+    "depositTipContent": "You are about to use the third-party cross-chain service ETransfer, which requires a signature (no Gas fee needed). Are you sure you want to proceed?"
   }
 }

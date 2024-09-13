@@ -37,6 +37,8 @@ import { getLimitOrderPrice } from 'utils/limit';
 import PriceDigits from 'components/PriceDigits';
 import { formatSymbol } from 'utils/token';
 import { LimitOrderStatusMap } from 'constants/limit';
+import { DepositTipModal, DepositTipModalInterface } from 'Modals/DepositTipModal';
+import { useIsDepositPath } from 'hooks/route';
 
 const MENU_LIST = [
   {
@@ -345,52 +347,72 @@ function AccountModal() {
     );
   }, [onTransactionsViewAll, t, userTxList]);
 
+  const isDepositPath = useIsDepositPath();
+  const depositTipModalRef = useRef<DepositTipModalInterface>();
+  const onDepositClick = useCallback(() => {
+    depositTipModalRef.current?.show();
+    onClose();
+  }, [onClose]);
+
   return (
-    <Modal
-      // destroyOnClose
-      className="account-modal"
-      visible={isAccountModalShow}
-      closable={isMobile}
-      closeIcon={<IconClose />}
-      width={isMobile ? '100%' : '420px'}
-      title={isMobile ? ' ' : null}
-      mask={false}
-      footer={null}
-      style={isMobile ? {} : { position: 'fixed', top: 68, right: 8 }}
-      onCancel={onClose}>
-      <Carousel ref={carouselRef} dots={false} autoplay={false} swipe={false}>
-        <div className="account-content">
-          <AccountInfo onClickLogout={onClickLogout} />
+    <>
+      <Modal
+        // destroyOnClose
+        className="account-modal"
+        visible={isAccountModalShow}
+        closable={isMobile}
+        closeIcon={<IconClose />}
+        width={isMobile ? '100%' : '420px'}
+        title={isMobile ? ' ' : null}
+        mask={false}
+        footer={null}
+        style={isMobile ? {} : { position: 'fixed', top: 68, right: 8 }}
+        onCancel={onClose}>
+        <Carousel ref={carouselRef} dots={false} autoplay={false} swipe={false}>
+          <div className="account-content">
+            <AccountInfo onClickLogout={onClickLogout} />
 
-          <div className="account-content-title">
-            <PriceUSDDigits
-              className={getFontStyle({ lineHeight: 48, size: 40, color: 'one', weight: 'medium' })}
-              price={userCombinedAssets?.valueInUsd ?? 0}
-            />
+            <div className="account-content-title">
+              <PriceUSDDigits
+                className={getFontStyle({ lineHeight: 48, size: 40, color: 'one', weight: 'medium' })}
+                price={userCombinedAssets?.valueInUsd ?? 0}
+              />
+
+              {!isDepositPath && (
+                <CommonButton
+                  className="deposit-btn"
+                  style={{ fontWeight: '600' }}
+                  type="primary"
+                  onClick={onDepositClick}>
+                  {t('deposit')}
+                </CommonButton>
+              )}
+            </div>
+
+            <div className="account-modal-menu-header">
+              {MENU_LIST.map((item) => (
+                <div
+                  key={item.key}
+                  className={clsx(['account-modal-menu-item', menu === item.key && 'account-modal-menu-item-active'])}
+                  onClick={() => {
+                    setMenu(item.key);
+                  }}>
+                  <Font size={16} lineHeight={24} color="two" weight={menu === item.key ? 'medium' : 'regular'}>
+                    {t(item.title)}
+                  </Font>
+                </div>
+              ))}
+            </div>
+
+            {menu === 'tokens' && tokenList}
+            {menu === 'positions' && userPositionsDom}
+            {menu === 'limits' && userLimitDom}
+            {menu === 'transactions' && transactionsDom}
           </div>
-
-          <div className="account-modal-menu-header">
-            {MENU_LIST.map((item) => (
-              <div
-                key={item.key}
-                className={clsx(['account-modal-menu-item', menu === item.key && 'account-modal-menu-item-active'])}
-                onClick={() => {
-                  setMenu(item.key);
-                }}>
-                <Font size={16} lineHeight={24} color="two" weight={menu === item.key ? 'medium' : 'regular'}>
-                  {t(item.title)}
-                </Font>
-              </div>
-            ))}
-          </div>
-
-          {menu === 'tokens' && tokenList}
-          {menu === 'positions' && userPositionsDom}
-          {menu === 'limits' && userLimitDom}
-          {menu === 'transactions' && transactionsDom}
-        </div>
-      </Carousel>
-    </Modal>
+        </Carousel>
+      </Modal>
+      <DepositTipModal ref={depositTipModalRef} />
+    </>
   );
 }
 
