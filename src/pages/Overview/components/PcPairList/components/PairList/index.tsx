@@ -164,6 +164,7 @@ export default function ({ poolType, ...args }: PairListProps) {
         dataIndex: 'tvl',
         align: 'right',
         key: 'tvl',
+        defaultSortOrder: 'descend',
         sorter: (a: PairItem, b: PairItem) => (a.tvl > b.tvl ? 1 : -1),
         // sortOrder: field === 'tvl' ? order : null,
         render: (tvl: number) => <PriceUSDDigits className={getFontStyle({ lineHeight: 20 })} price={tvl} />,
