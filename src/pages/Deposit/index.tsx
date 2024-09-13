@@ -20,6 +20,7 @@ import { useIsTelegram, useMobile } from 'utils/isMobile';
 import { useEffectOnce } from 'react-use';
 import { useGoBack } from 'hooks/route';
 import CommonButton from 'components/CommonButton';
+import CommonLink from 'components/CommonLink';
 
 enum DepositTabEnum {
   deposit = 1,
@@ -71,55 +72,58 @@ export default () => {
   }, [history]);
 
   return (
-    <CommonPanelPage
-      className="deposit-page"
-      onCancel={goBack}
-      isCancelHide={!isMobile || isTelegram}
-      title={() => (
-        <div className="deposit-page-title">
-          {DEPOSIT_TAB_LIST.map((item) => (
-            <div
-              className={clsx(['deposit-page-title-btn', item.value === tab && 'deposit-page-title-btn-active'])}
-              key={item.value}
-              onClick={() => {
-                changeTab(item.value);
-              }}>
-              {t(item.label)}
-              <div className="deposit-page-title-btn-border" />
-            </div>
-          ))}
-        </div>
-      )}
-      extraTitle={
-        <CommonButton
-          className="deposit-history-btn"
-          type="primary"
-          style={{ fontWeight: '600' }}
-          onClick={onHistoryClick}>
-          {t('History')}
-        </CommonButton>
-      }>
-      <ETransferStyleProvider>
-        <ETransferLayoutProvider>
-          <ETransferDepositProvider>
-            <ETransferWithdrawProvider>
-              {tab === DepositTabEnum.deposit ? (
-                <Deposit
-                  componentStyle={isMobile ? ComponentStyle.Mobile : ComponentStyle.Web}
-                  isListenNoticeAuto={false}
-                  isShowProcessingTip={false}
-                />
-              ) : (
-                <Withdraw
-                  componentStyle={isMobile ? ComponentStyle.Mobile : ComponentStyle.Web}
-                  isListenNoticeAuto={false}
-                  isShowProcessingTip={false}
-                />
-              )}
-            </ETransferWithdrawProvider>
-          </ETransferDepositProvider>
-        </ETransferLayoutProvider>
-      </ETransferStyleProvider>
-    </CommonPanelPage>
+    <div className="deposit-page">
+      <CommonPanelPage
+        onCancel={goBack}
+        isCancelHide={!isMobile || isTelegram}
+        title={() => (
+          <div className="deposit-page-title">
+            {DEPOSIT_TAB_LIST.map((item) => (
+              <div
+                className={clsx(['deposit-page-title-btn', item.value === tab && 'deposit-page-title-btn-active'])}
+                key={item.value}
+                onClick={() => {
+                  changeTab(item.value);
+                }}>
+                {t(item.label)}
+                <div className="deposit-page-title-btn-border" />
+              </div>
+            ))}
+          </div>
+        )}
+        extraTitle={
+          <CommonLink
+            className="deposit-history-btn"
+            size={14}
+            lineHeight={22}
+            color="two"
+            iconProps={{ color: 'two' }}
+            onClick={onHistoryClick}>
+            {t('History')}
+          </CommonLink>
+        }>
+        <ETransferStyleProvider>
+          <ETransferLayoutProvider>
+            <ETransferDepositProvider>
+              <ETransferWithdrawProvider>
+                {tab === DepositTabEnum.deposit ? (
+                  <Deposit
+                    componentStyle={isMobile ? ComponentStyle.Mobile : ComponentStyle.Web}
+                    isListenNoticeAuto={false}
+                    isShowProcessingTip={false}
+                  />
+                ) : (
+                  <Withdraw
+                    componentStyle={isMobile ? ComponentStyle.Mobile : ComponentStyle.Web}
+                    isListenNoticeAuto={false}
+                    isShowProcessingTip={false}
+                  />
+                )}
+              </ETransferWithdrawProvider>
+            </ETransferDepositProvider>
+          </ETransferLayoutProvider>
+        </ETransferStyleProvider>
+      </CommonPanelPage>
+    </div>
   );
 };
