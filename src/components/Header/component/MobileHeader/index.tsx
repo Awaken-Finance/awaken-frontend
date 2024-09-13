@@ -101,7 +101,7 @@ function MobileHeader() {
             'header-right': true,
             'header-right-logined': isConnected,
           })}>
-          {!isDepositPath && (
+          {!isDepositPath && isConnected && (
             <CommonButton className="signup-btn" type="primary" style={{ fontWeight: '600' }} onClick={onDepositClick}>
               {t('deposit')}
             </CommonButton>

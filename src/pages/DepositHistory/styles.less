@@ -1,5 +1,5 @@
 .deposit-history-page {
-  padding: 0.2rem 0.4rem 0.24rem;
+  padding: 20px 40px 24px;
   color: var(--etransfer-ui-primary-text);
 
   .deposit-history-page-header {
@@ -69,47 +69,46 @@
     box-shadow: none;
   }
 
-  .etransfer-ant-pagination-item a {
-    color: var(--ant-black-font-color-2);
-  }
   .etransfer-ant-pagination-next .etransfer-ant-pagination-item-link,
   .etransfer-ant-pagination-prev .etransfer-ant-pagination-item-link {
-    font-size: 0.11rem;
+    font-size: 11px;
     background-color: var(--ant-input-bg-color);
     color: var(--ant-black-font-color-2);
     border: none;
   }
 
-  .etransfer-ant-pagination-jump-next,
-  .etransfer-ant-pagination-jump-prev,
   .etransfer-ant-pagination-next,
   .etransfer-ant-pagination-prev {
-    width: 0.24rem;
-    height: 0.24rem;
-    min-width: 0.24rem;
-    border: 0.01rem solid #393e4e;
+    width: 24px;
+    height: 24px;
+    min-width: 24px;
+    border: 1px solid #393e4e;
     box-sizing: border-box;
-    line-height: 0.22rem;
+    line-height: 22px;
     text-align: center;
     background-color: var(--ant-input-bg-color);
     color: var(--ant-black-font-color-2);
-    border-radius: 0.04rem;
+    border-radius: 4px;
   }
   .etransfer-ant-pagination-item {
-    width: 0.24rem;
-    height: 0.24rem;
-    min-width: 0.24rem;
-    border: 0.01rem solid #393e4e;
+    width: 24px;
+    height: 24px;
+    min-width: 24px;
+    border: 1px solid #393e4e;
     box-sizing: border-box;
-    line-height: 0.22rem;
+    line-height: 22px;
     text-align: center;
     background-color: var(--ant-input-bg-color);
     color: var(--ant-black-font-color-2);
-    border-radius: 0.04rem;
+    border-radius: 4px;
+    a {
+      color: var(--ant-black-font-color-2);
+      padding: 0;
+    }
   }
   .etransfer-ant-pagination-item-active {
     background-color: var(--ant-primary-color);
-    border: 0.01rem solid var(--ant-primary-color);
+    border: 1px solid var(--ant-primary-color);
     & > a {
       color: var(--ant-black-font-color-1);
     }
@@ -118,6 +117,20 @@
   .etransfer-ant-pagination-jump-next .etransfer-ant-pagination-item-container .etransfer-ant-pagination-item-ellipsis,
   .etransfer-ant-pagination-jump-prev .etransfer-ant-pagination-item-container .etransfer-ant-pagination-item-ellipsis {
     color: var(--ant-black-font-color-2);
+  }
+
+  .etransfer-ant-pagination-jump-prev,
+  .etransfer-ant-pagination-jump-next {
+    width: 24px;
+    height: 24px;
+    min-width: 24px;
+    border: 1px solid transparent;
+    box-sizing: border-box;
+    line-height: 22px;
+    text-align: center;
+    background-color: transparent;
+    color: var(--ant-black-font-color-2);
+    border-radius: 4px;
   }
 }
 
