@@ -19,7 +19,6 @@ import { useTranslation } from 'react-i18next';
 import { useIsTelegram, useMobile } from 'utils/isMobile';
 import { useEffectOnce } from 'react-use';
 import { useGoBack } from 'hooks/route';
-import CommonButton from 'components/CommonButton';
 import CommonLink from 'components/CommonLink';
 
 enum DepositTabEnum {
@@ -62,9 +61,17 @@ export default () => {
     [routeTab],
   );
 
+  const init = useCallback(async () => {
+    try {
+      await getAuthToken(tab === DepositTabEnum.deposit);
+    } catch (error) {
+      history.replace('/');
+    }
+  }, [getAuthToken, history, tab]);
+
   useEffectOnce(() => {
     console.log('effect init');
-    getAuthToken(tab === DepositTabEnum.deposit);
+    init();
   });
 
   const onHistoryClick = useCallback(() => {

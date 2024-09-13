@@ -39,6 +39,7 @@ import { formatSymbol } from 'utils/token';
 import { LimitOrderStatusMap } from 'constants/limit';
 import { DepositTipModal, DepositTipModalInterface } from 'Modals/DepositTipModal';
 import { useIsDepositPath } from 'hooks/route';
+import { ETransferConfig, WalletTypeEnum, etransferCore } from '@etransfer/ui-react';
 
 const MENU_LIST = [
   {
@@ -90,6 +91,13 @@ function AccountModal() {
     try {
       await disConnectWallet();
       myEvents.DisconnectWallet.emit();
+      ETransferConfig.setConfig({
+        accountInfo: {
+          accounts: {},
+          walletType: WalletTypeEnum.unknown,
+        },
+      });
+      etransferCore.services.setRequestHeaders('Authorization', '');
     } catch (error) {
       console.log('disconnectWallet error', error);
     }
