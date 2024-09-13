@@ -105,6 +105,8 @@ export default function MobilePairList({
     ];
   }, [t]);
 
+  const _dataSource = useMemo(() => [...dataSource].sort((a, b) => b.tvl - a.tvl), [dataSource]);
+
   return (
     <Row className="mobile-pari-list">
       <Col span={24} className="mobile-pari-list-top">
@@ -133,7 +135,7 @@ export default function MobilePairList({
         <ScrollTableList
           total={total}
           loading={loading}
-          dataSource={dataSource}
+          dataSource={_dataSource}
           showSorterTooltip={false}
           columns={columns}
           rowKey="id"
