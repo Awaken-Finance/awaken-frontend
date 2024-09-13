@@ -145,3 +145,23 @@
     }
   }
 }
+
+.etransfer-ant-btn.etransfer-ant-btn-default {
+  &.etransfer-ui-common-button-primary:disabled,
+  &.etransfer-ui-common-button-primary[disabled]:hover {
+    background-color: var(--ant-button-gray-hover-color);
+    color: #9ba0b0;
+    border-color: var(--ant-button-gray-hover-color);
+  }
+  &.etransfer-ui-common-button-primary:hover,
+  &.etransfer-ui-common-button-primary {
+    color: #fff;
+    border-color: var(--ant-primary-color-hover);
+    background: var(--ant-primary-color-hover);
+  }
+}
+
+.etransfer-ui-common-svg {
+  display: inline-flex;
+  align-items: center;
+}
