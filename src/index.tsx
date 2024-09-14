@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { ConfigProvider, message } from 'antd';
 import { createRoot } from 'react-dom/client';
 
@@ -24,6 +24,8 @@ import './index.css';
 import './App.less';
 import './assets/js/telegram-web-app';
 import { isMobileDevice, useIsTelegram } from 'utils/isMobile';
+import { ETransferConfig } from '@etransfer/ui-react';
+import { etransferConfig } from 'config/etransferConfig';
 
 message.config({
   maxCount: 1,
@@ -66,6 +68,10 @@ function RootApp() {
       wallets: isMobile ? [WEB_LOGIN_CONFIG.wallets[0], WEB_LOGIN_CONFIG.wallets[1]] : WEB_LOGIN_CONFIG.wallets,
     });
   }, [isTelegram]);
+
+  useEffect(() => {
+    ETransferConfig.setConfig(etransferConfig);
+  }, []);
 
   return (
     <ChianProvider>

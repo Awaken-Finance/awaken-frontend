@@ -41,7 +41,7 @@ export const TOKEN_SORT_MAP: Record<string, string> = {
 
 export const SWAP_TIME_INTERVAL = 30 * 1000;
 
-export const MOBILE_DEVICE_WIDTH = 640;
+export const MOBILE_DEVICE_WIDTH = 768;
 
 export const TEN_THOUSAND = 10000;
 
@@ -52,3 +52,9 @@ export const IPFS_SYMBOL_MAP: Record<string, string> = {
 };
 
 export const IPFS_SYMBOL_LIST = ['SGR'];
+
+export const DEPOSIT_RECEIVE_TOKEN_MAP: Record<string, boolean> = {
+  ELF: true,
+  USDT: true,
+  'SGR-1': true,
+};

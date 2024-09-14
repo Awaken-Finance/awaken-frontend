@@ -6,7 +6,7 @@ module.exports = {
       unitPrecision: 4,
       propList: ['*'],
       selectorBlackList: ['*'],
-      mediaQuery: true,
+      mediaQuery: false,
       minPixelValue: 0,
     }),
   ],

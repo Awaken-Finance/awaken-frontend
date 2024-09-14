@@ -14,6 +14,8 @@
     "@awaken/sdk-core": "git+https://github.com/Awaken-Finance/sdk-core.git",
     "@awaken/token-lists": "git+https://github.com/Awaken-Finance/token-lists",
     "@craco/craco": "^7.1.0",
+    "@etransfer/core": "^1.6.4",
+    "@etransfer/ui-react": "^1.6.4",
     "@microsoft/signalr": "^5.0.8",
     "@sashimiswap/compound-js": "^0.4.6",
     "@sentry/react": "^7.61.0",

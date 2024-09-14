@@ -1,0 +1,301 @@
+.deposit-page {
+  .common-panel-page-body {
+    color: var(--ant-black-font-color-1);
+  }
+
+  .etransfer-ui-deposit-for-web,
+  .etransfer-ui-deposit-for-mobile {
+    padding: 0;
+  }
+
+  .etransfer-ui-deposit-title {
+    display: none;
+  }
+  .etransfer-ui-withdraw-select-chain-label {
+    font-size: 600;
+    font-size: 16px;
+    line-height: 24px;
+    color: var(--etransfer-ui-secondary-text);
+  }
+
+  .etransfer-ui-calculator .etransfer-ui-calculator-content .you-pay-main {
+    background-color: var(--ant-input-bg-color);
+  }
+
+  .etransfer-ui-deposit-select-token-network,
+  .etransfer-ui-deposit-select-token-chain {
+    border: none;
+    background-color: var(--etransfer-ui-normal-bg);
+  }
+
+  .etransfer-ant-form {
+    color: var(--etransfer-ui-primary-text);
+  }
+
+  #react-qrcode-logo {
+    padding: 2px;
+    border-radius: 4px;
+    background-color: white;
+  }
+
+  .etransfer-ui-deposit-tip {
+    background: #477bff1f;
+    border: none;
+  }
+  .etransfer-ui-description-wrapper {
+    background: #181b23;
+  }
+
+  .token-select-for-web {
+    overflow: auto;
+    min-height: auto;
+  }
+  .etransfer-ui-network-select-for-web {
+    overflow: auto;
+  }
+
+  .token-select-list {
+    .etransfer-ui-token-card-for-web:last-child {
+      border-bottom: none;
+    }
+  }
+  .etransfer-ui-network-logo-text {
+    border: none;
+    background-color: var(--ant-black-font-color-3);
+  }
+
+  .etransfer-ant-dropdown-menu {
+    background: var(--etransfer-ui-page-bg);
+  }
+  .etransfer-ant-dropdown-menu-item-selected,
+  .etransfer-ant-dropdown-menu-submenu-title-selected {
+    color: var(--etransfer-ui-primary-text);
+    background-color: var(--etransfer-ui-hover-bg);
+  }
+  .etransfer-ant-dropdown-menu-item,
+  .etransfer-ant-dropdown-menu-submenu-title {
+    color: var(--etransfer-ui-primary-text);
+  }
+
+  .etransfer-ui-text-link {
+    color: var(--etransfer-ui-normal);
+  }
+
+  .deposit-page-title {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 24px;
+    .deposit-page-title-btn {
+      height: 56px;
+      line-height: 56px;
+      font-size: 20px;
+      color: var(--ant-black-font-color-2);
+      position: relative;
+      font-weight: 600;
+      cursor: pointer;
+
+      .deposit-page-title-btn-border {
+        position: absolute;
+        visibility: hidden;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 2px;
+        background-color: var(--ant-primary-font-color);
+      }
+    }
+    .deposit-page-title-btn.deposit-page-title-btn-active {
+      color: var(--ant-black-font-color-1);
+
+      .deposit-page-title-btn-border {
+        visibility: visible;
+      }
+    }
+  }
+
+  .deposit-history-btn {
+    position: absolute;
+    right: 32px;
+    top: 50%;
+    transform: translate3d(0, -50%, 0);
+  }
+
+  .doublearrow-icon {
+    svg > g > g {
+      path:nth-child(1) {
+        fill: #285eff59;
+      }
+      path:nth-child(2) {
+        fill: #285eff;
+      }
+      path:nth-child(3) {
+        fill: #3b6cffb2;
+      }
+    }
+  }
+
+  .add-icon,
+  .addmedium-icon {
+    svg > g > rect {
+      fill: #2a2e3a;
+    }
+    svg > g > rect:first-child {
+      fill: #477bff;
+    }
+  }
+}
+
+.pc-site-content {
+  .deposit-page {
+    min-height: 750px;
+    padding-bottom: 48px;
+    .common-panel-page-body {
+      .common-panel-page-header {
+        justify-content: flex-start;
+      }
+      .common-panel-page-content {
+        padding-top: 24px;
+      }
+    }
+  }
+
+  .etransfer-ui-withdraw-body {
+    padding: 0;
+  }
+}
+
+.mobile-site-content {
+  .deposit-history-btn {
+    width: 72px;
+    height: 24px;
+    font-size: 14px;
+    line-height: 24px;
+    padding: 0;
+    right: 16px;
+  }
+
+  .deposit-page {
+    .deposit-page-title {
+      .deposit-page-title-btn {
+        font-size: 16px;
+      }
+    }
+
+    .common-panel-page .common-panel-page-header {
+      justify-content: flex-start;
+      padding-left: 45px;
+    }
+  }
+
+  .etransfer-ui-withdraw-body {
+    padding-left: 0;
+    padding-right: 0;
+    padding-bottom: calc(119px + env(safe-area-inset-bottom));
+  }
+
+  .etransfer-ui-withdraw-form-footer {
+    .etransfer-ui-withdraw-form-footer-main {
+      align-items: flex-end;
+    }
+  }
+}
+
+.etransfer-ui-common-modal {
+  .etransfer-ant-modal-content,
+  .etransfer-ant-modal-header {
+    background-color: var(--ant-container-bg-color);
+    color: var(--ant-black-font-color-1);
+
+    .close-icon {
+      svg {
+        path {
+          fill: #e5e8ef;
+        }
+      }
+    }
+  }
+  .etransfer-ant-modal-header {
+    border: none;
+    .etransfer-ant-modal-title {
+      font-size: 16px;
+      color: var(--ant-black-font-color-1);
+      font-weight: 600;
+    }
+  }
+  .etransfer-ant-modal-content {
+    .etransfer-ant-modal-body {
+      padding-top: 0;
+    }
+  }
+  .etransfer-ui-common-button-primary {
+    background: var(--etransfer-ui-brand);
+    border: 1px solid var(--etransfer-ui-brand);
+    color: var(--etransfer-ui-white-text);
+  }
+  .etransfer-ui-common-button-middle {
+    height: 48px;
+    padding: 0 28px;
+  }
+  .etransfer-ui-common-button {
+    border-radius: 6px;
+    box-shadow: none;
+  }
+}
+
+.etransfer-ui-common-drawer {
+  .close-icon {
+    svg {
+      path {
+        fill: #e5e8ef;
+      }
+    }
+  }
+}
+
+.etransfer-ant-message-notice-content {
+  background: #2a2e3a !important;
+}
+.etransfer-ant-message .etransfer-ant-message-notice .etransfer-ant-message-custom-content span:not(.anticon) {
+  font-size: 14px;
+}
+
+/* stylelint-disable-next-line selector-class-pattern */
+.etransfer-ui-reCaptcha-modal-wrapper {
+  /* stylelint-disable-next-line selector-class-pattern */
+  .etransfer-ui-reCaptcha-modal-container {
+    .ant-modal-content {
+      background-color: var(--ant-container-bg-color);
+    }
+    .close-icon {
+      svg {
+        path {
+          fill: #e5e8ef;
+        }
+      }
+    }
+  }
+}
+
+.etransfer-ui-balance {
+  color: var(--etransfer-ui-primary-text);
+}
+
+.etransfer-ui-token-image-wrapper .etransfer-ui-token-image-default {
+  background-color: var(--ant-black-font-color-3);
+  color: var(--ant-black-font-color-2);
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.etransfer-ui-common-svg.checkfilled-icon {
+  svg > g > g > path {
+    fill: #1bc57d;
+  }
+}
+
+.etransfer-ui-common-svg.exclamationfilled-icon {
+  svg > g > g > path {
+    fill: #e43555;
+  }
+}
