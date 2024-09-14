@@ -556,7 +556,7 @@ export const SwapPanel = () => {
           </AuthBtn>
         </div>
 
-        {isExceedBalance && <DepositLink />}
+        {isExceedBalance && <DepositLink receiveToken={swapInfo.tokenIn?.symbol} />}
 
         {isExtraInfoShow && (
           <>

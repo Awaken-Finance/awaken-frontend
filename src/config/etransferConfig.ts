@@ -5,11 +5,11 @@ const API_ENV = process.env.REACT_APP_API_ENV;
 let networkType: ETransferConfigProps['networkType'] = 'MAINNET',
   etransferUrl: ETransferConfigProps['etransferUrl'] = 'https://app.etransfer.exchange',
   etransferAuthUrl: ETransferConfigProps['etransferAuthUrl'] = 'https://app.etransfer.exchange',
-  depositConfig: ETransferConfigProps['depositConfig'] = {
+  etransferDepositConfig: ETransferConfigProps['depositConfig'] = {
     supportChainIds: ['tDVV'],
     defaultChainId: 'tDVV',
   },
-  withdrawConfig: ETransferConfigProps['withdrawConfig'] = {
+  etransferWithdrawConfig: ETransferConfigProps['withdrawConfig'] = {
     supportChainIds: ['tDVV'],
     defaultChainId: 'tDVV',
   };
@@ -21,11 +21,11 @@ switch (API_ENV) {
     networkType = 'TESTNET';
     etransferUrl = 'https://test-app.etransfer.exchange';
     etransferAuthUrl = 'https://test-app.etransfer.exchange';
-    depositConfig = {
+    etransferDepositConfig = {
       supportChainIds: ['tDVW'],
       defaultChainId: 'tDVW',
     };
-    withdrawConfig = {
+    etransferWithdrawConfig = {
       supportChainIds: ['tDVW'],
       defaultChainId: 'tDVW',
     };
@@ -36,6 +36,9 @@ export const etransferConfig: Partial<ETransferConfigProps> = {
   networkType,
   etransferUrl,
   etransferAuthUrl,
-  depositConfig,
-  withdrawConfig,
+  // depositConfig,
+  // withdrawConfig,
 };
+
+export const ETRANSFER_DEPOSIT_CONFIG = etransferDepositConfig;
+export const ETRANSFER_WITHDRAW_CONFIG = etransferWithdrawConfig;

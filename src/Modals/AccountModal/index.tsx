@@ -37,7 +37,7 @@ import { getLimitOrderPrice } from 'utils/limit';
 import PriceDigits from 'components/PriceDigits';
 import { formatSymbol } from 'utils/token';
 import { LimitOrderStatusMap } from 'constants/limit';
-import { DepositTipModal, DepositTipModalInterface } from 'Modals/DepositTipModal';
+import { DEPOSIT_TIP_MODAL_CONFIRMED, DepositTipModal, DepositTipModalInterface } from 'Modals/DepositTipModal';
 import { useIsDepositPath } from 'hooks/route';
 import { ETransferConfig, WalletTypeEnum, etransferCore } from '@etransfer/ui-react';
 
@@ -98,6 +98,7 @@ function AccountModal() {
         },
       });
       etransferCore.services.setRequestHeaders('Authorization', '');
+      localStorage.removeItem(DEPOSIT_TIP_MODAL_CONFIRMED);
     } catch (error) {
       console.log('disconnectWallet error', error);
     }

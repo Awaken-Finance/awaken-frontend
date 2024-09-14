@@ -443,7 +443,7 @@ export const LimitPanel = () => {
         </AuthBtn>
       </div>
 
-      {isExceedBalance && <DepositLink />}
+      {isExceedBalance && <DepositLink receiveToken={limitInfo.tokenIn?.symbol} />}
 
       <Row gutter={[0, 12]} className="limit-info-wrap">
         <Col span={24}>

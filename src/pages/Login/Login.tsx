@@ -6,6 +6,8 @@ import useQuery from 'hooks/useQuery';
 import { sleep } from 'utils';
 import { useConnectWallet } from '@aelf-web-login/wallet-adapter-react';
 import { useIsConnected } from 'hooks/useLogin';
+import { stringify, parseUrl } from 'query-string';
+
 // import { message } from 'antd';
 
 export default function Login() {
@@ -40,7 +42,13 @@ export default function Login() {
       history.replace('/');
       connectWallet();
     } else if (isConnected) {
-      history.replace(redirect);
+      const url = window.location.href;
+      const parsedQuery = parseUrl(url);
+      const nextParams = {
+        ...parsedQuery.query,
+        redirect: undefined,
+      };
+      history.replace(`${redirect}?${stringify(nextParams)}`);
     }
   }, [connectWallet, history, isConnected, isInit, isLocking, redirect, tryLogin]);
 
