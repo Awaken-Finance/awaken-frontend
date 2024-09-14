@@ -316,7 +316,7 @@ export default function RightCard({ tokenA, tokenB, balances, reserves, rate, ge
           }}
         />
       </Col>
-      {amountError.error && <DepositLink />}
+      {amountError.error && <DepositLink receiveToken={tokenA?.symbol} />}
     </Row>
   );
 }

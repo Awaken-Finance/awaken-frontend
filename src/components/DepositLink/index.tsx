@@ -6,14 +6,15 @@ import { DepositTipModal, DepositTipModalInterface } from 'Modals/DepositTipModa
 
 export type TDepositLinkProps = {
   className?: string;
+  receiveToken?: string;
 };
-export const DepositLink = ({ className }: TDepositLinkProps) => {
+export const DepositLink = ({ className, receiveToken }: TDepositLinkProps) => {
   const { t } = useTranslation();
 
   const depositTipModalRef = useRef<DepositTipModalInterface>();
   const onDepositClick = useCallback(() => {
-    depositTipModalRef.current?.show();
-  }, []);
+    depositTipModalRef.current?.show(receiveToken);
+  }, [receiveToken]);
 
   return (
     <div className={clsx(['deposit-link', className])}>

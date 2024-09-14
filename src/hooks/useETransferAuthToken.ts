@@ -55,7 +55,6 @@ export function useETransferAuthToken() {
 
     try {
       const { caHash, originChainId } = await getETransferUserInfo(walletInfo, walletType);
-      // TODO: cache caHash & originChainId
       const managerAddress = await getManagerAddressByWallet(walletInfo, walletType);
       console.log('etransferInfo', {
         caHash,

@@ -334,7 +334,7 @@ export const LimitRightCard = ({ tokenA, tokenB, balances, reserves, rate }: TLi
           }}
         />
       </Col>
-      {amountError.error && <DepositLink />}
+      {amountError.error && <DepositLink receiveToken={tokenA?.symbol} />}
     </Row>
   );
 };

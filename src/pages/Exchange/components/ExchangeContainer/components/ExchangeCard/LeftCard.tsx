@@ -336,7 +336,7 @@ export default function LeftCard({ tokenA, tokenB, balances, reserves, rate, get
           }}
         />
       </Col>
-      {totalError.error && <DepositLink />}
+      {totalError.error && <DepositLink receiveToken={tokenB?.symbol} />}
     </Row>
   );
 }
