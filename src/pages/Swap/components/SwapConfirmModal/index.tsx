@@ -8,7 +8,7 @@ import CommonButton from 'components/CommonButton';
 import { TSwapInfo } from '../SwapPanel';
 import { TContractSwapToken, TSwapRoute } from 'pages/Swap/types';
 import { CurrencyLogo } from 'components/CurrencyLogo';
-import { REQ_CODE, SWAP_TIME_INTERVAL, TEN_THOUSAND, ZERO } from 'constants/misc';
+import { ONE, REQ_CODE, SWAP_TIME_INTERVAL, TEN_THOUSAND, ZERO } from 'constants/misc';
 import { SwapRouteInfo } from '../SwapRouteInfo';
 import { useUserSettings } from 'contexts/useUserSettings';
 import { getCurrencyAddress, getDeadline, minimumAmountOut, parseUserSlippageTolerance } from 'utils/swap';
@@ -186,7 +186,10 @@ export const SwapConfirmModal = forwardRef(
         const swapRoute = result.swapRoute;
         const amountOutAmount = result.amountOutAmount;
 
-        const amountMinOutAmountBN = minimumAmountOut(valueOutAmountBN, userSlippageTolerance);
+        const amountMinOutAmountBN = BigNumber.max(
+          minimumAmountOut(valueOutAmountBN, userSlippageTolerance).dp(0, BigNumber.ROUND_DOWN),
+          ONE,
+        );
         if (amountMinOutAmountBN.gt(amountOutAmount)) {
           notification.warning({
             message: null,
@@ -198,7 +201,10 @@ export const SwapConfirmModal = forwardRef(
         const deadline = getDeadline();
         const channel = getCID();
         const swapTokens: TContractSwapToken[] = swapRoute.distributions.map((item) => {
-          const amountOutMinBN = minimumAmountOut(ZERO.plus(item.amountOut), userSlippageTolerance);
+          const amountOutMinBN = BigNumber.max(
+            minimumAmountOut(ZERO.plus(item.amountOut), userSlippageTolerance).dp(0, BigNumber.ROUND_DOWN),
+            ONE,
+          );
           const amountOutMin = amountOutMinBN.lt(1) ? '1' : amountOutMinBN.toFixed();
 
           return {

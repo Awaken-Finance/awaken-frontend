@@ -23,6 +23,7 @@ import { useTransactionFee } from 'contexts/useStore/hooks';
 import { FeeRow } from 'pages/Swap/components/FeeRow';
 import { LimitPairPrice } from 'pages/Swap/components/LimitPairPrice';
 import { LIMIT_LABS_FEE_RATE, LIMIT_RECEIVE_RATE } from 'constants/swap';
+import { DepositLink } from 'components/DepositLink';
 
 export type TLimitLeftCardProps = {
   rate: string;
@@ -336,6 +337,7 @@ export const LimitLeftCard = ({ tokenA, tokenB, balances, reserves, rate }: TLim
           }}
         />
       </Col>
+      {totalError.error && <DepositLink receiveToken={tokenB?.symbol} />}
     </Row>
   );
 };
