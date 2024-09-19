@@ -733,6 +733,8 @@
 
     "deposit": "儲值",
     "depositTipTitle": "溫馨提示",
-    "depositTipContent": "即將使用第三方跨鍊服務ETransfer，使用該服務需要簽名（無需Gas費）。是否確認使用？"
+    "depositTipContent": "即將使用第三方跨鍊服務ETransfer，使用該服務需要簽名（無需Gas費）。是否確認使用？",
+    "depositJumpDescription": "餘額不足？您可以",
+    "depositJumpLink": "跨鏈儲值"
   }
 }

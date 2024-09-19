@@ -6,11 +6,12 @@ import { AuthTokenSource, PortkeyVersion } from '@etransfer/types';
 import { ETransferConfig, getETransferReCaptcha, WalletTypeEnum, etransferCore } from '@etransfer/ui-react';
 import { useConnectWallet } from '@aelf-web-login/wallet-adapter-react';
 
-import { getCaHashAndOriginChainIdByWallet, getManagerAddressByWallet } from 'utils/wallet';
+import { getManagerAddressByWallet } from 'utils/wallet';
 import { useIsConnected } from './useLogin';
 import { APP_NAME } from 'config/webLoginConfig';
 import { TWalletType } from '@etransfer/types';
 import { useGetAccount } from './wallet';
+import { getETransferUserInfo } from 'utils/etransfer';
 
 export type TSetETransferConfigParams = {
   managerAddress: string;
@@ -53,8 +54,7 @@ export function useETransferAuthToken() {
     if (!isLoginRef.current) throw new Error('You are not logged in.');
 
     try {
-      const { caHash, originChainId } = await getCaHashAndOriginChainIdByWallet(walletInfo, walletType);
-      // TODO: cache caHash & originChainId
+      const { caHash, originChainId } = await getETransferUserInfo(walletInfo, walletType);
       const managerAddress = await getManagerAddressByWallet(walletInfo, walletType);
       console.log('etransferInfo', {
         caHash,

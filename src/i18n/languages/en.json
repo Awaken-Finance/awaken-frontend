@@ -708,6 +708,8 @@
 
     "deposit": "Deposit",
     "depositTipTitle": "Friendly reminder",
-    "depositTipContent": "You are about to use the third-party cross-chain service ETransfer, which requires a signature (no Gas fee needed). Are you sure you want to proceed?"
+    "depositTipContent": "You are about to use the third-party cross-chain service ETransfer, which requires a signature (no Gas fee needed). Are you sure you want to proceed?",
+    "depositJumpDescription": "Insufficient balance? You can",
+    "depositJumpLink": "deposit across chains."
   }
 }

@@ -58,6 +58,7 @@ function RootApp() {
         ...WEB_LOGIN_CONFIG.baseConfig,
         noCommonBaseModal: isTelegram ? false : true,
         design: SignInDesignEnum.Web2Design,
+        keyboard: true,
         SignInComponent: isTelegram ? undefined : (SignInProxy as any),
         ConfirmLogoutDialog: ConfirmLogoutDialog,
         PortkeyProviderProps: {

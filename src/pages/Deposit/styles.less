@@ -8,12 +8,24 @@
     padding: 0;
   }
 
+  .etransfer-ui-deposit-title {
+    display: none;
+  }
+  .etransfer-ui-withdraw-select-chain-label {
+    font-size: 600;
+    font-size: 16px;
+    line-height: 24px;
+    color: var(--etransfer-ui-secondary-text);
+  }
+
   .etransfer-ui-calculator .etransfer-ui-calculator-content .you-pay-main {
     background-color: var(--ant-input-bg-color);
   }
-  .etransfer-ui-common-svg {
-    display: flex;
-    align-items: center;
+
+  .etransfer-ui-deposit-select-token-network,
+  .etransfer-ui-deposit-select-token-chain {
+    border: none;
+    background-color: var(--etransfer-ui-normal-bg);
   }
 
   .etransfer-ant-form {
@@ -26,12 +38,12 @@
     background-color: white;
   }
 
-  .etransfer-ui-deposit-tip,
-  .etransfer-ui-description-wrapper {
-    background-color: #101217;
-  }
   .etransfer-ui-deposit-tip {
+    background: #477bff1f;
     border: none;
+  }
+  .etransfer-ui-description-wrapper {
+    background: #181b23;
   }
 
   .token-select-for-web {
@@ -67,11 +79,6 @@
 
   .etransfer-ui-text-link {
     color: var(--etransfer-ui-normal);
-  }
-
-  .questionmark-icon {
-    display: flex;
-    align-items: center;
   }
 
   .deposit-page-title {
@@ -112,18 +119,44 @@
     right: 32px;
     top: 50%;
     transform: translate3d(0, -50%, 0);
-    width: 80px;
-    height: 32px;
+  }
+
+  .doublearrow-icon {
+    svg > g > g {
+      path:nth-child(1) {
+        fill: #285eff59;
+      }
+      path:nth-child(2) {
+        fill: #285eff;
+      }
+      path:nth-child(3) {
+        fill: #3b6cffb2;
+      }
+    }
+  }
+
+  .add-icon,
+  .addmedium-icon {
+    svg > g > rect {
+      fill: #2a2e3a;
+    }
+    svg > g > rect:first-child {
+      fill: #477bff;
+    }
   }
 }
 
 .pc-site-content {
   .deposit-page {
+    min-height: 750px;
     padding-bottom: 48px;
-  }
-  .common-panel-page-body {
-    .common-panel-page-header {
-      justify-content: flex-start;
+    .common-panel-page-body {
+      .common-panel-page-header {
+        justify-content: flex-start;
+      }
+      .common-panel-page-content {
+        padding-top: 24px;
+      }
     }
   }
 
@@ -141,9 +174,18 @@
     padding: 0;
     right: 16px;
   }
-  .common-panel-page .common-panel-page-header {
-    justify-content: flex-start;
-    padding-left: 45px;
+
+  .deposit-page {
+    .deposit-page-title {
+      .deposit-page-title-btn {
+        font-size: 16px;
+      }
+    }
+
+    .common-panel-page .common-panel-page-header {
+      justify-content: flex-start;
+      padding-left: 45px;
+    }
   }
 
   .etransfer-ui-withdraw-body {
@@ -157,14 +199,6 @@
       align-items: flex-end;
     }
   }
-
-  .deposit-page {
-    .deposit-page-title {
-      .deposit-page-title-btn {
-        font-size: 16px;
-      }
-    }
-  }
 }
 
 .etransfer-ui-common-modal {
@@ -172,6 +206,14 @@
   .etransfer-ant-modal-header {
     background-color: var(--ant-container-bg-color);
     color: var(--ant-black-font-color-1);
+
+    .close-icon {
+      svg {
+        path {
+          fill: #e5e8ef;
+        }
+      }
+    }
   }
   .etransfer-ant-modal-header {
     border: none;
@@ -232,5 +274,28 @@
         }
       }
     }
+  }
+}
+
+.etransfer-ui-balance {
+  color: var(--etransfer-ui-primary-text);
+}
+
+.etransfer-ui-token-image-wrapper .etransfer-ui-token-image-default {
+  background-color: var(--ant-black-font-color-3);
+  color: var(--ant-black-font-color-2);
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.etransfer-ui-common-svg.checkfilled-icon {
+  svg > g > g > path {
+    fill: #1bc57d;
+  }
+}
+
+.etransfer-ui-common-svg.exclamationfilled-icon {
+  svg > g > g > path {
+    fill: #e43555;
   }
 }

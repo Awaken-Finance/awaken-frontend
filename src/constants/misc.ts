@@ -52,3 +52,10 @@ export const IPFS_SYMBOL_MAP: Record<string, string> = {
 };
 
 export const IPFS_SYMBOL_LIST = ['SGR'];
+
+export const DEPOSIT_RECEIVE_TOKEN_MAP: Record<string, boolean> = {
+  ELF: true,
+  USDT: true,
+  'SGR-1': true,
+  ACORNS: true,
+};

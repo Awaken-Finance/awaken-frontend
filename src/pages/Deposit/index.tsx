@@ -1,6 +1,7 @@
 import {
   ComponentStyle,
   Deposit,
+  ETransferConfig,
   ETransferDepositProvider,
   ETransferLayoutProvider,
   ETransferStyleProvider,
@@ -11,7 +12,7 @@ import '@etransfer/ui-react/dist/assets/index.css';
 import { CommonPanelPage } from 'components/CommonPanelPage';
 import { useETransferAuthToken } from 'hooks/useETransferAuthToken';
 
-import { useCallback, useMemo } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import './styles.less';
 import clsx from 'clsx';
 import { useHistory, useRouteMatch } from 'react-router-dom';
@@ -19,7 +20,16 @@ import { useTranslation } from 'react-i18next';
 import { useIsTelegram, useMobile } from 'utils/isMobile';
 import { useEffectOnce } from 'react-use';
 import { useGoBack } from 'hooks/route';
-import CommonButton from 'components/CommonButton';
+import CommonLink from 'components/CommonLink';
+import { TDepositActionData } from '@etransfer/ui-react/dist/_types/src/components/Deposit/types';
+import { stringify, parseUrl } from 'query-string';
+import { DEFAULT_CHAIN } from 'constants/index';
+import {
+  ETRANSFER_DEPOSIT_CONFIG,
+  ETRANSFER_DEPOSIT_DEFAULT_NETWORK,
+  ETRANSFER_WITHDRAW_CONFIG,
+} from 'config/etransferConfig';
+import { TWithdrawActionData } from '@etransfer/ui-react/dist/_types/src/components/Withdraw/types';
 
 enum DepositTabEnum {
   deposit = 1,
@@ -42,17 +52,18 @@ export default () => {
   const isMobile = useMobile();
   const isTelegram = useIsTelegram();
   const goBack = useGoBack();
+  const [isConfigInit, setIsConfigInit] = useState(false);
 
-  const history = useHistory();
+  const historyRouter = useHistory();
   const changeTab = useCallback(
     (key: DepositTabEnum) => {
       if (key === DepositTabEnum.deposit) {
-        history.push(`/deposit`);
+        historyRouter.push(`/deposit`);
       } else {
-        history.push(`/withdraw`);
+        historyRouter.push(`/withdraw`);
       }
     },
-    [history],
+    [historyRouter],
   );
   const match = useRouteMatch<{ tab: string }>('/:tab');
   const { tab: routeTab } = match?.params || {};
@@ -61,65 +72,127 @@ export default () => {
     [routeTab],
   );
 
+  const init = useCallback(async () => {
+    try {
+      const url = window.location.href;
+      const parsedQuery = parseUrl(url);
+      const query: any = parsedQuery.query;
+
+      const isDeposit = tab === DepositTabEnum.deposit;
+      if (isDeposit) {
+        ETransferConfig.setConfig({
+          depositConfig: {
+            ...ETRANSFER_DEPOSIT_CONFIG,
+            defaultChainId: query.chainId || DEFAULT_CHAIN,
+            defaultNetwork: query.network || ETRANSFER_DEPOSIT_DEFAULT_NETWORK,
+            defaultDepositToken: query.depositToken || 'USDT',
+            defaultReceiveToken: query.receiveToken || 'USDT',
+          },
+        });
+      } else {
+        ETransferConfig.setConfig({
+          withdrawConfig: {
+            ...ETRANSFER_WITHDRAW_CONFIG,
+            defaultChainId: query.chainId || DEFAULT_CHAIN,
+            defaultNetwork: query.network,
+            defaultToken: query.token || 'USDT',
+          },
+        });
+      }
+      setIsConfigInit(true);
+      await getAuthToken(isDeposit);
+    } catch (error) {
+      historyRouter.replace('/');
+    }
+  }, [getAuthToken, historyRouter, tab]);
+
   useEffectOnce(() => {
     console.log('effect init');
-    getAuthToken(tab === DepositTabEnum.deposit);
+    init();
   });
 
   const onHistoryClick = useCallback(() => {
-    history.push('/deposit-history');
-  }, [history]);
+    historyRouter.push('/deposit-history');
+  }, [historyRouter]);
+
+  const onDepositActionChange = useCallback((action: TDepositActionData) => {
+    const urlParams = stringify({
+      chainId: action.chainSelected,
+      network: action.networkSelected,
+      receiveToken: action.receiveSymbolSelected,
+      depositToken: action.depositSymbolSelected,
+    });
+
+    history.replaceState(null, '', `?` + urlParams);
+  }, []);
+
+  const onWithdrawActionChange = useCallback((action: TWithdrawActionData) => {
+    const urlParams = stringify({
+      chainId: action.chainSelected,
+      network: action.networkSelected,
+      token: action.symbolSelected,
+    });
+
+    history.replaceState(null, '', `?` + urlParams);
+  }, []);
+
+  if (!isConfigInit) return <></>;
 
   return (
-    <CommonPanelPage
-      className="deposit-page"
-      onCancel={goBack}
-      isCancelHide={!isMobile || isTelegram}
-      title={() => (
-        <div className="deposit-page-title">
-          {DEPOSIT_TAB_LIST.map((item) => (
-            <div
-              className={clsx(['deposit-page-title-btn', item.value === tab && 'deposit-page-title-btn-active'])}
-              key={item.value}
-              onClick={() => {
-                changeTab(item.value);
-              }}>
-              {t(item.label)}
-              <div className="deposit-page-title-btn-border" />
-            </div>
-          ))}
-        </div>
-      )}
-      extraTitle={
-        <CommonButton
-          className="deposit-history-btn"
-          type="primary"
-          style={{ fontWeight: '600' }}
-          onClick={onHistoryClick}>
-          {t('History')}
-        </CommonButton>
-      }>
-      <ETransferStyleProvider>
-        <ETransferLayoutProvider>
-          <ETransferDepositProvider>
-            <ETransferWithdrawProvider>
-              {tab === DepositTabEnum.deposit ? (
-                <Deposit
-                  componentStyle={isMobile ? ComponentStyle.Mobile : ComponentStyle.Web}
-                  isListenNoticeAuto={false}
-                  isShowProcessingTip={false}
-                />
-              ) : (
-                <Withdraw
-                  componentStyle={isMobile ? ComponentStyle.Mobile : ComponentStyle.Web}
-                  isListenNoticeAuto={false}
-                  isShowProcessingTip={false}
-                />
-              )}
-            </ETransferWithdrawProvider>
-          </ETransferDepositProvider>
-        </ETransferLayoutProvider>
-      </ETransferStyleProvider>
-    </CommonPanelPage>
+    <div className="deposit-page">
+      <CommonPanelPage
+        onCancel={goBack}
+        isCancelHide={!isMobile || isTelegram}
+        title={() => (
+          <div className="deposit-page-title">
+            {DEPOSIT_TAB_LIST.map((item) => (
+              <div
+                className={clsx(['deposit-page-title-btn', item.value === tab && 'deposit-page-title-btn-active'])}
+                key={item.value}
+                onClick={() => {
+                  changeTab(item.value);
+                }}>
+                {t(item.label)}
+                <div className="deposit-page-title-btn-border" />
+              </div>
+            ))}
+          </div>
+        )}
+        extraTitle={
+          <CommonLink
+            className="deposit-history-btn"
+            size={14}
+            lineHeight={22}
+            color="two"
+            iconProps={{ color: 'two' }}
+            onClick={onHistoryClick}>
+            {t('History')}
+          </CommonLink>
+        }>
+        <ETransferStyleProvider>
+          <ETransferLayoutProvider>
+            <ETransferDepositProvider>
+              <ETransferWithdrawProvider>
+                {tab === DepositTabEnum.deposit ? (
+                  <Deposit
+                    componentStyle={isMobile ? ComponentStyle.Mobile : ComponentStyle.Web}
+                    isListenNoticeAuto={false}
+                    isShowProcessingTip={false}
+                    onActionChange={onDepositActionChange}
+                  />
+                ) : (
+                  <Withdraw
+                    componentStyle={isMobile ? ComponentStyle.Mobile : ComponentStyle.Web}
+                    isListenNoticeAuto={false}
+                    isShowProcessingTip={false}
+                    onActionChange={onWithdrawActionChange}
+                  />
+                )}
+              </ETransferWithdrawProvider>
+            </ETransferDepositProvider>
+          </ETransferLayoutProvider>
+        </ETransferStyleProvider>
+      </CommonPanelPage>
+    </div>
   );
 };

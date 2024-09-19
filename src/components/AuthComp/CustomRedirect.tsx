@@ -28,7 +28,7 @@ export default function CustomRedirect({ preserveQueryString, ...props }: Custom
   }
   const { to, ...rest } = props;
   const toSearch = isString(to) ? extract(to) : get(to, 'search', '');
-  const search = mergeQueryStrings(location.search, toSearch);
+  const search = mergeQueryStrings(location.search, toSearch.replace('?', '&'));
   const nextLocation = isString(to) ? { pathname: to.split('?')[0], search } : { ...to, search };
   return <Redirect to={nextLocation} {...rest} />;
 }
