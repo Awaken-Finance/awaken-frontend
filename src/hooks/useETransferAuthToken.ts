@@ -135,6 +135,7 @@ export function useETransferAuthToken() {
   const setETransferConfigRef = useRef(setETransferConfig);
   setETransferConfigRef.current = setETransferConfig;
 
+  const isSignedRef = useRef(false);
   const getAuthToken = useCallback(
     async (isDeposit = true) => {
       if (!walletInfo) throw new Error('Failed to obtain wallet information.');
@@ -156,6 +157,7 @@ export function useETransferAuthToken() {
             jwt: storageJwt,
             isDeposit,
           });
+          isSignedRef.current = true;
           return;
         }
 
@@ -178,6 +180,7 @@ export function useETransferAuthToken() {
           jwt,
           isDeposit,
         });
+        isSignedRef.current = true;
       } catch (error) {
         throw error || new Error('Failed to obtain etransfer authorization.');
       }
@@ -191,6 +194,7 @@ export function useETransferAuthToken() {
   useEffect(() => {
     const { remove } = etransferEvents.DeniedRequest.addListener(() => {
       console.log('ETransfer DeniedRequest');
+      if (!isSignedRef.current) return;
       etransferCore.storage && resetETransferJWT(etransferCore.storage);
       getAuthTokenRef.current();
     });
