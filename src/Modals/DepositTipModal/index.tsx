@@ -36,13 +36,14 @@ export const DepositTipModal = forwardRef((_props: TDepositTipModalProps, ref) =
 
   const show = useCallback<DepositTipModalInterface['show']>(
     async (token) => {
-      let isConfirmed = false;
+      // let isConfirmed = false;
+      const isConfirmed = true;
 
-      try {
-        isConfirmed = JSON.parse(localStorage.getItem(DEPOSIT_TIP_MODAL_CONFIRMED) || '');
-      } catch (error) {
-        isConfirmed = false;
-      }
+      // try {
+      //   isConfirmed = JSON.parse(localStorage.getItem(DEPOSIT_TIP_MODAL_CONFIRMED) || '');
+      // } catch (error) {
+      //   isConfirmed = false;
+      // }
       if (isConfirmed) {
         goDeposit(token);
         return;

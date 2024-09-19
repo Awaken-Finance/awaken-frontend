@@ -24,7 +24,11 @@ import CommonLink from 'components/CommonLink';
 import { TDepositActionData } from '@etransfer/ui-react/dist/_types/src/components/Deposit/types';
 import { stringify, parseUrl } from 'query-string';
 import { DEFAULT_CHAIN } from 'constants/index';
-import { ETRANSFER_DEPOSIT_CONFIG, ETRANSFER_WITHDRAW_CONFIG } from 'config/etransferConfig';
+import {
+  ETRANSFER_DEPOSIT_CONFIG,
+  ETRANSFER_DEPOSIT_DEFAULT_NETWORK,
+  ETRANSFER_WITHDRAW_CONFIG,
+} from 'config/etransferConfig';
 import { TWithdrawActionData } from '@etransfer/ui-react/dist/_types/src/components/Withdraw/types';
 
 enum DepositTabEnum {
@@ -80,7 +84,7 @@ export default () => {
           depositConfig: {
             ...ETRANSFER_DEPOSIT_CONFIG,
             defaultChainId: query.chainId || DEFAULT_CHAIN,
-            defaultNetwork: query.network,
+            defaultNetwork: query.network || ETRANSFER_DEPOSIT_DEFAULT_NETWORK,
             defaultDepositToken: query.depositToken || 'USDT',
             defaultReceiveToken: query.receiveToken || 'USDT',
           },

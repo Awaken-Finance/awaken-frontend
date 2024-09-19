@@ -113,7 +113,7 @@ function PcHeader() {
         </Col>
         <Col>
           <Row align="middle" gutter={[16, 0]}>
-            {!isDepositPath && (
+            {!isDepositPath && isConnected && (
               <Col>
                 <CommonButton
                   className="signup-btn"
