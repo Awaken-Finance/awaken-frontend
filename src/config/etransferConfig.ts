@@ -12,7 +12,8 @@ let networkType: ETransferConfigProps['networkType'] = 'MAINNET',
   etransferWithdrawConfig: ETransferConfigProps['withdrawConfig'] = {
     supportChainIds: ['tDVV'],
     defaultChainId: 'tDVV',
-  };
+  },
+  depositDefaultNetwork = 'TRX';
 
 switch (API_ENV) {
   case 'preview':
@@ -29,6 +30,7 @@ switch (API_ENV) {
       supportChainIds: ['tDVW'],
       defaultChainId: 'tDVW',
     };
+    depositDefaultNetwork = 'SETH';
     break;
 }
 
@@ -42,3 +44,4 @@ export const etransferConfig: Partial<ETransferConfigProps> = {
 
 export const ETRANSFER_DEPOSIT_CONFIG = etransferDepositConfig;
 export const ETRANSFER_WITHDRAW_CONFIG = etransferWithdrawConfig;
+export const ETRANSFER_DEPOSIT_DEFAULT_NETWORK = depositDefaultNetwork;
