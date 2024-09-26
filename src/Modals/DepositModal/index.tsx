@@ -17,6 +17,8 @@ import './styles.less';
 import 'pages/Deposit/styles.less';
 import { DEPOSIT_RECEIVE_SUPPORT_DEPOSIT_TOKENS } from 'constants/misc';
 import { formatSymbol } from 'utils/token';
+import CommonLink from 'components/CommonLink';
+import { useHistory } from 'react-router-dom';
 
 export type TDepositModalProps = {};
 
@@ -67,6 +69,11 @@ export const DepositModal = forwardRef((_props: TDepositModalProps, ref) => {
   );
   useImperativeHandle(ref, () => ({ show }));
 
+  const historyRouter = useHistory();
+  const onHistoryClick = useCallback(() => {
+    historyRouter.push('/deposit-history');
+  }, [historyRouter]);
+
   return (
     <CommonModal
       width="640px"
@@ -77,9 +84,34 @@ export const DepositModal = forwardRef((_props: TDepositModalProps, ref) => {
       centered={true}
       visible={isVisible}
       title={`Deposit ${formatSymbol(token)}`}
+      extra={
+        isMobile && (
+          <CommonLink
+            className="deposit-modal-history-btn"
+            size={14}
+            lineHeight={22}
+            color="two"
+            iconProps={{ color: 'two' }}
+            onClick={onHistoryClick}>
+            {'History'}
+          </CommonLink>
+        )
+      }
       className={'deposit-modal'}
       onCancel={onCancel}>
       <div className="deposit-page">
+        {!isMobile && (
+          <CommonLink
+            className="deposit-modal-history-btn"
+            size={14}
+            lineHeight={22}
+            color="two"
+            iconProps={{ color: 'two' }}
+            onClick={onHistoryClick}>
+            {'History'}
+          </CommonLink>
+        )}
+
         {isVisible && (
           <ETransferStyleProvider>
             <ETransferLayoutProvider>
