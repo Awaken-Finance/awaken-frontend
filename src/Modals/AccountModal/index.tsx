@@ -391,7 +391,7 @@ function AccountModal() {
                 <CommonButton
                   className="deposit-btn"
                   style={{ fontWeight: '600' }}
-                  type="primary"
+                  type="ghost"
                   onClick={onDepositClick}>
                   {t('deposit')}
                 </CommonButton>

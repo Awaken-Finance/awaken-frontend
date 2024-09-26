@@ -44,8 +44,9 @@ function PcHeader() {
 
   const isDepositPath = useIsDepositPath();
   const onDepositClick = useCallback(() => {
+    if (isDepositPath) return;
     depositTipModalRef.current?.show();
-  }, []);
+  }, [isDepositPath]);
 
   const isOpacity = useMemo(() => {
     return !(
@@ -113,17 +114,18 @@ function PcHeader() {
         </Col>
         <Col>
           <Row align="middle" gutter={[16, 0]}>
-            {!isDepositPath && isConnected && (
+            {isConnected && (
               <Col>
                 <CommonButton
-                  className="signup-btn"
+                  className={clsx(['signup-btn', isDepositPath && 'deposit-menu-disable'])}
                   style={{ fontWeight: '600' }}
-                  type="primary"
+                  type="ghost"
                   onClick={onDepositClick}>
                   {t('deposit')}
                 </CommonButton>
               </Col>
             )}
+
             <Col>
               <Network />
             </Col>

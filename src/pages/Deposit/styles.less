@@ -8,6 +8,10 @@
     padding: 0;
   }
 
+  .etransfer-ui-check-txn-btn {
+    visibility: hidden;
+  }
+
   .etransfer-ui-deposit-title {
     display: none;
   }
@@ -16,6 +20,14 @@
     font-size: 16px;
     line-height: 24px;
     color: var(--etransfer-ui-secondary-text);
+  }
+
+  .etransfer-ui-copy-icon-wrapper-background-color:hover {
+    svg {
+      path {
+        fill: var(--etransfer-ui-secondary-text);
+      }
+    }
   }
 
   .etransfer-ui-calculator .etransfer-ui-calculator-content .you-pay-main {
@@ -117,7 +129,7 @@
 
   .deposit-history-btn {
     position: absolute;
-    right: 32px;
+    right: 28px;
     top: 50%;
     transform: translate3d(0, -50%, 0);
   }
@@ -174,6 +186,10 @@
     line-height: 24px;
     padding: 0;
     right: 16px;
+  }
+
+  .etransfer-ui-check-txn-btn {
+    display: none;
   }
 
   .deposit-page {
