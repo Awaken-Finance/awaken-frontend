@@ -1,10 +1,11 @@
 import { useTranslation } from 'react-i18next';
 import './styles.less';
 import clsx from 'clsx';
-import { useCallback, useRef } from 'react';
+import { useCallback, useMemo, useRef } from 'react';
 
 import { useIsConnected } from 'hooks/useLogin';
 import { DepositModal, DepositModalInterface } from 'Modals/DepositModal';
+import { DEPOSIT_RECEIVE_TOKEN_MAP } from 'constants/misc';
 
 export type TDepositLinkProps = {
   className?: string;
@@ -21,7 +22,9 @@ export const DepositLink = ({ className, receiveToken }: TDepositLinkProps) => {
     depositModalRef.current?.show(receiveToken);
   }, [receiveToken]);
 
-  if (!isConnected) return <></>;
+  const isSupport = useMemo(() => DEPOSIT_RECEIVE_TOKEN_MAP[receiveToken || ''], [receiveToken]);
+
+  if (!isConnected || !isSupport) return <></>;
 
   return (
     <div className={clsx(['deposit-link', className])}>

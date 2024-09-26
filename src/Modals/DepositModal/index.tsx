@@ -16,6 +16,8 @@ import { useEffectOnce } from 'react-use';
 import { useETransferAuthToken } from 'hooks/useETransferAuthToken';
 import './styles.less';
 import 'pages/Deposit/styles.less';
+import { DEPOSIT_RECEIVE_SUPPORT_DEPOSIT_TOKENS } from 'constants/misc';
+import { formatSymbol } from 'utils/token';
 
 export type TDepositModalProps = {};
 
@@ -38,13 +40,16 @@ export const DepositModal = forwardRef((_props: TDepositModalProps, ref) => {
     async (token) => {
       if (!token) return;
       setToken(token);
+      const receiveToken = token || 'USDT';
       ETransferConfig.setConfig({
         depositConfig: {
           ...ETRANSFER_DEPOSIT_CONFIG,
           defaultChainId: DEFAULT_CHAIN,
           defaultNetwork: ETRANSFER_DEPOSIT_DEFAULT_NETWORK,
           defaultDepositToken: 'USDT',
-          defaultReceiveToken: token || 'USDT',
+          supportDepositTokens: DEPOSIT_RECEIVE_SUPPORT_DEPOSIT_TOKENS[receiveToken],
+          defaultReceiveToken: receiveToken,
+          supportReceiveTokens: [receiveToken],
         },
       });
       setIsVisible(true);
@@ -68,7 +73,7 @@ export const DepositModal = forwardRef((_props: TDepositModalProps, ref) => {
       closable={!isMobile}
       centered={true}
       visible={isVisible}
-      title={`Deposit ${token}`}
+      title={`Deposit ${formatSymbol(token)}`}
       className={'deposit-modal'}
       onCancel={onCancel}>
       <div className="deposit-page">

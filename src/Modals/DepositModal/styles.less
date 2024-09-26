@@ -1,4 +1,6 @@
 .deposit-modal {
+  z-index: 299;
+
   .ant-modal-body,
   .ant-drawer-body {
     color: var(--ant-black-font-color-1);
@@ -23,6 +25,7 @@
       }
 
       &.etransfer-ui-selected-row-2 {
+        margin-top: 12px;
         .etransfer-ui-selected-chain-wrapper:last-child {
           display: none !important;
         }
@@ -43,4 +46,13 @@
 .pc-site-content .ant-modal-body {
   max-height: calc(100vh - 200px);
   overflow-y: auto;
+}
+
+
+.mobile-site-content {
+  .deposit-modal {
+    .etransfer-ui-deposit-select-token-chain {
+      display: none;
+    }
+  }
 }
