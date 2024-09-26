@@ -89,8 +89,9 @@ function MobileHeader() {
   const isDepositPath = useIsDepositPath();
   const depositTipModalRef = useRef<DepositTipModalInterface>();
   const onDepositClick = useCallback(() => {
+    if (isDepositPath) return;
     depositTipModalRef.current?.show();
-  }, []);
+  }, [isDepositPath]);
 
   return (
     <>
@@ -101,8 +102,12 @@ function MobileHeader() {
             'header-right': true,
             'header-right-logined': isConnected,
           })}>
-          {!isDepositPath && isConnected && (
-            <CommonButton className="signup-btn" type="primary" style={{ fontWeight: '600' }} onClick={onDepositClick}>
+          {isConnected && (
+            <CommonButton
+              className={clsx(['signup-btn', isDepositPath && 'deposit-menu-disable'])}
+              type="ghost"
+              style={{ fontWeight: '600' }}
+              onClick={onDepositClick}>
               {t('deposit')}
             </CommonButton>
           )}

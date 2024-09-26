@@ -1,4 +1,4 @@
-import { forwardRef, useCallback, useImperativeHandle, useState } from 'react';
+import { forwardRef, useCallback, useImperativeHandle, useRef, useState } from 'react';
 import CommonModal from 'components/CommonModal';
 import {
   ComponentStyle,
@@ -12,7 +12,6 @@ import { useMobile } from 'utils/isMobile';
 import '@etransfer/ui-react/dist/assets/index.css';
 import { ETRANSFER_DEPOSIT_CONFIG, ETRANSFER_DEPOSIT_DEFAULT_NETWORK } from 'config/etransferConfig';
 import { DEFAULT_CHAIN } from 'constants/index';
-import { useEffectOnce } from 'react-use';
 import { useETransferAuthToken } from 'hooks/useETransferAuthToken';
 import './styles.less';
 import 'pages/Deposit/styles.less';
@@ -36,6 +35,7 @@ export const DepositModal = forwardRef((_props: TDepositModalProps, ref) => {
     setToken('');
   }, []);
 
+  const latestShowTimeRef = useRef(0);
   const show = useCallback<DepositModalInterface['show']>(
     async (token) => {
       if (!token) return;
@@ -54,9 +54,12 @@ export const DepositModal = forwardRef((_props: TDepositModalProps, ref) => {
       });
       setIsVisible(true);
 
+      const latestShowTime = Date.now();
+      latestShowTimeRef.current = latestShowTime;
       try {
         await getAuthToken();
       } catch (error) {
+        if (latestShowTimeRef.current !== latestShowTime) return;
         onCancel();
       }
     },
