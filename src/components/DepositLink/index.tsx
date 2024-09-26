@@ -2,7 +2,9 @@ import { useTranslation } from 'react-i18next';
 import './styles.less';
 import clsx from 'clsx';
 import { useCallback, useRef } from 'react';
-import { DepositTipModal, DepositTipModalInterface } from 'Modals/DepositTipModal';
+
+import { useIsConnected } from 'hooks/useLogin';
+import { DepositModal, DepositModalInterface } from 'Modals/DepositModal';
 
 export type TDepositLinkProps = {
   className?: string;
@@ -10,18 +12,24 @@ export type TDepositLinkProps = {
 };
 export const DepositLink = ({ className, receiveToken }: TDepositLinkProps) => {
   const { t } = useTranslation();
+  const isConnected = useIsConnected();
 
-  const depositTipModalRef = useRef<DepositTipModalInterface>();
+  const depositModalRef = useRef<DepositModalInterface>();
+
   const onDepositClick = useCallback(() => {
-    depositTipModalRef.current?.show(receiveToken);
+    if (!receiveToken) return;
+    depositModalRef.current?.show(receiveToken);
   }, [receiveToken]);
+
+  if (!isConnected) return <></>;
 
   return (
     <div className={clsx(['deposit-link', className])}>
       {t('depositJumpDescription')}
       &nbsp;
       <a onClick={onDepositClick}>{t('depositJumpLink')}</a>
-      <DepositTipModal ref={depositTipModalRef} />
+      {/* <DepositTipModal ref={depositTipModalRef} /> */}
+      <DepositModal ref={depositModalRef} />
     </div>
   );
 };
