@@ -1,0 +1,46 @@
+.deposit-modal {
+  .ant-modal-body,
+  .ant-drawer-body {
+    color: var(--ant-black-font-color-1);
+  }
+  .ant-modal-header {
+    border-bottom: none;
+    .close-icon-btn {
+      right: 28px;
+    }
+  }
+  .ant-modal-body {
+    padding: 0 32px 24px;
+  }
+
+  .etransfer-ui-deposit-for-web {
+    .etransfer-ui-selected-data-wrapper {
+      .space {
+        display: none !important;
+      }
+      .etransfer-ui-selected-token-wrapper:last-child {
+        display: none !important;
+      }
+
+      &.etransfer-ui-selected-row-2 {
+        .etransfer-ui-selected-chain-wrapper:last-child {
+          display: none !important;
+        }
+      }
+    }
+
+    .etransfer-ui-arrow-right {
+      display: none !important;
+    }
+  }
+}
+
+.pc-site-content .deposit-modal .deposit-page {
+  min-height: auto;
+  padding-bottom: 0;
+}
+
+.pc-site-content .ant-modal-body {
+  max-height: calc(100vh - 200px);
+  overflow-y: auto;
+}

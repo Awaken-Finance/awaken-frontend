@@ -45,8 +45,8 @@ export { API_LIST, baseRequest, request };
 export function spliceUrl(baseUrl: string, extendArg?: string) {
   let base = '';
   if (REACT_APP_API_ENV) {
-    if (baseUrl.startsWith('/api/')) base = PROD_API[REACT_APP_API_ENV] || '';
-    if (baseUrl.startsWith('/items/')) base = PROD_CMS[REACT_APP_API_ENV] || PROD_CMS['prod'];
+    if (baseUrl.startsWith('/api/')) base = PROD_API[REACT_APP_API_ENV] || PROD_API['mainnet'];
+    if (baseUrl.startsWith('/items/')) base = PROD_CMS[REACT_APP_API_ENV] || PROD_CMS['mainnet'];
   }
   return base + (extendArg ? baseUrl + '/' + extendArg : baseUrl);
 }
