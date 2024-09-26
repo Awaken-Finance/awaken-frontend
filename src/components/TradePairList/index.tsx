@@ -44,7 +44,7 @@ export default function TradePairList({
 
   const { width } = useWindowSize();
 
-  const [{ dataSource, loading, total, pageInfo }, { getData = () => null }] = useSearchPairList(
+  const [{ dataSource: _dataSource, loading, total, pageInfo }, { getData = () => null }] = useSearchPairList(
     {
       page: 1,
     },
@@ -54,6 +54,8 @@ export default function TradePairList({
       scrollLoad: true,
     },
   );
+
+  const dataSource = useMemo(() => _dataSource?.sort((a, b) => b.tvl - a.tvl), [_dataSource]);
 
   const callback = useGoSwapPage();
 
