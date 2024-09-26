@@ -34,8 +34,10 @@ export const DepositTipModal = forwardRef((_props: TDepositTipModalProps, ref) =
     [history, receiveToken],
   );
 
+  const isDepositPath = useIsDepositPath();
   const show = useCallback<DepositTipModalInterface['show']>(
     async (token) => {
+      if (isDepositPath) return;
       // let isConfirmed = false;
       const isConfirmed = true;
 
@@ -51,7 +53,7 @@ export const DepositTipModal = forwardRef((_props: TDepositTipModalProps, ref) =
       setReceiveToken(token);
       setIsVisible(true);
     },
-    [goDeposit],
+    [goDeposit, isDepositPath],
   );
   useImperativeHandle(ref, () => ({ show }));
 
@@ -60,7 +62,6 @@ export const DepositTipModal = forwardRef((_props: TDepositTipModalProps, ref) =
     setReceiveToken(undefined);
   }, []);
 
-  const isDepositPath = useIsDepositPath();
   const onConfirmClick = useCallback(async () => {
     if (isDepositPath) {
       onCancel();
