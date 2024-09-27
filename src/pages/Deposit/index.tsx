@@ -176,15 +176,15 @@ export default () => {
                 {tab === DepositTabEnum.deposit ? (
                   <Deposit
                     componentStyle={isMobile ? ComponentStyle.Mobile : ComponentStyle.Web}
-                    isListenNoticeAuto={true}
-                    isShowProcessingTip={true}
+                    isListenNoticeAuto={false}
+                    isShowProcessingTip={false}
                     onActionChange={onDepositActionChange}
                   />
                 ) : (
                   <Withdraw
                     componentStyle={isMobile ? ComponentStyle.Mobile : ComponentStyle.Web}
-                    isListenNoticeAuto={true}
-                    isShowProcessingTip={true}
+                    isListenNoticeAuto={false}
+                    isShowProcessingTip={false}
                     onActionChange={onWithdrawActionChange}
                   />
                 )}
