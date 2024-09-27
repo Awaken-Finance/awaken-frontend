@@ -122,8 +122,8 @@ export const DepositModal = forwardRef((_props: TDepositModalProps, ref) => {
               <ETransferDepositProvider>
                 <Deposit
                   componentStyle={isMobile ? ComponentStyle.Mobile : ComponentStyle.Web}
-                  isListenNoticeAuto={true}
-                  isShowProcessingTip={true}
+                  isListenNoticeAuto={false}
+                  isShowProcessingTip={false}
                 />
               </ETransferDepositProvider>
             </ETransferLayoutProvider>
