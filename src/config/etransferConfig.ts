@@ -5,6 +5,7 @@ const API_ENV = process.env.REACT_APP_API_ENV;
 let networkType: ETransferConfigProps['networkType'] = 'MAINNET',
   etransferUrl: ETransferConfigProps['etransferUrl'] = 'https://app.etransfer.exchange',
   etransferAuthUrl: ETransferConfigProps['etransferAuthUrl'] = 'https://app.etransfer.exchange',
+  etransferSocketUrl: ETransferConfigProps['etransferSocketUrl'] = 'https://app.etransfer.exchange',
   etransferDepositConfig: ETransferConfigProps['depositConfig'] = {
     supportChainIds: ['tDVV'],
     defaultChainId: 'tDVV',
@@ -13,7 +14,11 @@ let networkType: ETransferConfigProps['networkType'] = 'MAINNET',
     supportChainIds: ['tDVV'],
     defaultChainId: 'tDVV',
   },
-  depositDefaultNetwork = 'TRX';
+  depositDefaultNetwork = 'TRX',
+  depositDefaultNetworkMap: Record<string, string> = {
+    ELF: 'BSC',
+    'SGR-1': 'ETH',
+  };
 
 switch (API_ENV) {
   case 'preview':
@@ -22,6 +27,7 @@ switch (API_ENV) {
     networkType = 'TESTNET';
     etransferUrl = 'https://test-app.etransfer.exchange';
     etransferAuthUrl = 'https://test-app.etransfer.exchange';
+    etransferSocketUrl = 'https://test-app.etransfer.exchange';
     etransferDepositConfig = {
       supportChainIds: ['tDVW'],
       defaultChainId: 'tDVW',
@@ -31,6 +37,10 @@ switch (API_ENV) {
       defaultChainId: 'tDVW',
     };
     depositDefaultNetwork = 'SETH';
+    depositDefaultNetworkMap = {
+      ELF: 'TBSC',
+      'SGR-1': 'SETH',
+    };
     break;
 }
 
@@ -38,6 +48,7 @@ export const etransferConfig: Partial<ETransferConfigProps> = {
   networkType,
   etransferUrl,
   etransferAuthUrl,
+  etransferSocketUrl,
   // depositConfig,
   // withdrawConfig,
 };
@@ -45,3 +56,4 @@ export const etransferConfig: Partial<ETransferConfigProps> = {
 export const ETRANSFER_DEPOSIT_CONFIG = etransferDepositConfig;
 export const ETRANSFER_WITHDRAW_CONFIG = etransferWithdrawConfig;
 export const ETRANSFER_DEPOSIT_DEFAULT_NETWORK = depositDefaultNetwork;
+export const ETRANSFER_DEPOSIT_DEFAULT_NETWORK_MAP = depositDefaultNetworkMap;

@@ -217,7 +217,7 @@ export const LimitConfirmModal = forwardRef(({ onSuccess }: TLimitConfirmModalPr
   return (
     <CommonModal
       width="420px"
-      height={isMobile ? '100vh' : '522px'}
+      height={isMobile ? '100%' : '522px'}
       showType={isMobile ? 'drawer' : 'modal'}
       showBackIcon={false}
       closable={true}

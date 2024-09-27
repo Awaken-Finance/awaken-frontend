@@ -37,9 +37,9 @@ import { getLimitOrderPrice } from 'utils/limit';
 import PriceDigits from 'components/PriceDigits';
 import { formatSymbol } from 'utils/token';
 import { LimitOrderStatusMap } from 'constants/limit';
-import { DEPOSIT_TIP_MODAL_CONFIRMED, DepositTipModal, DepositTipModalInterface } from 'Modals/DepositTipModal';
-import { useIsDepositPath } from 'hooks/route';
-import { ETransferConfig, WalletTypeEnum, etransferCore } from '@etransfer/ui-react';
+import { DEPOSIT_TIP_MODAL_CONFIRMED } from 'Modals/DepositTipModal';
+
+import { ETransferConfig, WalletTypeEnum, etransferCore, unsubscribeUserOrderRecord } from '@etransfer/ui-react';
 
 const MENU_LIST = [
   {
@@ -87,10 +87,12 @@ function AccountModal() {
   }, [dispatch]);
 
   const onClickLogout = async () => {
+    const address = walletInfo?.address || '';
     dispatch(basicModalView.setAccountModal.actions(false));
     try {
       await disConnectWallet();
       myEvents.DisconnectWallet.emit();
+      unsubscribeUserOrderRecord(address);
       ETransferConfig.setConfig({
         accountInfo: {
           accounts: {},
@@ -356,13 +358,6 @@ function AccountModal() {
     );
   }, [onTransactionsViewAll, t, userTxList]);
 
-  const isDepositPath = useIsDepositPath();
-  const depositTipModalRef = useRef<DepositTipModalInterface>();
-  const onDepositClick = useCallback(() => {
-    depositTipModalRef.current?.show();
-    onClose();
-  }, [onClose]);
-
   return (
     <>
       <Modal
@@ -386,16 +381,6 @@ function AccountModal() {
                 className={getFontStyle({ lineHeight: 48, size: 40, color: 'one', weight: 'medium' })}
                 price={userCombinedAssets?.valueInUsd ?? 0}
               />
-
-              {!isDepositPath && (
-                <CommonButton
-                  className="deposit-btn"
-                  style={{ fontWeight: '600' }}
-                  type="ghost"
-                  onClick={onDepositClick}>
-                  {t('deposit')}
-                </CommonButton>
-              )}
             </div>
 
             <div className="account-modal-menu-header">
@@ -420,7 +405,6 @@ function AccountModal() {
           </div>
         </Carousel>
       </Modal>
-      <DepositTipModal ref={depositTipModalRef} />
     </>
   );
 }
