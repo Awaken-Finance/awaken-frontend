@@ -31,6 +31,7 @@ export function useGetAccount() {
     if (!isLogin) return undefined;
 
     const accounts: TAelfAccounts = {
+      AELF: 'ELF_' + walletInfo?.address + '_' + 'AELF',
       [DEFAULT_CHAIN]: 'ELF_' + walletInfo?.address + '_' + DEFAULT_CHAIN,
     };
 

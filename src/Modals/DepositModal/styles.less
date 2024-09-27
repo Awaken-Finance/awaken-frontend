@@ -38,28 +38,39 @@
   }
 }
 
-.pc-site-content .deposit-modal .deposit-page {
-  min-height: 550px;
-  padding-bottom: 0;
+.pc-site-content .deposit-modal {
+  .deposit-page {
+    min-height: 550px;
+    padding-bottom: 0;
 
-  .deposit-modal-history-btn {
-    position: absolute;
-    right: 28px;
-    span {
-      line-height: 24px;
+    .etransfer-ui-common-warning-tip {
+      margin-top: 6px;
+    }
+
+    .deposit-modal-history-btn {
+      position: absolute;
+      right: 28px;
+      // top: 72px;
+      // justify-content: end;
+      span {
+        line-height: 24px;
+      }
     }
   }
-}
 
-.pc-site-content .ant-modal-body {
-  max-height: calc(100vh - 200px);
-  overflow-y: auto;
+  .ant-modal-body {
+    max-height: calc(100vh - 200px);
+    overflow-y: auto;
+  }
 }
 
 .mobile-site-content {
   .deposit-modal {
     .etransfer-ui-deposit-select-token-chain {
       display: none;
+    }
+    .ant-drawer-content-wrapper {
+      // top: 0;
     }
   }
 
@@ -68,7 +79,7 @@
     right: 14px;
     top: 50%;
     transform: translateY(-50%);
-    
+
     span {
       line-height: 24px;
     }

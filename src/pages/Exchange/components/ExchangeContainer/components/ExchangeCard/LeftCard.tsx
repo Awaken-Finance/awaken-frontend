@@ -73,6 +73,10 @@ export default function LeftCard({ tokenA, tokenB, balances, reserves, rate, get
     () => divDecimals(reserves?.[getCurrencyAddress(tokenA)], tokenA?.decimals),
     [reserves, tokenA],
   );
+  const minimumMaxReserveAmount = useMemo(
+    () => minimumAmountOut(maxReserveAmount, userSlippageTolerance),
+    [maxReserveAmount, userSlippageTolerance],
+  );
 
   const maxAmount = useMemo(() => {
     const maxBalanceAmount = getAmountOut(
@@ -166,7 +170,7 @@ export default function LeftCard({ tokenA, tokenB, balances, reserves, rate, get
 
         const totalValue = getAmountByInput(
           rate,
-          BigNumber.min(realVal, maxReserveAmount),
+          BigNumber.min(realVal, minimumMaxReserveAmount),
           divDecimals(reserves?.[getCurrencyAddress(tokenA)], tokenA?.decimals),
           divDecimals(reserves?.[getCurrencyAddress(tokenB)], tokenB?.decimals),
         );
@@ -176,7 +180,7 @@ export default function LeftCard({ tokenA, tokenB, balances, reserves, rate, get
       setAmount(val);
       setProgressValue(0);
     },
-    [maxReserveAmount, rate, reserves, tokenA, tokenB],
+    [minimumMaxReserveAmount, rate, reserves, tokenA, tokenB],
   );
 
   const inputTotal = useCallback(

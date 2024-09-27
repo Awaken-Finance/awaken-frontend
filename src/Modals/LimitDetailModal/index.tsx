@@ -105,7 +105,7 @@ export const LimitDetailModal = forwardRef((_: TLimitDetailModalProps, ref) => {
   return (
     <CommonModal
       width="1104px"
-      height={isMobile ? '100vh' : '240px'}
+      height={isMobile ? '100%' : '240px'}
       showType={isMobile ? 'drawer' : 'modal'}
       showBackIcon={isMobile}
       closable={!isMobile}
