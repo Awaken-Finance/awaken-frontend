@@ -10,13 +10,19 @@ import {
 } from '@etransfer/ui-react';
 import { useMobile } from 'utils/isMobile';
 import '@etransfer/ui-react/dist/assets/index.css';
-import { ETRANSFER_DEPOSIT_CONFIG, ETRANSFER_DEPOSIT_DEFAULT_NETWORK } from 'config/etransferConfig';
+import {
+  ETRANSFER_DEPOSIT_CONFIG,
+  ETRANSFER_DEPOSIT_DEFAULT_NETWORK,
+  ETRANSFER_DEPOSIT_DEFAULT_NETWORK_MAP,
+} from 'config/etransferConfig';
 import { DEFAULT_CHAIN } from 'constants/index';
 import { useETransferAuthToken } from 'hooks/useETransferAuthToken';
 import './styles.less';
 import 'pages/Deposit/styles.less';
 import { DEPOSIT_RECEIVE_SUPPORT_DEPOSIT_TOKENS } from 'constants/misc';
 import { formatSymbol } from 'utils/token';
+import CommonLink from 'components/CommonLink';
+import { useHistory } from 'react-router-dom';
 
 export type TDepositModalProps = {};
 
@@ -45,8 +51,8 @@ export const DepositModal = forwardRef((_props: TDepositModalProps, ref) => {
         depositConfig: {
           ...ETRANSFER_DEPOSIT_CONFIG,
           defaultChainId: DEFAULT_CHAIN,
-          defaultNetwork: ETRANSFER_DEPOSIT_DEFAULT_NETWORK,
-          defaultDepositToken: 'USDT',
+          defaultNetwork: ETRANSFER_DEPOSIT_DEFAULT_NETWORK_MAP[receiveToken] || ETRANSFER_DEPOSIT_DEFAULT_NETWORK,
+          defaultDepositToken: DEPOSIT_RECEIVE_SUPPORT_DEPOSIT_TOKENS[receiveToken][0],
           supportDepositTokens: DEPOSIT_RECEIVE_SUPPORT_DEPOSIT_TOKENS[receiveToken],
           defaultReceiveToken: receiveToken,
           supportReceiveTokens: [receiveToken],
@@ -67,27 +73,57 @@ export const DepositModal = forwardRef((_props: TDepositModalProps, ref) => {
   );
   useImperativeHandle(ref, () => ({ show }));
 
+  const historyRouter = useHistory();
+  const onHistoryClick = useCallback(() => {
+    historyRouter.push('/deposit-history');
+  }, [historyRouter]);
+
   return (
     <CommonModal
       width="640px"
-      height={isMobile ? '100vh' : '240px'}
+      height={isMobile ? '100%' : '240px'}
       showType={isMobile ? 'drawer' : 'modal'}
       showBackIcon={isMobile}
       closable={!isMobile}
       centered={true}
       visible={isVisible}
-      title={`Deposit ${formatSymbol(token)}`}
+      title={`Receive ${formatSymbol(token)}`}
+      extra={
+        isMobile && (
+          <CommonLink
+            className="deposit-modal-history-btn"
+            size={14}
+            lineHeight={22}
+            color="two"
+            iconProps={{ color: 'two' }}
+            onClick={onHistoryClick}>
+            {'History'}
+          </CommonLink>
+        )
+      }
       className={'deposit-modal'}
       onCancel={onCancel}>
       <div className="deposit-page">
+        {!isMobile && (
+          <CommonLink
+            className="deposit-modal-history-btn"
+            size={14}
+            lineHeight={22}
+            color="two"
+            iconProps={{ color: 'two' }}
+            onClick={onHistoryClick}>
+            {'History'}
+          </CommonLink>
+        )}
+
         {isVisible && (
           <ETransferStyleProvider>
             <ETransferLayoutProvider>
               <ETransferDepositProvider>
                 <Deposit
                   componentStyle={isMobile ? ComponentStyle.Mobile : ComponentStyle.Web}
-                  isListenNoticeAuto={false}
-                  isShowProcessingTip={false}
+                  isListenNoticeAuto={true}
+                  isShowProcessingTip={true}
                 />
               </ETransferDepositProvider>
             </ETransferLayoutProvider>

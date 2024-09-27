@@ -168,7 +168,7 @@ export default function RightCard({ tokenA, tokenB, balances, reserves, rate, ge
           .dp(tokenA?.decimals || 0);
         const amountValue = getAmountByInput(
           rate,
-          BigNumber.min(new BigNumber(realVal), maxReserveTotal),
+          BigNumber.min(realVal, maxReserveTotal),
           divDecimals(reserves?.[getCurrencyAddress(tokenB)], tokenB?.decimals),
           divDecimals(reserves?.[getCurrencyAddress(tokenA)], tokenA?.decimals),
         );

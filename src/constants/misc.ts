@@ -61,8 +61,8 @@ export const DEPOSIT_RECEIVE_TOKEN_MAP: Record<string, boolean> = {
 };
 
 export const DEPOSIT_RECEIVE_SUPPORT_DEPOSIT_TOKENS: Record<string, string[]> = {
-  ELF: ['USDT'],
+  ELF: ['ELF', 'USDT'],
   USDT: ['USDT'],
-  'SGR-1': ['USDT'],
+  'SGR-1': ['SGR-1', 'USDT'],
   ACORNS: ['USDT'],
 };
