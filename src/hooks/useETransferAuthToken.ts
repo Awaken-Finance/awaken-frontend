@@ -147,21 +147,7 @@ ${Date.now()}`;
     async ({ managerAddress, caHash, jwt, isDeposit = true }: TSetETransferConfigParams) => {
       if (!accounts) return;
 
-      if (isDeposit) {
-        await sleep(100);
-        ETransferConfig.setConfig({
-          accountInfo: {
-            accounts: accounts,
-            walletType: walletType,
-          },
-          authorization: {
-            jwt,
-          },
-        });
-
-        return;
-      }
-
+      await sleep(100);
       const ownerAddress = walletInfo?.address || '';
 
       ETransferConfig.setConfig({
