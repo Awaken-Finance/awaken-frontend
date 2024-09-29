@@ -12,6 +12,7 @@ import { APP_NAME } from 'config/webLoginConfig';
 import { TWalletType } from '@etransfer/types';
 import { useGetAccount } from './wallet';
 import { getETransferUserInfo } from 'utils/etransfer';
+import { sleep } from 'utils';
 
 export type TSetETransferConfigParams = {
   managerAddress: string;
@@ -143,21 +144,10 @@ ${Date.now()}`;
   );
 
   const setETransferConfig = useCallback(
-    ({ managerAddress, caHash, jwt, isDeposit = true }: TSetETransferConfigParams) => {
+    async ({ managerAddress, caHash, jwt, isDeposit = true }: TSetETransferConfigParams) => {
       if (!accounts) return;
-      if (isDeposit) {
-        ETransferConfig.setConfig({
-          authorization: {
-            jwt,
-          },
-          accountInfo: {
-            accounts: accounts,
-            walletType: walletType,
-          },
-        });
-        return;
-      }
 
+      await sleep(100);
       const ownerAddress = walletInfo?.address || '';
 
       ETransferConfig.setConfig({
@@ -204,7 +194,7 @@ ${Date.now()}`;
           managerAddress: managerAddress,
         });
         if (storageJwt) {
-          setETransferConfigRef.current({
+          await setETransferConfigRef.current({
             caHash,
             managerAddress,
             jwt: storageJwt,
@@ -227,7 +217,7 @@ ${Date.now()}`;
           recaptchaToken: walletType === WalletTypeEnum.elf ? recaptchaToken : undefined,
         });
 
-        setETransferConfigRef.current({
+        await setETransferConfigRef.current({
           caHash,
           managerAddress,
           jwt,

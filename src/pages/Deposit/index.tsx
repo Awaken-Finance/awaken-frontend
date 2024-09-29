@@ -1,18 +1,17 @@
 import {
-  ComponentStyle,
-  Deposit,
   ETransferConfig,
   ETransferDepositProvider,
   ETransferLayoutProvider,
   ETransferStyleProvider,
   ETransferWithdrawProvider,
-  Withdraw,
+  WalletTypeEnum,
+  unsubscribeUserOrderRecord,
 } from '@etransfer/ui-react';
 import '@etransfer/ui-react/dist/assets/index.css';
 import { CommonPanelPage } from 'components/CommonPanelPage';
 import { useETransferAuthToken } from 'hooks/useETransferAuthToken';
 
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import './styles.less';
 import clsx from 'clsx';
 import { useHistory, useRouteMatch } from 'react-router-dom';
@@ -30,6 +29,8 @@ import {
   ETRANSFER_WITHDRAW_CONFIG,
 } from 'config/etransferConfig';
 import { TWithdrawActionData } from '@etransfer/ui-react/dist/_types/src/components/Withdraw/types';
+import { ETransferContentBody } from './components/ETransferContentBody';
+import { useConnectWallet } from '@aelf-web-login/wallet-adapter-react';
 
 enum DepositTabEnum {
   deposit = 1,
@@ -72,6 +73,21 @@ export default () => {
     [routeTab],
   );
 
+  const { walletInfo } = useConnectWallet();
+  useEffect(() => {
+    const address = walletInfo?.address || '';
+    return () => {
+      if (!address) return;
+      unsubscribeUserOrderRecord(address);
+      ETransferConfig.setConfig({
+        accountInfo: {
+          accounts: {},
+          walletType: WalletTypeEnum.unknown,
+        },
+      });
+    };
+  }, [walletInfo?.address]);
+
   const init = useCallback(async () => {
     try {
       const url = window.location.href;
@@ -88,9 +104,21 @@ export default () => {
             defaultDepositToken: query.depositToken || 'USDT',
             defaultReceiveToken: query.receiveToken || 'USDT',
           },
+          withdrawConfig: {
+            ...ETRANSFER_WITHDRAW_CONFIG,
+            defaultChainId: DEFAULT_CHAIN,
+            defaultToken: 'USDT',
+          },
         });
       } else {
         ETransferConfig.setConfig({
+          depositConfig: {
+            ...ETRANSFER_DEPOSIT_CONFIG,
+            defaultChainId: DEFAULT_CHAIN,
+            defaultNetwork: ETRANSFER_DEPOSIT_DEFAULT_NETWORK,
+            defaultDepositToken: 'USDT',
+            defaultReceiveToken: 'USDT',
+          },
           withdrawConfig: {
             ...ETRANSFER_WITHDRAW_CONFIG,
             defaultChainId: query.chainId || DEFAULT_CHAIN,
@@ -100,15 +128,17 @@ export default () => {
         });
       }
       setIsConfigInit(true);
+
       await getAuthToken(isDeposit);
     } catch (error) {
       historyRouter.replace('/');
     }
   }, [getAuthToken, historyRouter, tab]);
+  const initRef = useRef(init);
+  initRef.current = init;
 
   useEffectOnce(() => {
-    console.log('effect init');
-    init();
+    initRef.current();
   });
 
   const onHistoryClick = useCallback(() => {
@@ -173,21 +203,11 @@ export default () => {
           <ETransferLayoutProvider>
             <ETransferDepositProvider>
               <ETransferWithdrawProvider>
-                {tab === DepositTabEnum.deposit ? (
-                  <Deposit
-                    componentStyle={isMobile ? ComponentStyle.Mobile : ComponentStyle.Web}
-                    isListenNoticeAuto={false}
-                    isShowProcessingTip={false}
-                    onActionChange={onDepositActionChange}
-                  />
-                ) : (
-                  <Withdraw
-                    componentStyle={isMobile ? ComponentStyle.Mobile : ComponentStyle.Web}
-                    isListenNoticeAuto={false}
-                    isShowProcessingTip={false}
-                    onActionChange={onWithdrawActionChange}
-                  />
-                )}
+                <ETransferContentBody
+                  isDeposit={tab === DepositTabEnum.deposit}
+                  onDepositActionChange={onDepositActionChange}
+                  onWithdrawActionChange={onWithdrawActionChange}
+                />
               </ETransferWithdrawProvider>
             </ETransferDepositProvider>
           </ETransferLayoutProvider>

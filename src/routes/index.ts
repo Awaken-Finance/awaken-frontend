@@ -95,12 +95,7 @@ const routes: RoutesProps[] = [
     authComp: AuthComp,
   },
   {
-    path: '/deposit',
-    component: Deposit,
-    authComp: AuthComp,
-  },
-  {
-    path: '/withdraw',
+    path: ['/deposit', '/withdraw'],
     component: Deposit,
     authComp: AuthComp,
   },

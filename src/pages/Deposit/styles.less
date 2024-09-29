@@ -18,6 +18,28 @@
     color: var(--etransfer-ui-secondary-text);
   }
 
+  .etransfer-ui-withdraw .etransfer-ui-withdraw-processing-tip {
+    padding: 0 !important;
+  }
+
+  @media (max-width: 1024px) {
+    .etransfer-ui-withdraw-remaining-limit {
+      margin-top: 0;
+    }
+    .etransfer-ui-withdraw-select-chain {
+      justify-content: flex-start;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .etransfer-ui-withdraw-remaining-limit {
+      margin-top: 48px;
+    }
+    .etransfer-ui-withdraw-select-chain {
+      justify-content: center;
+    }
+  }
+
   .etransfer-ui-copy-icon-wrapper-background-color:hover {
     svg {
       path {

@@ -3,7 +3,7 @@ import type { ContractInterface } from 'utils/contract';
 export type IContract = ContractInterface | ContractBasic | null | undefined;
 
 interface RoutesProps {
-  path: string;
+  path: string | string[];
   exact?: boolean;
   strict?: boolean;
   component: any;
