@@ -7,6 +7,8 @@ import {
   ETransferDepositProvider,
   ETransferLayoutProvider,
   ETransferStyleProvider,
+  unsubscribeUserOrderRecord,
+  WalletTypeEnum,
 } from '@etransfer/ui-react';
 import { useMobile } from 'utils/isMobile';
 import '@etransfer/ui-react/dist/assets/index.css';
@@ -23,6 +25,7 @@ import { DEPOSIT_RECEIVE_SUPPORT_DEPOSIT_TOKENS } from 'constants/misc';
 import { formatSymbol } from 'utils/token';
 import CommonLink from 'components/CommonLink';
 import { useHistory } from 'react-router-dom';
+import { useConnectWallet } from '@aelf-web-login/wallet-adapter-react';
 
 export type TDepositModalProps = {};
 
@@ -36,10 +39,24 @@ export const DepositModal = forwardRef((_props: TDepositModalProps, ref) => {
   const { getAuthToken } = useETransferAuthToken();
   const [token, setToken] = useState('');
 
+  const { walletInfo } = useConnectWallet();
+  const reset = useCallback(() => {
+    const address = walletInfo?.address || '';
+    if (!address) return;
+    unsubscribeUserOrderRecord(address);
+    ETransferConfig.setConfig({
+      accountInfo: {
+        accounts: {},
+        walletType: WalletTypeEnum.unknown,
+      },
+    });
+  }, [walletInfo?.address]);
+
   const onCancel = useCallback(() => {
     setIsVisible(false);
     setToken('');
-  }, []);
+    reset();
+  }, [reset]);
 
   const latestShowTimeRef = useRef(0);
   const show = useCallback<DepositModalInterface['show']>(
