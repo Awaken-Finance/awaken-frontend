@@ -46,7 +46,7 @@ export function UserCenter({ url }: { url: string }) {
           <Layout.Sider trigger={null} theme={'light'} className="site-layout-nav">
             <Menu mode="inline" selectedKeys={[defaultKeys]} inlineIndent={20}>
               {routeMap.map((route) => (
-                <Menu.Item className="site-layout-nav-item-pc" key={route.path}>
+                <Menu.Item className="site-layout-nav-item-pc" key={route.path as string}>
                   <NavLink to={url + (route.path.slice(1) ? route.path : '')} style={{ textTransform: 'capitalize' }}>
                     {t(route.menuItem || route.path.slice(1))}
                   </NavLink>
