@@ -36,7 +36,7 @@ export function UserCenter({ url }: { url: string }) {
           <Layout.Header className="site-layout-nav-mobile">
             <Menu mode="horizontal" selectedKeys={[defaultKeys]} className="menu-headers" overflowedIndicator={<></>}>
               {routeMap.map((route) => (
-                <Menu.Item key={route.path} onClick={() => history.push(`/user-center${route.path}`)}>
+                <Menu.Item key={route.path as string} onClick={() => history.push(`/user-center${route.path}`)}>
                   {t(route.menuItem || route.path.slice(1))}
                 </Menu.Item>
               ))}
@@ -61,7 +61,12 @@ export function UserCenter({ url }: { url: string }) {
               <Updater />
               {routeMap.map((route) => {
                 return (
-                  <Route key={route.path} path={url + route.path} exact={!!route.exact} component={route.component} />
+                  <Route
+                    key={route.path as string}
+                    path={url + route.path}
+                    exact={!!route.exact}
+                    component={route.component}
+                  />
                 );
               })}
             </UserCenterProvider>

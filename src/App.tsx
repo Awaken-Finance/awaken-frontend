@@ -35,7 +35,7 @@ export default function App() {
                   const Comp: any = route.authComp || Route;
                   return (
                     <Comp
-                      key={route.path}
+                      key={typeof route.path === 'string' ? route.path : route.path.join('_')}
                       path={route.path}
                       exact={!!route.exact}
                       component={route.component}
