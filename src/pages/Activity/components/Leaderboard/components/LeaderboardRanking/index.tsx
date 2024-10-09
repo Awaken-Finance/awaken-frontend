@@ -21,7 +21,10 @@ export const LeaderboardRanking = ({ activity, status }: TLeaderboardCountdownPr
   const [myRankingInfo, setMyRankingInfo] = useState<TLeaderboardRankingMine>();
   const initMyRankingInfo = useCallback(async () => {
     const address = walletInfo?.address;
-    if (!address) return;
+    if (!address) {
+      setMyRankingInfo(undefined);
+      return;
+    }
     try {
       const result = await getActivityMyRanking({
         activityId: activity.id,

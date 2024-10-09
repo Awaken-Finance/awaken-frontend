@@ -122,8 +122,15 @@ export const LeaderboardEntryJoin = ({ activity, className }: TLeaderboardEntryC
   const onClick = useCallback(async () => {
     if (isJoined) return history.push(`/activity/${activity.id}`);
     setIsLoading(true);
+    let signResult: { plainText: string; signature: string; pubkey: string };
     try {
-      const signResult = await getActivitySign(activity.info.signPlainText);
+      signResult = await getActivitySign(activity.info.signPlainText);
+    } catch (error) {
+      setIsLoading(false);
+      return;
+    }
+
+    try {
       await setActivityJoin({
         message: signResult.plainText,
         signature: signResult.signature,
