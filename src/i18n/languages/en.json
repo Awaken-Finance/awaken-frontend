@@ -712,6 +712,14 @@
     "depositJumpDescription": "Insufficient balance? You can",
     "depositJumpLink": "deposit across chains.",
 
-    "🔥 Event": "🔥 Event"
+    "🔥 Event": "🔥 Event",
+    "Day": "Day",
+    "Hours": "Hours",
+    "Minutes": "Minutes",
+    "Seconds": "Seconds",
+    "DayAbbr": "D",
+    "HoursAbbr": "H",
+    "MinutesAbbr": "M",
+    "SecondsAbbr": "S"
   }
 }

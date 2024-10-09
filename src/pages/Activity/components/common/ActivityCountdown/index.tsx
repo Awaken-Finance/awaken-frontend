@@ -3,6 +3,7 @@ import moment from 'moment';
 import './styles.less';
 import clsx from 'clsx';
 import { padWithZero } from 'utils/format';
+import { useTranslation } from 'react-i18next';
 
 export type TActivityCountdownProps = {
   endTime: number | string;
@@ -24,6 +25,7 @@ const INIT_ACTIVITY_COUNTDOWN_INFO: TActivityCountdownInfo = {
 };
 
 export const ActivityCountdown = ({ endTime, isRow = false }: TActivityCountdownProps) => {
+  const { t } = useTranslation();
   const [info, setInfo] = useState<TActivityCountdownInfo>({
     ...INIT_ACTIVITY_COUNTDOWN_INFO,
   });
@@ -62,19 +64,19 @@ export const ActivityCountdown = ({ endTime, isRow = false }: TActivityCountdown
     <div className={clsx(['activity-countdown', isRow && 'activity-countdown-row'])}>
       <div className="activity-countdown-box">
         <div className="activity-countdown-box-content">{info.days}</div>
-        <div className="activity-countdown-box-title">{isRow ? 'D' : 'Day'}</div>
+        <div className="activity-countdown-box-title">{t(isRow ? 'DayAbbr' : 'Day')}</div>
       </div>
       <div className="activity-countdown-box">
         <div className="activity-countdown-box-content">{info.hours}</div>
-        <div className="activity-countdown-box-title">{isRow ? 'H' : 'Hours'}</div>
+        <div className="activity-countdown-box-title">{t(isRow ? 'HoursAbbr' : 'Hours')}</div>
       </div>
       <div className="activity-countdown-box">
         <div className="activity-countdown-box-content">{info.minutes}</div>
-        <div className="activity-countdown-box-title">{isRow ? 'M' : 'Minutes'}</div>
+        <div className="activity-countdown-box-title">{t(isRow ? 'MinutesAbbr' : 'Minutes')}</div>
       </div>
       <div className="activity-countdown-box">
         <div className="activity-countdown-box-content">{info.seconds}</div>
-        <div className="activity-countdown-box-title">{isRow ? 'S' : 'Seconds'}</div>
+        <div className="activity-countdown-box-title">{t(isRow ? 'SecondsAbbr' : 'Seconds')}</div>
       </div>
     </div>
   );
