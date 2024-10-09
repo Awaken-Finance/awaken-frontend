@@ -24,11 +24,9 @@ import { DepositTipModal, DepositTipModalInterface } from 'Modals/DepositTipModa
 import { useIsDepositPath } from 'hooks/route';
 
 function PcHeader() {
-  const { selectedKeys } = useSelectedKeys();
   const { walletInfo, isLocking } = useConnectWallet();
   const isConnected = useIsConnected();
   const { chainId } = useChainId();
-  const pathname = useLocation().pathname;
   const { t } = useTranslation();
   const depositTipModalRef = useRef<DepositTipModalInterface>();
 
@@ -47,15 +45,6 @@ function PcHeader() {
     if (isDepositPath) return;
     depositTipModalRef.current?.show();
   }, [isDepositPath]);
-
-  const isOpacity = useMemo(() => {
-    return !(
-      pathname.includes('/user-center') ||
-      selectedKeys[0] === 'overview' ||
-      selectedKeys[0] === 'transaction' ||
-      selectedKeys[0] === 'unMatched'
-    );
-  }, [selectedKeys, pathname]);
 
   const displayAddress = useMemo(() => {
     if (!walletInfo?.address) return '';
@@ -102,7 +91,7 @@ function PcHeader() {
   };
 
   return (
-    <Layout.Header className={clsx('site-header', isOpacity && 'opacity-header')}>
+    <Layout.Header className={'site-header'}>
       <Row align="middle" gutter={[20, 0]}>
         <Col>
           <NavLink to={'/'}>

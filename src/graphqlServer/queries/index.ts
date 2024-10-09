@@ -34,3 +34,13 @@ export const PAIR_RESERVE_QUERY = gql`
     }
   }
 `;
+
+export const CMS_FILE_FRAGMENT = gql`
+  fragment cmsFileFields on directus_files {
+    filename_disk
+  }
+`;
+
+export type TCmsFile = {
+  filename_disk: string;
+};

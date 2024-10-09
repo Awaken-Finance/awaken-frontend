@@ -1,0 +1,60 @@
+.leaderboard-progress-wrap {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  overflow: hidden;
+  padding-bottom: 76px;
+
+  .leaderboard-progress-line {
+    height: 12px;
+    flex: 1;
+    background-color: #2a2e3a;
+    position: relative;
+
+    .leaderboard-progress-line-fill {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      background: linear-gradient(90deg, #b76fff -14.55%, #44c1ff 44.91%, #53fff6 100%);
+
+      .leaderboard-progress-tooltip {
+        position: absolute;
+        right: -1px;
+        top: 12px;
+
+        .ant-tooltip-inner {
+          background: linear-gradient(90deg, #b76fff -14.55%, #44c1ff 44.91%, #53fff6 100%);
+          border-radius: 8px;
+          padding: 8px 12px;
+        }
+        .leaderboard-progress-tooltip-content {
+          color: #101217;
+
+          .leaderboard-progress-tooltip-content-top {
+            font-size: 16px;
+            font-weight: 600;
+            line-height: 24px;
+            text-align: center;
+          }
+          .leaderboard-progress-tooltip-content-bottom {
+            font-size: 14px;
+            font-weight: 400;
+            line-height: 20px;
+            text-align: center;
+          }
+        }
+      }
+    }
+  }
+  .leaderboard-progress-end {
+    width: 4px;
+    height: 20px;
+    background-color: #2a2e3a;
+
+    &.leaderboard-progress-end-full {
+      background-color: #53fff6;
+    }
+  }
+}

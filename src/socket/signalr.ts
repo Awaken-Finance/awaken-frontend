@@ -17,6 +17,8 @@ const receiveEvent: string[] = [
   'ReceiveTradePairDetail',
 
   'ReceiveTradePair',
+
+  'ReceiveActivityRankingList',
 ];
 
 export default class Signalr {
@@ -261,6 +263,30 @@ export default class Signalr {
       await this.signalr?.invoke('UnsubscribeTradePairDetail', tradePairId);
     } catch (error) {
       console.log(error, 'UnsubscribeTradePairDetail');
+    }
+  }
+
+  async RequestActivityRankingList(activityId?: number) {
+    if (!this.signalr || !activityId) {
+      return;
+    }
+
+    try {
+      await this.signalr?.invoke('RequestActivityRankingList', activityId);
+    } catch (error) {
+      console.log(error, 'RequestActivityRankingList');
+    }
+  }
+
+  async UnsubscribeActivityRankingList(activityId?: number) {
+    if (!this.signalr || !activityId) {
+      return;
+    }
+
+    try {
+      await this.signalr?.invoke('UnsubscribeActivityRankingList', activityId);
+    } catch (error) {
+      console.log(error, 'UnsubscribeActivityRankingList');
     }
   }
 }

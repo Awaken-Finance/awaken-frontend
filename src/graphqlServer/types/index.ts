@@ -1,5 +1,7 @@
 import { ApolloQueryResult } from '@apollo/client';
 import { TGraphQLClient } from './common';
+import { TQueryActivity } from 'graphqlServer/queries/activity';
+import { TActivityBase } from 'graphqlServer/queries/activity/common';
 export * from './common';
 
 export type TCommonGraphQLResult<T> = Promise<ApolloQueryResult<T>>;
@@ -60,3 +62,23 @@ export type TGetPairReserve = (
   client: TGraphQLClient,
   params: TGetPairReserveParams,
 ) => TCommonGraphQLResult<TGetPairReserveResult>;
+
+export type TGetActivityDetailParams = {
+  id: number;
+};
+
+export type TGetActivityDetail = (
+  client: TGraphQLClient,
+  params: TGetActivityDetailParams,
+) => TCommonGraphQLResult<TQueryActivity>;
+
+export type TGetActivityListParams = {
+  filter?: any;
+  limit?: number;
+};
+export type TGetActivityList = (
+  client: TGraphQLClient,
+  params: TGetActivityListParams,
+) => TCommonGraphQLResult<{
+  activityList: TActivityBase[];
+}>;

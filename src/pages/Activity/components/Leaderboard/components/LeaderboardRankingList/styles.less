@@ -1,0 +1,138 @@
+.leaderboard-ranking-list {
+  padding: 40px 32px;
+
+  .leaderboard-ranking-list-title {
+    font-size: 32px;
+    font-weight: 700;
+    line-height: 40px;
+    color: #e5e8ef;
+  }
+
+  .leaderboard-ranking-list-title-header {
+    margin-top: 40px;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-end;
+    gap: 39px;
+
+    .leaderboard-ranking-list-top-wrap {
+      flex: 1;
+      margin-top: 36px;
+
+      .leaderboard-ranking-list-top {
+        height: 206px;
+        position: relative;
+        padding: 39px 23px 23px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+
+        svg {
+          position: absolute;
+          left: 15px;
+          top: 0;
+          margin-top: -36px;
+        }
+
+        .leaderboard-ranking-list-top-address {
+          font-size: 16px;
+          font-weight: 700;
+          line-height: 24px;
+          color: #fff;
+        }
+
+        .leaderboard-ranking-list-top-content {
+          display: flex;
+          flex-direction: row;
+          justify-content: space-between;
+          align-items: flex-end;
+
+          .leaderboard-ranking-list-top-box {
+            display: flex;
+            flex-direction: column;
+
+            .leaderboard-ranking-list-top-box-title {
+              font-size: 14px;
+              line-height: 20px;
+              color: #9ba0b0;
+            }
+            .leaderboard-ranking-list-top-box-content {
+              font-size: 18px;
+              font-weight: 700;
+              line-height: 26px;
+              color: #ffc736;
+            }
+
+            &:last-child {
+              .leaderboard-ranking-list-top-box-content {
+                text-align: right;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .leaderboard-ranking-list-content {
+    margin-top: 40px;
+    .ant-table {
+      background-color: #121621;
+      padding: 0;
+      border-radius: 8px;
+      overflow: hidden;
+      border: 1px solid #2a2e3a;
+      min-height: 300px;
+
+      .ant-table-thead > tr > th {
+        background: #181b23;
+        line-height: 24px;
+        font-size: 16px;
+        &:first-child {
+          padding-left: 0;
+          text-align: center;
+        }
+        &:last-child {
+          padding-right: 0;
+        }
+      }
+
+      .ant-table-tbody > tr > td {
+        height: 24px;
+        line-height: 24px;
+        font-size: 18px;
+        font-weight: 500;
+        color: #e5e8ef;
+        padding: 16px 0;
+
+        &:first-child {
+          padding-left: 0;
+          text-align: center;
+        }
+        &:last-child {
+          padding-right: 0;
+        }
+      }
+    }
+
+    .leaderboard-ranking-list-item-address {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      font-weight: 700;
+
+      svg {
+        path {
+          fill: #9ba0b0;
+        }
+      }
+    }
+
+    .leaderboard-ranking-list-item-change {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      gap: 8px;
+    }
+  }
+}
