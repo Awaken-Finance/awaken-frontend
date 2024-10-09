@@ -23,9 +23,11 @@ export const LEADERBOARD_INFO_TRANSLATIONS_FRAGMENT = gql`
     ruleSectionTitle
     ruleContent
     participationSuffix
+    wantToParticipationSuffix
     prepareToExecuteBtn
     executeBtn
     congratulatoryCopy
+    encouragingCopy
     expiredExecuteBtn
     myRankingTitle
     distanceToPrefix
@@ -54,9 +56,11 @@ export type TLeaderboardInfoTranslations = {
   ruleSectionTitle: string;
   ruleContent: string;
   participationSuffix: string;
+  wantToParticipationSuffix: string;
   prepareToExecuteBtn: string;
   executeBtn: string;
   congratulatoryCopy: string;
+  encouragingCopy: string;
   expiredExecuteBtn: string;
   myRankingTitle: string;
   distanceToPrefix: string;

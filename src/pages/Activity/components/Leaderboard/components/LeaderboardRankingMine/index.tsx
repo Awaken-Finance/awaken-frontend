@@ -23,20 +23,33 @@ export type TLeaderboardRankingMineProps = {
   info?: TLeaderboardRankingMine;
 };
 
+const INVALID_RANKING_NUMBER = 1001;
+
 export const LeaderboardRankingMine = ({ activity, status, className, info, list }: TLeaderboardRankingMineProps) => {
   const t = useCmsTranslations<TLeaderboardInfoTranslations>(activity.info.translations);
   const rewardsMap = useMemo(() => getLeaderboardRewardsMap(activity), [activity]);
   const getCmsTranslations = useGetCmsTranslations();
 
-  const isWin = useMemo(() => info?.ranking === 1, [info?.ranking]);
+  const isChampion = useMemo(() => info?.ranking === 1, [info?.ranking]);
   const isProgressShow = useMemo(() => !!list.length, [list.length]);
+  const rewardsAmount = useMemo(() => getPreRewardRanking(activity, INVALID_RANKING_NUMBER), [activity]);
+
+  const isWinTipShow = useMemo(
+    () => status === ActivityStatusEnum.Completion && (info?.ranking || INVALID_RANKING_NUMBER) <= rewardsAmount,
+    [info?.ranking, rewardsAmount, status],
+  );
+
+  const isEncourageTipShow = useMemo(
+    () => status === ActivityStatusEnum.Completion && (info?.ranking || INVALID_RANKING_NUMBER) > rewardsAmount,
+    [info?.ranking, rewardsAmount, status],
+  );
 
   const renderInfo = useMemo(() => {
     if (!info) return undefined;
     return {
       rankingVal: (() => {
         if (info.ranking === 0) return '--';
-        return info.ranking >= 1000 ? '#1000+' : `#${info.ranking}`;
+        return info.ranking >= INVALID_RANKING_NUMBER ? '#1000+' : `#${info.ranking}`;
       })(),
       rewards: (() => {
         const rewardInfo = rewardsMap[info?.ranking];
@@ -92,7 +105,13 @@ export const LeaderboardRankingMine = ({ activity, status, className, info, list
         </div>
       </div>
 
-      {isWin && <div className="leaderboard-ranking-mine-win-tip">{`🎉 ${t('congratulatoryCopy')}`}</div>}
+      {isWinTipShow && <div className="leaderboard-ranking-mine-win-tip">{`🎉 ${t('congratulatoryCopy') || ''}`}</div>}
+
+      {isEncourageTipShow && (
+        <div className="leaderboard-ranking-mine-win-tip leaderboard-ranking-mine-encourage-tip">{`🙁 ${
+          t('encouragingCopy') || ''
+        }`}</div>
+      )}
 
       <div className="leaderboard-ranking-mine-detail">
         <div className="leaderboard-ranking-mine-detail-info">
@@ -123,7 +142,7 @@ export const LeaderboardRankingMine = ({ activity, status, className, info, list
         )}
       </div>
 
-      {!isWin && isProgressShow && (
+      {!isChampion && isProgressShow && (
         <>
           <div className="leaderboard-ranking-mine-expect-wrap">
             <div className="leaderboard-ranking-mine-expect-wrap-header">{`${t('expectedRewardsLabel')} (Top ${

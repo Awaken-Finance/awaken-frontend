@@ -26,9 +26,7 @@ export const LeaderboardEntry = ({ activity }: TLeaderboardEntryProps) => {
           <S3Image className="leaderboard-main-image" uri={activity.info.mainImage.filename_disk} />
           <div className="leaderboard-entry-hero-section-content">
             <div className="leaderboard-entry-hero-section-tip">{t('labelTag')}</div>
-            <div className="leaderboard-entry-hero-section-title" data-text={t('title')}>
-              {t('title')}
-            </div>
+            <div className="leaderboard-entry-hero-section-title">{t('title')}</div>
 
             {t('description') && (
               <div

@@ -56,30 +56,14 @@
   .leaderboard-page-activity-name {
     position: relative;
     /* stylelint-disable-next-line font-family-no-missing-generic-family-keyword */
-    font-family: Montserrat;
+    font-family: MontserratBold;
     font-size: 32px;
     font-weight: 700;
     line-height: 39px;
     color: transparent;
     background: linear-gradient(180deg, #8cc8ff 22.5%, #c7ebff 64.43%, #c7ebff 80%);
     background-clip: text;
-    background-clip: text;
-
-    &::before {
-      content: attr(data-text);
-      position: absolute;
-      top: 0;
-      left: 0;
-      /* stylelint-disable-next-line font-family-no-missing-generic-family-keyword */
-      font-family: Montserrat;
-      font-size: 32px;
-      font-weight: 700;
-      line-height: 39px;
-      color: transparent;
-      text-shadow: 0.75px 0.75px 0 #5ff6ff, -0.75px 0.75px 0 #5ff6ff, 0.75px -0.75px 0 #5ff6ff,
-        -0.75px -0.75px 0 #5ff6ff;
-      z-index: -1;
-    }
+    letter-spacing: -1px;
   }
 
   .leaderboard-page-description-wrap {

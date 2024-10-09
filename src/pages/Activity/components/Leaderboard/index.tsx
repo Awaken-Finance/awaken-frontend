@@ -9,7 +9,7 @@ import { useCallback, useMemo, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { LeaderboardCountdown } from './components/LeaderboardCountdown';
 import { LeaderboardRewardList } from './components/LeaderboardRewardList';
-import { useActivityStatus } from 'pages/Activity/hooks/common';
+import { ActivityStatusEnum, useActivityStatus } from 'pages/Activity/hooks/common';
 import { LeaderboardRanking } from './components/LeaderboardRanking';
 import { LeaderboardExecuteBtn } from './components/LeaderboardExecuteBtn';
 import { LeaderboardSection } from '../LeaderboardEntry/components/LeaderboardSection';
@@ -80,14 +80,14 @@ export const Leaderboard = ({ activity }: TLeaderboardProps) => {
           {isNumberShow && (
             <div className="leaderboard-page-participation">
               <span>{numberOfJoinStr}</span>
-              <span>{t('participationSuffix')}</span>
+              <span>
+                {status === ActivityStatusEnum.Preparation ? t('wantToParticipationSuffix') : t('participationSuffix')}
+              </span>
             </div>
           )}
 
           <div className="leaderboard-page-description-header">
-            <div className="leaderboard-page-activity-name" data-text={t('activityName')}>
-              {t('activityName')}
-            </div>
+            <div className="leaderboard-page-activity-name">{t('activityName')}</div>
 
             <LeaderboardCountdown activity={activity} status={status} />
           </div>
