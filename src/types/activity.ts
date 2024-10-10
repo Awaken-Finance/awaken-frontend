@@ -2,13 +2,13 @@ export type TLeaderboardRankingItem = {
   ranking: number;
   address: string;
   rankingChange1H: number;
-  totalPoint: number;
+  totalPoint: string;
   newStatus: number;
 };
 
 export type TLeaderboardRankingMine = {
   ranking: number;
-  totalPoint: number;
+  totalPoint: string;
 };
 
 export type TActivityJoinStatus = {

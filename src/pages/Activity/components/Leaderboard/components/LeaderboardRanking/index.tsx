@@ -3,9 +3,9 @@ import './styles.less';
 import { ActivityStatusEnum } from 'pages/Activity/hooks/common';
 import { LeaderboardRankingMine } from '../LeaderboardRankingMine';
 import { LeaderboardRankingList } from '../LeaderboardRankingList';
-import { useCallback, useEffect, useState } from 'react';
-import { getActivityMyRanking } from 'api/utils/activity';
-import { TLeaderboardRankingMine } from 'types/activity';
+import { useCallback, useEffect, useMemo, useState } from 'react';
+import { getActivityMyRanking, getActivityRankingList } from 'api/utils/activity';
+import { TLeaderboardRankingItem, TLeaderboardRankingMine } from 'types/activity';
 import { useConnectWallet } from '@aelf-web-login/wallet-adapter-react';
 import { useLeaderboardWS } from 'hooks/activity/useLeaderboardWS';
 
@@ -16,7 +16,6 @@ export type TLeaderboardCountdownProps = {
 
 export const LeaderboardRanking = ({ activity, status }: TLeaderboardCountdownProps) => {
   const { walletInfo } = useConnectWallet();
-  const { list } = useLeaderboardWS(activity.serviceId || 0);
 
   const [myRankingInfo, setMyRankingInfo] = useState<TLeaderboardRankingMine>();
   const initMyRankingInfo = useCallback(async () => {
@@ -35,9 +34,31 @@ export const LeaderboardRanking = ({ activity, status }: TLeaderboardCountdownPr
       console.log('initMyRankingInfo error', error);
     }
   }, [activity.serviceId, walletInfo?.address]);
+
   useEffect(() => {
     initMyRankingInfo();
   }, [initMyRankingInfo]);
+
+  const [apiList, setApiList] = useState<TLeaderboardRankingItem[]>();
+  const [isInit, setIsInit] = useState(false);
+  const initRankingList = useCallback(async () => {
+    try {
+      const result = await getActivityRankingList({
+        activityId: Number(activity.serviceId || 0),
+      });
+      setApiList(result);
+    } catch (error) {
+      console.log('initRankingList error', error);
+    } finally {
+      setIsInit(true);
+    }
+  }, [activity.serviceId]);
+  useEffect(() => {
+    initRankingList();
+  }, [initRankingList]);
+
+  const { list: wsList } = useLeaderboardWS(isInit, activity.serviceId || 0);
+  const list = useMemo(() => wsList || apiList || [], [apiList, wsList]);
 
   if (status === ActivityStatusEnum.Preparation) return <></>;
 

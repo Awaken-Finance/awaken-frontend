@@ -2,10 +2,11 @@ import { useCallback, useEffect, useState } from 'react';
 import SignalR from 'socket/signalr';
 import { TLeaderboardRankingItem } from 'types/activity';
 
-export const useLeaderboardWS = (activityId: number | string) => {
+export const useLeaderboardWS = (isInit: boolean, activityId: number | string) => {
   const [socket, setSocket] = useState<SignalR | null>(null);
 
   useEffect(() => {
+    if (!isInit) return;
     const signalR = new SignalR();
     signalR
       .doOpen()
@@ -17,24 +18,26 @@ export const useLeaderboardWS = (activityId: number | string) => {
       });
 
     return () => {
-      setTimeout(() => {
-        signalR?.destroy();
-      }, 500);
+      console.log('signalR destroy');
+      signalR?.destroy();
     };
-  }, []);
+  }, [isInit]);
 
-  const [list, setList] = useState<TLeaderboardRankingItem[]>([]);
+  const [list, setList] = useState<TLeaderboardRankingItem[]>();
   const updateRankingList = useCallback((data?: { items: TLeaderboardRankingItem[] }) => {
     console.log('updateRankingList', data);
     setList(data?.items || []);
   }, []);
 
   useEffect(() => {
-    socket?.RequestActivityRankingList(Number(activityId));
-    socket?.on('ReceiveActivityRankingList', updateRankingList);
+    if (!socket) return;
+
+    socket.RequestActivityRankingList(Number(activityId));
+    socket.on('ReceiveActivityRankingList', updateRankingList);
 
     return () => {
-      socket?.UnsubscribeActivityRankingList(Number(activityId));
+      console.log('signalR UnsubscribeActivityRankingList');
+      socket.UnsubscribeActivityRankingList(Number(activityId));
     };
   }, [activityId, socket, updateRankingList]);
 
