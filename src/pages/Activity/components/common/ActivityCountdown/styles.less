@@ -37,15 +37,39 @@
   .activity-countdown-box {
     flex-direction: row;
     gap: 8px;
+
+    .activity-countdown-box-content {
+      width: 40px;
+      height: 40px;
+      padding: 8px 6px;
+      min-width: 40px;
+      font-size: 20px;
+      line-height: 24px;
+      text-align: center;
+    }
+  }
+}
+
+.mobile-site-content {
+  .activity-countdown {
+    .activity-countdown-box-title {
+      font-size: 12px;
+      line-height: 18px;
+    }
+
+    .activity-countdown-box-content {
+      height: 48px;
+      min-width: 48px;
+      padding: 4px;
+      font-size: 24px;
+      line-height: 40px;
+    }
   }
 
-  .activity-countdown-box-content {
-    width: 40px;
-    height: 40px;
-    padding: 8px 6px;
-    min-width: 40px;
-    font-size: 20px;
-    line-height: 24px;
-    text-align: center;
+  .activity-countdown.activity-countdown-row {
+    .activity-countdown-box-title {
+      font-size: 16px;
+      line-height: 24px;
+    }
   }
 }

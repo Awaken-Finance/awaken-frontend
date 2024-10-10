@@ -16,7 +16,7 @@ const LeaderboardRewardItem = ({ item }: TLeaderboardRewardItemProps) => {
   return (
     <div className="leaderboard-reward-list-box">
       <div className="leaderboard-reward-list-box-header">
-        {item.icon && <S3Image uri={item.icon.filename_disk} />}
+        {item.icon && <S3Image uri={item.icon?.filename_disk} />}
         <div className="leaderboard-reward-list-box-title">{t('title')}</div>
       </div>
       <div className="leaderboard-reward-list-box-content">

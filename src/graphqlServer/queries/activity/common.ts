@@ -4,6 +4,7 @@ import { CmsStatusEnum } from 'graphqlServer/types/cms';
 export const ACTIVITY_BASE_FRAGMENT = gql`
   fragment activityBaseFields on activityList {
     id
+    serviceId
     status
     startTime
     endTime
@@ -18,6 +19,7 @@ export const ACTIVITY_BASE_FRAGMENT = gql`
 
 export type TActivityBase = {
   id: string;
+  serviceId?: string;
   status: CmsStatusEnum;
   startTime: string;
   endTime: string;

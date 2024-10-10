@@ -85,3 +85,69 @@
     }
   }
 }
+
+.mobile-site-content {
+  .leaderboard-medal-box-wrap {
+    margin-top: 18px;
+
+    .leaderboard-medal-box {
+      padding: 24px 8px 16px;
+      height: 202px;
+
+      svg {
+        left: 8px;
+        margin-top: -18px;
+        width: 48px;
+        height: 36px;
+      }
+
+      .leaderboard-medal-box-address {
+        font-size: 12px;
+        line-height: 18px;
+        word-break: break-all;
+      }
+
+      .leaderboard-medal-box-content {
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: flex-start;
+        gap: 8px;
+
+        .leaderboard-medal-box-box {
+          .leaderboard-medal-box-box-title {
+            font-size: 12px;
+            line-height: 18px;
+          }
+          .leaderboard-medal-box-box-content {
+            font-size: 14px;
+            line-height: 20px;
+          }
+
+          &:last-child {
+            .leaderboard-medal-box-box-content {
+              text-align: left;
+            }
+          }
+        }
+      }
+    }
+
+    &.leaderboard-medal-box-1st-wrap {
+      .leaderboard-medal-box {
+        height: 234px;
+      }
+    }
+
+    &.leaderboard-medal-box-2nd-wrap {
+      .leaderboard-medal-box {
+        height: 202px;
+      }
+    }
+
+    &.leaderboard-medal-box-3rd-wrap {
+      .leaderboard-medal-box {
+        height: 202px;
+      }
+    }
+  }
+}

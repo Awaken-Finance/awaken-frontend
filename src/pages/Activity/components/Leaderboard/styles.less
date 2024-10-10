@@ -53,21 +53,8 @@
     }
   }
 
-  .leaderboard-page-activity-name {
-    position: relative;
-    /* stylelint-disable-next-line font-family-no-missing-generic-family-keyword */
-    font-family: MontserratBold;
-    font-size: 32px;
-    font-weight: 700;
-    line-height: 39px;
-    color: transparent;
-    background: linear-gradient(180deg, #8cc8ff 22.5%, #c7ebff 64.43%, #c7ebff 80%);
-    background-clip: text;
-    letter-spacing: -1px;
-  }
-
   .leaderboard-page-description-wrap {
-    margin-bottom: 152px;
+    margin-bottom: 64px;
   }
   .leaderboard-page-description {
     overflow: hidden;
@@ -84,16 +71,31 @@
       z-index: 1;
     }
 
-    .leaderboard-page-participation {
+    .leaderboard-page-activity-name {
+      position: relative;
+      /* stylelint-disable-next-line font-family-no-missing-generic-family-keyword */
+      font-family: MontserratBold;
+      font-size: 32px;
+      font-weight: 600;
+      line-height: 39px;
+      color: transparent;
+      background: linear-gradient(180deg, #8cc8ff 22.5%, #c7ebff 64.43%, #c7ebff 80%);
+      background-clip: text;
+      letter-spacing: -1px;
+    }
+
+    .leaderboard-page-participation-wrap {
       position: absolute;
       right: 0;
       top: 0;
+    }
+    .leaderboard-page-participation {
       border-end-start-radius: 12px;
       background: linear-gradient(90deg, #b76fff -14.55%, #44c1ff 44.91%, #53fff6 100%);
       padding: 0 24px;
       display: flex;
       flex-direction: row;
-      gap: 5px;
+      gap: 4px;
       height: 38px;
       align-items: center;
 
@@ -153,6 +155,116 @@
       font-weight: 400;
       line-height: 24px;
       color: #9ba0b0;
+      p {
+        margin-bottom: 4px;
+        &:last-child {
+          margin-bottom: 0;
+        }
+      }
+    }
+  }
+}
+
+.mobile-site-content {
+  .leaderboard-page {
+    min-height: calc(100vh - 48px);
+
+    .leaderboard-background-image {
+      width: 864px;
+    }
+    .leaderboard-decorative-image {
+      width: 960px;
+      min-width: 960px;
+      top: 261px;
+    }
+
+    .leaderboard-page-content {
+      width: 100%;
+      padding: 0 16px;
+    }
+
+    .leaderboard-page-header {
+      margin-top: 16px;
+      margin-bottom: 12px;
+    }
+
+    .leaderboard-page-description-wrap {
+      margin-bottom: 40px;
+    }
+    .leaderboard-page-description {
+      padding: 16px 12px;
+
+      .leaderboard-page-description-header {
+        margin-bottom: 32px;
+      }
+
+      .leaderboard-page-activity-name {
+        font-size: 24px;
+        line-height: 32px;
+        font-weight: 600;
+        padding-bottom: 32px;
+      }
+
+      .leaderboard-page-participation-wrap {
+        top: 56px;
+        left: 0;
+        right: 0;
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+      }
+      .leaderboard-page-participation {
+        height: 24px;
+        border-radius: 4px;
+
+        span:first-child {
+          font-size: 16px;
+          font-weight: 600;
+          line-height: 24px;
+        }
+        span:last-child {
+          font-size: 12px;
+          font-weight: 400;
+          line-height: 24px;
+        }
+      }
+    }
+
+    .leaderboard-page-description-image {
+      margin-bottom: 32px;
+      width: 100%;
+    }
+
+    .leaderboard-reward-section {
+      margin-bottom: 32px;
+
+      .leaderboard-reward-section-title {
+        font-size: 16px;
+        line-height: 24px;
+      }
+    }
+
+    .leaderboard-page-description-execute-btn {
+      width: 100%;
+      margin-bottom: 32px;
+    }
+
+    .leaderboard-rule-section {
+      .leaderboard-rule-section-title {
+        font-size: 16px;
+        line-height: 24px;
+      }
+    }
+
+    .leaderboard-rule-section-content {
+      font-size: 14px;
+      line-height: 20px;
+      p {
+        margin-bottom: 12px;
+        &:last-child {
+          margin-bottom: 0;
+        }
+      }
     }
   }
 }

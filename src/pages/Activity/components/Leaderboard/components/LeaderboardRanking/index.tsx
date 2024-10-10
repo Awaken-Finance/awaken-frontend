@@ -16,7 +16,7 @@ export type TLeaderboardCountdownProps = {
 
 export const LeaderboardRanking = ({ activity, status }: TLeaderboardCountdownProps) => {
   const { walletInfo } = useConnectWallet();
-  const { list } = useLeaderboardWS(activity.id);
+  const { list } = useLeaderboardWS(activity.serviceId || 0);
 
   const [myRankingInfo, setMyRankingInfo] = useState<TLeaderboardRankingMine>();
   const initMyRankingInfo = useCallback(async () => {
@@ -27,14 +27,14 @@ export const LeaderboardRanking = ({ activity, status }: TLeaderboardCountdownPr
     }
     try {
       const result = await getActivityMyRanking({
-        activityId: activity.id,
+        activityId: Number(activity.serviceId || 0),
         address,
       });
       setMyRankingInfo(result);
     } catch (error) {
       console.log('initMyRankingInfo error', error);
     }
-  }, [activity.id, walletInfo?.address]);
+  }, [activity.serviceId, walletInfo?.address]);
   useEffect(() => {
     initMyRankingInfo();
   }, [initMyRankingInfo]);

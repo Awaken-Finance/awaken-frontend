@@ -47,7 +47,7 @@ export const LeaderboardEntryJoin = ({ activity, className }: TLeaderboardEntryC
 
     try {
       const { status: _status } = await getActivityJoinStatus({
-        activityId: activity.id,
+        activityId: Number(activity.serviceId || 0),
         address,
       });
 
@@ -55,7 +55,7 @@ export const LeaderboardEntryJoin = ({ activity, className }: TLeaderboardEntryC
     } catch (error) {
       console.log('initMyRankingInfo error', error);
     }
-  }, [activity.id, walletInfo?.address]);
+  }, [activity.serviceId, walletInfo?.address]);
   useEffect(() => {
     init();
   }, [init]);
@@ -136,7 +136,7 @@ export const LeaderboardEntryJoin = ({ activity, className }: TLeaderboardEntryC
         signature: signResult.signature,
         publicKey: signResult.pubkey,
         address: walletInfo?.address || '',
-        activityId: activity.id,
+        activityId: Number(activity.serviceId || 0),
       });
     } catch (error) {
       console.log('join error', error);
@@ -144,7 +144,15 @@ export const LeaderboardEntryJoin = ({ activity, className }: TLeaderboardEntryC
       setIsLoading(false);
       setIsJoined(true);
     }
-  }, [activity.id, activity.info.signPlainText, getActivitySign, history, isJoined, walletInfo?.address]);
+  }, [
+    activity.id,
+    activity.info.signPlainText,
+    activity.serviceId,
+    getActivitySign,
+    history,
+    isJoined,
+    walletInfo?.address,
+  ]);
 
   return (
     <div className={clsx(['leaderboard-entry-join', className])}>

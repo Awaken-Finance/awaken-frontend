@@ -16,12 +16,14 @@ import { LeaderboardSection } from '../LeaderboardEntry/components/LeaderboardSe
 import { useEffectOnce } from 'react-use';
 import { getActivityJoinStatus } from 'api/utils/activity';
 import { ZERO } from 'constants/misc';
+import { useMobile } from 'utils/isMobile';
 
 export type TLeaderboardProps = {
   activity: ILeaderboardActivity;
 };
 
 export const Leaderboard = ({ activity }: TLeaderboardProps) => {
+  const isMobile = useMobile();
   const t = useCmsTranslations<TLeaderboardInfoTranslations>(activity.info.translations);
   const { t: localT } = useTranslation();
   const status = useActivityStatus({
@@ -43,14 +45,14 @@ export const Leaderboard = ({ activity }: TLeaderboardProps) => {
   const init = useCallback(async () => {
     try {
       const { numberOfJoin: _numberOfJoin } = await getActivityJoinStatus({
-        activityId: activity.id,
+        activityId: Number(activity.serviceId || 0),
         address: '',
       });
       setNumberOfJoin(_numberOfJoin);
     } catch (error) {
       console.log('getActivityJoinStatus error', error);
     }
-  }, [activity.id]);
+  }, [activity.serviceId]);
   useEffectOnce(() => {
     init();
   });
@@ -60,10 +62,10 @@ export const Leaderboard = ({ activity }: TLeaderboardProps) => {
   return (
     <div className="leaderboard-page">
       {activity.info.backgroundImage && (
-        <S3Image className="leaderboard-background-image" uri={activity.info.backgroundImage.filename_disk} />
+        <S3Image className="leaderboard-background-image" uri={activity.info.backgroundImage?.filename_disk} />
       )}
       {activity.info.decorativeImage && (
-        <S3Image className="leaderboard-decorative-image" uri={activity.info.decorativeImage.filename_disk} />
+        <S3Image className="leaderboard-decorative-image" uri={activity.info.decorativeImage?.filename_disk} />
       )}
 
       <div className="leaderboard-page-content">
@@ -78,11 +80,15 @@ export const Leaderboard = ({ activity }: TLeaderboardProps) => {
           containerClassName="leaderboard-page-description-wrap"
           className="leaderboard-page-description">
           {isNumberShow && (
-            <div className="leaderboard-page-participation">
-              <span>{numberOfJoinStr}</span>
-              <span>
-                {status === ActivityStatusEnum.Preparation ? t('wantToParticipationSuffix') : t('participationSuffix')}
-              </span>
+            <div className="leaderboard-page-participation-wrap">
+              <div className="leaderboard-page-participation">
+                <span>{numberOfJoinStr}</span>
+                <span>
+                  {status === ActivityStatusEnum.Preparation
+                    ? t('wantToParticipationSuffix')
+                    : t('participationSuffix')}
+                </span>
+              </div>
             </div>
           )}
 
@@ -92,7 +98,10 @@ export const Leaderboard = ({ activity }: TLeaderboardProps) => {
             <LeaderboardCountdown activity={activity} status={status} />
           </div>
 
-          <S3Image className="leaderboard-page-description-image" uri={activity.info.mainImage.filename_disk} />
+          <S3Image
+            className="leaderboard-page-description-image"
+            uri={isMobile ? activity.info.mobileMainImage?.filename_disk : activity.info.mainImage?.filename_disk}
+          />
 
           <div className="leaderboard-reward-section">
             <div className="leaderboard-reward-section-title">{t('rewardSectionTitle')}</div>

@@ -86,6 +86,9 @@ export const LEADERBOARD_INFO_LIST_FRAGMENT = gql`
     mainImage {
       ...cmsFileFields
     }
+    mobileMainImage {
+      ...cmsFileFields
+    }
     backgroundImage {
       ...cmsFileFields
     }
@@ -106,6 +109,7 @@ export const LEADERBOARD_INFO_LIST_FRAGMENT = gql`
 export type TQueryLeaderboardInfo = {
   type: ActivityTypeEnum.Leaderboard;
   mainImage: TCmsFile;
+  mobileMainImage: TCmsFile;
   backgroundImage?: TCmsFile;
   decorativeImage?: TCmsFile;
   pointUnit?: string;

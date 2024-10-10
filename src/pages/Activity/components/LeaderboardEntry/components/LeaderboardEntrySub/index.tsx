@@ -36,9 +36,12 @@ export const LeaderboardEntrySub = ({ activity }: TLeaderboardEntrySubProps) => 
           dangerouslySetInnerHTML={{ __html: t('description') || '' }}></div>
       )}
 
-      <div className="leaderboard-entry-sub-period">{`${t('periodTitle')}: ${moment(activity.startTime)
-        .utc()
-        .format('YYYY-MM-DD HH:mm')} -- ${moment(activity.endTime).utc().format('YYYY-MM-DD HH:mm')} UTC`}</div>
+      <div className="leaderboard-entry-sub-period">
+        <span>{`${t('periodTitle')}:`}</span>
+        <span>{`${moment(activity.startTime).utc().format('YYYY-MM-DD HH:mm')} -- ${moment(activity.endTime)
+          .utc()
+          .format('YYYY-MM-DD HH:mm')} UTC`}</span>
+      </div>
 
       <LeaderboardEntryJoin className="leaderboard-entry-join-section" activity={activity} />
 

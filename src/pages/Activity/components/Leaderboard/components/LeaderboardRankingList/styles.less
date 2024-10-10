@@ -14,64 +14,6 @@
     flex-direction: row;
     align-items: flex-end;
     gap: 39px;
-
-    .leaderboard-ranking-list-top-wrap {
-      flex: 1;
-      margin-top: 36px;
-
-      .leaderboard-ranking-list-top {
-        height: 206px;
-        position: relative;
-        padding: 39px 23px 23px;
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-
-        svg {
-          position: absolute;
-          left: 15px;
-          top: 0;
-          margin-top: -36px;
-        }
-
-        .leaderboard-ranking-list-top-address {
-          font-size: 16px;
-          font-weight: 700;
-          line-height: 24px;
-          color: #fff;
-        }
-
-        .leaderboard-ranking-list-top-content {
-          display: flex;
-          flex-direction: row;
-          justify-content: space-between;
-          align-items: flex-end;
-
-          .leaderboard-ranking-list-top-box {
-            display: flex;
-            flex-direction: column;
-
-            .leaderboard-ranking-list-top-box-title {
-              font-size: 14px;
-              line-height: 20px;
-              color: #9ba0b0;
-            }
-            .leaderboard-ranking-list-top-box-content {
-              font-size: 18px;
-              font-weight: 700;
-              line-height: 26px;
-              color: #ffc736;
-            }
-
-            &:last-child {
-              .leaderboard-ranking-list-top-box-content {
-                text-align: right;
-              }
-            }
-          }
-        }
-      }
-    }
   }
 
   .leaderboard-ranking-list-content {
@@ -86,8 +28,8 @@
 
       .ant-table-thead > tr > th {
         background: #181b23;
-        line-height: 24px;
         font-size: 16px;
+        line-height: 24px;
         &:first-child {
           padding-left: 0;
           text-align: center;
@@ -101,7 +43,7 @@
         height: 24px;
         line-height: 24px;
         font-size: 18px;
-        font-weight: 500;
+        font-weight: 600;
         color: #e5e8ef;
         padding: 16px 0;
 
@@ -133,6 +75,46 @@
       flex-direction: row;
       align-items: center;
       gap: 8px;
+    }
+  }
+}
+
+.mobile-site-content {
+  .leaderboard-ranking-list {
+    padding: 16px 12px;
+
+    .leaderboard-ranking-list-title {
+      font-size: 24px;
+      line-height: 32px;
+    }
+
+    .leaderboard-ranking-list-title-header {
+      margin-top: 32px;
+      gap: 6px;
+    }
+
+    .leaderboard-ranking-list-content {
+      margin-top: 32px;
+      width: 100%;
+      overflow-x: auto;
+
+      .common-table {
+        width: 684px;
+      }
+
+      .ant-table {
+        .ant-table-thead > tr > th {
+          font-size: 12px;
+          line-height: 18px;
+        }
+
+        .ant-table-tbody > tr > td {
+          font-size: 12px;
+          line-height: 20px;
+          height: 20px;
+          padding: 12px 0;
+        }
+      }
     }
   }
 }

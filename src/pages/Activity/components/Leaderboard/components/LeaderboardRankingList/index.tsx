@@ -126,17 +126,18 @@ export const LeaderboardRankingList = ({ activity, list }: TLeaderboardRankingLi
       </div>
 
       {dataSource.length && (
-        <CommonTable
-          total={47}
-          loading={false}
-          dataSource={dataSource}
-          columns={columns}
-          rowKey={(record: { address: string }) => record?.address}
-          pageSize={1000}
-          pageNum={1}
-          emptyType="nodata"
-          className="leaderboard-ranking-list-content"
-        />
+        <div className="leaderboard-ranking-list-content">
+          <CommonTable
+            total={47}
+            loading={false}
+            dataSource={dataSource}
+            columns={columns}
+            rowKey={(record: { address: string }) => record?.address}
+            pageSize={1000}
+            pageNum={1}
+            emptyType="nodata"
+          />
+        </div>
       )}
     </LeaderboardSection>
   );
