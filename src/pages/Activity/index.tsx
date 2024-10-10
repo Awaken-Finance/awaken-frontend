@@ -1,6 +1,6 @@
-import { useGetActivityDetail } from 'graphqlServer/hooks';
-import { ActivityTypeEnum, TQueryActivity } from 'graphqlServer/queries/activity';
-import { TQueryLeaderboardEntryInfo } from 'graphqlServer/queries/activity/leaderboardEntry';
+import { useGetActivityDetailList } from 'graphqlServer/hooks';
+import { ActivityTypeEnum } from 'graphqlServer/queries/activity';
+
 import { useCallback, useEffect, useState } from 'react';
 import { formatQueryActivity, TActivity } from 'utils/activity';
 import './styles.less';
@@ -11,9 +11,9 @@ import CommonLoading from 'components/CommonLoading';
 
 export default () => {
   const match = useRouteMatch<{ id: string }>('/activity/:id');
-  const { id } = match?.params || {};
+  const { id: pageId } = match?.params || {};
 
-  const getActivityDetail = useGetActivityDetail();
+  const getActivityDetailList = useGetActivityDetailList();
   const [isLoading, setIsLoading] = useState(true);
   const [activity, setActivity] = useState<TActivity>();
 
@@ -21,9 +21,18 @@ export default () => {
     try {
       setIsLoading(true);
       setActivity(undefined);
-      const result = await getActivityDetail({ id: Number(id) });
 
-      const activityDetail = result.data as TQueryActivity<TQueryLeaderboardEntryInfo>;
+      const result = await getActivityDetailList({
+        filter: {
+          pageId: {
+            _eq: pageId,
+          },
+        },
+        limit: 1,
+      });
+      const activityDetail = result?.data?.activityList?.[0];
+      if (!activityDetail) return;
+
       const _activity = formatQueryActivity(activityDetail);
       setActivity(_activity);
     } catch (error) {
@@ -31,7 +40,7 @@ export default () => {
     } finally {
       setIsLoading(false);
     }
-  }, [getActivityDetail, id]);
+  }, [getActivityDetailList, pageId]);
 
   useEffect(() => {
     init();

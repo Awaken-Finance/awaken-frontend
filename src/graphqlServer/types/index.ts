@@ -1,6 +1,6 @@
 import { ApolloQueryResult } from '@apollo/client';
 import { TGraphQLClient } from './common';
-import { TQueryActivity } from 'graphqlServer/queries/activity';
+import { TQueryActivity, TQueryCommonActivity } from 'graphqlServer/queries/activity';
 import { TActivityBase } from 'graphqlServer/queries/activity/common';
 export * from './common';
 
@@ -81,4 +81,11 @@ export type TGetActivityList = (
   params: TGetActivityListParams,
 ) => TCommonGraphQLResult<{
   activityList: TActivityBase[];
+}>;
+
+export type TGetActivityDetailList = (
+  client: TGraphQLClient,
+  params: TGetActivityListParams,
+) => TCommonGraphQLResult<{
+  activityList: TQueryCommonActivity[];
 }>;

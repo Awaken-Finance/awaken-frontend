@@ -44,12 +44,12 @@ export const deconstructActivity = <T extends TQueryActivityInfo = TQueryActivit
   };
 };
 
-export const formatQueryActivity = (data: TQueryActivity): TActivity => {
-  const detail = deconstructActivity(data.activityList_by_id);
+export const formatQueryActivity = (data: TQueryCommonActivity): TActivity => {
+  const detail = deconstructActivity(data);
 
   if (!detail)
     return {
-      ...(data?.activityList_by_id || {}),
+      ...(data || {}),
       type: ActivityTypeEnum.Unknown,
     };
 
@@ -59,10 +59,10 @@ export const formatQueryActivity = (data: TQueryActivity): TActivity => {
   try {
     switch (type) {
       case ActivityTypeEnum.LeaderboardEntry:
-        return formatLeaderboardEntryActivity(data.activityList_by_id);
+        return formatLeaderboardEntryActivity(data);
 
       case ActivityTypeEnum.Leaderboard:
-        return formatLeaderboardActivity(data.activityList_by_id);
+        return formatLeaderboardActivity(data);
 
       default:
         throw new Error('activity type error');

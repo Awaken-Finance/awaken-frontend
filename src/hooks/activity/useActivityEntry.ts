@@ -70,7 +70,7 @@ export const useActivityEntry = () => {
     return {
       key: 'activity',
       title: '🔥 Event',
-      path: `/activity/${activity.id}`,
+      path: `/activity/${activity.pageId}`,
     };
   }, [activity, status, walletInfo?.address]);
 };

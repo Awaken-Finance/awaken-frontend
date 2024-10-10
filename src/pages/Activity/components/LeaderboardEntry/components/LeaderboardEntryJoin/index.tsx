@@ -120,7 +120,7 @@ export const LeaderboardEntryJoin = ({ activity, className }: TLeaderboardEntryC
   const history = useHistory();
   const [isLoading, setIsLoading] = useState(false);
   const onClick = useCallback(async () => {
-    if (isJoined) return history.push(`/activity/${activity.id}`);
+    if (isJoined) return history.push(`/activity/${activity.pageId}`);
     setIsLoading(true);
     let signResult: { plainText: string; signature: string; pubkey: string };
     try {
@@ -145,8 +145,8 @@ export const LeaderboardEntryJoin = ({ activity, className }: TLeaderboardEntryC
       setIsJoined(true);
     }
   }, [
-    activity.id,
     activity.info.signPlainText,
+    activity.pageId,
     activity.serviceId,
     getActivitySign,
     history,

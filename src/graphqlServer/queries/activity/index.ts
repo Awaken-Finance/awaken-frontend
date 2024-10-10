@@ -56,3 +56,26 @@ export const ACTIVITY_LIST_QUERY = gql`
     }
   }
 `;
+
+export const ACTIVITY_DETAIL_LIST_QUERY = gql`
+  ${ACTIVITY_BASE_FRAGMENT}
+  ${LEADERBOARD_INFO_LIST_FRAGMENT}
+  ${LEADERBOARD_INFO_ENTRY_LIST_FRAGMENT}
+
+  query GetActivityDetailList($filter: activityList_filter, $limit: Int) {
+    activityList(filter: $filter, limit: $limit, sort: ["-index", "publishTime"]) {
+      ...activityBaseFields
+      infoList {
+        item {
+          __typename
+          ... on leaderboardEntryInfoList {
+            ...leaderboardEntryInfoListFields
+          }
+          ... on leaderboardInfoList {
+            ...leaderboardInfoListFields
+          }
+        }
+      }
+    }
+  }
+`;

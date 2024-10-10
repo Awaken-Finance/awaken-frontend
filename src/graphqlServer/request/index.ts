@@ -1,7 +1,8 @@
-import { ACTIVITY_LIST_QUERY, ACTIVITY_QUERY } from 'graphqlServer/queries/activity';
+import { ACTIVITY_DETAIL_LIST_QUERY, ACTIVITY_LIST_QUERY, ACTIVITY_QUERY } from 'graphqlServer/queries/activity';
 import { LIMIT_ORDER_REMAINING_UNFILLED_QUERY, PAIR_RESERVE_QUERY, PAIR_SYNC_RECORDS_QUERY } from '../queries';
 import {
   TGetActivityDetail,
+  TGetActivityDetailList,
   TGetActivityList,
   TGetLimitOrderRemainingUnfilled,
   TGetPairReserve,
@@ -39,6 +40,13 @@ export const getActivityDetail: TGetActivityDetail = (client, params) => {
 export const getActivityList: TGetActivityList = (client, params) => {
   return client.query({
     query: ACTIVITY_LIST_QUERY,
+    variables: params,
+  });
+};
+
+export const getActivityDetailList: TGetActivityDetailList = (client, params) => {
+  return client.query({
+    query: ACTIVITY_DETAIL_LIST_QUERY,
     variables: params,
   });
 };

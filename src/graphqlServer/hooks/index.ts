@@ -1,5 +1,6 @@
 import {
   getActivityDetail,
+  getActivityDetailList,
   getActivityList,
   getLimitOrderRemainingUnfilled,
   getPairReserve,
@@ -67,4 +68,12 @@ export const useGetActivityDetail = () => {
 export const useGetActivityList = () => {
   const client = useCMSGraphQLClient();
   return useCallback((params: TGraphQLParamsType<typeof getActivityList>) => getActivityList(client, params), [client]);
+};
+
+export const useGetActivityDetailList = () => {
+  const client = useCMSGraphQLClient();
+  return useCallback(
+    (params: TGraphQLParamsType<typeof getActivityDetailList>) => getActivityDetailList(client, params),
+    [client],
+  );
 };
