@@ -138,7 +138,12 @@ export const LeaderboardRankingMine = ({ activity, status, className, info, list
         </div>
 
         {status === ActivityStatusEnum.Execution && (
-          <LeaderboardExecuteBtn activity={activity} status={status} className="leaderboard-ranking-mine-detail-btn" />
+          <LeaderboardExecuteBtn
+            activity={activity}
+            status={status}
+            extraId="Mine"
+            className="leaderboard-ranking-mine-detail-btn"
+          />
         )}
       </div>
 

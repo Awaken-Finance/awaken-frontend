@@ -16,6 +16,7 @@ import Font from 'components/Font';
 import { getActivityJoinStatus, setActivityJoin } from 'api/utils/activity';
 import { useHistory } from 'react-router-dom';
 import { useGetActivitySign } from 'hooks/activity/useGetActivitySign';
+import { IS_MAIN_NET } from 'constants/index';
 
 export type TLeaderboardEntryCountDownProps = {
   activity: ILeaderboardActivity;
@@ -38,7 +39,7 @@ export const LeaderboardEntryJoin = ({ activity, className }: TLeaderboardEntryC
   });
 
   const isConnected = useIsConnected();
-  const { isLocking, walletInfo } = useConnectWallet();
+  const { isLocking, walletInfo, walletType } = useConnectWallet();
   const [isJoined, setIsJoined] = useState(false);
 
   const init = useCallback(async () => {
@@ -119,7 +120,26 @@ export const LeaderboardEntryJoin = ({ activity, className }: TLeaderboardEntryC
 
   const history = useHistory();
   const [isLoading, setIsLoading] = useState(false);
+
+  const emitGTag = useCallback(() => {
+    try {
+      gtag &&
+        gtag('event', `${IS_MAIN_NET ? '' : 'test_'}activity_${location?.pathname?.split('/')?.reverse()?.[0] || ''}`, {
+          event_category: 'button',
+          event_label: 'LeaderboardEntryJoin',
+          value: 1,
+          address: walletInfo?.address || '',
+          walletType: walletType,
+          activityStatus: ActivityStatusEnum[status],
+          joinActivityPageId: activity.pageId,
+        });
+    } catch (error) {
+      console.log('emitGTag error', error);
+    }
+  }, [activity.pageId, status, walletInfo?.address, walletType]);
+
   const onClick = useCallback(async () => {
+    emitGTag();
     if (isJoined) return history.push(`/activity/${activity.pageId}`);
     setIsLoading(true);
     let signResult: { plainText: string; signature: string; pubkey: string };
@@ -148,6 +168,7 @@ export const LeaderboardEntryJoin = ({ activity, className }: TLeaderboardEntryC
     activity.info.signPlainText,
     activity.pageId,
     activity.serviceId,
+    emitGTag,
     getActivitySign,
     history,
     isJoined,
@@ -164,6 +185,7 @@ export const LeaderboardEntryJoin = ({ activity, className }: TLeaderboardEntryC
         type={btnLabelInfo.type}
         size="large"
         onClick={onClick}
+        onGotoLogin={emitGTag}
         loading={isLoading}
         disabled={!btnLabelInfo.active}>
         <Font size={18} color={btnLabelInfo.fontColor} weight="medium">

@@ -1,6 +1,7 @@
 import { useConnectWallet } from '@aelf-web-login/wallet-adapter-react';
 import AuthBtn from 'Buttons/AuthBtn';
 import Font from 'components/Font';
+import { IS_MAIN_NET } from 'constants/index';
 import { TLeaderboardInfoTranslations } from 'graphqlServer/queries/activity/leaderboard';
 import { useCmsTranslations } from 'hooks/cms';
 import { useIsConnected } from 'hooks/useLogin';
@@ -14,14 +15,15 @@ export type TLeaderboardExecuteBtnProps = {
   activity: ILeaderboardActivity;
   status: ActivityStatusEnum;
   className?: string;
+  extraId?: string;
 };
 
-export const LeaderboardExecuteBtn = ({ activity, status, className }: TLeaderboardExecuteBtnProps) => {
+export const LeaderboardExecuteBtn = ({ activity, status, className, extraId }: TLeaderboardExecuteBtnProps) => {
   const t = useCmsTranslations<TLeaderboardInfoTranslations>(activity.info.translations);
   const { t: localT } = useTranslation();
 
   const isConnected = useIsConnected();
-  const { isLocking } = useConnectWallet();
+  const { isLocking, walletInfo, walletType } = useConnectWallet();
 
   const btnLabelInfo = useMemo<{
     active?: boolean;
@@ -52,10 +54,27 @@ export const LeaderboardExecuteBtn = ({ activity, status, className }: TLeaderbo
     }
   }, [isConnected, isLocking, localT, status, t]);
 
+  const emitGTag = useCallback(() => {
+    try {
+      gtag &&
+        gtag('event', `${IS_MAIN_NET ? '' : 'test_'}activity_${activity.pageId || ''}`, {
+          event_category: 'button',
+          event_label: `LeaderboardExecute${extraId || ''}`,
+          value: 1,
+          address: walletInfo?.address || '',
+          walletType: walletType,
+          activityStatus: ActivityStatusEnum[status],
+        });
+    } catch (error) {
+      console.log('emitGTag error', error);
+    }
+  }, [activity.pageId, extraId, status, walletInfo?.address, walletType]);
+
   const history = useHistory();
   const onClick = useCallback(() => {
+    emitGTag();
     history.push(activity.info.executeBtnLink);
-  }, [activity.info.executeBtnLink, history]);
+  }, [activity.info.executeBtnLink, emitGTag, history]);
 
   return (
     <AuthBtn
@@ -63,6 +82,7 @@ export const LeaderboardExecuteBtn = ({ activity, status, className }: TLeaderbo
       type={btnLabelInfo.type}
       size="large"
       onClick={onClick}
+      onGotoLogin={emitGTag}
       disabled={!btnLabelInfo.active}>
       <Font size={18} color={btnLabelInfo.fontColor} weight="medium">
         {btnLabelInfo.label}

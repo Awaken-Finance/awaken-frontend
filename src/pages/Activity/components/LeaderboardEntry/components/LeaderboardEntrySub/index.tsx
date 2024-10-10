@@ -5,9 +5,10 @@ import { TLeaderboardInfoTranslations } from 'graphqlServer/queries/activity/lea
 import moment from 'moment';
 import { LeaderboardEntryJoin } from '../LeaderboardEntryJoin';
 import { LeaderboardRewardList } from 'pages/Activity/components/Leaderboard/components/LeaderboardRewardList';
-import { useMemo } from 'react';
+import { useCallback, useMemo } from 'react';
 import { ActivityTypeEnum } from 'graphqlServer/queries/activity';
 import { LeaderboardSection } from '../LeaderboardSection';
+import { useHistory } from 'react-router-dom';
 
 export type TLeaderboardEntrySubProps = {
   activity: ILeaderboardActivity;
@@ -21,6 +22,22 @@ export const LeaderboardEntrySub = ({ activity }: TLeaderboardEntrySubProps) => 
     [activity.info.rewardList],
   );
 
+  const history = useHistory();
+  const onClick = useCallback(
+    (event: any) => {
+      try {
+        if (event.target.tagName.toLowerCase() === 'a') {
+          event.preventDefault();
+          const link = event.target;
+          history.push(link.attributes['href'].value);
+        }
+      } catch (error) {
+        console.log(error, '===err');
+      }
+    },
+    [history],
+  );
+
   if (activity.type !== ActivityTypeEnum.Leaderboard) return <></>;
 
   return (
@@ -32,6 +49,7 @@ export const LeaderboardEntrySub = ({ activity }: TLeaderboardEntrySubProps) => 
 
       {t('description') && (
         <div
+          onClick={onClick}
           className="leaderboard-entry-sub-description"
           dangerouslySetInnerHTML={{ __html: t('description') || '' }}></div>
       )}
