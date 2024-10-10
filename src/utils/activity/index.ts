@@ -1,9 +1,4 @@
-import {
-  ActivityTypeEnum,
-  TQueryActivity,
-  TQueryActivityInfo,
-  TQueryCommonActivity,
-} from 'graphqlServer/queries/activity';
+import { ActivityTypeEnum, TQueryActivityInfo, TQueryCommonActivity } from 'graphqlServer/queries/activity';
 import { TActivityBase } from 'graphqlServer/queries/activity/common';
 import { TQueryLeaderboardInfo } from 'graphqlServer/queries/activity/leaderboard';
 import { TQueryLeaderboardEntryInfo } from 'graphqlServer/queries/activity/leaderboardEntry';

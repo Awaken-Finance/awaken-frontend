@@ -8,6 +8,7 @@ import { LeaderboardEntry } from './components/LeaderboardEntry';
 import { Leaderboard } from './components/Leaderboard';
 import { useRouteMatch } from 'react-router-dom';
 import CommonLoading from 'components/CommonLoading';
+import { useActivityAllowCheck } from 'hooks/activity/useActivityAllowCheck';
 
 export default () => {
   const match = useRouteMatch<{ id: string }>('/activity/:id');
@@ -16,6 +17,7 @@ export default () => {
   const getActivityDetailList = useGetActivityDetailList();
   const [isLoading, setIsLoading] = useState(true);
   const [activity, setActivity] = useState<TActivity>();
+  const isAllow = useActivityAllowCheck(activity);
 
   const init = useCallback(async () => {
     try {
@@ -46,7 +48,7 @@ export default () => {
     init();
   }, [init]);
 
-  if (isLoading)
+  if (isLoading || !isAllow)
     return (
       <div className="activity-loading">
         <CommonLoading showBg />

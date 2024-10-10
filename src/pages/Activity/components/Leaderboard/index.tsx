@@ -56,7 +56,10 @@ export const Leaderboard = ({ activity }: TLeaderboardProps) => {
   useEffectOnce(() => {
     init();
   });
-  const isNumberShow = useMemo(() => numberOfJoin >= 1000, [numberOfJoin]);
+  const isNumberShow = useMemo(
+    () => numberOfJoin >= (activity.info.participationShowThreshold || 1000),
+    [activity.info.participationShowThreshold, numberOfJoin],
+  );
   const numberOfJoinStr = useMemo(() => ZERO.plus(numberOfJoin).toFormat(), [numberOfJoin]);
 
   return (

@@ -81,6 +81,7 @@ export const LEADERBOARD_INFO_LIST_FRAGMENT = gql`
   fragment leaderboardInfoListFields on leaderboardInfoList {
     type
     pointUnit
+    participationShowThreshold
     signPlainText
     executeBtnLink
     mainImage {
@@ -113,6 +114,7 @@ export type TQueryLeaderboardInfo = {
   backgroundImage?: TCmsFile;
   decorativeImage?: TCmsFile;
   pointUnit?: string;
+  participationShowThreshold: number;
   signPlainText: string;
   executeBtnLink: string;
   rewardList: Array<{
