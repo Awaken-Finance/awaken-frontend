@@ -1,19 +1,12 @@
 import { useMemo } from 'react';
 import { useLocation } from 'react-router-dom';
 import { useMobile } from 'utils/isMobile';
-import { menuList as _menuList } from '../router';
-import { useActivityEntry } from 'hooks/activity/useActivityEntry';
+import { MenuItem } from '../router';
 
-const useSelectedKeys = () => {
+const useSelectedKeys = (menuList: MenuItem[]) => {
   const isMobile = useMobile();
 
   const { pathname } = useLocation();
-
-  const activityEntry = useActivityEntry();
-  const menuList = useMemo(() => {
-    if (!activityEntry) return _menuList;
-    return [..._menuList, activityEntry];
-  }, [activityEntry]);
 
   const list = isMobile ? menuList : menuList.filter((item) => !item?.onlyMobile);
 

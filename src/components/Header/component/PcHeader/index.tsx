@@ -4,11 +4,10 @@ import clsx from 'clsx';
 import Network from 'components/Network';
 import { basicModalView } from 'contexts/useModal/actions';
 import { useModalDispatch } from 'contexts/useModal/hooks';
-import { memo, useCallback, useMemo, useRef } from 'react';
+import { useCallback, useMemo, useRef } from 'react';
 import LanguageMenu from '../LanguageMenu';
 import NavMenu from '../NavMenu';
-import { NavLink, useLocation } from 'react-router-dom';
-import useSelectedKeys from 'components/Header/hooks/useSelectedKeys';
+import { NavLink } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useModal } from 'contexts/useModal';
 import CommonButton from 'components/CommonButton';
@@ -22,8 +21,13 @@ import { shortenAddress } from 'utils';
 import { useConnectWallet } from '@aelf-web-login/wallet-adapter-react';
 import { DepositTipModal, DepositTipModalInterface } from 'Modals/DepositTipModal';
 import { useIsDepositPath } from 'hooks/route';
+import { MenuItem } from 'components/Header/router';
 
-function PcHeader() {
+export type TPcHeaderProps = {
+  menuList: MenuItem[];
+};
+
+function PcHeader({ menuList }: TPcHeaderProps) {
   const { walletInfo, isLocking } = useConnectWallet();
   const isConnected = useIsConnected();
   const { chainId } = useChainId();
@@ -99,7 +103,7 @@ function PcHeader() {
           </NavLink>
         </Col>
         <Col flex="1">
-          <NavMenu />
+          <NavMenu menuList={menuList} />
         </Col>
         <Col>
           <Row align="middle" gutter={[16, 0]}>
@@ -130,4 +134,4 @@ function PcHeader() {
   );
 }
 
-export default memo(PcHeader);
+export default PcHeader;
