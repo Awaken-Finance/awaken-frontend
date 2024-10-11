@@ -79,7 +79,7 @@ export const LeaderboardRankingMine = ({ activity, status, className, info, list
 
     return {
       preRewardRanking,
-      percent: ZERO.plus(info.totalPoint).div(preTotalPoint).times(100).dp(2).toNumber(),
+      percent: ZERO.eq(preTotalPoint) ? 0 : ZERO.plus(info.totalPoint).div(preTotalPoint).times(100).dp(2).toNumber(),
       distance: `${t('distanceToPrefix')}${preRewardRanking}: ${activity.info.pointUnit || ''}${formatPriceUSD(
         diffPoint,
       )}`,

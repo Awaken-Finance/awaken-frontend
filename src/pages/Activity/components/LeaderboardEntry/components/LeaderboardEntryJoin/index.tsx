@@ -43,10 +43,15 @@ export const LeaderboardEntryJoin = ({ activity, className }: TLeaderboardEntryC
   const { isLocking, walletInfo, walletType } = useConnectWallet();
   const [isJoined, setIsJoined] = useState(false);
 
+  const [isLoading, setIsLoading] = useState(true);
   const init = useCallback(async () => {
     const address = walletInfo?.address;
-    if (!address) return;
+    if (!address) {
+      setIsLoading(false);
+      return;
+    }
 
+    setIsLoading(true);
     try {
       const { status: _status } = await getActivityJoinStatus({
         activityId: Number(activity.serviceId || 0),
@@ -56,6 +61,8 @@ export const LeaderboardEntryJoin = ({ activity, className }: TLeaderboardEntryC
       setIsJoined(!!_status);
     } catch (error) {
       console.log('initMyRankingInfo error', error);
+    } finally {
+      setIsLoading(false);
     }
   }, [activity.serviceId, walletInfo?.address]);
   useEffect(() => {
@@ -131,7 +138,6 @@ export const LeaderboardEntryJoin = ({ activity, className }: TLeaderboardEntryC
   }, [activity.endTime, activity.startTime, status, t]);
 
   const history = useHistory();
-  const [isLoading, setIsLoading] = useState(false);
 
   const emitGTag = useCallback(() => {
     try {
@@ -175,6 +181,7 @@ export const LeaderboardEntryJoin = ({ activity, className }: TLeaderboardEntryC
     } finally {
       setIsLoading(false);
       setIsJoined(true);
+      history.push(`/activity/${activity.pageId}`);
     }
   }, [
     activity.info.signPlainText,
