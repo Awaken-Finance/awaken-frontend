@@ -17,6 +17,7 @@ import { getActivityJoinStatus, setActivityJoin } from 'api/utils/activity';
 import { useHistory } from 'react-router-dom';
 import { useGetActivitySign } from 'hooks/activity/useGetActivitySign';
 import { IS_MAIN_NET } from 'constants/index';
+import { getValidAddress } from 'utils/wallet';
 
 export type TLeaderboardEntryCountDownProps = {
   activity: ILeaderboardActivity;
@@ -77,6 +78,17 @@ export const LeaderboardEntryJoin = ({ activity, className }: TLeaderboardEntryC
         type: 'primary',
       };
 
+    if (activity.whitelist && walletInfo?.address) {
+      const whitelist = activity.whitelist.map((item) => getValidAddress(item));
+      if (whitelist.includes(walletInfo.address)) {
+        return {
+          label: t('fulfilledJoinBtn') || '',
+          active: true,
+          type: 'primary',
+        };
+      }
+    }
+
     switch (status) {
       case ActivityStatusEnum.Preparation:
         return {
@@ -96,7 +108,7 @@ export const LeaderboardEntryJoin = ({ activity, className }: TLeaderboardEntryC
           fontColor: 'two',
         };
     }
-  }, [isConnected, isJoined, isLocking, localT, status, t]);
+  }, [activity.whitelist, isConnected, isJoined, isLocking, localT, status, t, walletInfo?.address]);
 
   const statusInfo = useMemo<TActivityStatusInfo>(() => {
     switch (status) {
