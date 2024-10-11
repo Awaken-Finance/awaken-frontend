@@ -59,12 +59,20 @@ export const PORTFOLIO_API_LIST = {
   GET_LIQUIDITY_POSITION: '/api/app/liquidity/user-positions',
 };
 
+export const ACTIVITY_APIS = {
+  GET_ACTIVITY_RANKING_LIST: '/api/app/activity/ranking-list',
+  GET_ACTIVITY_MY_RANKING: '/api/app/activity/my-ranking',
+  GET_ACTIVITY_JOIN_STATUS: '/api/app/activity/join-status',
+  SET_ACTIVITY_JOIN: '/api/app/activity/join',
+};
+
 export const EXPAND_APIS = {
   cms: CMS_API_LIST,
   token: TOKEN_API_LIST,
   lending: LENDING_API_LIST,
   userCenter: USER_CENTER_API_LIST,
   portfolio: PORTFOLIO_API_LIST,
+  activity: ACTIVITY_APIS,
 };
 
 export type API_REQ_FUNCTION = (config?: requestConfig) => Promise<any | AxiosResponse<any>>;
