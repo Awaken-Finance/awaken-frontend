@@ -23,6 +23,7 @@ const Portfolio = lazy(() => import('pages/Portfolio'));
 const Transactions = lazy(() => import('pages/Transactions'));
 const Deposit = lazy(() => import('pages/Deposit'));
 const DepositHistory = lazy(() => import('pages/DepositHistory'));
+const Activity = lazy(() => import('pages/Activity'));
 
 const routes: RoutesProps[] = [
   {
@@ -103,6 +104,10 @@ const routes: RoutesProps[] = [
     path: '/deposit-history',
     component: DepositHistory,
     authComp: AuthComp,
+  },
+  {
+    path: '/activity/:id',
+    component: Activity,
   },
   {
     path: '/',

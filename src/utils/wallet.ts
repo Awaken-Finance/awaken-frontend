@@ -63,3 +63,9 @@ export const getManagerAddressByWallet = async (
 
 export const IsCAWallet = (walletType: WalletTypeEnum) =>
   [WalletTypeEnum.discover, WalletTypeEnum.aa].includes(walletType);
+
+export const getValidAddress = (str: string) => {
+  const strArray = str.split('_');
+  if (strArray.length === 1) return str;
+  return strArray[1] || str;
+};

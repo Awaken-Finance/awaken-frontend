@@ -472,7 +472,7 @@
     "totalSupply": "Total supply",
     "totalBorrow": "Total borrow",
 
-    "back": "Back",
+    "back": "返回",
 
     "safeMax": "Safe max",
     "enable": "Enable",
@@ -735,6 +735,16 @@
     "depositTipTitle": "溫馨提示",
     "depositTipContent": "即將使用第三方跨鍊服務ETransfer，使用該服務需要簽名（無需Gas費）。是否確認使用？",
     "depositJumpDescription": "餘額不足？您可以",
-    "depositJumpLink": "跨鏈儲值"
+    "depositJumpLink": "跨鏈儲值",
+
+    "🔥 Event": "🔥 活動",
+    "Day": "天",
+    "Hours": "小時",
+    "Minutes": "分鐘",
+    "Seconds": "秒",
+    "DayAbbr": "天",
+    "HoursAbbr": "時",
+    "MinutesAbbr": "分",
+    "SecondsAbbr": "秒"
   }
 }

@@ -1,0 +1,109 @@
+.leaderboard-reward-list {
+  border: 1px solid #2a2e3a;
+  border-radius: 8px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: row;
+
+  .leaderboard-reward-list-box {
+    border-right: 1px solid #2a2e3a;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+
+    &:last-child {
+      border-right: none;
+    }
+
+    .leaderboard-reward-list-box-header {
+      height: 56px;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      gap: 4px;
+      padding: 0 16px;
+      background: #181b23;
+
+      .s3-image {
+        width: 24px;
+        height: 24px;
+      }
+
+      .leaderboard-reward-list-box-title {
+        font-size: 18px;
+        font-weight: 600;
+        line-height: 24px;
+        color: #e5e8ef;
+      }
+    }
+
+    .leaderboard-reward-list-box-content {
+      min-height: 78px;
+      padding: 12px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      justify-content: center;
+      flex: 1;
+
+      .leaderboard-reward-list-box-description {
+        font-size: 18px;
+        font-weight: 600;
+        line-height: 24px;
+        color: #e5e8ef;
+      }
+      .leaderboard-reward-list-box-sub-description {
+        font-size: 14px;
+        font-weight: 400;
+        line-height: 20px;
+        color: #9ba0b0;
+      }
+    }
+  }
+}
+
+.mobile-site-content {
+  .leaderboard-reward-list {
+    flex-direction: column;
+
+    .leaderboard-reward-list-box {
+      flex-direction: row;
+      border-right: none;
+      border-bottom: 1px solid #2a2e3a;
+
+      &:last-child {
+        border-bottom: none;
+      }
+    }
+
+    .leaderboard-reward-list-box-header {
+      height: auto;
+      padding: 0 12px;
+      width: 120px;
+      border-right: 1px solid #2a2e3a;
+
+      .s3-image {
+        width: 16px;
+        height: 16px;
+      }
+
+      .leaderboard-reward-list-box-title {
+        font-size: 12px;
+        line-height: 20px;
+      }
+    }
+
+    .leaderboard-reward-list-box-content {
+      min-height: 44px;
+      padding: 12px;
+      .leaderboard-reward-list-box-description {
+        font-size: 12px;
+        line-height: 20px;
+      }
+      .leaderboard-reward-list-box-sub-description {
+        font-size: 12px;
+        line-height: 18px;
+      }
+    }
+  }
+}

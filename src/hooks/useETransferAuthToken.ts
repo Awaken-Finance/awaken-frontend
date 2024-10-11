@@ -91,10 +91,6 @@ ${Date.now()}`;
 
     if (signResult?.error) throw signResult.errorMessage;
 
-    console.log('getSignature');
-
-    if (signResult?.error) throw signResult.errorMessage;
-
     return { signature: signResult?.signature || '', plainText };
   }, [getSignature, walletInfo, walletType]);
 

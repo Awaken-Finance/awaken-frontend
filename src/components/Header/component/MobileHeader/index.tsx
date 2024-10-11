@@ -3,7 +3,7 @@ import { IconLogo } from 'assets/icons';
 import Network from 'components/Network';
 import { basicModalView } from 'contexts/useModal/actions';
 import { useModalDispatch } from 'contexts/useModal/hooks';
-import { memo, useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import NavMenu from '../NavMenu';
 import { LOCAL_LANGUAGE } from 'i18n/config';
 import { useLanguage } from 'i18n';
@@ -20,8 +20,13 @@ import './styles.less';
 import { useConnectWallet } from '@aelf-web-login/wallet-adapter-react';
 import { DepositTipModal, DepositTipModalInterface } from 'Modals/DepositTipModal';
 import { useIsDepositPath } from 'hooks/route';
+import { MenuItem } from 'components/Header/router';
 
-function MobileHeader() {
+export type TMobileHeaderProps = {
+  menuList: MenuItem[];
+};
+
+function MobileHeader({ menuList }: TMobileHeaderProps) {
   const { t } = useTranslation();
   const history = useHistory();
   const location = useLocation();
@@ -158,7 +163,7 @@ function MobileHeader() {
             )}
           </div>
         )}
-        <NavMenu onPageChange={onClose} />
+        <NavMenu onPageChange={onClose} menuList={menuList} />
         <Menu className="language-nav" style={{ height: 'auto', backgroundColor: 'transparent' }} mode="inline">
           <Menu.Item key={'language'}>{t('language')}</Menu.Item>
         </Menu>
@@ -181,4 +186,4 @@ function MobileHeader() {
     </>
   );
 }
-export default memo(MobileHeader);
+export default MobileHeader;
