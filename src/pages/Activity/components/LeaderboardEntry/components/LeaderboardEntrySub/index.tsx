@@ -5,10 +5,10 @@ import { TLeaderboardInfoTranslations } from 'graphqlServer/queries/activity/lea
 import moment from 'moment';
 import { LeaderboardEntryJoin } from '../LeaderboardEntryJoin';
 import { LeaderboardRewardList } from 'pages/Activity/components/Leaderboard/components/LeaderboardRewardList';
-import { useCallback, useMemo } from 'react';
+import { useMemo } from 'react';
 import { ActivityTypeEnum } from 'graphqlServer/queries/activity';
 import { LeaderboardSection } from '../LeaderboardSection';
-import { useHistory } from 'react-router-dom';
+import { ActivityRichText } from 'pages/Activity/components/common/ActivityRichText';
 
 export type TLeaderboardEntrySubProps = {
   activity: ILeaderboardActivity;
@@ -22,22 +22,6 @@ export const LeaderboardEntrySub = ({ activity }: TLeaderboardEntrySubProps) => 
     [activity.info.rewardList],
   );
 
-  const history = useHistory();
-  const onClick = useCallback(
-    (event: any) => {
-      try {
-        if (event.target.tagName.toLowerCase() === 'a') {
-          event.preventDefault();
-          const link = event.target;
-          history.push(link.attributes['href'].value);
-        }
-      } catch (error) {
-        console.log(error, '===err');
-      }
-    },
-    [history],
-  );
-
   if (activity.type !== ActivityTypeEnum.Leaderboard) return <></>;
 
   return (
@@ -48,10 +32,7 @@ export const LeaderboardEntrySub = ({ activity }: TLeaderboardEntrySubProps) => 
       </div>
 
       {t('description') && (
-        <div
-          onClick={onClick}
-          className="leaderboard-entry-sub-description"
-          dangerouslySetInnerHTML={{ __html: t('description') || '' }}></div>
+        <ActivityRichText className="leaderboard-entry-sub-description" innerHTML={t('description') || ''} />
       )}
 
       <div className="leaderboard-entry-sub-period">
@@ -72,9 +53,7 @@ export const LeaderboardEntrySub = ({ activity }: TLeaderboardEntrySubProps) => 
       <div className="leaderboard-entry-rule-section">
         <div className="leaderboard-entry-rule-section-title">{t('ruleSectionTitle')}</div>
         {t('ruleContent') && (
-          <div
-            className="leaderboard-entry-rule-section-content"
-            dangerouslySetInnerHTML={{ __html: t('ruleContent') || '' }}></div>
+          <ActivityRichText className="leaderboard-entry-rule-section-content" innerHTML={t('ruleContent') || ''} />
         )}
       </div>
     </LeaderboardSection>

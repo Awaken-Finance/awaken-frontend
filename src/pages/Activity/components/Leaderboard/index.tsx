@@ -17,6 +17,7 @@ import { useEffectOnce } from 'react-use';
 import { getActivityJoinStatus } from 'api/utils/activity';
 import { ZERO } from 'constants/misc';
 import { useMobile } from 'utils/isMobile';
+import { ActivityRichText } from '../common/ActivityRichText';
 
 export type TLeaderboardProps = {
   activity: ILeaderboardActivity;
@@ -121,9 +122,7 @@ export const Leaderboard = ({ activity }: TLeaderboardProps) => {
           <div className="leaderboard-rule-section">
             <div className="leaderboard-rule-section-title">{t('ruleSectionTitle')}</div>
             {t('ruleContent') && (
-              <div
-                className="leaderboard-rule-section-content"
-                dangerouslySetInnerHTML={{ __html: t('ruleContent') || '' }}></div>
+              <ActivityRichText className="leaderboard-rule-section-content" innerHTML={t('ruleContent') || ''} />
             )}
           </div>
         </LeaderboardSection>

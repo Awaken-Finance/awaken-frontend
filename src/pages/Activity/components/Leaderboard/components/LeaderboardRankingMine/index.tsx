@@ -119,7 +119,7 @@ export const LeaderboardRankingMine = ({ activity, status, className, info, list
             <div className="leaderboard-ranking-mine-detail-box-title">{t('totalVolumeLabel')}</div>
             <div className="leaderboard-ranking-mine-detail-box-content">{`${
               activity.info.pointUnit || ''
-            }${formatPriceUSD(info?.totalPoint || '')}`}</div>
+            }${formatPriceUSD(info?.totalPoint || '0')}`}</div>
           </div>
 
           <div className="leaderboard-ranking-mine-detail-box">
