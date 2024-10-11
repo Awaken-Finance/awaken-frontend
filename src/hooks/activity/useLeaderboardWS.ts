@@ -2,7 +2,12 @@ import { useCallback, useEffect, useState } from 'react';
 import SignalR from 'socket/signalr';
 import { TLeaderboardRankingItem } from 'types/activity';
 
-export const useLeaderboardWS = (isInit: boolean, activityId: number | string) => {
+export type TUseLeaderboardWSParams = {
+  isInit: boolean;
+  activityId: number | string;
+  onUpdate?: () => void;
+};
+export const useLeaderboardWS = ({ isInit, activityId }: TUseLeaderboardWSParams) => {
   const [socket, setSocket] = useState<SignalR | null>(null);
 
   useEffect(() => {
