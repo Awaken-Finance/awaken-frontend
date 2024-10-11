@@ -8,11 +8,14 @@ import { getActivityMyRanking, getActivityRankingList } from 'api/utils/activity
 import { TLeaderboardRankingItem, TLeaderboardRankingMine } from 'types/activity';
 import { useConnectWallet } from '@aelf-web-login/wallet-adapter-react';
 import { useLeaderboardWS } from 'hooks/activity/useLeaderboardWS';
+import { parseUrl } from 'query-string';
 
 export type TLeaderboardCountdownProps = {
   activity: ILeaderboardActivity;
   status: ActivityStatusEnum;
 };
+
+const INFO_REFRESH_INTERVAL_LIST = [5, 10, 15, 20, 30];
 
 export const LeaderboardRanking = ({ activity, status }: TLeaderboardCountdownProps) => {
   const { walletInfo } = useConnectWallet();
@@ -39,8 +42,27 @@ export const LeaderboardRanking = ({ activity, status }: TLeaderboardCountdownPr
   initMyRankingInfoRef.current = initMyRankingInfo;
 
   useEffect(() => {
-    initMyRankingInfo();
-  }, [initMyRankingInfo]);
+    if (!walletInfo?.address) return;
+
+    initMyRankingInfoRef.current();
+    let intervalTimer: NodeJS.Timeout;
+    const timerList = INFO_REFRESH_INTERVAL_LIST.map((item, idx) =>
+      setTimeout(() => {
+        initMyRankingInfoRef.current();
+        if (INFO_REFRESH_INTERVAL_LIST.length - 1 === idx) {
+          intervalTimer = setInterval(() => {
+            initMyRankingInfoRef.current();
+          }, 1000 * 60);
+        }
+      }, item * 1000),
+    );
+    return () => {
+      timerList.forEach((item) => {
+        item && clearTimeout(item);
+      });
+      intervalTimer && clearInterval(intervalTimer);
+    };
+  }, [walletInfo?.address]);
 
   const [apiList, setApiList] = useState<TLeaderboardRankingItem[]>();
   const [isInit, setIsInit] = useState(false);
@@ -83,10 +105,26 @@ export const LeaderboardRanking = ({ activity, status }: TLeaderboardCountdownPr
     initMyRankingInfoRef.current();
   }, [wsList]);
 
+  useEffect(() => {
+    if (!list?.length) return;
+    const url = window.location.href;
+    const parsedQuery = parseUrl(url);
+    if (parsedQuery?.query?.anchor !== 'list') return;
+    setTimeout(() => {
+      const element = document.getElementById('list');
+      if (element) {
+        element.scrollIntoView({
+          behavior: 'smooth',
+          block: 'start',
+        });
+      }
+    }, 1000);
+  }, [list]);
+
   if (status === ActivityStatusEnum.Preparation) return <></>;
 
   return (
-    <div className="leaderboard-ranking">
+    <div className="leaderboard-ranking" id="list">
       {rankingInfo && (
         <LeaderboardRankingMine
           className="leaderboard-ranking-mine-section"

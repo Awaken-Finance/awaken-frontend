@@ -17,12 +17,14 @@ export const LeaderboardEntry = ({ activity }: TLeaderboardEntryProps) => {
 
   return (
     <div className="leaderboard-entry-page" style={{ backgroundColor: activity.info.backgroundColor }}>
-      {activity.info.backgroundImage && (
-        <S3Image className="leaderboard-background-image" uri={activity.info.backgroundImage?.filename_disk} />
-      )}
-      {activity.info.decorativeImage && (
-        <S3Image className="leaderboard-decorative-image" uri={activity.info.decorativeImage?.filename_disk} />
-      )}
+      <div className="leaderboard-image-wrap">
+        {activity.info.backgroundImage && (
+          <S3Image className="leaderboard-background-image" uri={activity.info.backgroundImage?.filename_disk} />
+        )}
+        {activity.info.decorativeImage && (
+          <S3Image className="leaderboard-decorative-image" uri={activity.info.decorativeImage?.filename_disk} />
+        )}
+      </div>
 
       <div className="leaderboard-entry-content">
         <div className="leaderboard-entry-hero-section">

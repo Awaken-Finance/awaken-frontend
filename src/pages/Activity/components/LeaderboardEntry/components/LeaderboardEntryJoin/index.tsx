@@ -1,6 +1,6 @@
 import { ILeaderboardActivity } from 'utils/activity';
 import './styles.less';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 import { useCmsTranslations } from 'hooks/cms';
 import { TLeaderboardInfoTranslations } from 'graphqlServer/queries/activity/leaderboard';
@@ -38,6 +38,8 @@ export const LeaderboardEntryJoin = ({ activity, className }: TLeaderboardEntryC
     startTime: activity.startTime,
     endTime: activity.endTime,
   });
+  const statusRef = useRef(status);
+  statusRef.current = status;
 
   const isConnected = useIsConnected();
   const { isLocking, walletInfo, walletType } = useConnectWallet();
@@ -181,7 +183,9 @@ export const LeaderboardEntryJoin = ({ activity, className }: TLeaderboardEntryC
     } finally {
       setIsLoading(false);
       setIsJoined(true);
-      history.push(`/activity/${activity.pageId}`);
+      if (statusRef.current === ActivityStatusEnum.Execution) {
+        history.push(`/activity/${activity.pageId}`);
+      }
     }
   }, [
     activity.info.signPlainText,

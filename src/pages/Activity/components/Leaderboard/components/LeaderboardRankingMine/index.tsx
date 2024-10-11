@@ -80,9 +80,9 @@ export const LeaderboardRankingMine = ({ activity, status, className, info, list
     return {
       preRewardRanking,
       percent: ZERO.eq(preTotalPoint) ? 0 : ZERO.plus(info.totalPoint).div(preTotalPoint).times(100).dp(2).toNumber(),
-      distance: `${t('distanceToPrefix')}${preRewardRanking}: ${activity.info.pointUnit || ''}${formatPriceUSD(
+      distance: `${t('distanceToPrefix')}${preRewardRanking}: ${activity.info.pointPrefix || ''}${formatPriceUSD(
         diffPoint,
-      )}`,
+      )}${activity.info.pointUnit || ''}`,
       rewards: (() => {
         const rewardInfo = rewardsMap[preRewardRanking];
         if (!rewardInfo) return '';
@@ -118,8 +118,8 @@ export const LeaderboardRankingMine = ({ activity, status, className, info, list
           <div className="leaderboard-ranking-mine-detail-box">
             <div className="leaderboard-ranking-mine-detail-box-title">{t('totalVolumeLabel')}</div>
             <div className="leaderboard-ranking-mine-detail-box-content">{`${
-              activity.info.pointUnit || ''
-            }${formatPriceUSD(info?.totalPoint || '0')}`}</div>
+              activity.info.pointPrefix || ''
+            }${formatPriceUSD(info?.totalPoint || '0')}${activity.info.pointUnit || ''}`}</div>
           </div>
 
           <div className="leaderboard-ranking-mine-detail-box">

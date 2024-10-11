@@ -70,7 +70,9 @@ export const LeaderboardRankingList = ({ activity, list }: TLeaderboardRankingLi
         width: 325,
         key: 'totalVolume',
         dataIndex: 'totalPoint',
-        render: (val: number) => <div>{`${activity.info.pointUnit || ''}${formatPriceUSD(val)}`}</div>,
+        render: (val: number) => (
+          <div>{`${activity.info.pointPrefix || ''}${formatPriceUSD(val)}${activity.info.pointUnit || ''}`}</div>
+        ),
       },
       {
         title: t('rankingChangeLabel'),
@@ -93,7 +95,7 @@ export const LeaderboardRankingList = ({ activity, list }: TLeaderboardRankingLi
         },
       },
     ],
-    [activity.info.pointUnit, getCmsTranslations, rewardsMap, t],
+    [activity.info.pointPrefix, activity.info.pointUnit, getCmsTranslations, rewardsMap, t],
   );
 
   const dataSource = useMemo(() => list.slice(3), [list]);
@@ -101,7 +103,7 @@ export const LeaderboardRankingList = ({ activity, list }: TLeaderboardRankingLi
     () =>
       list.slice(0, 3).map((item) => ({
         address: shortenAddress(formatDefaultAddress(item.address || ''), 8),
-        volume: `${activity.info.pointUnit || ''}${formatPriceUSD(item.totalPoint)}`,
+        volume: `${activity.info.pointPrefix || ''}${formatPriceUSD(item.totalPoint)}${activity.info.pointUnit || ''}`,
         rewards: (() => {
           const rewardInfo = rewardsMap[item.ranking];
           if (!rewardInfo) return '-';
@@ -113,7 +115,7 @@ export const LeaderboardRankingList = ({ activity, list }: TLeaderboardRankingLi
           return rewardDescription || '';
         })(),
       })),
-    [activity.info.pointUnit, getCmsTranslations, list, rewardsMap],
+    [activity.info.pointPrefix, activity.info.pointUnit, getCmsTranslations, list, rewardsMap],
   );
 
   return (

@@ -65,12 +65,14 @@ export const Leaderboard = ({ activity }: TLeaderboardProps) => {
 
   return (
     <div className="leaderboard-page">
-      {activity.info.backgroundImage && (
-        <S3Image className="leaderboard-background-image" uri={activity.info.backgroundImage?.filename_disk} />
-      )}
-      {activity.info.decorativeImage && (
-        <S3Image className="leaderboard-decorative-image" uri={activity.info.decorativeImage?.filename_disk} />
-      )}
+      <div className="leaderboard-image-wrap">
+        {activity.info.backgroundImage && (
+          <S3Image className="leaderboard-background-image" uri={activity.info.backgroundImage?.filename_disk} />
+        )}
+        {activity.info.decorativeImage && (
+          <S3Image className="leaderboard-decorative-image" uri={activity.info.decorativeImage?.filename_disk} />
+        )}
+      </div>
 
       <div className="leaderboard-page-content">
         <div className="leaderboard-page-header">
