@@ -63,10 +63,10 @@ export const LeaderboardRankingMine = ({ activity, status, className, info, list
         if (!rewardInfo) return undefined;
         if (!rewardInfo.isShare) return `$${rewardInfo.reward}`;
 
-        return `${t('expectRewardsPrefix') || ''}$${actualRewardsMap[info?.ranking] || '0'}`;
+        return `$${actualRewardsMap[info?.ranking] || '0'}`;
       })(),
     };
-  }, [actualRewardsMap, info, rewardsMap, t]);
+  }, [actualRewardsMap, info, rewardsMap]);
 
   const preRewardInfo = useMemo(() => {
     if (!info)
@@ -90,7 +90,7 @@ export const LeaderboardRankingMine = ({ activity, status, className, info, list
         if (!rewardInfo) return '';
         if (!rewardInfo.isShare) return `$${rewardInfo.reward}`;
 
-        return `${t('expectRewardsPrefix') || ''}$${actualRewardsMap[preRewardRanking]}`;
+        return `$${actualRewardsMap[preRewardRanking]}`;
       })(),
     };
   }, [activity, actualRewardsMap, info, list, rewardsMap, t]);

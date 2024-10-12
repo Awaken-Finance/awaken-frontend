@@ -79,6 +79,7 @@ export const LeaderboardEntrySub = ({ activity }: TLeaderboardEntrySubProps) => 
         <div className="leaderboard-entry-sub-header-tip">{t('labelTag')}</div>
         {status !== ActivityStatusEnum.Preparation &&
           isConnected &&
+          isJoined &&
           (isMobile ? (
             <IconLeaderboard onClick={onLinkClick} className="leaderboard-entry-sub-link" />
           ) : (
