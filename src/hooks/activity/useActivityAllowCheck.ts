@@ -22,6 +22,7 @@ export const useActivityAllowCheck = (activity?: TActivity) => {
     if (activity.isDev && !isWhitelist) return false;
     const isPublished = moment(activity.publishTime).diff(moment()) <= 0;
     if (isPublished) return true;
+    if (isWhitelist) return true;
 
     return false;
   }, [activity, walletInfo?.address]);
