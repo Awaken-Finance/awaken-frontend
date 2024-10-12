@@ -5,7 +5,11 @@ import { useMenuList } from './hooks/useMenuList';
 
 export default function Header() {
   const isMobile = useMobile();
-  const menuList = useMenuList();
+  const { activity, menuList } = useMenuList();
 
-  return isMobile ? <MobileHeader menuList={menuList} /> : <PcHeader menuList={menuList} />;
+  return isMobile ? (
+    <MobileHeader menuList={menuList} activity={activity} />
+  ) : (
+    <PcHeader menuList={menuList} activity={activity} />
+  );
 }

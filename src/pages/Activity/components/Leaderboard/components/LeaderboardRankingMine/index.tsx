@@ -88,7 +88,7 @@ export const LeaderboardRankingMine = ({ activity, status, className, info, list
       rewards: (() => {
         const rewardInfo = rewardsMap[preRewardRanking];
         if (!rewardInfo) return '';
-        if (!rewardInfo.isShare) return rewardInfo.reward;
+        if (!rewardInfo.isShare) return `$${rewardInfo.reward}`;
 
         return `${t('expectRewardsPrefix') || ''}$${actualRewardsMap[preRewardRanking]}`;
       })(),

@@ -58,7 +58,7 @@ export const useActivityEntry = () => {
     endTime: activity?.unpublishTime,
   });
 
-  return useMemo<MenuItem | undefined>(() => {
+  const validActivity = useMemo(() => {
     if (!activity) return undefined;
     if (status === ActivityStatusEnum.Completion) return undefined;
     if (status === ActivityStatusEnum.Preparation) {
@@ -66,11 +66,21 @@ export const useActivityEntry = () => {
       if (!activity.whitelist || !address) return undefined;
       if (!activity.whitelist.map((item) => getValidAddress(item)).includes(address)) return undefined;
     }
+    return activity;
+  }, [activity, status, walletInfo?.address]);
+
+  const menuItem = useMemo<MenuItem | undefined>(() => {
+    if (!validActivity) return undefined;
 
     return {
       key: 'activity',
       title: '🔥 Event',
-      path: `/activity/${activity.pageId}`,
+      path: `/activity/${validActivity.pageId}`,
     };
-  }, [activity, status, walletInfo?.address]);
+  }, [validActivity]);
+
+  return {
+    activity: validActivity,
+    menuItem,
+  };
 };

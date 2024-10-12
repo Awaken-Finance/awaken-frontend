@@ -21,12 +21,15 @@ import { useConnectWallet } from '@aelf-web-login/wallet-adapter-react';
 import { DepositTipModal, DepositTipModalInterface } from 'Modals/DepositTipModal';
 import { useIsDepositPath } from 'hooks/route';
 import { MenuItem } from 'components/Header/router';
+import { TActivityBase } from 'graphqlServer/queries/activity/common';
+import { ActivityNotice } from '../ActivityNotice';
 
 export type TMobileHeaderProps = {
   menuList: MenuItem[];
+  activity?: TActivityBase;
 };
 
-function MobileHeader({ menuList }: TMobileHeaderProps) {
+function MobileHeader({ menuList, activity }: TMobileHeaderProps) {
   const { t } = useTranslation();
   const history = useHistory();
   const location = useLocation();
@@ -101,24 +104,27 @@ function MobileHeader({ menuList }: TMobileHeaderProps) {
   return (
     <>
       <Layout.Header className="site-header-mobile">
-        <IconLogo className="mobile-logo" onClick={() => history.push('/')} />
-        <div
-          className={clsx({
-            'header-right': true,
-            'header-right-logined': isConnected,
-          })}>
-          {isConnected && (
-            <CommonButton
-              className={clsx(['signup-btn', isDepositPath && 'deposit-menu-disable'])}
-              type="ghost"
-              style={{ fontWeight: '600' }}
-              onClick={onDepositClick}>
-              {t('deposit')}
-            </CommonButton>
-          )}
-          <Network overlayClassName="network-wrap-mobile" />
-          {renderLoginPart()}
-          <CommonButton type="text" icon={<IconMenu />} onClick={onChangeVisible} />
+        <ActivityNotice activity={activity} />
+        <div className="site-header-mobile-content">
+          <IconLogo className="mobile-logo" onClick={() => history.push('/')} />
+          <div
+            className={clsx({
+              'header-right': true,
+              'header-right-logined': isConnected,
+            })}>
+            {isConnected && (
+              <CommonButton
+                className={clsx(['signup-btn', isDepositPath && 'deposit-menu-disable'])}
+                type="ghost"
+                style={{ fontWeight: '600' }}
+                onClick={onDepositClick}>
+                {t('deposit')}
+              </CommonButton>
+            )}
+            <Network overlayClassName="network-wrap-mobile" />
+            {renderLoginPart()}
+            <CommonButton type="text" icon={<IconMenu />} onClick={onChangeVisible} />
+          </div>
         </div>
       </Layout.Header>
       <DepositTipModal ref={depositTipModalRef} />

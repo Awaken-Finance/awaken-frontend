@@ -1,7 +1,10 @@
 import { gql } from '@apollo/client';
 import { CmsStatusEnum } from 'graphqlServer/types/cms';
+import { CMS_FILE_FRAGMENT, TCmsFile } from '../index';
 
 export const ACTIVITY_BASE_FRAGMENT = gql`
+  ${CMS_FILE_FRAGMENT}
+
   fragment activityBaseFields on activityList {
     id
     pageId
@@ -12,6 +15,13 @@ export const ACTIVITY_BASE_FRAGMENT = gql`
     publishTime
     unpublishTime
     isMain
+    noticeImage {
+      ...cmsFileFields
+    }
+    noticeMobileImage {
+      ...cmsFileFields
+    }
+    noticeBackgroundColor
     index
     isDev
     whitelist
@@ -28,6 +38,9 @@ export type TActivityBase = {
   publishTime: string;
   unpublishTime: string;
   isMain: boolean;
+  noticeImage?: TCmsFile;
+  noticeMobileImage?: TCmsFile;
+  noticeBackgroundColor?: string;
   index: number;
   isDev: boolean;
   whitelist?: string[];
