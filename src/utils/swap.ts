@@ -275,16 +275,14 @@ export async function swapSuccess({
   }
 
   if (limitLogs && limitLogs.length) {
-    const limitLog = limitLogs[0];
-    if (limitLog.symbolOut === tokenA?.symbol) {
-      console.log(1);
-      amountIn = amountIn.plus(limitLog.amountInFilled);
-      amountOut = amountOut.plus(limitLog.amountOutFilled);
-    } else {
-      console.log(2);
-      amountIn = amountIn.plus(limitLog.amountOutFilled);
-      amountOut = amountOut.plus(limitLog.amountInFilled);
-    }
+    limitLogs.forEach((item) => {
+      if (item.symbolIn === tokenB?.symbol) {
+        amountOut = amountOut.plus(item.amountInFilled);
+      }
+      if (item.symbolOut === tokenA?.symbol) {
+        amountIn = amountIn.plus(item.amountOutFilled);
+      }
+    });
   }
 
   try {
