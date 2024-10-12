@@ -5,7 +5,7 @@ import { TLeaderboardInfoTranslations } from 'graphqlServer/queries/activity/lea
 import moment from 'moment';
 import { LeaderboardEntryJoin } from '../LeaderboardEntryJoin';
 import { LeaderboardRewardList } from 'pages/Activity/components/Leaderboard/components/LeaderboardRewardList';
-import { useCallback, useMemo } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { ActivityTypeEnum } from 'graphqlServer/queries/activity';
 import { LeaderboardSection } from '../LeaderboardSection';
 import { ActivityRichText } from 'pages/Activity/components/common/ActivityRichText';
@@ -14,6 +14,9 @@ import { useMobile } from 'utils/isMobile';
 import { useHistory } from 'react-router-dom';
 import { IconLeaderboard } from 'assets/icons';
 import { ActivityStatusEnum, useActivityStatus } from 'pages/Activity/hooks/common';
+import { useConnectWallet } from '@aelf-web-login/wallet-adapter-react';
+import { getActivityJoinStatus } from 'api/utils/activity';
+import { useIsConnected } from 'hooks/useLogin';
 
 export type TLeaderboardEntrySubProps = {
   activity: ILeaderboardActivity;
@@ -38,6 +41,35 @@ export const LeaderboardEntrySub = ({ activity }: TLeaderboardEntrySubProps) => 
     history.push(`/activity/${activity.pageId}?anchor=list`);
   }, [activity.pageId, history]);
 
+  const { walletInfo } = useConnectWallet();
+  const isConnected = useIsConnected();
+  const [isJoined, setIsJoined] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const init = useCallback(async () => {
+    const address = walletInfo?.address;
+    if (!address) {
+      setIsLoading(false);
+      return;
+    }
+
+    setIsLoading(true);
+    try {
+      const { status: _status } = await getActivityJoinStatus({
+        activityId: Number(activity.serviceId || 0),
+        address,
+      });
+
+      setIsJoined(!!_status);
+    } catch (error) {
+      console.log('initMyRankingInfo error', error);
+    } finally {
+      setIsLoading(false);
+    }
+  }, [activity.serviceId, walletInfo?.address]);
+  useEffect(() => {
+    init();
+  }, [init]);
+
   if (activity.type !== ActivityTypeEnum.Leaderboard) return <></>;
 
   return (
@@ -46,6 +78,7 @@ export const LeaderboardEntrySub = ({ activity }: TLeaderboardEntrySubProps) => 
         <div className="leaderboard-entry-sub-header-title">{t('activityName')}</div>
         <div className="leaderboard-entry-sub-header-tip">{t('labelTag')}</div>
         {status !== ActivityStatusEnum.Preparation &&
+          isConnected &&
           (isMobile ? (
             <IconLeaderboard onClick={onLinkClick} className="leaderboard-entry-sub-link" />
           ) : (
@@ -71,7 +104,13 @@ export const LeaderboardEntrySub = ({ activity }: TLeaderboardEntrySubProps) => 
           .format('YYYY-MM-DD HH:mm')} UTC`}</span>
       </div>
 
-      <LeaderboardEntryJoin className="leaderboard-entry-join-section" activity={activity} status={status} />
+      <LeaderboardEntryJoin
+        className="leaderboard-entry-join-section"
+        activity={activity}
+        status={status}
+        isJoined={isJoined}
+        isLoading={isLoading}
+      />
 
       <div className="leaderboard-entry-reward-section">
         <div className="leaderboard-entry-reward-section-title">{t('rewardSectionTitle')}</div>
