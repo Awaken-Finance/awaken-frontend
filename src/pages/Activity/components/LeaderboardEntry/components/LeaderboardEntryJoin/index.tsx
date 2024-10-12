@@ -19,9 +19,10 @@ import { useGetActivitySign } from 'hooks/activity/useGetActivitySign';
 import { IS_MAIN_NET } from 'constants/index';
 import { getValidAddress } from 'utils/wallet';
 
-export type TLeaderboardEntryCountDownProps = {
+export type TLeaderboardEntryJoinProps = {
   activity: ILeaderboardActivity;
   className?: string;
+  status: ActivityStatusEnum;
 };
 
 type TActivityStatusInfo = {
@@ -29,15 +30,11 @@ type TActivityStatusInfo = {
   endTime: string;
 };
 
-export const LeaderboardEntryJoin = ({ activity, className }: TLeaderboardEntryCountDownProps) => {
+export const LeaderboardEntryJoin = ({ activity, className, status }: TLeaderboardEntryJoinProps) => {
   const t = useCmsTranslations<TLeaderboardInfoTranslations>(activity.info.translations);
   const { t: localT } = useTranslation();
   const getActivitySign = useGetActivitySign();
 
-  const status = useActivityStatus({
-    startTime: activity.startTime,
-    endTime: activity.endTime,
-  });
   const statusRef = useRef(status);
   statusRef.current = status;
 

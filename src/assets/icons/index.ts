@@ -55,6 +55,7 @@ import { ReactComponent as IconSwapHover } from './icon-swap-hover.svg';
 import { ReactComponent as IconPriceSwitch } from './icon-price-switch.svg';
 import { ReactComponent as IconWallet } from './icon-wallet.svg';
 import { ReactComponent as IconLeaderboardCrown } from './icon-leaderboard-crown.svg';
+import { ReactComponent as IconLeaderboard } from './icon-leaderboard.svg';
 import { ReactComponent as IconMedal1 } from './icon-medal-1.svg';
 import { ReactComponent as IconMedal2 } from './icon-medal-2.svg';
 import { ReactComponent as IconMedal3 } from './icon-medal-3.svg';
@@ -118,6 +119,7 @@ export {
   IconPriceSwitch,
   IconWallet,
   IconLeaderboardCrown,
+  IconLeaderboard,
   IconMedal1,
   IconMedal2,
   IconMedal3,

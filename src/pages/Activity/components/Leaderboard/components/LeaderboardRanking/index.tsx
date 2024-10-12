@@ -9,6 +9,7 @@ import { TLeaderboardRankingItem, TLeaderboardRankingMine } from 'types/activity
 import { useConnectWallet } from '@aelf-web-login/wallet-adapter-react';
 import { useLeaderboardWS } from 'hooks/activity/useLeaderboardWS';
 import { parseUrl } from 'query-string';
+import { useMobile } from 'utils/isMobile';
 
 export type TLeaderboardCountdownProps = {
   activity: ILeaderboardActivity;
@@ -17,8 +18,12 @@ export type TLeaderboardCountdownProps = {
 
 const INFO_REFRESH_INTERVAL_LIST = [5, 10, 15, 20, 30];
 
+const LIST_OFFSET_TOP = 80;
+const LIST_MOBILE_OFFSET_TOP = 20;
+
 export const LeaderboardRanking = ({ activity, status }: TLeaderboardCountdownProps) => {
   const { walletInfo } = useConnectWallet();
+  const isMobile = useMobile();
 
   const [myRankingInfo, setMyRankingInfo] = useState<TLeaderboardRankingMine>();
   const initMyRankingInfo = useCallback(async () => {
@@ -105,26 +110,32 @@ export const LeaderboardRanking = ({ activity, status }: TLeaderboardCountdownPr
     initMyRankingInfoRef.current();
   }, [wsList]);
 
+  const isScrolledRef = useRef(false);
   useEffect(() => {
-    if (!list?.length) return;
+    if (!list?.length || isScrolledRef.current) return;
+    isScrolledRef.current = true;
+
     const url = window.location.href;
     const parsedQuery = parseUrl(url);
     if (parsedQuery?.query?.anchor !== 'list') return;
     setTimeout(() => {
-      const element = document.getElementById('list');
-      if (element) {
-        element.scrollIntoView({
-          behavior: 'smooth',
-          block: 'start',
-        });
-      }
-    }, 1000);
-  }, [list]);
+      const element = document.getElementById('leaderboardRankingList');
+      if (!element) return;
+      const rect = element.getBoundingClientRect();
+
+      const absoluteElementTop = rect.top + window.scrollY - (isMobile ? LIST_MOBILE_OFFSET_TOP : LIST_OFFSET_TOP);
+
+      window.scrollTo({
+        top: absoluteElementTop,
+        behavior: 'smooth',
+      });
+    }, 500);
+  }, [isMobile, list]);
 
   if (status === ActivityStatusEnum.Preparation) return <></>;
 
   return (
-    <div className="leaderboard-ranking" id="list">
+    <div className="leaderboard-ranking">
       {rankingInfo && (
         <LeaderboardRankingMine
           className="leaderboard-ranking-mine-section"

@@ -119,7 +119,7 @@ export const LeaderboardRankingList = ({ activity, list }: TLeaderboardRankingLi
   );
 
   return (
-    <LeaderboardSection className="leaderboard-ranking-list">
+    <LeaderboardSection className="leaderboard-ranking-list" id="leaderboardRankingList">
       <div className="leaderboard-ranking-list-title">{t('leaderboardTitle')}</div>
       <div className="leaderboard-ranking-list-title-header">
         <LeaderboardMedalBox activity={activity} type={2} {...(medalInfoList[1] || {})} />

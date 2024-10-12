@@ -6,7 +6,7 @@ import { TLeaderboardEntryInfoTranslations } from 'graphqlServer/queries/activit
 import { LeaderboardEntrySub } from './components/LeaderboardEntrySub';
 import { useMobile } from 'utils/isMobile';
 import { ActivityRichText } from '../common/ActivityRichText';
-import { useCallback, useEffect } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
 import { TLeaderboardInfoTranslations } from 'graphqlServer/queries/activity/leaderboard';
 
 export type TLeaderboardEntryProps = {
@@ -20,6 +20,8 @@ export const LeaderboardEntry = ({ activity }: TLeaderboardEntryProps) => {
   const t = useCmsTranslations<TLeaderboardEntryInfoTranslations>(activity.info.translations);
   const getCmsTranslations = useGetCmsTranslations();
   const isMobile = useMobile();
+  const isMobileRef = useRef(isMobile);
+  isMobileRef.current = isMobile;
 
   const onRouteClick = useCallback(
     (idx: number) => {
@@ -55,7 +57,8 @@ export const LeaderboardEntry = ({ activity }: TLeaderboardEntryProps) => {
       }
 
       const rect = stickyElement.getBoundingClientRect();
-      if (rect.top <= 60) {
+      const stickyActiveTop = isMobileRef.current ? 1 : 61;
+      if (rect.top < stickyActiveTop) {
         stickyElement.classList.add('sticky-active');
       } else {
         stickyElement.classList.remove('sticky-active');
@@ -119,7 +122,7 @@ export const LeaderboardEntry = ({ activity }: TLeaderboardEntryProps) => {
           </div>
         </div>
 
-        <div className="leaderboard-entry-sub-route" id="leaderboard-entry-sub-route">
+        <div className="leaderboard-entry-sub-route">
           <div className="leaderboard-entry-sub-route-content">
             {activity.info.children.map((item, idx) => (
               <div
