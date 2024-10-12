@@ -8,6 +8,7 @@ import zh_TW from './languages/zh_TW.json';
 import { LANGUAGE, LOCAL_LANGUAGE_LIST, DEFAULT_LANGUAGE } from './config';
 
 import moment from 'moment';
+import 'moment/locale/zh-tw';
 import './moment/zh-cn';
 const resources = { en, zh, zh_TW };
 function initLanguage() {
@@ -50,7 +51,7 @@ export function useLanguage(): {
         if (value === 'zh') {
           moment.locale('zh-cn');
         } else {
-          moment.locale(value);
+          moment.locale(value.replace('_', '-'));
         }
         i18n.changeLanguage(value);
         localStorage.setItem(LANGUAGE, value);

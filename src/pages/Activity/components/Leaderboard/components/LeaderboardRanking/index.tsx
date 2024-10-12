@@ -28,10 +28,7 @@ export const LeaderboardRanking = ({ activity, status }: TLeaderboardCountdownPr
   const [myRankingInfo, setMyRankingInfo] = useState<TLeaderboardRankingMine>();
   const initMyRankingInfo = useCallback(async () => {
     const address = walletInfo?.address;
-    if (!address) {
-      setMyRankingInfo(undefined);
-      return;
-    }
+    if (!address) return;
 
     try {
       const result = await getActivityMyRanking({
@@ -47,7 +44,10 @@ export const LeaderboardRanking = ({ activity, status }: TLeaderboardCountdownPr
   initMyRankingInfoRef.current = initMyRankingInfo;
 
   useEffect(() => {
-    if (!walletInfo?.address) return;
+    if (!walletInfo?.address) {
+      setMyRankingInfo(undefined);
+      return;
+    }
 
     initMyRankingInfoRef.current();
     let intervalTimer: NodeJS.Timeout;

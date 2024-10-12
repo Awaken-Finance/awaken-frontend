@@ -99,9 +99,9 @@ export const LeaderboardEntrySub = ({ activity }: TLeaderboardEntrySubProps) => 
 
       <div className="leaderboard-entry-sub-period">
         <span>{`${t('periodTitle')}:`}</span>
-        <span>{`${moment(activity.startTime).utc().format('YYYY-MM-DD HH:mm')} -- ${moment(activity.endTime)
+        <span>{`${moment(activity.startTime).utc().format('h:mm, D MMMM')} - ${moment(activity.endTime)
           .utc()
-          .format('YYYY-MM-DD HH:mm')} UTC`}</span>
+          .format('h:mm, D MMMM')} (UTC)`}</span>
       </div>
 
       <LeaderboardEntryJoin

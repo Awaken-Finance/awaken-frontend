@@ -10,7 +10,6 @@ export const LEADERBOARD_REWARD_TRANSLATIONS_FRAGMENT = gql`
     title
     description
     subDescription
-    expected
   }
 `;
 
@@ -18,7 +17,6 @@ export type TLeaderboardRewardTranslations = {
   title: string;
   description: string;
   subDescription?: string;
-  expected: string;
 };
 
 export const LEADERBOARD_REWARD_List_FRAGMENT = gql`

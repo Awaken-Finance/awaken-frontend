@@ -38,6 +38,7 @@ export const LEADERBOARD_INFO_TRANSLATIONS_FRAGMENT = gql`
     totalVolumeLabel
     rankingChangeLabel
     rewardsLabel
+    expectRewardsPrefix
   }
 `;
 
@@ -71,6 +72,7 @@ export type TLeaderboardInfoTranslations = {
   totalVolumeLabel: string;
   rankingChangeLabel: string;
   rewardsLabel: string;
+  expectRewardsPrefix: string;
 };
 
 export const LEADERBOARD_INFO_LIST_FRAGMENT = gql`

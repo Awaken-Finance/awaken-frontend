@@ -6,8 +6,9 @@ import { TLeaderboardEntryInfoTranslations } from 'graphqlServer/queries/activit
 import { LeaderboardEntrySub } from './components/LeaderboardEntrySub';
 import { useMobile } from 'utils/isMobile';
 import { ActivityRichText } from '../common/ActivityRichText';
-import { useCallback, useEffect, useRef } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { TLeaderboardInfoTranslations } from 'graphqlServer/queries/activity/leaderboard';
+import clsx from 'clsx';
 
 export type TLeaderboardEntryProps = {
   activity: ILeaderboardEntryActivity;
@@ -36,9 +37,14 @@ export const LeaderboardEntry = ({ activity }: TLeaderboardEntryProps) => {
         top: absoluteElementTop,
         behavior: 'smooth',
       });
+      setTimeout(() => {
+        setSelectIdx(idx);
+      }, 500);
     },
     [isMobile],
   );
+
+  const [selectIdx, setSelectIdx] = useState(0);
 
   useEffect(() => {
     let stickyElement = document.querySelector('.leaderboard-entry-sub-route');
@@ -63,23 +69,14 @@ export const LeaderboardEntry = ({ activity }: TLeaderboardEntryProps) => {
       } else {
         stickyElement.classList.remove('sticky-active');
       }
-      const boundary = rect.height + rect.top;
 
-      let index = undefined;
       for (let i = 0; i < subElements.length; i++) {
         const element = subElements[i];
         const elementRect = element.getBoundingClientRect();
-        if (elementRect.top + elementRect.height >= boundary) {
-          index = i;
+        if (elementRect.top < OFFSET_TOP && elementRect.top + 200 > OFFSET_TOP) {
+          setSelectIdx(i);
           break;
         }
-      }
-      if (index === undefined) index = subElements.length - 1;
-
-      for (let i = 0; i < routeItemElements.length; i++) {
-        const element = routeItemElements[i];
-        if (i === index) element.classList.add('leaderboard-entry-sub-route-item-active');
-        else element.classList.remove('leaderboard-entry-sub-route-item-active');
       }
     };
 
@@ -126,7 +123,10 @@ export const LeaderboardEntry = ({ activity }: TLeaderboardEntryProps) => {
           <div className="leaderboard-entry-sub-route-content">
             {activity.info.children.map((item, idx) => (
               <div
-                className="leaderboard-entry-sub-route-item"
+                className={clsx([
+                  'leaderboard-entry-sub-route-item',
+                  idx === selectIdx && 'leaderboard-entry-sub-route-item-active',
+                ])}
                 key={item.id}
                 onClick={() => {
                   onRouteClick(idx);
