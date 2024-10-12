@@ -1,9 +1,30 @@
 import { gql } from '@apollo/client';
-import { CmsStatusEnum } from 'graphqlServer/types/cms';
+import { CmsStatusEnum, TCmsTranslations } from 'graphqlServer/types/cms';
 import { CMS_FILE_FRAGMENT, TCmsFile } from '../index';
 
-export const ACTIVITY_BASE_FRAGMENT = gql`
+export const ACTIVITY_BASE_TRANSLATIONS_FRAGMENT = gql`
   ${CMS_FILE_FRAGMENT}
+
+  fragment activityListTranslationsFields on activityList_translations {
+    languages_code {
+      code
+    }
+    noticeImage {
+      ...cmsFileFields
+    }
+    noticeMobileImage {
+      ...cmsFileFields
+    }
+  }
+`;
+
+export type TActivityListTranslations = {
+  noticeImage?: TCmsFile;
+  noticeMobileImage?: TCmsFile;
+};
+
+export const ACTIVITY_BASE_FRAGMENT = gql`
+  ${ACTIVITY_BASE_TRANSLATIONS_FRAGMENT}
 
   fragment activityBaseFields on activityList {
     id
@@ -15,22 +36,13 @@ export const ACTIVITY_BASE_FRAGMENT = gql`
     publishTime
     unpublishTime
     isMain
-    noticeImage {
-      ...cmsFileFields
-    }
-    noticeMobileImage {
-      ...cmsFileFields
-    }
-    noticeZhTwImage {
-      ...cmsFileFields
-    }
-    noticeMobileZhTwImage {
-      ...cmsFileFields
-    }
     noticeBackgroundColor
     index
     isDev
     whitelist
+    translations {
+      ...activityListTranslationsFields
+    }
   }
 `;
 
@@ -44,12 +56,9 @@ export type TActivityBase = {
   publishTime: string;
   unpublishTime: string;
   isMain: boolean;
-  noticeImage?: TCmsFile;
-  noticeMobileImage?: TCmsFile;
-  noticeZhTwImage?: TCmsFile;
-  noticeMobileZhTwImage?: TCmsFile;
   noticeBackgroundColor?: string;
   index: number;
   isDev: boolean;
   whitelist?: string[];
+  translations: (TCmsTranslations & TActivityListTranslations)[];
 };
