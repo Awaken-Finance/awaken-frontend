@@ -276,10 +276,10 @@ export async function swapSuccess({
 
   if (limitLogs && limitLogs.length) {
     limitLogs.forEach((item) => {
-      if (item.symbolIn === tokenB?.symbol) {
+      if (item.symbolIn === tokenA?.symbol) {
         amountOut = amountOut.plus(item.amountInFilled);
       }
-      if (item.symbolOut === tokenA?.symbol) {
+      if (item.symbolOut === tokenB?.symbol) {
         amountIn = amountIn.plus(item.amountOutFilled);
       }
     });
