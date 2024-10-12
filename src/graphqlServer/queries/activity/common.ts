@@ -21,6 +21,12 @@ export const ACTIVITY_BASE_FRAGMENT = gql`
     noticeMobileImage {
       ...cmsFileFields
     }
+    noticeZhTwImage {
+      ...cmsFileFields
+    }
+    noticeMobileZhTwImage {
+      ...cmsFileFields
+    }
     noticeBackgroundColor
     index
     isDev
@@ -40,6 +46,8 @@ export type TActivityBase = {
   isMain: boolean;
   noticeImage?: TCmsFile;
   noticeMobileImage?: TCmsFile;
+  noticeZhTwImage?: TCmsFile;
+  noticeMobileZhTwImage?: TCmsFile;
   noticeBackgroundColor?: string;
   index: number;
   isDev: boolean;
