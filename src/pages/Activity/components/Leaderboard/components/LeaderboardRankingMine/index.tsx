@@ -2,7 +2,7 @@ import { ILeaderboardActivity } from 'utils/activity';
 import './styles.less';
 import { IconLeaderboardCrown } from 'assets/icons';
 import { TLeaderboardInfoTranslations } from 'graphqlServer/queries/activity/leaderboard';
-import { useCmsTranslations, useGetCmsTranslations } from 'hooks/cms';
+import { useCmsTranslations } from 'hooks/cms';
 import { LeaderboardExecuteBtn } from '../LeaderboardExecuteBtn';
 import { ActivityStatusEnum } from 'pages/Activity/hooks/common';
 import { LeaderboardProgress } from '../LeaderboardProgress';
@@ -10,8 +10,11 @@ import { LeaderboardSection } from 'pages/Activity/components/LeaderboardEntry/c
 import { TLeaderboardRankingItem, TLeaderboardRankingMine } from 'types/activity';
 import { formatPriceUSD } from 'utils/price';
 import { useMemo } from 'react';
-import { getLeaderboardRewardsMap, getPreRewardRanking } from 'utils/activity/leaderboard';
-import { TLeaderboardRewardTranslations } from 'graphqlServer/queries/activity/leaderboardReward';
+import {
+  getLeaderboardActualRewardsMap,
+  getLeaderboardRewardsMap,
+  getPreRewardRanking,
+} from 'utils/activity/leaderboard';
 import { ZERO } from 'constants/misc';
 import BigNumber from 'bignumber.js';
 
@@ -28,7 +31,6 @@ const INVALID_RANKING_NUMBER = 1001;
 export const LeaderboardRankingMine = ({ activity, status, className, info, list }: TLeaderboardRankingMineProps) => {
   const t = useCmsTranslations<TLeaderboardInfoTranslations>(activity.info.translations);
   const rewardsMap = useMemo(() => getLeaderboardRewardsMap(activity), [activity]);
-  const getCmsTranslations = useGetCmsTranslations();
 
   const isChampion = useMemo(() => info?.ranking === 1, [info?.ranking]);
   const isProgressShow = useMemo(() => !!list.length, [list.length]);
@@ -44,6 +46,11 @@ export const LeaderboardRankingMine = ({ activity, status, className, info, list
     [info?.ranking, rewardsAmount, status],
   );
 
+  const actualRewardsMap = useMemo(
+    () => getLeaderboardActualRewardsMap(activity, list.length),
+    [activity, list.length],
+  );
+
   const renderInfo = useMemo(() => {
     if (!info) return undefined;
     return {
@@ -54,17 +61,12 @@ export const LeaderboardRankingMine = ({ activity, status, className, info, list
       rewards: (() => {
         const rewardInfo = rewardsMap[info?.ranking];
         if (!rewardInfo) return undefined;
-
         if (!rewardInfo.isShare) return `$${rewardInfo.reward}`;
 
-        const rewardDescription = getCmsTranslations<TLeaderboardRewardTranslations>(
-          rewardInfo.translations,
-          'description',
-        );
-        return rewardDescription || '';
+        return `$${actualRewardsMap[info?.ranking] || '0'}`;
       })(),
     };
-  }, [getCmsTranslations, info, rewardsMap]);
+  }, [actualRewardsMap, info, rewardsMap]);
 
   const preRewardInfo = useMemo(() => {
     if (!info)
@@ -79,22 +81,19 @@ export const LeaderboardRankingMine = ({ activity, status, className, info, list
 
     return {
       preRewardRanking,
-      percent: ZERO.plus(info.totalPoint).div(preTotalPoint).times(100).dp(2).toNumber(),
-      distance: `${t('distanceToPrefix')}${preRewardRanking}: ${activity.info.pointUnit || ''}${formatPriceUSD(
+      percent: ZERO.eq(preTotalPoint) ? 0 : ZERO.plus(info.totalPoint).div(preTotalPoint).times(100).dp(2).toNumber(),
+      distance: `${t('distanceToPrefix')}${preRewardRanking}: ${activity.info.pointPrefix || ''}${formatPriceUSD(
         diffPoint,
-      )}`,
+      )}${activity.info.pointUnit || ''}`,
       rewards: (() => {
         const rewardInfo = rewardsMap[preRewardRanking];
         if (!rewardInfo) return '';
+        if (!rewardInfo.isShare) return `$${rewardInfo.reward}`;
 
-        const rewardDescription = getCmsTranslations<TLeaderboardRewardTranslations>(
-          rewardInfo.translations,
-          'expected',
-        );
-        return rewardDescription || '';
+        return `$${actualRewardsMap[preRewardRanking]}`;
       })(),
     };
-  }, [activity, getCmsTranslations, info, list, rewardsMap, t]);
+  }, [activity, actualRewardsMap, info, list, rewardsMap, t]);
 
   return (
     <LeaderboardSection containerClassName={className} className="leaderboard-ranking-mine">
@@ -118,8 +117,8 @@ export const LeaderboardRankingMine = ({ activity, status, className, info, list
           <div className="leaderboard-ranking-mine-detail-box">
             <div className="leaderboard-ranking-mine-detail-box-title">{t('totalVolumeLabel')}</div>
             <div className="leaderboard-ranking-mine-detail-box-content">{`${
-              activity.info.pointUnit || ''
-            }${formatPriceUSD(info?.totalPoint || '0')}`}</div>
+              activity.info.pointPrefix || ''
+            }${formatPriceUSD(info?.totalPoint || '0')}${activity.info.pointUnit || ''}`}</div>
           </div>
 
           <div className="leaderboard-ranking-mine-detail-box">

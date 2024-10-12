@@ -38,6 +38,7 @@ export const LEADERBOARD_INFO_TRANSLATIONS_FRAGMENT = gql`
     totalVolumeLabel
     rankingChangeLabel
     rewardsLabel
+    expectRewardsPrefix
   }
 `;
 
@@ -71,6 +72,7 @@ export type TLeaderboardInfoTranslations = {
   totalVolumeLabel: string;
   rankingChangeLabel: string;
   rewardsLabel: string;
+  expectRewardsPrefix: string;
 };
 
 export const LEADERBOARD_INFO_LIST_FRAGMENT = gql`
@@ -80,6 +82,7 @@ export const LEADERBOARD_INFO_LIST_FRAGMENT = gql`
 
   fragment leaderboardInfoListFields on leaderboardInfoList {
     type
+    pointPrefix
     pointUnit
     participationShowThreshold
     signPlainText
@@ -113,6 +116,7 @@ export type TQueryLeaderboardInfo = {
   mobileMainImage: TCmsFile;
   backgroundImage?: TCmsFile;
   decorativeImage?: TCmsFile;
+  pointPrefix?: string;
   pointUnit?: string;
   participationShowThreshold: number;
   signPlainText: string;

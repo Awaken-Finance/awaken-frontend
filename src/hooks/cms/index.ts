@@ -1,8 +1,9 @@
+import { TCmsFile } from 'graphqlServer';
 import { LanguagesCodeEnum, TCmsTranslations } from 'graphqlServer/types/cms';
 import { useCallback, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 
-export const useCmsTranslations = <T extends Record<string, string> = Record<string, string>>(
+export const useCmsTranslations = <T extends Record<string, string | TCmsFile> = Record<string, string>>(
   list: TCmsTranslations[],
 ) => {
   const {

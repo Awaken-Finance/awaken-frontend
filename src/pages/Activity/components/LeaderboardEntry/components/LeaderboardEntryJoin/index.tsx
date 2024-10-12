@@ -1,11 +1,11 @@
 import { ILeaderboardActivity } from 'utils/activity';
 import './styles.less';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useMemo, useRef, useState } from 'react';
 
 import { useCmsTranslations } from 'hooks/cms';
 import { TLeaderboardInfoTranslations } from 'graphqlServer/queries/activity/leaderboard';
 import clsx from 'clsx';
-import { ActivityStatusEnum, useActivityStatus } from 'pages/Activity/hooks/common';
+import { ActivityStatusEnum } from 'pages/Activity/hooks/common';
 import { ActivityCountdown } from 'pages/Activity/components/common/ActivityCountdown';
 import { useIsConnected } from 'hooks/useLogin';
 import { useConnectWallet } from '@aelf-web-login/wallet-adapter-react';
@@ -13,15 +13,18 @@ import { useTranslation } from 'react-i18next';
 import { FontColor } from 'utils/getFontStyle';
 import AuthBtn from 'Buttons/AuthBtn';
 import Font from 'components/Font';
-import { getActivityJoinStatus, setActivityJoin } from 'api/utils/activity';
+import { setActivityJoin } from 'api/utils/activity';
 import { useHistory } from 'react-router-dom';
 import { useGetActivitySign } from 'hooks/activity/useGetActivitySign';
 import { IS_MAIN_NET } from 'constants/index';
 import { getValidAddress } from 'utils/wallet';
 
-export type TLeaderboardEntryCountDownProps = {
+export type TLeaderboardEntryJoinProps = {
   activity: ILeaderboardActivity;
   className?: string;
+  status: ActivityStatusEnum;
+  isJoined: boolean;
+  isLoading?: boolean;
 };
 
 type TActivityStatusInfo = {
@@ -29,38 +32,28 @@ type TActivityStatusInfo = {
   endTime: string;
 };
 
-export const LeaderboardEntryJoin = ({ activity, className }: TLeaderboardEntryCountDownProps) => {
+export const LeaderboardEntryJoin = ({
+  activity,
+  className,
+  status,
+  isJoined: isJoinedProp,
+  isLoading: isLoadingProp,
+}: TLeaderboardEntryJoinProps) => {
   const t = useCmsTranslations<TLeaderboardInfoTranslations>(activity.info.translations);
   const { t: localT } = useTranslation();
   const getActivitySign = useGetActivitySign();
 
-  const status = useActivityStatus({
-    startTime: activity.startTime,
-    endTime: activity.endTime,
-  });
+  const statusRef = useRef(status);
+  statusRef.current = status;
 
   const isConnected = useIsConnected();
   const { isLocking, walletInfo, walletType } = useConnectWallet();
-  const [isJoined, setIsJoined] = useState(false);
 
-  const init = useCallback(async () => {
-    const address = walletInfo?.address;
-    if (!address) return;
+  const [_isJoined, setIsJoined] = useState(false);
+  const isJoined = useMemo(() => _isJoined || isJoinedProp, [_isJoined, isJoinedProp]);
 
-    try {
-      const { status: _status } = await getActivityJoinStatus({
-        activityId: Number(activity.serviceId || 0),
-        address,
-      });
-
-      setIsJoined(!!_status);
-    } catch (error) {
-      console.log('initMyRankingInfo error', error);
-    }
-  }, [activity.serviceId, walletInfo?.address]);
-  useEffect(() => {
-    init();
-  }, [init]);
+  const [_isLoading, setIsLoading] = useState(false);
+  const isLoading = useMemo(() => _isLoading || isLoadingProp, [_isLoading, isLoadingProp]);
 
   const btnLabelInfo = useMemo<{
     active?: boolean;
@@ -131,7 +124,6 @@ export const LeaderboardEntryJoin = ({ activity, className }: TLeaderboardEntryC
   }, [activity.endTime, activity.startTime, status, t]);
 
   const history = useHistory();
-  const [isLoading, setIsLoading] = useState(false);
 
   const emitGTag = useCallback(() => {
     try {
@@ -175,6 +167,9 @@ export const LeaderboardEntryJoin = ({ activity, className }: TLeaderboardEntryC
     } finally {
       setIsLoading(false);
       setIsJoined(true);
+      if (statusRef.current === ActivityStatusEnum.Execution) {
+        history.push(`/activity/${activity.pageId}`);
+      }
     }
   }, [
     activity.info.signPlainText,

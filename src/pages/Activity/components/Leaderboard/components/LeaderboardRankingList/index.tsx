@@ -1,7 +1,7 @@
 import { ILeaderboardActivity } from 'utils/activity';
 import './styles.less';
 import { TLeaderboardInfoTranslations } from 'graphqlServer/queries/activity/leaderboard';
-import { useCmsTranslations, useGetCmsTranslations } from 'hooks/cms';
+import { useCmsTranslations } from 'hooks/cms';
 import { LeaderboardMedalBox } from '../LeaderboardMedalBox';
 import { LeaderboardSection } from 'pages/Activity/components/LeaderboardEntry/components/LeaderboardSection';
 import { CommonTable } from 'components/CommonTable';
@@ -11,8 +11,7 @@ import CommonCopy from 'components/CommonCopy';
 import { TLeaderboardRankingItem } from 'types/activity';
 import { shortenAddress } from 'utils';
 import { IconArrowDown3, IconArrowUp2, IconNew } from 'assets/icons';
-import { getLeaderboardRewardsMap } from 'utils/activity/leaderboard';
-import { TLeaderboardRewardTranslations } from 'graphqlServer/queries/activity/leaderboardReward';
+import { getLeaderboardActualRewardsMap, getLeaderboardRewardsMap } from 'utils/activity/leaderboard';
 import { formatPriceUSD } from 'utils/price';
 import { formatDefaultAddress } from 'utils/format';
 
@@ -24,7 +23,11 @@ export type TLeaderboardRankingListProps = {
 export const LeaderboardRankingList = ({ activity, list }: TLeaderboardRankingListProps) => {
   const t = useCmsTranslations<TLeaderboardInfoTranslations>(activity.info.translations);
   const rewardsMap = useMemo(() => getLeaderboardRewardsMap(activity), [activity]);
-  const getCmsTranslations = useGetCmsTranslations();
+
+  const actualRewardsMap = useMemo(
+    () => getLeaderboardActualRewardsMap(activity, list.length),
+    [activity, list.length],
+  );
 
   const columns = useMemo<ColumnsType<TLeaderboardRankingItem>>(
     () => [
@@ -46,11 +49,7 @@ export const LeaderboardRankingList = ({ activity, list }: TLeaderboardRankingLi
 
           if (!rewardInfo.isShare) return <div>{`$${rewardInfo.reward}`}</div>;
 
-          const rewardDescription = getCmsTranslations<TLeaderboardRewardTranslations>(
-            rewardInfo.translations,
-            'description',
-          );
-          return <div>{rewardDescription || ''}</div>;
+          return <div>{`${t('expectRewardsPrefix') || ''}$${actualRewardsMap[ranking]}`}</div>;
         },
       },
       {
@@ -70,7 +69,9 @@ export const LeaderboardRankingList = ({ activity, list }: TLeaderboardRankingLi
         width: 325,
         key: 'totalVolume',
         dataIndex: 'totalPoint',
-        render: (val: number) => <div>{`${activity.info.pointUnit || ''}${formatPriceUSD(val)}`}</div>,
+        render: (val: number) => (
+          <div>{`${activity.info.pointPrefix || ''}${formatPriceUSD(val)}${activity.info.pointUnit || ''}`}</div>
+        ),
       },
       {
         title: t('rankingChangeLabel'),
@@ -93,7 +94,7 @@ export const LeaderboardRankingList = ({ activity, list }: TLeaderboardRankingLi
         },
       },
     ],
-    [activity.info.pointUnit, getCmsTranslations, rewardsMap, t],
+    [activity.info.pointPrefix, activity.info.pointUnit, actualRewardsMap, rewardsMap, t],
   );
 
   const dataSource = useMemo(() => list.slice(3), [list]);
@@ -101,23 +102,19 @@ export const LeaderboardRankingList = ({ activity, list }: TLeaderboardRankingLi
     () =>
       list.slice(0, 3).map((item) => ({
         address: shortenAddress(formatDefaultAddress(item.address || ''), 8),
-        volume: `${activity.info.pointUnit || ''}${formatPriceUSD(item.totalPoint)}`,
+        volume: `${activity.info.pointPrefix || ''}${formatPriceUSD(item.totalPoint)}${activity.info.pointUnit || ''}`,
         rewards: (() => {
           const rewardInfo = rewardsMap[item.ranking];
           if (!rewardInfo) return '-';
           if (!rewardInfo.isShare) return `$${rewardInfo.reward}`;
-          const rewardDescription = getCmsTranslations<TLeaderboardRewardTranslations>(
-            rewardInfo.translations,
-            'description',
-          );
-          return rewardDescription || '';
+          return `${t('expectRewardsPrefix') || ''}$${actualRewardsMap[item.ranking]}`;
         })(),
       })),
-    [activity.info.pointUnit, getCmsTranslations, list, rewardsMap],
+    [activity.info.pointPrefix, activity.info.pointUnit, actualRewardsMap, list, rewardsMap, t],
   );
 
   return (
-    <LeaderboardSection className="leaderboard-ranking-list">
+    <LeaderboardSection className="leaderboard-ranking-list" id="leaderboardRankingList">
       <div className="leaderboard-ranking-list-title">{t('leaderboardTitle')}</div>
       <div className="leaderboard-ranking-list-title-header">
         <LeaderboardMedalBox activity={activity} type={2} {...(medalInfoList[1] || {})} />

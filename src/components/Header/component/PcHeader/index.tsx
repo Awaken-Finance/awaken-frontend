@@ -22,12 +22,15 @@ import { useConnectWallet } from '@aelf-web-login/wallet-adapter-react';
 import { DepositTipModal, DepositTipModalInterface } from 'Modals/DepositTipModal';
 import { useIsDepositPath } from 'hooks/route';
 import { MenuItem } from 'components/Header/router';
+import { TActivityBase } from 'graphqlServer/queries/activity/common';
+import { ActivityNotice } from '../ActivityNotice';
 
 export type TPcHeaderProps = {
   menuList: MenuItem[];
+  activity?: TActivityBase;
 };
 
-function PcHeader({ menuList }: TPcHeaderProps) {
+function PcHeader({ menuList, activity }: TPcHeaderProps) {
   const { walletInfo, isLocking } = useConnectWallet();
   const isConnected = useIsConnected();
   const { chainId } = useChainId();
@@ -95,8 +98,9 @@ function PcHeader({ menuList }: TPcHeaderProps) {
   };
 
   return (
-    <Layout.Header className={'site-header'}>
-      <Row align="middle" gutter={[20, 0]}>
+    <Layout.Header className={clsx('site-header', 'activity-site-header')}>
+      <ActivityNotice activity={activity} />
+      <Row className="site-header-content" align="middle" gutter={[20, 0]}>
         <Col>
           <NavLink to={'/'}>
             <IconLogo className="menu-logo" />

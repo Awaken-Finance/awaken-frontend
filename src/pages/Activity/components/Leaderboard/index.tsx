@@ -65,12 +65,14 @@ export const Leaderboard = ({ activity }: TLeaderboardProps) => {
 
   return (
     <div className="leaderboard-page">
-      {activity.info.backgroundImage && (
-        <S3Image className="leaderboard-background-image" uri={activity.info.backgroundImage?.filename_disk} />
-      )}
-      {activity.info.decorativeImage && (
-        <S3Image className="leaderboard-decorative-image" uri={activity.info.decorativeImage?.filename_disk} />
-      )}
+      <div className="leaderboard-image-wrap">
+        {activity.info.backgroundImage && (
+          <S3Image className="leaderboard-background-image" uri={activity.info.backgroundImage?.filename_disk} />
+        )}
+        {activity.info.decorativeImage && (
+          <S3Image className="leaderboard-decorative-image" uri={activity.info.decorativeImage?.filename_disk} />
+        )}
+      </div>
 
       <div className="leaderboard-page-content">
         <div className="leaderboard-page-header">
@@ -107,17 +109,17 @@ export const Leaderboard = ({ activity }: TLeaderboardProps) => {
             uri={isMobile ? activity.info.mobileMainImage?.filename_disk : activity.info.mainImage?.filename_disk}
           />
 
-          <div className="leaderboard-reward-section">
-            <div className="leaderboard-reward-section-title">{t('rewardSectionTitle')}</div>
-
-            <LeaderboardRewardList list={rewardList} />
-          </div>
-
           <LeaderboardExecuteBtn
             activity={activity}
             status={status}
             className="leaderboard-page-description-execute-btn"
           />
+
+          <div className="leaderboard-reward-section">
+            <div className="leaderboard-reward-section-title">{t('rewardSectionTitle')}</div>
+
+            <LeaderboardRewardList list={rewardList} />
+          </div>
 
           <div className="leaderboard-rule-section">
             <div className="leaderboard-rule-section-title">{t('ruleSectionTitle')}</div>

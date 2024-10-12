@@ -9,6 +9,7 @@ import { Leaderboard } from './components/Leaderboard';
 import { useRouteMatch } from 'react-router-dom';
 import CommonLoading from 'components/CommonLoading';
 import { useActivityAllowCheck } from 'hooks/activity/useActivityAllowCheck';
+import { handleLoopFetch } from 'utils';
 
 export default () => {
   const match = useRouteMatch<{ id: string }>('/activity/:id');
@@ -24,14 +25,20 @@ export default () => {
       setIsLoading(true);
       setActivity(undefined);
 
-      const result = await getActivityDetailList({
-        filter: {
-          pageId: {
-            _eq: pageId,
-          },
-        },
-        limit: 1,
+      const result = await handleLoopFetch({
+        fetch: () =>
+          getActivityDetailList({
+            filter: {
+              pageId: {
+                _eq: pageId,
+              },
+            },
+            limit: 1,
+          }),
+        times: 5,
+        interval: 2500,
       });
+
       const activityDetail = result?.data?.activityList?.[0];
       if (!activityDetail) return;
 
