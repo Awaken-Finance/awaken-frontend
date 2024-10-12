@@ -109,17 +109,17 @@ export const Leaderboard = ({ activity }: TLeaderboardProps) => {
             uri={isMobile ? activity.info.mobileMainImage?.filename_disk : activity.info.mainImage?.filename_disk}
           />
 
-          <div className="leaderboard-reward-section">
-            <div className="leaderboard-reward-section-title">{t('rewardSectionTitle')}</div>
-
-            <LeaderboardRewardList list={rewardList} />
-          </div>
-
           <LeaderboardExecuteBtn
             activity={activity}
             status={status}
             className="leaderboard-page-description-execute-btn"
           />
+
+          <div className="leaderboard-reward-section">
+            <div className="leaderboard-reward-section-title">{t('rewardSectionTitle')}</div>
+
+            <LeaderboardRewardList list={rewardList} />
+          </div>
 
           <div className="leaderboard-rule-section">
             <div className="leaderboard-rule-section-title">{t('ruleSectionTitle')}</div>
