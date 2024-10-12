@@ -31,7 +31,7 @@ export function formatPriceUSD(price?: BigNumber.Value, digits = 12): string {
   }
 
   if (bigNum.gte(0.1)) {
-    return bigNum.dp(2, BigNumber.ROUND_DOWN).toString();
+    return bigNum.dp(2, BigNumber.ROUND_DOWN).toFormat();
   }
 
   return bigNum.dp(digits).precision(3, BigNumber.ROUND_DOWN).toString();
