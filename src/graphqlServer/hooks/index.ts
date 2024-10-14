@@ -14,18 +14,18 @@ const { REACT_APP_API_ENV } = process.env;
 const AWAKEN_GRAPHQL_URL_MAP: Record<string, string> = {
   preview: 'https://app-testnet.aefinder.io/awaken/e55a9e430bd14ebb95ef81378906fd5f/graphql',
   test: 'https://app-testnet.aefinder.io/awaken/e55a9e430bd14ebb95ef81378906fd5f/graphql',
-  mainNet: 'https://app.aefinder.io/awaken/995f8e7e957d43d6b1706a4e351e2e47/graphql',
+  mainnet: 'https://app.aefinder.io/awaken/995f8e7e957d43d6b1706a4e351e2e47/graphql',
 };
 
 const CMS_GRAPHQL_URL_MAP: Record<string, string> = {
   preview: 'https://test-cms-v2.awaken.finance/graphql',
   test: 'https://test-cms-v2.awaken.finance/graphql',
-  mainNet: 'https://cms-v2.awaken.finance/graphql',
+  mainnet: 'https://cms-v2.awaken.finance/graphql',
 };
 
-const AWAKEN_GRAPHQL_URL = AWAKEN_GRAPHQL_URL_MAP[REACT_APP_API_ENV || ''] || AWAKEN_GRAPHQL_URL_MAP.mainNet;
+const AWAKEN_GRAPHQL_URL = AWAKEN_GRAPHQL_URL_MAP[REACT_APP_API_ENV || 'mainnet'] || AWAKEN_GRAPHQL_URL_MAP.mainnet;
 
-const CMS_GRAPHQL_URL = CMS_GRAPHQL_URL_MAP[REACT_APP_API_ENV || ''] || CMS_GRAPHQL_URL_MAP.mainNet;
+const CMS_GRAPHQL_URL = CMS_GRAPHQL_URL_MAP[REACT_APP_API_ENV || 'mainnet'] || CMS_GRAPHQL_URL_MAP.mainnet;
 
 export const useGraphQLClient = () => {
   return useMemo(() => getGraphQLClient(AWAKEN_GRAPHQL_URL), []);

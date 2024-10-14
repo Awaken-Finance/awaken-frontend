@@ -22,7 +22,7 @@ const AWAKEN_LIST_MAP: { [key: string]: string } = {
   main: 'https://raw.githubusercontent.com/Awaken-Finance/default-token-list/main/build/awaken-default.tokenlist.aelf.json',
 };
 
-const AWAKEN_LIST = AWAKEN_LIST_MAP[API_ENV || 'main'];
+const AWAKEN_LIST = AWAKEN_LIST_MAP[API_ENV || 'mainnet'];
 
 export const UNSUPPORTED_LIST_URLS: string[] = [AWAKEN_LIST];
 

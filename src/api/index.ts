@@ -3,7 +3,7 @@ import { PROD_API, PROD_CMS } from 'constants/api';
 import server from 'utils/request';
 import { API_LIST, API_REQ_TYPES, EXPAND_APIS, EXPAND_REQ_TYPES } from './list';
 import myServer from './server/myServer';
-const { NODE_ENV, REACT_APP_API_ENV } = process.env;
+const { REACT_APP_API_ENV } = process.env;
 export interface IBaseRequest {
   url: string;
   method?: Method;
