@@ -6,13 +6,12 @@ export type TS3ImageProps = DetailedHTMLProps<ImgHTMLAttributes<HTMLImageElement
 
 const { REACT_APP_API_ENV } = process.env;
 const S3_URL_MAP: Record<string, string> = {
-  // preview: 'http://localhost:8056/assets',
   preview: 'https://awaken-cms-testnet.s3.ap-northeast-1.amazonaws.com',
   test: 'https://awaken-cms-testnet.s3.ap-northeast-1.amazonaws.com',
-  mainNet: 'https://awaken-cms-mainnet.s3.ap-northeast-1.amazonaws.com',
+  mainnet: 'https://awaken-cms-mainnet.s3.ap-northeast-1.amazonaws.com',
 };
 
-const S3_URL = S3_URL_MAP[REACT_APP_API_ENV || ''] || S3_URL_MAP.mainNet;
+const S3_URL = S3_URL_MAP[REACT_APP_API_ENV || 'mainnet'] || S3_URL_MAP.mainnet;
 
 export const S3Image = ({ uri, ...props }: TS3ImageProps) => {
   const src = useMemo(() => {
