@@ -2,11 +2,11 @@ import { Col, Row } from 'antd';
 import CommonTooltip from 'components/CommonTooltip';
 import Font from 'components/Font';
 import { TSwapRoute } from 'pages/Swap/types';
-import { useTranslation } from 'react-i18next';
+import { Trans, useTranslation } from 'react-i18next';
 import { useUserSettings } from 'contexts/useUserSettings';
 import { useMemo } from 'react';
 import { bigNumberToString, getPriceImpactWithBuy, minimumAmountOut } from 'utils/swap';
-import { ONE, ZERO } from 'constants/misc';
+import { TEN_THOUSAND, ZERO } from 'constants/misc';
 import BigNumber from 'bignumber.js';
 import { divDecimals } from 'utils/calculate';
 import { SwapOrderRouting } from '../SwapOrderRouting';
@@ -15,11 +15,12 @@ import { Currency } from '@awaken/sdk-core';
 import { TSwapInfo } from '../SwapPanel';
 import { formatSymbol } from 'utils/token';
 import './styles.less';
+import { SWAP_LABS_FEE_RATE, SWAP_RECEIVE_RATE } from 'constants/swap';
 
 export type TSwapRouteInfoProps = {
   swapInfo: TSwapInfo;
   swapRoute?: TSwapRoute;
-  gasFee: string | 0;
+  gasFee: number;
   isTipShow?: boolean;
   isRoutingShow?: boolean;
 };
@@ -48,12 +49,19 @@ export const SwapRouteInfo = ({
     swapRoute.distributions.forEach((path) => {
       for (let i = 0; i < path.tokens.length - 1; i++) {
         const tradePairExtension = path.tradePairExtensions[i];
+        const tradePair = path.tradePairs[i];
         const tokenIn = path.tokens[i];
         const tokenOut = path.tokens[i + 1];
-        const tokenInReserve = ZERO.plus(tradePairExtension.valueLocked0);
-        const tokenOutReserve = ZERO.plus(tradePairExtension.valueLocked1);
+        let tokenInReserve = ZERO.plus(tradePairExtension.valueLocked0);
+        let tokenOutReserve = ZERO.plus(tradePairExtension.valueLocked1);
+        if (tokenIn.symbol !== tradePair.token0.symbol) {
+          tokenInReserve = ZERO.plus(tradePairExtension.valueLocked1);
+          tokenOutReserve = ZERO.plus(tradePairExtension.valueLocked0);
+        }
+
         const valueIn = divDecimals(path.amounts[i], tokenIn.decimals);
         const valueOut = divDecimals(path.amounts[i + 1], tokenOut.decimals);
+
         const _impact = getPriceImpactWithBuy(tokenOutReserve, tokenInReserve, valueIn, valueOut);
         impactList.push(_impact);
       }
@@ -62,23 +70,18 @@ export const SwapRouteInfo = ({
     return `${bigNumberToString(BigNumber.max(...impactList), 2)}%`;
   }, [swapRoute]);
 
-  const swapFeeValue = useMemo(() => {
-    const { tokenIn, valueIn } = swapInfo;
+  const feeValue = useMemo(() => {
+    if (!swapInfo.tokenOut) return '-';
+    const _symbol = formatSymbol(swapInfo.tokenOut.symbol);
+    if (!swapInfo.valueOut) return `- ${_symbol}`;
 
-    if (!swapRoute || !tokenIn || !valueIn) return '-';
-
-    let totalFee = ZERO;
-    swapRoute.distributions.forEach((path) => {
-      const { amountIn, feeRates } = path;
-      const reserveRate = feeRates.reduce((p, c) => p.times(ONE.minus(c)), ONE);
-      const totalFeeRate = ONE.minus(reserveRate);
-      const feeAmount = ZERO.plus(amountIn).times(totalFeeRate);
-      const fee = divDecimals(feeAmount, tokenIn.decimals).dp(tokenIn.decimals);
-      totalFee = totalFee.plus(fee);
-    });
-
-    return `${totalFee.toFixed()} ${formatSymbol(tokenIn.symbol)}`;
-  }, [swapInfo, swapRoute]);
+    return `${ZERO.plus(swapInfo.valueOut)
+      .div(SWAP_RECEIVE_RATE)
+      .times(SWAP_LABS_FEE_RATE)
+      .div(TEN_THOUSAND)
+      .dp(swapInfo.tokenOut?.decimals || 1, BigNumber.ROUND_DOWN)
+      .toFixed()} ${_symbol}`;
+  }, [swapInfo]);
 
   const gasFeeValue = useMemo(() => {
     return divDecimals(ZERO.plus(gasFee), 8);
@@ -149,7 +152,11 @@ export const SwapRouteInfo = ({
           {isTipShow && (
             <CommonTooltip
               placement="top"
-              title={t('feeDescription')}
+              title={
+                <div className="fee-description-wrap">
+                  <Trans i18nKey="feeDescription" components={{ a: <a /> }} />
+                </div>
+              }
               getPopupContainer={(v) => v}
               buttonTitle={t('ok')}
               headerDesc={t('Fee')}
@@ -159,7 +166,7 @@ export const SwapRouteInfo = ({
 
         <Col>
           <Font size={14} lineHeight={22}>
-            {swapFeeValue}
+            {feeValue}
           </Font>
         </Col>
       </Row>

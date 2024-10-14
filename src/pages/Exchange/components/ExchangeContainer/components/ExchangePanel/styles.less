@@ -6,13 +6,59 @@
     padding-top: 16px;
   }
 
-  &-title {
+  .exchange-panel-title {
     flex: 1;
+    height: 100%;
+  }
+}
+
+.exchange-panel-switch-area {
+  display: flex;
+  flex-direction: row;
+  height: 100%;
+  gap: 24px;
+
+  .exchange-panel-switch {
+    height: 100%;
+    position: relative;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+
+    .exchange-panel-switch-border {
+      visibility: hidden;
+    }
+  }
+
+  .exchange-panel-switch.exchange-panel-switch-active {
+    .exchange-panel-switch-border {
+      position: absolute;
+      visibility: visible;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      width: 100%;
+      background-color: #477bff;
+    }
+    .default-font-style {
+      color: #e5e8ef;
+    }
   }
 }
 
 .exchange-panel-mobile {
   padding-bottom: 24px;
+
+  .exchange-panel-title {
+    flex: 1;
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+
   .switch-btn {
     height: 36px;
     border-radius: 4px;
@@ -43,5 +89,6 @@
   }
   &-box {
     margin-top: 16px;
+    gap: 16px;
   }
 }

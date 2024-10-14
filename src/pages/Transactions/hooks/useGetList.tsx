@@ -1,9 +1,9 @@
 import { useRequest } from 'ahooks';
 import { SortOrder } from 'antd/lib/table/interface';
+import { getLimitList, getLiquidityRecord, getTransactionList } from 'api/utils/recentTransaction';
 import { useActiveWeb3React } from 'hooks/web3';
-import { getLiquidityRecord, getTransactionList } from 'pages/UserCenter/apis/recentTransaction';
-import { GetRecentTransactionParams, LiquidityRecordParams } from 'pages/UserCenter/type';
 import { useCallback, useMemo } from 'react';
+import { GetRecentTransactionParams, LiquidityRecordParams, TLimitRecordParams } from 'types/transactions';
 
 export interface PageInfoParams {
   pageNum?: number;
@@ -11,6 +11,13 @@ export interface PageInfoParams {
   side: number;
   field?: string | null;
   order?: SortOrder | undefined | null;
+}
+
+export enum TranslationMenuEnum {
+  trade = 'all',
+  add = 0,
+  remove = 1,
+  limit = 'limit',
 }
 
 export default function useGetList() {
@@ -21,9 +28,15 @@ export default function useGetList() {
     loading,
     run: getData,
   } = useRequest(
-    (params: GetRecentTransactionParams | LiquidityRecordParams, menu: string | number) => {
-      if (menu === 'all') {
+    (
+      params: GetRecentTransactionParams | LiquidityRecordParams | TLimitRecordParams,
+      menu: string | number,
+    ): Promise<any> => {
+      if (menu === TranslationMenuEnum.trade) {
         return getTransactionList(params);
+      }
+      if (menu === TranslationMenuEnum.limit) {
+        return getLimitList(params);
       }
 
       return getLiquidityRecord(params);
@@ -34,7 +47,7 @@ export default function useGetList() {
   const getList = useCallback(
     (info: PageInfoParams, searchVal: string, menu: string | number) => {
       const isTransactionId = searchVal.length === 64;
-      const params: GetRecentTransactionParams | LiquidityRecordParams = {
+      const params: GetRecentTransactionParams | LiquidityRecordParams | TLimitRecordParams = {
         address: account,
         chainId: chainId,
         skipCount: ((info.pageNum as number) - 1) * (info.pageSize as number),
@@ -44,8 +57,13 @@ export default function useGetList() {
         transactionHash: isTransactionId ? searchVal : undefined,
       };
 
-      if (menu === 'all') {
+      if (menu === TranslationMenuEnum.trade) {
         params.side = info.side === -1 ? null : info.side;
+      }
+      if (menu === TranslationMenuEnum.limit) {
+        // (params as TLimitRecordParams).limitOrderStatus = 0;
+        (params as TLimitRecordParams).makerAddress = account;
+        (params as TLimitRecordParams).tokenSymbol = searchVal;
       } else {
         params.type = menu;
       }

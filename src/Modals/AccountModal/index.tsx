@@ -7,7 +7,7 @@ import { CarouselRef } from 'antd/lib/carousel';
 import AccountInfo from './AccountInfo';
 import CommonButton from 'components/CommonButton';
 import Font from 'components/Font';
-import { IconArrowDown, IconArrowUp, IconClose } from 'assets/icons';
+import { IconArrowDown, IconArrowRight4, IconArrowUp, IconClose } from 'assets/icons';
 import MyTokenList from './MyTokenList';
 import { useHistory } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
@@ -17,6 +17,7 @@ import clsx from 'clsx';
 import {
   useUserAssetTokenList,
   useUserCombinedAssets,
+  useUserLimits,
   useUserPositions,
   useUserTransactions,
 } from 'hooks/useUserAsset';
@@ -32,6 +33,13 @@ import CommonLink from 'components/CommonLink';
 import { ZERO } from 'constants/misc';
 import { useConnectWallet } from '@aelf-web-login/wallet-adapter-react';
 import myEvents from 'utils/myEvent';
+import { getLimitOrderPrice } from 'utils/limit';
+import PriceDigits from 'components/PriceDigits';
+import { formatSymbol } from 'utils/token';
+import { LimitOrderStatusMap } from 'constants/limit';
+import { DEPOSIT_TIP_MODAL_CONFIRMED } from 'Modals/DepositTipModal';
+
+import { ETransferConfig, WalletTypeEnum, etransferCore, unsubscribeUserOrderRecord } from '@etransfer/ui-react';
 
 const MENU_LIST = [
   {
@@ -41,6 +49,10 @@ const MENU_LIST = [
   {
     key: 'positions',
     title: 'Positions',
+  },
+  {
+    key: 'limits',
+    title: 'Limits',
   },
   {
     key: 'transactions',
@@ -60,6 +72,7 @@ function AccountModal() {
   const { list: userTokenList } = useUserAssetTokenList(isAccountModalShow && menu === 'tokens');
   const { userPositions } = useUserPositions(isAccountModalShow && menu === 'positions');
   const { list: userTxList } = useUserTransactions(isAccountModalShow && menu === 'transactions');
+  const { list: limitList } = useUserLimits(isAccountModalShow && menu === 'limits');
   const { data: userCombinedAssets, refresh: refreshUserCombinedAssets } = useUserCombinedAssets(isAccountModalShow);
 
   useEffect(() => {
@@ -74,10 +87,20 @@ function AccountModal() {
   }, [dispatch]);
 
   const onClickLogout = async () => {
+    const address = walletInfo?.address || '';
     dispatch(basicModalView.setAccountModal.actions(false));
     try {
       await disConnectWallet();
       myEvents.DisconnectWallet.emit();
+      unsubscribeUserOrderRecord(address);
+      ETransferConfig.setConfig({
+        accountInfo: {
+          accounts: {},
+          walletType: WalletTypeEnum.unknown,
+        },
+      });
+      etransferCore.services.setRequestHeaders('Authorization', '');
+      localStorage.removeItem(DEPOSIT_TIP_MODAL_CONFIRMED);
     } catch (error) {
       console.log('disconnectWallet error', error);
     }
@@ -205,6 +228,80 @@ function AccountModal() {
     );
   }, [onAddLiquidityClick, onPositionsViewAll, t, userPositions?.items]);
 
+  const onAddLimitClick = useCallback(() => {
+    history.push('/swap/limit');
+    onClose();
+  }, [history, onClose]);
+  const onLimitViewAll = useCallback(() => {
+    history.push('/transactions/limit');
+    onClose();
+  }, [history, onClose]);
+
+  const userLimitDom = useMemo(() => {
+    if (!limitList?.length) {
+      return (
+        <div className="account-modal-list-empty">
+          <div className="account-modal-list-empty-title">
+            <Font size={16} color="two" lineHeight={24} weight="bold">
+              {t('No Limits yet')}
+            </Font>
+            <Font size={14} color="two" weight="regular">
+              {t('noLimitDescription')}
+            </Font>
+          </div>
+          <CommonButton type="primary" onClick={onAddLimitClick}>
+            {t('Create a limit order')}
+          </CommonButton>
+        </div>
+      );
+    }
+
+    return (
+      <>
+        <div className="account-modal-position-list">
+          {limitList?.map((item) => (
+            <div key={item.orderId} className="account-modal-position-item">
+              <CurrencyLogos isSortToken={false} size={24} tokens={[item.tradePair.token0, item.tradePair.token1]} />
+              <div className="account-modal-position-item-middle account-modal-limit-middle">
+                <div className="account-modal-limit-header">
+                  <Font size={12} lineHeight={16} color="two">
+                    {t(`When`)}
+                  </Font>
+                  <PriceDigits
+                    wrapperClassName={getFontStyle({ lineHeight: 16, size: 12, color: 'two' })}
+                    className={getFontStyle({ lineHeight: 16, size: 12, color: 'two' })}
+                    price={getLimitOrderPrice(item)}
+                  />
+                  <Font lineHeight={16} size={12} color="two">
+                    {`${formatSymbol(item.symbolIn)} =  1 ${formatSymbol(item.symbolOut)}`}
+                  </Font>
+                </div>
+                <div className="account-modal-limit-content">
+                  <Font size={16} lineHeight={24}>{`${item.amountIn} ${formatSymbol(item.symbolIn)}`}</Font>
+                  <IconArrowRight4 />
+                  <Font size={16} lineHeight={24}>{`${item.amountOut} ${formatSymbol(item.symbolOut)}`}</Font>
+                </div>
+                <div className="account-modal-limit-content">
+                  <Font size={12} lineHeight={16} color="two">{`${t('Expires')} ${moment(item.deadline).format(
+                    'YYYY-MM-DD HH:mm',
+                  )}`}</Font>
+                  <Font size={12} lineHeight={16} color={LimitOrderStatusMap[item.limitOrderStatus]?.color}>
+                    {t(LimitOrderStatusMap[item.limitOrderStatus]?.label)}
+                  </Font>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+        <div className="account-modal-view-more-btn">
+          <CommonLink color="two" onClick={onLimitViewAll} iconProps={{ size: 16, color: 'two' }}>
+            {t('Details')}
+          </CommonLink>
+        </div>
+      </>
+    );
+  }, [limitList, onAddLimitClick, onLimitViewAll, t]);
+
   const onTransactionsViewAll = useCallback(() => {
     history.push('/transactions');
     onClose();
@@ -262,50 +359,53 @@ function AccountModal() {
   }, [onTransactionsViewAll, t, userTxList]);
 
   return (
-    <Modal
-      // destroyOnClose
-      className="account-modal"
-      visible={isAccountModalShow}
-      closable={isMobile}
-      closeIcon={<IconClose />}
-      width={isMobile ? '100%' : '420px'}
-      title={isMobile ? ' ' : null}
-      mask={false}
-      footer={null}
-      style={isMobile ? {} : { position: 'fixed', top: 68, right: 8 }}
-      onCancel={onClose}>
-      <Carousel ref={carouselRef} dots={false} autoplay={false} swipe={false}>
-        <div className="account-content">
-          <AccountInfo onClickLogout={onClickLogout} />
+    <>
+      <Modal
+        // destroyOnClose
+        className="account-modal"
+        visible={isAccountModalShow}
+        closable={isMobile}
+        closeIcon={<IconClose />}
+        width={isMobile ? '100%' : '420px'}
+        title={isMobile ? ' ' : null}
+        mask={false}
+        footer={null}
+        style={isMobile ? {} : { position: 'fixed', top: 68, right: 8 }}
+        onCancel={onClose}>
+        <Carousel ref={carouselRef} dots={false} autoplay={false} swipe={false}>
+          <div className="account-content">
+            <AccountInfo onClickLogout={onClickLogout} />
 
-          <div className="account-content-title">
-            <PriceUSDDigits
-              className={getFontStyle({ lineHeight: 48, size: 40, color: 'one', weight: 'medium' })}
-              price={userCombinedAssets?.valueInUsd ?? 0}
-            />
+            <div className="account-content-title">
+              <PriceUSDDigits
+                className={getFontStyle({ lineHeight: 48, size: 40, color: 'one', weight: 'medium' })}
+                price={userCombinedAssets?.valueInUsd ?? 0}
+              />
+            </div>
+
+            <div className="account-modal-menu-header">
+              {MENU_LIST.map((item) => (
+                <div
+                  key={item.key}
+                  className={clsx(['account-modal-menu-item', menu === item.key && 'account-modal-menu-item-active'])}
+                  onClick={() => {
+                    setMenu(item.key);
+                  }}>
+                  <Font size={16} lineHeight={24} color="two" weight={menu === item.key ? 'medium' : 'regular'}>
+                    {t(item.title)}
+                  </Font>
+                </div>
+              ))}
+            </div>
+
+            {menu === 'tokens' && tokenList}
+            {menu === 'positions' && userPositionsDom}
+            {menu === 'limits' && userLimitDom}
+            {menu === 'transactions' && transactionsDom}
           </div>
-
-          <div className="account-modal-menu-header">
-            {MENU_LIST.map((item) => (
-              <div
-                key={item.key}
-                className={clsx(['account-modal-menu-item', menu === item.key && 'account-modal-menu-item-active'])}
-                onClick={() => {
-                  setMenu(item.key);
-                }}>
-                <Font size={16} lineHeight={24} color="two" weight={menu === item.key ? 'medium' : 'regular'}>
-                  {t(item.title)}
-                </Font>
-              </div>
-            ))}
-          </div>
-
-          {menu === 'tokens' && tokenList}
-          {menu === 'positions' && userPositionsDom}
-          {menu === 'transactions' && transactionsDom}
-        </div>
-      </Carousel>
-    </Modal>
+        </Carousel>
+      </Modal>
+    </>
   );
 }
 

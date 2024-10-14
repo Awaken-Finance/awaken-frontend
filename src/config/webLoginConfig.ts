@@ -12,7 +12,7 @@ const API_ENV = process.env.REACT_APP_API_ENV;
 export const APP_NAME = 'awaken.finance';
 
 let CHAIN_ID = tDVV.chainId as TChainId,
-  NETWORK_TYPE = 'MAINNET' as NetworkType,
+  networkType = 'MAINNET' as NetworkType,
   RPC_SERVER = tDVV.rpcUrl,
   portkeyService = PORTKEY_SERVICE.main,
   WEBSITE_ICON = 'https://app.awaken.finance/favicon.ico',
@@ -24,7 +24,7 @@ switch (API_ENV) {
   case 'test':
   case 'local':
     CHAIN_ID = tDVW.chainId as TChainId;
-    NETWORK_TYPE = 'TESTNET';
+    networkType = 'TESTNET';
     RPC_SERVER = tDVW.rpcUrl;
     portkeyService = PORTKEY_SERVICE.preview;
     WEBSITE_ICON = 'https://test-app.awaken.finance/favicon.ico';
@@ -53,11 +53,15 @@ const didConfig = {
   loginConfig: {
     loginMethodsOrder: ['Email', 'Google', 'Apple', 'Telegram', 'Scan'],
   },
-  networkType: NETWORK_TYPE,
+  networkType: networkType,
+  referralInfo: {
+    referralCode: '',
+    projectCode: '13005',
+  },
 };
 
 const baseConfig = {
-  networkType: NETWORK_TYPE,
+  networkType: networkType,
   chainId: CHAIN_ID,
   keyboard: true,
   noCommonBaseModal: false,
@@ -73,7 +77,7 @@ const wallets = [
     autoShowUnlock: true,
   }),
   new PortkeyDiscoverWallet({
-    networkType: NETWORK_TYPE,
+    networkType: networkType,
     chainId: CHAIN_ID,
     autoRequestAccount: true,
     autoLogoutOnDisconnected: true,
@@ -110,3 +114,4 @@ export const WEB_LOGIN_CONFIG = {
 } as IConfigProps;
 
 export const TG_BOT_LINK = tgBotLink;
+export const NETWORK_TYPE = networkType;

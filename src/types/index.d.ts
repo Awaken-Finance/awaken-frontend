@@ -3,7 +3,7 @@ import type { ContractInterface } from 'utils/contract';
 export type IContract = ContractInterface | ContractBasic | null | undefined;
 
 interface RoutesProps {
-  path: string;
+  path: string | string[];
   exact?: boolean;
   strict?: boolean;
   component: any;
@@ -15,6 +15,7 @@ export interface TokenInfo {
   symbol: string;
   decimals: number;
   id: string;
+  imageUri?: string;
 }
 export type Token = ERCToken | ELFChainToken | WrappedTokenInfo;
 export type LendingTokens = {
@@ -43,6 +44,7 @@ export interface PairToken {
   symbol: string;
   decimals: number;
   chainId: string;
+  imageUri?: string;
 }
 
 export interface PairItem {

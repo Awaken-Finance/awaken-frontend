@@ -170,7 +170,7 @@ export default function TransactionItem({
 
       <Col span={12} className="height-20">
         <Font lineHeight={20} color="two">
-          {t('Fee')}
+          {t('LP Fee')}
         </Font>
       </Col>
       <Col span={12} className="align-right height-20">

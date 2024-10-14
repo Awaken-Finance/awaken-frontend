@@ -18,8 +18,6 @@ import CommonTooltip from 'components/CommonTooltip';
 import { useTranslation } from 'react-i18next';
 import SettingFee from 'Buttons/SettingFeeBtn';
 import { useUserSettings } from 'contexts/useUserSettings';
-import { useRequest } from 'ahooks';
-import { getTransactionFee } from 'pages/Exchange/apis/getTransactionFee';
 import { divDecimals, timesDecimals } from 'utils/calculate';
 import AuthBtn from 'Buttons/AuthBtn';
 import { FontColor } from 'utils/getFontStyle';
@@ -34,6 +32,11 @@ import './styles.less';
 import { CircleProcess, CircleProcessInterface } from 'components/CircleProcess';
 import { formatPrice } from 'utils/price';
 import { useConnectWallet } from '@aelf-web-login/wallet-adapter-react';
+import { useIsConnected } from 'hooks/useLogin';
+import { useTransactionFee } from 'contexts/useStore/hooks';
+import { SWAP_RECEIVE_RATE } from 'constants/swap';
+import BigNumber from 'bignumber.js';
+import { DepositLink } from 'components/DepositLink';
 
 export type TSwapInfo = {
   tokenIn?: Currency;
@@ -50,7 +53,7 @@ export const SwapPanel = () => {
 
   const circleProcessRef = useRef<CircleProcessInterface>();
   const swapConfirmModalRef = useRef<SwapConfirmModalInterface>();
-  const { data: gasFee = 0 } = useRequest(getTransactionFee);
+  const gasFee = useTransactionFee();
 
   const [swapInfo, setSwapInfo] = useState<TSwapInfo>({
     tokenIn: ChainConstants.constants.COMMON_BASES[2],
@@ -122,7 +125,9 @@ export const SwapPanel = () => {
           symbolOut: tokenOut.symbol,
           isFocusValueIn,
           amountIn: isFocusValueIn ? timesDecimals(valueIn, tokenIn.decimals).toFixed() : undefined,
-          amountOut: isFocusValueIn ? undefined : timesDecimals(valueOut, tokenOut.decimals).toFixed(),
+          amountOut: isFocusValueIn
+            ? undefined
+            : timesDecimals(valueOut, tokenOut.decimals).div(SWAP_RECEIVE_RATE).toFixed(0, BigNumber.ROUND_DOWN),
         });
 
         const _swapInfo = swapInfoRef.current;
@@ -142,7 +147,10 @@ export const SwapPanel = () => {
 
         const result = {
           valueIn: divDecimals(route.amountIn, tokenIn.decimals).toFixed(),
-          valueOut: divDecimals(route.amountOut, tokenOut.decimals).toFixed(),
+          valueOut: divDecimals(
+            ZERO.plus(route.amountOut).times(SWAP_RECEIVE_RATE).dp(0, BigNumber.ROUND_CEIL),
+            tokenOut.decimals,
+          ).toFixed(),
           swapRoute: route,
         };
 
@@ -346,7 +354,9 @@ export const SwapPanel = () => {
     return false;
   }, [currencyBalances, gasFee, swapInfo]);
 
-  const { isConnected, isLocking } = useConnectWallet();
+  const { isLocking } = useConnectWallet();
+  const isConnected = useIsConnected();
+
   const swapBtnInfo = useMemo<{
     active?: boolean;
     label: string;
@@ -545,6 +555,8 @@ export const SwapPanel = () => {
             </Font>
           </AuthBtn>
         </div>
+
+        {isExceedBalance && <DepositLink receiveToken={swapInfo.tokenIn?.symbol} />}
 
         {isExtraInfoShow && (
           <>

@@ -2889,6 +2889,78 @@
     "@ethersproject/properties" "^5.6.0"
     "@ethersproject/strings" "^5.6.1"
 
+"@etransfer/core@^1.7.0":
+  version "1.7.0"
+  resolved "https://registry.yarnpkg.com/@etransfer/core/-/core-1.7.0.tgz#17c7e9e81bd558a9314accf4386a98339d7f684b"
+  integrity sha512-Uhmwrf8cWZOlOoIa2xIEM0bnwGtcq1+VsmDwRKJ5Ub6x6ByFB6qj0MBNZ3GwuZfvaqmbO0kW7sCiQ73PgV9p8Q==
+  dependencies:
+    "@etransfer/services" "^1.7.0"
+    "@etransfer/socket" "^1.7.0"
+    "@etransfer/types" "^1.7.0"
+    "@etransfer/utils" "^1.7.0"
+
+"@etransfer/request@^1.7.0":
+  version "1.7.0"
+  resolved "https://registry.yarnpkg.com/@etransfer/request/-/request-1.7.0.tgz#9f7404f28b72e00dfc0f84d6ae122cc558a15019"
+  integrity sha512-RFu95PfIP/z8Oe/ACo+hPPqAwF7eJCwAfrzXVFUv2s2vYleV+Lxu9BrI79f3VzRvrZ7DVw8AcvRpOSz1PFfVKQ==
+  dependencies:
+    "@etransfer/types" "^1.7.0"
+    "@etransfer/utils" "^1.7.0"
+    axios "^0.24.0"
+
+"@etransfer/services@^1.7.0":
+  version "1.7.0"
+  resolved "https://registry.yarnpkg.com/@etransfer/services/-/services-1.7.0.tgz#93139b5e8c63120416c0d7535819df82cb0783ff"
+  integrity sha512-C3c5sOh2+vnn5AlVYGfMHygXYzo+FYK2vrkG4C7pK6XYPIH74S2YZAA7J4XsT6dX7fAqASM+bwtEeWf+Dgj+jQ==
+  dependencies:
+    "@etransfer/request" "^1.7.0"
+    "@etransfer/types" "^1.7.0"
+    "@etransfer/utils" "^1.7.0"
+    "@portkey/types" "2.6.6"
+
+"@etransfer/socket@^1.7.0":
+  version "1.7.0"
+  resolved "https://registry.yarnpkg.com/@etransfer/socket/-/socket-1.7.0.tgz#f5dc55a61d6d47d9685acc588466a637e8e11066"
+  integrity sha512-k6laXPKWhksXpRwZdZRb2QFfQzNMytTueOqD04aPRR8V9vMHIQR1bZUIm/nF28lLlpLg5Vb2YHqiUZmULI9ATQ==
+  dependencies:
+    "@abp/signalr" "^7.0.0"
+    "@etransfer/utils" "^1.7.0"
+
+"@etransfer/types@^1.7.0":
+  version "1.7.0"
+  resolved "https://registry.yarnpkg.com/@etransfer/types/-/types-1.7.0.tgz#c5fe1ee89d6e046f6ce15914f2cc65a102f3f8b8"
+  integrity sha512-EULmi+rB21Gi05n6HnQq1HOpLxTTcpnunKugegvZI5Ez0136IganYCCyQr68m442FMMULVzCw4eEs3E1W4zF8w==
+
+"@etransfer/ui-react@^1.7.0":
+  version "1.7.0"
+  resolved "https://registry.yarnpkg.com/@etransfer/ui-react/-/ui-react-1.7.0.tgz#89b2d03a14bcc9f680364b85ecc7d3bdb2b35cf5"
+  integrity sha512-8iF2rBiGlBfdYfBFwzdXZ33rMojSTx2orSN02MU6iIPwWbVBFPQfpeLNYYkBsd22TXOoLaoc7xr4Qfh7z3fFwA==
+  dependencies:
+    "@etransfer/core" "^1.7.0"
+    "@etransfer/types" "^1.7.0"
+    "@etransfer/utils" "^1.7.0"
+    "@portkey/types" "2.6.6"
+    "@portkey/utils" "2.6.6"
+    antd "4.24.14"
+    bignumber.js "^9.1.0"
+    clsx "^1.2.1"
+    lottie-web "5.9.6"
+    moment "^2.29.4"
+    query-string "^7.1.1"
+    react-infinite-scroll-component "^6.1.0"
+    react-qrcode-logo "2.9.0"
+    react-use "^17.4.0"
+    uuid "^8.3.2"
+
+"@etransfer/utils@^1.7.0":
+  version "1.7.0"
+  resolved "https://registry.yarnpkg.com/@etransfer/utils/-/utils-1.7.0.tgz#506d015496da58c5a1b24068e6ce2233a56ace23"
+  integrity sha512-ZdQn4hvFC7E5AvaCKznfPot+o9Ybi+GAT8LeJ+gS2tGcCsx7XQqdeX/oXRvmSHjlwp6PZvhneQIzFgaxQaTZmQ==
+  dependencies:
+    "@etransfer/services" "^1.7.0"
+    "@etransfer/types" "^1.7.0"
+    bn.js "^5.2.1"
+
 "@floating-ui/core@^1.6.0":
   version "1.6.4"
   resolved "https://registry.yarnpkg.com/@floating-ui/core/-/core-1.6.4.tgz#0140cf5091c8dee602bff9da5ab330840ff91df6"
@@ -3532,6 +3604,11 @@
     "@abp/signalr" "^7.0.0"
     "@portkey/utils" "^2.7.2"
 
+"@portkey/types@2.6.6":
+  version "2.6.6"
+  resolved "https://registry.yarnpkg.com/@portkey/types/-/types-2.6.6.tgz#07af958da36f777aa68149a6bfd7bb0df1c9f992"
+  integrity sha512-oMsduRi2juBqQffhIgD5NSoVxnmmG+lL3W6RnJueyfh/itbaEZfIlC1g9o4NM4TVuxZPIf0ahfPaXGR9CriIYQ==
+
 "@portkey/types@^2.0.0-alpha.0", "@portkey/types@^2.6.8":
   version "2.6.8"
   resolved "https://registry.yarnpkg.com/@portkey/types/-/types-2.6.8.tgz#117b68afaec37044c9b993dd8111274881d87c47"
@@ -3546,6 +3623,11 @@
   version "2.7.2"
   resolved "https://registry.yarnpkg.com/@portkey/types/-/types-2.7.2.tgz#48884640e25a740bb24343250ab30e0987693f90"
   integrity sha512-HB2swkxeNfJIn0CJJlYHIwt5l8RTQutBoPlMOTd4mrDWnL/PFdhalKzCIVSmAJtDs1FH+EXROr9FzGK9fWfXZg==
+
+"@portkey/utils@2.6.6":
+  version "2.6.6"
+  resolved "https://registry.yarnpkg.com/@portkey/utils/-/utils-2.6.6.tgz#8fa5eb93a4ca43baa14345a75876a8701de2c1f6"
+  integrity sha512-1hooVcRxGafEyyD/TGqx9vsGwsl50RElCBz5hqTJ1mUDy3Q5OWFtSPU0dnTPpUwJlzJHUJCZMvO+wI2dCJHncA==
 
 "@portkey/utils@^2.4.5", "@portkey/utils@^2.6.8":
   version "2.6.8"
@@ -5572,6 +5654,13 @@ axios@^0.21.1:
   integrity sha512-ut5vewkiu8jjGBdqpM44XxjuCjq9LAKeHVmoVfHVzy8eHgxxq8SbAVQNovDA8mVi05kP0Ea/n/UzcSHcTJQfNg==
   dependencies:
     follow-redirects "^1.14.0"
+
+axios@^0.24.0:
+  version "0.24.0"
+  resolved "https://registry.yarnpkg.com/axios/-/axios-0.24.0.tgz#804e6fa1e4b9c5288501dd9dff56a7a0940d20d6"
+  integrity sha512-Q6cWsys88HoPgAaFAVUb0WpPk0O8iTeisR9IMqy9G8AbO4NlpVknrnQS03zzF9PGAWgO3cgletO3VjV/P7VztA==
+  dependencies:
+    follow-redirects "^1.14.4"
 
 axios@^0.27.2:
   version "0.27.2"
@@ -8935,6 +9024,11 @@ follow-redirects@^1.0.0, follow-redirects@^1.14.0:
   version "1.15.0"
   resolved "https://registry.npmmirror.com/follow-redirects/-/follow-redirects-1.15.0.tgz#06441868281c86d0dda4ad8bdaead2d02dca89d4"
   integrity sha512-aExlJShTV4qOUOL7yF1U5tvLCB0xQuudbf6toyYA0E/acBNw71mvjFTnLaRp50aQaYocMR0a/RMMBIHeZnGyjQ==
+
+follow-redirects@^1.14.4:
+  version "1.15.9"
+  resolved "https://registry.yarnpkg.com/follow-redirects/-/follow-redirects-1.15.9.tgz#a604fa10e443bf98ca94228d9eebcc2e8a2c8ee1"
+  integrity sha512-gew4GsXizNgdoRyqmyfMHyAmXsZDk6mHkSxZFCzW9gwlbtOW44CDtYavM+y+72qD/Vq2l550kMF52DT8fOLJqQ==
 
 follow-redirects@^1.14.9:
   version "1.15.2"
@@ -14106,6 +14200,13 @@ react-i18next@^11.18.6:
     "@babel/runtime" "^7.14.5"
     html-parse-stringify "^3.0.1"
 
+react-infinite-scroll-component@^6.1.0:
+  version "6.1.0"
+  resolved "https://registry.yarnpkg.com/react-infinite-scroll-component/-/react-infinite-scroll-component-6.1.0.tgz#7e511e7aa0f728ac3e51f64a38a6079ac522407f"
+  integrity sha512-SQu5nCqy8DxQWpnUVLx7V7b7LcA37aM7tvoWjTLZp1dk6EJibM5/4EJKzOnl07/BsM1Y40sKLuqjCwwH/xV0TQ==
+  dependencies:
+    throttle-debounce "^2.1.0"
+
 react-infinite-scroller@^1.2.6:
   version "1.2.6"
   resolved "https://registry.yarnpkg.com/react-infinite-scroller/-/react-infinite-scroller-1.2.6.tgz#8b80233226dc753a597a0eb52621247f49b15f18"
@@ -16009,6 +16110,11 @@ throat@^6.0.1:
   version "6.0.2"
   resolved "https://registry.npmjs.org/throat/-/throat-6.0.2.tgz#51a3fbb5e11ae72e2cf74861ed5c8020f89f29fe"
   integrity sha512-WKexMoJj3vEuK0yFEapj8y64V0A6xcuPuK9Gt1d0R+dzCSJc0lHqQytAbSB4cDAK0dWh4T0E2ETkoLE2WZ41OQ==
+
+throttle-debounce@^2.1.0:
+  version "2.3.0"
+  resolved "https://registry.yarnpkg.com/throttle-debounce/-/throttle-debounce-2.3.0.tgz#fd31865e66502071e411817e241465b3e9c372e2"
+  integrity sha512-H7oLPV0P7+jgvrk+6mwwwBDmxTaxnu9HMXmloNLXwnNO0ZxZ31Orah2n8lU1eMPvsaowP2CX+USCgyovXfdOFQ==
 
 throttle-debounce@^3.0.1:
   version "3.0.1"

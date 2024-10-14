@@ -1,5 +1,5 @@
 import { Button, Col, List, Row } from 'antd';
-import { useAddUserToken, useUserAddedTokens } from 'contexts/useUser/hooks';
+import { useAddTokenImage, useAddUserToken, useUserAddedTokens } from 'contexts/useUser/hooks';
 import { useActiveWeb3React } from 'hooks/web3';
 import { ChangeEventHandler, useCallback, useEffect, useMemo, useState } from 'react';
 import { CurrencyLogo } from 'components/CurrencyLogo';
@@ -14,7 +14,7 @@ import { useTokenContract } from 'hooks/useContract';
 
 import CommonEmpty from 'components/CommonEmpty';
 import { useMobile } from 'utils/isMobile';
-import { formatSymbol } from 'utils/token';
+import { formatSymbol, getImageFromTokenInfo } from 'utils/token';
 
 export default function ManageTokens() {
   const { t } = useTranslation();
@@ -29,6 +29,7 @@ export default function ManageTokens() {
   }, []);
   const addedTokens = useUserAddedTokens();
   const addToken = useAddUserToken();
+  const addTokenImage = useAddTokenImage();
 
   const tokenContract = useTokenContract();
 
@@ -47,8 +48,10 @@ export default function ManageTokens() {
         setSearchTokenInfo(undefined);
         return;
       }
+
       tokenInfo.chainId = chainId;
       tokenInfo.address = tokenInfo.symbol;
+      tokenInfo.imageUri = getImageFromTokenInfo(tokenInfo);
       setSearchTokenInfo(tokenInfo);
     },
     [chainId, tokenContract],
@@ -83,6 +86,7 @@ export default function ManageTokens() {
 
   const onClickAddToken = (token: Token) => {
     addToken(token);
+    addTokenImage(token.symbol, getImageFromTokenInfo(token));
   };
 
   return (

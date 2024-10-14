@@ -2,6 +2,10 @@ import BigNumber from 'bignumber.js';
 import { useMemo } from 'react';
 import { useBalances } from './useBalances';
 import { useAllTokenList } from './tokenList';
+import { useConnectWallet } from '@aelf-web-login/wallet-adapter-react';
+import { useIsConnected } from './useLogin';
+import { TAelfAccounts } from '@etransfer/ui-react';
+import { DEFAULT_CHAIN } from 'constants/index';
 
 export function useAllTokenBalances(): {
   [tokenAddress: string]: BigNumber;
@@ -17,4 +21,20 @@ export function useAllTokenBalances(): {
     });
     return obj;
   }, [validatedTokenAddresses, balances]);
+}
+
+export function useGetAccount() {
+  const { walletInfo } = useConnectWallet();
+  const isLogin = useIsConnected();
+
+  return useMemo(() => {
+    if (!isLogin) return undefined;
+
+    const accounts: TAelfAccounts = {
+      AELF: 'ELF_' + walletInfo?.address + '_' + 'AELF',
+      [DEFAULT_CHAIN]: 'ELF_' + walletInfo?.address + '_' + DEFAULT_CHAIN,
+    };
+
+    return accounts;
+  }, [isLogin, walletInfo]);
 }

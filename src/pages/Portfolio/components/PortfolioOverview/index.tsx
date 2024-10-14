@@ -56,7 +56,6 @@ export const PortfolioOverview = () => {
   }, [account, chainId, getIdleTokens]);
 
   const executeCb = useCallback(async () => {
-    console.log('executeCb');
     if (!account || !chainId) return;
     refreshUserPortfolio();
     refreshIdleTokens();
@@ -199,15 +198,15 @@ export const PortfolioOverview = () => {
               <Row align="middle" gutter={[4, 0]}>
                 <Col>
                   <Font size={isMobile ? 14 : 16} lineHeight={isMobile ? 20 : 24}>
-                    {t('Total Fees')}
+                    {t('Total Profit')}
                   </Font>
                 </Col>
                 <Col>
                   <CommonTooltip
                     placement="top"
-                    title={t('totalFeesDescription')}
+                    title={t('totalProfitDescription')}
                     buttonTitle={t('ok')}
-                    headerDesc={t('Total Fees')}
+                    headerDesc={t('Total Profit')}
                   />
                 </Col>
               </Row>

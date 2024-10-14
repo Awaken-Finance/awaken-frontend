@@ -43,3 +43,10 @@ export function formatSwapError(
     description: error.message,
   });
 }
+
+export function formatLimitError(error: any) {
+  notification.error({
+    message: i18n.t('Place Order Fail'),
+    description: error.message,
+  });
+}

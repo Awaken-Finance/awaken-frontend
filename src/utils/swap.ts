@@ -24,11 +24,17 @@ import { getLog } from './protoUtils';
 import getTransactionId, { getLogs } from './contractResult';
 import { formatSwapError } from './formatError';
 import { formatSymbol } from './token';
+import { TCurrency } from 'types/common';
 export const getDeadline = (): number | PBTimestamp => {
   const deadline = new BigNumber(JSON.parse(localStorage.getItem(storages.userExpiration) || ''));
   const seconds =
     Math.ceil(new Date().getTime() / 1000) +
     (!deadline.isNaN() ? deadline.times(60).toNumber() : Number(DEFAULT_EXPIRATION) * 60);
+  if (ChainConstants.chainType === 'ELF') return { seconds: seconds, nanos: 0 };
+  return seconds;
+};
+
+export const getDeadlineWithSec = (seconds: number) => {
   if (ChainConstants.chainType === 'ELF') return { seconds: seconds, nanos: 0 };
   return seconds;
 };
@@ -233,7 +239,7 @@ type SwapResult = {
   TransactionId?: string;
   transactionId?: string;
 };
-// TODO
+
 export async function swapSuccess({
   result,
   tokenB,
@@ -249,13 +255,34 @@ export async function swapSuccess({
 }) {
   const Logs = getLogs(result);
   const log = getLog(Logs, 'Swap');
+  const limitLogs = getLog(Logs, 'LimitOrderTotalFilled');
 
-  let { amountIn, amountOut } = log[0];
+  let amountIn = ZERO,
+    amountOut = ZERO;
   if (isSwap) {
     const inList = log.filter((item) => item.symbolIn === tokenB?.symbol);
     amountIn = inList.reduce((p, c) => p.plus(c.amountIn), ZERO);
     const outList = log.filter((item) => item.symbolOut === tokenA?.symbol);
     amountOut = outList.reduce((p, c) => p.plus(c.amountOut), ZERO);
+  } else {
+    const { _amountIn, _amountOut } = log[0] || {};
+    if (_amountIn) {
+      amountIn = amountIn.plus(_amountIn || 0);
+    }
+    if (_amountOut) {
+      amountOut = amountOut.plus(_amountOut || 0);
+    }
+  }
+
+  if (limitLogs && limitLogs.length) {
+    limitLogs.forEach((item) => {
+      if (item.symbolIn === tokenA?.symbol) {
+        amountOut = amountOut.plus(item.amountInFilled);
+      }
+      if (item.symbolOut === tokenB?.symbol) {
+        amountIn = amountIn.plus(item.amountOutFilled);
+      }
+    });
   }
 
   try {
@@ -424,13 +451,16 @@ export function getCurrency(
     address: string;
     symbol: string;
     decimals: number;
+    imageUri?: string;
   },
   chainId: number | string,
 ) {
-  const { symbol, decimals } = token || {};
+  const { symbol, decimals, imageUri } = token || {};
   const checkedSymbol = isElfChainSymbol(symbol);
   if (typeof chainId === 'string' && checkedSymbol) {
-    return new ELFChainToken(chainId, symbol, decimals, symbol, symbol);
+    const _token: TCurrency = new ELFChainToken(chainId, symbol, decimals, symbol, symbol);
+    if (imageUri) _token.imageUri = imageUri;
+    return _token;
   }
 }
 
@@ -454,8 +484,14 @@ export function getPriceImpactSeverity(priceImpact?: string | BigNumber) {
 
 export function minimumAmountOut(outputAmount: BigNumber, slippageTolerance = DEFAULT_SLIPPAGE_TOLERANCE) {
   if (slippageTolerance === '') slippageTolerance = DEFAULT_SLIPPAGE_TOLERANCE;
-  return outputAmount.times(ONE.div(ONE.plus(slippageTolerance)));
+  return outputAmount.div(ONE.plus(slippageTolerance));
 }
+
+export function maximumAmountIn(inputAmount: BigNumber, slippageTolerance = DEFAULT_SLIPPAGE_TOLERANCE) {
+  if (slippageTolerance === '') slippageTolerance = DEFAULT_SLIPPAGE_TOLERANCE;
+  return inputAmount.times(ONE.plus(slippageTolerance));
+}
+
 export function sortLPSymbol(symbol: string) {
   const list = symbol?.split('-');
   return list?.sort().join('-');

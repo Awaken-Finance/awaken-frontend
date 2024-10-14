@@ -29,35 +29,32 @@ import TransactionFee from './components/TransactionFee';
 import MinimumOutput from './components/MinimumOutput';
 import PriceImpact from './components/PriceImpact';
 import { SellBtnWithPay } from 'Buttons/SellBtn/SellBtn';
-import { ZERO } from 'constants/misc';
+import { TEN_THOUSAND, ZERO } from 'constants/misc';
 import { useMobile } from 'utils/isMobile';
 import CommonBlockProgress from 'components/CommonBlockProgress';
 import { isZeroDecimalsNFT } from 'utils/NFT';
 import { formatSymbol } from 'utils/token';
+import { useTransactionFee } from 'contexts/useStore/hooks';
+import { FeeRow } from 'pages/Swap/components/FeeRow';
+import { SWAP_LABS_FEE_RATE, SWAP_RECEIVE_RATE } from 'constants/swap';
+import { DepositLink } from 'components/DepositLink';
 
-export default function LeftCard({
-  tokenA,
-  tokenB,
-  balances,
-  reserves,
-  rate,
-  getReserves,
-}: {
-  setToken?: (currency?: Currency | undefined) => void;
+export type TLeftCardProps = {
   rate: string;
   tokenA?: Currency;
   tokenB?: Currency;
   balances?: CurrencyBalances;
   reserves?: Reserves;
   getReserves: () => void;
-}) {
+};
+export default function LeftCard({ tokenA, tokenB, balances, reserves, rate, getReserves }: TLeftCardProps) {
   const isMobile = useMobile();
 
   const balance = balances?.[getCurrencyAddress(tokenB)];
 
   const [{ userSlippageTolerance }] = useUserSettings();
 
-  const [transactionFee, setTransactionFee] = useState<BigNumber.Value>(0);
+  const transactionFee = useTransactionFee();
 
   const [amount, setAmount] = useState('');
 
@@ -73,9 +70,12 @@ export default function LeftCard({
   }, [balance, tokenB, transactionFee]);
 
   const maxReserveAmount = useMemo(
-    () =>
-      minimumAmountOut(divDecimals(reserves?.[getCurrencyAddress(tokenA)], tokenA?.decimals), userSlippageTolerance),
-    [reserves, tokenA, userSlippageTolerance],
+    () => divDecimals(reserves?.[getCurrencyAddress(tokenA)], tokenA?.decimals),
+    [reserves, tokenA],
+  );
+  const minimumMaxReserveAmount = useMemo(
+    () => minimumAmountOut(maxReserveAmount, userSlippageTolerance),
+    [maxReserveAmount, userSlippageTolerance],
   );
 
   const maxAmount = useMemo(() => {
@@ -86,7 +86,9 @@ export default function LeftCard({
       divDecimals(reserves?.[getCurrencyAddress(tokenA)], tokenA?.decimals),
     );
 
-    return BigNumber.min(maxBalanceAmount, maxReserveAmount).dp(tokenB?.decimals ?? 8);
+    return BigNumber.min(maxBalanceAmount, maxReserveAmount)
+      .times(SWAP_RECEIVE_RATE)
+      .dp(tokenA?.decimals ?? 8, BigNumber.ROUND_DOWN);
   }, [rate, maxBalanceTotal, reserves, tokenB, tokenA, maxReserveAmount]);
 
   const [progressValue, setProgressValue] = useState(0);
@@ -95,8 +97,12 @@ export default function LeftCard({
   }, [amount, maxAmount]);
 
   const amountOutMin = useMemo(
-    () => BigNumber.min(minimumAmountOut(new BigNumber(amount), userSlippageTolerance), maxReserveAmount),
-    [amount, maxReserveAmount, userSlippageTolerance],
+    () =>
+      BigNumber.min(
+        minimumAmountOut(new BigNumber(amount), userSlippageTolerance),
+        maxReserveAmount.times(SWAP_RECEIVE_RATE).dp(tokenA?.decimals || 0, BigNumber.ROUND_CEIL),
+      ),
+    [amount, maxReserveAmount, tokenA?.decimals, userSlippageTolerance],
   );
 
   const priceImpact = useMemo(() => {
@@ -104,9 +110,9 @@ export default function LeftCard({
       divDecimals(reserves?.[getCurrencyAddress(tokenA)], tokenA?.decimals),
       divDecimals(reserves?.[getCurrencyAddress(tokenB)], tokenB?.decimals),
       total,
-      amountOutMin.dp(tokenA?.decimals ?? 18),
+      ZERO.plus(amount),
     );
-  }, [total, reserves, tokenA, tokenB, amountOutMin]);
+  }, [tokenA, tokenB, reserves, total, amount]);
 
   const amountError = useMemo(() => {
     const bigInput = new BigNumber(amount);
@@ -118,7 +124,12 @@ export default function LeftCard({
       };
     }
 
-    const maxPool = divDecimals(reserves?.[getCurrencyAddress(tokenA)], tokenA?.decimals);
+    const maxPool = divDecimals(
+      ZERO.plus(reserves?.[getCurrencyAddress(tokenA)] || 0)
+        .times(SWAP_RECEIVE_RATE)
+        .dp(0, BigNumber.ROUND_CEIL),
+      tokenA?.decimals,
+    );
 
     if (bigInput.gt(maxPool)) {
       return {
@@ -153,9 +164,13 @@ export default function LeftCard({
     (val: string) => {
       let totalStr = '';
       if (val) {
+        const realVal = ZERO.plus(val)
+          .div(SWAP_RECEIVE_RATE)
+          .dp(tokenA?.decimals || 0);
+
         const totalValue = getAmountByInput(
           rate,
-          BigNumber.min(new BigNumber(val), maxReserveAmount),
+          BigNumber.min(realVal, minimumMaxReserveAmount),
           divDecimals(reserves?.[getCurrencyAddress(tokenA)], tokenA?.decimals),
           divDecimals(reserves?.[getCurrencyAddress(tokenB)], tokenB?.decimals),
         );
@@ -165,7 +180,7 @@ export default function LeftCard({
       setAmount(val);
       setProgressValue(0);
     },
-    [maxReserveAmount, rate, reserves, tokenA, tokenB],
+    [minimumMaxReserveAmount, rate, reserves, tokenA, tokenB],
   );
 
   const inputTotal = useCallback(
@@ -177,7 +192,7 @@ export default function LeftCard({
           new BigNumber(val),
           divDecimals(reserves?.[getCurrencyAddress(tokenB)], tokenB?.decimals),
           divDecimals(reserves?.[getCurrencyAddress(tokenA)], tokenA?.decimals),
-        );
+        ).times(SWAP_RECEIVE_RATE);
         amountStr = bigNumberToString(amountValue, tokenA?.decimals);
       }
 
@@ -198,14 +213,18 @@ export default function LeftCard({
       }
 
       const newAmount = sideToInput(val, maxAmount);
-      const newAmountStr = bigNumberToString(newAmount, tokenB?.decimals);
+      const realNewAmount = ZERO.plus(newAmount)
+        .div(SWAP_RECEIVE_RATE)
+        .dp(tokenA?.decimals || 0, BigNumber.ROUND_DOWN);
+      const newAmountStr = bigNumberToString(newAmount, tokenA?.decimals);
+
       const newTotal = getAmountByInput(
         rate,
-        new BigNumber(newAmount),
+        new BigNumber(realNewAmount),
         divDecimals(reserves?.[getCurrencyAddress(tokenA)], tokenA?.decimals),
         divDecimals(reserves?.[getCurrencyAddress(tokenB)], tokenB?.decimals),
       );
-      const newTotalStr = bigNumberToString(newTotal, tokenB?.decimals);
+      const newTotalStr = bigNumberToUPString(newTotal, tokenB?.decimals);
 
       setTotal(newTotalStr);
       setAmount(newAmountStr);
@@ -230,6 +249,16 @@ export default function LeftCard({
     setAmount('');
     setTotal('');
   }, [tokenA, tokenB, rate]);
+
+  const limitFeeValue = useMemo(() => {
+    if (!amount) return '-';
+    return ZERO.plus(amount)
+      .div(SWAP_RECEIVE_RATE)
+      .times(SWAP_LABS_FEE_RATE)
+      .div(TEN_THOUSAND)
+      .dp(tokenA?.decimals || 1, BigNumber.ROUND_DOWN)
+      .toFixed();
+  }, [amount, tokenA?.decimals]);
 
   return (
     <Row gutter={[0, isMobile ? 12 : 16]}>
@@ -287,20 +316,22 @@ export default function LeftCard({
             <PriceImpact value={priceImpact} />
           </Col>
           <Col span={24}>
-            <TransactionFee onChange={(val) => setTransactionFee(val)} />
+            <FeeRow value={limitFeeValue} symbol={tokenA?.symbol || ''} />
+          </Col>
+          <Col span={24}>
+            <TransactionFee />
           </Col>
         </Row>
       </Col>
       <Col span={24}>
         <SellBtnWithPay
           disabled={amountError.error || totalError.error}
-          tokenA={tokenA}
-          tokenB={tokenB}
+          tokenIn={tokenB}
+          tokenOut={tokenA}
           rate={rate}
           onClick={onClickSellBtn}
-          amountBN={total ? new BigNumber(total) : ZERO}
-          amountOutMin={amountOutMin}
-          amount={total}
+          valueIn={total}
+          valueOut={amount}
           onTradeSuccess={() => {
             setAmount('');
             setTotal('');
@@ -309,6 +340,7 @@ export default function LeftCard({
           }}
         />
       </Col>
+      {totalError.error && <DepositLink receiveToken={tokenB?.symbol} />}
     </Row>
   );
 }

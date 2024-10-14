@@ -1,4 +1,4 @@
-import { useCallback, useRef, useMemo } from 'react';
+import { useCallback, useRef, useMemo, useEffect } from 'react';
 import BigNumber from 'bignumber.js';
 import { Col, InputProps, InputRef, Row } from 'antd';
 
@@ -18,7 +18,7 @@ import PriceUSDDigits from 'components/PriceUSDDigits';
 import getFontStyle from 'utils/getFontStyle';
 import { useMobile } from 'utils/isMobile';
 import clsx from 'clsx';
-import { useConnectWallet } from '@aelf-web-login/wallet-adapter-react';
+import { useIsConnected } from 'hooks/useLogin';
 
 interface Props extends Omit<InputProps, 'onChange'> {
   token?: Currency;
@@ -57,7 +57,7 @@ export default function SwapInputRow(props: Props) {
   const isMobile = useMobile();
 
   const inputRef = useRef<InputRef>(null);
-  const { isConnected } = useConnectWallet();
+  const isConnected = useIsConnected();
 
   const tokenPrice = useTokenPrice({
     symbol: token?.symbol,
@@ -69,6 +69,9 @@ export default function SwapInputRow(props: Props) {
   }, [balance, isConnected, token?.decimals]);
 
   const min = useRef<BigNumber>(divDecimals('1', token?.decimals));
+  useEffect(() => {
+    min.current = divDecimals('1', token?.decimals);
+  }, [token?.decimals]);
 
   const setValue = useCallback(
     (_value: string) => {

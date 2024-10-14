@@ -3,8 +3,6 @@ import { CurrencyLogo } from 'components/CurrencyLogo';
 import Font from 'components/Font';
 import useChainId from 'hooks/useChainId';
 import { useMemo } from 'react';
-import { getELFChainTokenURL } from 'utils';
-
 import './MyTokenList.less';
 import PriceUSDDigits from 'components/PriceUSDDigits';
 import getFontStyle from 'utils/getFontStyle';
@@ -17,6 +15,7 @@ type TokenInfoItem = {
   balance: number;
   amount: string;
   priceInUsd: string;
+  imageUri?: string;
 };
 
 export function TokenItem({ data }: { data: TokenInfoItem }) {
@@ -27,14 +26,10 @@ export function TokenItem({ data }: { data: TokenInfoItem }) {
       : chainName;
   }, [chainName]);
 
-  const src = useMemo(() => {
-    return getELFChainTokenURL(data.symbol);
-  }, [data.symbol]);
-
   return (
     <Row className="my-token-item" align={'middle'} justify="center" wrap={false}>
       <Col className="icon-col">
-        <CurrencyLogo src={src} symbol={data.symbol} size={24} />
+        <CurrencyLogo currency={data as any} size={24} />
       </Col>
       <Col flex={'auto'}>
         <div className="symbol">

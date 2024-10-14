@@ -5,8 +5,6 @@ import { useTranslation } from 'react-i18next';
 import { useMobile } from 'utils/isMobile';
 import { IconArrowRight2 } from 'assets/icons';
 import { useReturnLastCallback } from 'hooks';
-import { getTransactionList } from 'pages/UserCenter/apis/recentTransaction';
-import { LiquidityRecord, RecentTransaction } from 'pages/UserCenter/type';
 import { useActiveWeb3React } from 'hooks/web3';
 import { CommonTable } from 'components/CommonTable';
 import { ColumnsType } from 'antd/es/table';
@@ -23,7 +21,9 @@ import CommonList from 'components/CommonList';
 import { Col, Row } from 'antd';
 import { useHistory } from 'react-router-dom';
 import { SWAP_TIME_INTERVAL } from 'constants/misc';
-import { useConnectWallet } from '@aelf-web-login/wallet-adapter-react';
+import { useIsConnected } from 'hooks/useLogin';
+import { LiquidityRecord, RecentTransaction } from 'types/transactions';
+import { getTransactionList } from 'api/utils/recentTransaction';
 
 export function SwapTransactionItem({
   item: { tradePair, timestamp, side, token0Amount, token1Amount, transactionHash, totalPriceInUsd },
@@ -134,7 +134,7 @@ export const SwapHistory = () => {
   const { account, chainId } = useActiveWeb3React();
   const isMobile = useMobile();
   const { t } = useTranslation();
-  const { isConnected } = useConnectWallet();
+  const isConnected = useIsConnected();
 
   const [list, setList] = useState<RecentTransaction[]>([]);
   const dataSource = useMemo(() => {

@@ -2,7 +2,7 @@ import { useMemo } from 'react';
 import { Modal, Button, Row } from 'antd';
 import { IconLogoutWarn } from 'assets/icons';
 import Font from 'components/Font';
-import { isMobileDevices } from 'utils/isMobile';
+import { isMobileSize } from 'utils/isMobile';
 import './styles.less';
 import { useTranslation } from 'react-i18next';
 
@@ -24,7 +24,7 @@ export default function ConfirmLogoutDialog(props: Partial<TConfirmLogoutDialogP
   };
   const { t } = useTranslation();
 
-  const isMobileDevice = isMobileDevices();
+  const isMobileDevice = isMobileSize();
   const className = useMemo(
     () => (isMobileDevice ? 'confirm-logout-dialog-mobile' : 'confirm-logout-dialog'),
     [isMobileDevice],

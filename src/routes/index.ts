@@ -21,6 +21,9 @@ const Example = lazy(() => import('pages/Example'));
 const Swap = lazy(() => import('pages/Swap'));
 const Portfolio = lazy(() => import('pages/Portfolio'));
 const Transactions = lazy(() => import('pages/Transactions'));
+const Deposit = lazy(() => import('pages/Deposit'));
+const DepositHistory = lazy(() => import('pages/DepositHistory'));
+const Activity = lazy(() => import('pages/Activity'));
 
 const routes: RoutesProps[] = [
   {
@@ -74,6 +77,10 @@ const routes: RoutesProps[] = [
     component: Swap,
   },
   {
+    path: '/swap/:tab',
+    component: Swap,
+  },
+  {
     path: '/portfolio',
     component: Portfolio,
     authComp: AuthComp,
@@ -82,6 +89,25 @@ const routes: RoutesProps[] = [
     path: '/transactions',
     component: Transactions,
     authComp: AuthComp,
+  },
+  {
+    path: '/transactions/:menu',
+    component: Transactions,
+    authComp: AuthComp,
+  },
+  {
+    path: ['/deposit', '/withdraw'],
+    component: Deposit,
+    authComp: AuthComp,
+  },
+  {
+    path: '/deposit-history',
+    component: DepositHistory,
+    authComp: AuthComp,
+  },
+  {
+    path: '/activity/:id',
+    component: Activity,
   },
   {
     path: '/',

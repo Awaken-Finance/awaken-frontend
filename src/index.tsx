@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { ConfigProvider, message } from 'antd';
 import { createRoot } from 'react-dom/client';
 
@@ -23,7 +23,9 @@ import './sentry';
 import './index.css';
 import './App.less';
 import './assets/js/telegram-web-app';
-import { useIsTelegram } from 'utils/isMobile';
+import { isMobileDevice, useIsTelegram } from 'utils/isMobile';
+import { ETransferConfig } from '@etransfer/ui-react';
+import { etransferConfig } from 'config/etransferConfig';
 
 message.config({
   maxCount: 1,
@@ -48,24 +50,29 @@ function ContextProviders({ children }: { children?: React.ReactNode }) {
 function RootApp() {
   const isTelegram = useIsTelegram();
 
-  const bridgeAPI = useMemo(
-    () =>
-      init({
-        ...WEB_LOGIN_CONFIG,
-        baseConfig: {
-          ...WEB_LOGIN_CONFIG.baseConfig,
-          noCommonBaseModal: isTelegram ? false : true,
-          design: SignInDesignEnum.Web2Design,
-          SignInComponent: isTelegram ? undefined : (SignInProxy as any),
-          ConfirmLogoutDialog: ConfirmLogoutDialog,
-          PortkeyProviderProps: {
-            theme: 'dark',
-            networkType: WEB_LOGIN_CONFIG.baseConfig.networkType,
-          },
+  const bridgeAPI = useMemo(() => {
+    const isMobile = isMobileDevice();
+    return init({
+      ...WEB_LOGIN_CONFIG,
+      baseConfig: {
+        ...WEB_LOGIN_CONFIG.baseConfig,
+        noCommonBaseModal: isTelegram ? false : true,
+        design: SignInDesignEnum.Web2Design,
+        keyboard: true,
+        SignInComponent: isTelegram ? undefined : (SignInProxy as any),
+        ConfirmLogoutDialog: ConfirmLogoutDialog,
+        PortkeyProviderProps: {
+          theme: 'dark',
+          networkType: WEB_LOGIN_CONFIG.baseConfig.networkType,
         },
-      }),
-    [isTelegram],
-  );
+      },
+      wallets: isMobile ? [WEB_LOGIN_CONFIG.wallets[0], WEB_LOGIN_CONFIG.wallets[1]] : WEB_LOGIN_CONFIG.wallets,
+    });
+  }, [isTelegram]);
+
+  useEffect(() => {
+    ETransferConfig.setConfig(etransferConfig);
+  }, []);
 
   return (
     <ChianProvider>

@@ -121,3 +121,55 @@
 .ant-tabs {
   line-height: 1;
 }
+
+.etransfer-ui-global-loading-modal {
+  .etransfer-ant-modal-content {
+    background-color: var(--ant-container-bg-color);
+  }
+}
+
+.etransfer-ui-common-tooltip-overlay,
+.etransfer-ant-tooltip {
+  .etransfer-ant-tooltip-inner {
+    padding: 12px 16px;
+    background-color: var(--ant-alert-bg-color);
+    color: var(--ant-black-font-color-1);
+    font-size: 12px;
+    line-height: 18px;
+    max-width: 240px;
+    border-radius: 4px;
+  }
+  .etransfer-ant-tooltip-arrow-content {
+    &::before {
+      background: var(--ant-alert-bg-color);
+    }
+  }
+}
+
+.etransfer-ant-btn.etransfer-ant-btn-default {
+  &.etransfer-ui-common-button-primary:disabled,
+  &.etransfer-ui-common-button-primary[disabled]:hover {
+    background-color: var(--ant-button-gray-hover-color);
+    color: #9ba0b0;
+    border-color: var(--ant-button-gray-hover-color);
+  }
+  &.etransfer-ui-common-button-primary:hover,
+  &.etransfer-ui-common-button-primary {
+    color: #fff;
+    border-color: var(--ant-primary-color-hover);
+    background: var(--ant-primary-color-hover);
+  }
+}
+
+.etransfer-ui-common-svg {
+  display: inline-flex;
+  align-items: center;
+}
+
+.etransfer-ui-txn-notification-success,
+.etransfer-ui-txn-notification-error {
+  background-color: #2a2e3a !important;
+  border: none !important;
+  width: 450px;
+  padding: 0 !important;
+}

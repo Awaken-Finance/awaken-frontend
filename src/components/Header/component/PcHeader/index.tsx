@@ -4,15 +4,14 @@ import clsx from 'clsx';
 import Network from 'components/Network';
 import { basicModalView } from 'contexts/useModal/actions';
 import { useModalDispatch } from 'contexts/useModal/hooks';
-import { memo, useMemo } from 'react';
+import { useCallback, useMemo, useRef } from 'react';
 import LanguageMenu from '../LanguageMenu';
 import NavMenu from '../NavMenu';
-import { NavLink, useLocation } from 'react-router-dom';
-import useSelectedKeys from 'components/Header/hooks/useSelectedKeys';
+import { NavLink } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useModal } from 'contexts/useModal';
 import CommonButton from 'components/CommonButton';
-import useLogin from 'hooks/useLogin';
+import useLogin, { useIsConnected } from 'hooks/useLogin';
 
 import './styles.less';
 import Font from 'components/Font';
@@ -20,13 +19,23 @@ import { useMonitorScroll } from 'hooks/useMonitorScroll';
 import useChainId from 'hooks/useChainId';
 import { shortenAddress } from 'utils';
 import { useConnectWallet } from '@aelf-web-login/wallet-adapter-react';
+import { DepositTipModal, DepositTipModalInterface } from 'Modals/DepositTipModal';
+import { useIsDepositPath } from 'hooks/route';
+import { MenuItem } from 'components/Header/router';
+import { TActivityBase } from 'graphqlServer/queries/activity/common';
+import { ActivityNotice } from '../ActivityNotice';
 
-function PcHeader() {
-  const { selectedKeys } = useSelectedKeys();
-  const { walletInfo, isConnected, isLocking } = useConnectWallet();
+export type TPcHeaderProps = {
+  menuList: MenuItem[];
+  activity?: TActivityBase;
+};
+
+function PcHeader({ menuList, activity }: TPcHeaderProps) {
+  const { walletInfo, isLocking } = useConnectWallet();
+  const isConnected = useIsConnected();
   const { chainId } = useChainId();
-  const pathname = useLocation().pathname;
   const { t } = useTranslation();
+  const depositTipModalRef = useRef<DepositTipModalInterface>();
 
   const [modalState] = useModal();
   const modalDispatch = useModalDispatch();
@@ -38,14 +47,11 @@ function PcHeader() {
 
   useMonitorScroll();
 
-  const isOpacity = useMemo(() => {
-    return !(
-      pathname.includes('/user-center') ||
-      selectedKeys[0] === 'overview' ||
-      selectedKeys[0] === 'transaction' ||
-      selectedKeys[0] === 'unMatched'
-    );
-  }, [selectedKeys, pathname]);
+  const isDepositPath = useIsDepositPath();
+  const onDepositClick = useCallback(() => {
+    if (isDepositPath) return;
+    depositTipModalRef.current?.show();
+  }, [isDepositPath]);
 
   const displayAddress = useMemo(() => {
     if (!walletInfo?.address) return '';
@@ -92,18 +98,31 @@ function PcHeader() {
   };
 
   return (
-    <Layout.Header className={clsx('site-header', isOpacity && 'opacity-header')}>
-      <Row align="middle" gutter={[20, 0]}>
+    <Layout.Header className={clsx('site-header', 'activity-site-header')}>
+      <ActivityNotice activity={activity} />
+      <Row className="site-header-content" align="middle" gutter={[20, 0]}>
         <Col>
           <NavLink to={'/'}>
             <IconLogo className="menu-logo" />
           </NavLink>
         </Col>
         <Col flex="1">
-          <NavMenu />
+          <NavMenu menuList={menuList} />
         </Col>
         <Col>
           <Row align="middle" gutter={[16, 0]}>
+            {isConnected && (
+              <Col>
+                <CommonButton
+                  className={clsx(['signup-btn', isDepositPath && 'deposit-menu-disable'])}
+                  style={{ fontWeight: '600' }}
+                  type="ghost"
+                  onClick={onDepositClick}>
+                  {t('deposit')}
+                </CommonButton>
+              </Col>
+            )}
+
             <Col>
               <Network />
             </Col>
@@ -114,8 +133,9 @@ function PcHeader() {
           </Row>
         </Col>
       </Row>
+      <DepositTipModal ref={depositTipModalRef} />
     </Layout.Header>
   );
 }
 
-export default memo(PcHeader);
+export default PcHeader;

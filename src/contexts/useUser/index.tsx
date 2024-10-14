@@ -1,3 +1,4 @@
+import { DEFAULT_CHAIN } from 'constants/index';
 import React, { createContext, useCallback, useContext, useMemo, useState } from 'react';
 import { useLocalStorage } from 'react-use';
 import storages from 'storages';
@@ -14,6 +15,9 @@ type State = {
     [chainId: string]: {
       [address: string]: Token;
     };
+  };
+  tokenImageMap: {
+    [key: string]: string;
   };
   favListMap: {
     [address: string]: {
@@ -41,6 +45,7 @@ type Actions = {
   setFavChangeItem: (params: { favId?: string | null; isFav?: boolean; id?: string; address?: string }) => void;
   setAssetTotalSymbol: (address: string, symbol: string) => void;
   getAssetTotalSymbol: (address: string) => string;
+  addTokenImage: (symbol: string, imageUri: string) => void;
 };
 
 export function useUser(): [State, Actions] {
@@ -49,6 +54,7 @@ export function useUser(): [State, Actions] {
 
 export default function Provider({ children }: { children: React.ReactNode }) {
   const [tokens, setTokens] = useLocalStorage<State['tokens']>(storages.userTokens);
+  const [tokenImageMap, setTokenImgMap] = useLocalStorage<State['tokenImageMap']>(storages.userTokenImg);
 
   const [favListMap, setFavListMap] = useLocalStorage<State['favListMap']>(storages.awakenFavList, {});
 
@@ -60,12 +66,26 @@ export default function Provider({ children }: { children: React.ReactNode }) {
     (token) => {
       let ts = tokens;
       if (!ts) ts = {};
+
       ts[token.chainId] = tokens?.[token.chainId] || {};
       ts[token.chainId][token.address] = token;
       setTokens(ts);
     },
     [setTokens, tokens],
   );
+
+  const addTokenImage: Actions['addTokenImage'] = useCallback(
+    (symbol, imageUri) => {
+      if (!imageUri) return;
+      let _tokenImgMap = tokenImageMap;
+      if (!_tokenImgMap) _tokenImgMap = {};
+
+      _tokenImgMap[`${DEFAULT_CHAIN}_${symbol}`] = imageUri;
+      setTokenImgMap(_tokenImgMap);
+    },
+    [setTokenImgMap, tokenImageMap],
+  );
+
   const removeToken: Actions['removeToken'] = useCallback(
     (address, chainId) => {
       let ts = tokens;
@@ -206,9 +226,10 @@ export default function Provider({ children }: { children: React.ReactNode }) {
     <UserContext.Provider
       value={useMemo(
         () => [
-          { tokens, favListMap, favChangeItem },
+          { tokens, tokenImageMap, favListMap, favChangeItem },
           {
             addToken,
+            addTokenImage,
             removeToken,
             clearChainIdTokens,
             favListChange,
@@ -221,9 +242,11 @@ export default function Provider({ children }: { children: React.ReactNode }) {
         ],
         [
           tokens,
+          tokenImageMap,
           favListMap,
           favChangeItem,
           addToken,
+          addTokenImage,
           removeToken,
           clearChainIdTokens,
           favListChange,

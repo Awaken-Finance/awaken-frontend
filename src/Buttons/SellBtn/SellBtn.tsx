@@ -1,38 +1,37 @@
 import { useMemo, useState } from 'react';
 import clsx from 'clsx';
 import { Currency } from '@awaken/sdk-core';
-import { REQ_CODE } from 'constants/misc';
+import { ONE, REQ_CODE, ZERO } from 'constants/misc';
 import { useTranslation } from 'react-i18next';
-import BigNumber from 'bignumber.js';
-
 import Font from 'components/Font';
-
 import { onSwap } from 'utils/swapContract';
-import { divDecimals, timesDecimals } from 'utils/calculate';
-
+import { timesDecimals } from 'utils/calculate';
 import { useActiveWeb3React } from 'hooks/web3';
-import { useRouterContract } from 'hooks/useContract';
+import { useAElfContract } from 'hooks/useContract';
 import useAllowanceAndApprove from 'hooks/useApprove';
-import { getCurrencyAddress } from 'utils/swap';
+import { getCurrencyAddress, getDeadline, minimumAmountOut } from 'utils/swap';
 import { ChainConstants } from 'constants/ChainConstants';
 import AuthBtn from 'Buttons/AuthBtn';
 
 import './index.less';
 import { formatSymbol } from 'utils/token';
 import { useConnectWallet } from '@aelf-web-login/wallet-adapter-react';
+import { useIsConnected } from 'hooks/useLogin';
+import { SWAP_HOOK_CONTRACT_ADDRESS } from 'constants/index';
+import { getCID } from 'utils';
+import { useUserSettings } from 'contexts/useUserSettings';
+import BigNumber from 'bignumber.js';
+import { SWAP_LABS_FEE_RATE, SWAP_RECEIVE_RATE } from 'constants/swap';
 
 interface SellBtnProps {
   sell?: boolean;
   rate: string;
-  tokenA?: Currency;
-  tokenB?: Currency;
-  amount?: string;
-  amountBN: BigNumber;
-  amountOutMin?: BigNumber;
+  tokenIn?: Currency;
+  tokenOut?: Currency;
+  valueIn?: string;
+  valueOut?: string;
   checkAuth?: boolean;
   onClick?: () => void;
-  symbolA?: string;
-  symbolB?: string;
   disabled?: boolean;
   loading?: boolean;
   onTradeSuccess: () => void;
@@ -41,11 +40,10 @@ interface SellBtnProps {
 export function SellBtnWithPay({
   sell,
   rate,
-  tokenA,
-  tokenB,
-  amount,
-  amountBN,
-  amountOutMin,
+  tokenIn,
+  tokenOut,
+  valueIn,
+  valueOut,
   disabled,
   loading,
   onClick,
@@ -53,48 +51,67 @@ export function SellBtnWithPay({
 }: SellBtnProps) {
   const { t } = useTranslation();
   const { account } = useActiveWeb3React();
-  const contract = useRouterContract(rate);
+  const contract = useAElfContract(SWAP_HOOK_CONTRACT_ADDRESS);
   const [trading, setTrading] = useState(false);
-  const tokenAAddr = useMemo(() => getCurrencyAddress(tokenA), [tokenA]);
-  const tokenBAddr = useMemo(() => getCurrencyAddress(tokenB), [tokenB]);
+  const tokenInAddr = useMemo(() => getCurrencyAddress(tokenIn), [tokenIn]);
+  const [{ userSlippageTolerance }] = useUserSettings();
 
   const { approve, checkAllowance } = useAllowanceAndApprove(
     ChainConstants.constants.TOKEN_CONTRACT,
-    sell ? tokenAAddr : tokenBAddr,
+    tokenInAddr,
     account || undefined,
     contract?.address,
   );
 
   const buttonDisabled = useMemo(() => {
-    return disabled || !tokenA || !tokenB || !rate || !tokenA?.symbol || !tokenB?.symbol;
-  }, [disabled, rate, tokenA, tokenB]);
+    return disabled || !tokenIn || !tokenOut || !rate || !tokenIn?.symbol || !tokenOut?.symbol;
+  }, [disabled, rate, tokenIn, tokenOut]);
 
   const handleClick = async () => {
     if (!account) {
       return;
     }
     onClick?.();
-
-    if (!amount || amountOutMin?.lte(0)) return;
-    if (amountBN.isNaN() || amountBN.lte(0)) return;
+    if (!valueIn || !valueOut || !tokenIn || !tokenOut) return;
 
     setTrading(true);
     try {
+      const valueInAmountBN = timesDecimals(valueIn, tokenIn.decimals);
+      const valueOutAmountBN = timesDecimals(valueOut, tokenOut.decimals).div(SWAP_RECEIVE_RATE);
+      const amountMinOutAmountBN = BigNumber.max(
+        minimumAmountOut(valueOutAmountBN, userSlippageTolerance).dp(0, BigNumber.ROUND_DOWN),
+        ONE,
+      );
       const allowance = await checkAllowance();
-      const allowanceBN = new BigNumber(allowance);
-      const allowanceBNDivDec = divDecimals(allowanceBN, sell ? tokenA?.decimals : tokenB?.decimals);
-      const amountBN = new BigNumber(amount || 0);
-      if (allowanceBNDivDec.lt(amountBN)) {
-        await approve(timesDecimals(amountBN, sell ? tokenA?.decimals : tokenB?.decimals));
+      if (valueInAmountBN.gt(allowance)) {
+        await approve(valueInAmountBN);
       }
+
+      const deadline = getDeadline();
+      const channel = getCID();
 
       const req = await onSwap({
         account,
         routerContract: contract,
-        tokenA: sell ? tokenB : tokenA,
-        tokenB: sell ? tokenA : tokenB,
-        amountIn: timesDecimals(amount, sell ? tokenA?.decimals : tokenB?.decimals),
-        amountOutMin: timesDecimals(amountOutMin, sell ? tokenB?.decimals : tokenA?.decimals),
+        tokenA: tokenOut,
+        tokenB: tokenIn,
+        amountIn: valueInAmountBN,
+        amountOutMin: amountMinOutAmountBN,
+        methodName: 'swapExactTokensForTokens',
+        swapArgs: {
+          swapTokens: [
+            {
+              amountIn: valueInAmountBN.toFixed(),
+              amountOutMin: amountMinOutAmountBN.toFixed(),
+              channel,
+              deadline,
+              path: [tokenIn.symbol, tokenOut.symbol],
+              to: account,
+              feeRates: [ZERO.plus(100).times(rate).toNumber()],
+            },
+          ],
+          labsFeeRate: SWAP_LABS_FEE_RATE,
+        },
         t,
       });
 
@@ -111,7 +128,7 @@ export function SellBtnWithPay({
   return (
     <SellBtn
       sell={sell}
-      symbolA={tokenA?.symbol}
+      symbolA={sell ? tokenIn?.symbol : tokenOut?.symbol}
       disabled={buttonDisabled}
       loading={trading || loading}
       onClick={handleClick}
@@ -119,6 +136,15 @@ export function SellBtnWithPay({
   );
 }
 
+export type TSellBtnProps = {
+  sell?: boolean;
+  symbolA?: string;
+  disabled?: boolean;
+  loading?: boolean;
+  checkAuth?: boolean;
+  onClick?: () => void;
+  isFixState?: boolean;
+};
 export default function SellBtn({
   sell,
   symbolA = '',
@@ -127,9 +153,10 @@ export default function SellBtn({
   checkAuth,
   onClick,
   isFixState = false,
-}: Omit<SellBtnProps, 'amountBN' | 'rate' | 'tokenA' | 'tokenB' | 'onTradeSuccess'> & { isFixState?: boolean }) {
+}: TSellBtnProps) {
   const { t } = useTranslation();
-  const { isConnected, isLocking } = useConnectWallet();
+  const { isLocking } = useConnectWallet();
+  const isConnected = useIsConnected();
 
   const btnTxt = useMemo(() => {
     const symbolStr = formatSymbol(symbolA);

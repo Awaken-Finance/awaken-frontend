@@ -5,7 +5,7 @@ import { LendingTokens } from 'types';
 
 export const CHAIN_INFO = {
   chainId: 'tDVW',
-  exploreUrl: 'https://explorer-test-side02.aelf.io/',
+  exploreUrl: 'https://testnet.aelfscan.io/tDVW/',
   rpcUrl: 'https://tdvw-test-node.aelf.io',
 };
 export const LOGIN_INFO = {
