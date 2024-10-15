@@ -34,8 +34,17 @@ export const Leaderboard = ({ activity }: TLeaderboardProps) => {
 
   const history = useHistory();
   const onBack = useCallback(() => {
+    const backBtnLink = activity?.info?.backBtnLink;
+    if (backBtnLink) {
+      if (!backBtnLink.startsWith('http')) {
+        history.push(backBtnLink);
+      } else {
+        window.open(backBtnLink, '_self');
+      }
+      return;
+    }
     history.goBack();
-  }, [history]);
+  }, [activity?.info?.backBtnLink, history]);
 
   const rewardList = useMemo(
     () => activity.info.rewardList.map((item) => item.leaderboardRewardList_id),
