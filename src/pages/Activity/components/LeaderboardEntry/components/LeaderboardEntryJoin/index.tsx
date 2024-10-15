@@ -64,6 +64,13 @@ export const LeaderboardEntryJoin = ({
     if (!isConnected)
       return { label: localT(isLocking ? 'Unlock' : 'connectWallet'), fontColor: 'primary', active: true };
 
+    if (status === ActivityStatusEnum.Completion) {
+      return {
+        label: t('expiredJoinBtn') || '',
+        fontColor: 'two',
+      };
+    }
+
     if (!isJoined)
       return {
         label: t('joinBtn') || '',

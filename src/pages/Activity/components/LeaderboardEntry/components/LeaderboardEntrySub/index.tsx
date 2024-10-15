@@ -16,7 +16,6 @@ import { IconLeaderboard } from 'assets/icons';
 import { ActivityStatusEnum, useActivityStatus } from 'pages/Activity/hooks/common';
 import { useConnectWallet } from '@aelf-web-login/wallet-adapter-react';
 import { getActivityJoinStatus } from 'api/utils/activity';
-import { useIsConnected } from 'hooks/useLogin';
 
 export type TLeaderboardEntrySubProps = {
   activity: ILeaderboardActivity;
@@ -42,7 +41,6 @@ export const LeaderboardEntrySub = ({ activity }: TLeaderboardEntrySubProps) => 
   }, [activity.pageId, history]);
 
   const { walletInfo } = useConnectWallet();
-  const isConnected = useIsConnected();
   const [isJoined, setIsJoined] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const init = useCallback(async () => {
@@ -78,8 +76,6 @@ export const LeaderboardEntrySub = ({ activity }: TLeaderboardEntrySubProps) => 
         <div className="leaderboard-entry-sub-header-title">{t('activityName')}</div>
         <div className="leaderboard-entry-sub-header-tip">{t('labelTag')}</div>
         {status !== ActivityStatusEnum.Preparation &&
-          isConnected &&
-          isJoined &&
           (isMobile ? (
             <IconLeaderboard onClick={onLinkClick} className="leaderboard-entry-sub-link" />
           ) : (
