@@ -41,7 +41,10 @@ export default () => {
       });
 
       const activityDetail = result?.data?.activityList?.[0];
-      if (!activityDetail) return;
+      if (!activityDetail) {
+        history.replace('/');
+        return;
+      }
 
       const _activity = formatQueryActivity(activityDetail);
       setActivity(_activity);
