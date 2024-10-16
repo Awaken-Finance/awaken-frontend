@@ -15,7 +15,7 @@ function getErrorMsg(error: any): string {
 
 export function formatApproveError(error: any) {
   const errorMsg = getErrorMsg(error);
-  let errorStr = 'ApproveFail';
+  let errorStr = errorMsg;
   if (approveCancelMsg.some((msg) => new RegExp(msg).test(errorMsg))) {
     errorStr = 'User Cancel';
   }
