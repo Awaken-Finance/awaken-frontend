@@ -89,10 +89,10 @@ export const Leaderboard = ({ activity }: TLeaderboardProps) => {
       setNumberOfJoin(_numberOfJoin);
 
       const _isJoined = !!_status;
-      setJoinStatus({
-        isJoined: _isJoined,
+      setJoinStatus((pre) => ({
+        isJoined: pre.isJoined || _isJoined,
         isLoading: false,
-      });
+      }));
       if (_isJoined && address) {
         setActivityLocalJoinStatus(activity.pageId, {
           address,

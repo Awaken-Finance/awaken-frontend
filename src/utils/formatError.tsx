@@ -10,6 +10,8 @@ const approveCancelMsg = [
 ];
 
 function getErrorMsg(error: any): string {
+  if (typeof error === 'string') return error;
+  if (error?.message) return error.message;
   return error instanceof Error ? error.toString() : JSON.stringify(error);
 }
 

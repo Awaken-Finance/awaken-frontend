@@ -1,7 +1,8 @@
 import { sleep } from '.';
 import { ChainConstants } from 'constants/ChainConstants';
-import { getContractMethods, transformArrayToMap, getTxResult } from './aelfUtils';
+import { getContractMethods, transformArrayToMap, getTxResult, TXError, handleContractErrorMessage } from './aelfUtils';
 import { ChainType } from 'types';
+import { textProcessor } from './textProcessor';
 export interface AbiType {
   internalType?: string;
   name?: string;
@@ -151,7 +152,7 @@ export class AElfContractBasic {
         return {
           error: {
             code: req.error.message?.Code || req.error,
-            message: req.errorMessage?.message || req.error.message?.Message,
+            message: textProcessor.format(req.errorMessage?.message || req.error.message?.Message || ''),
           },
         };
       }
@@ -161,8 +162,7 @@ export class AElfContractBasic {
 
       return { TransactionId: validTxId };
     } catch (e: any) {
-      if (e.message) return { error: e };
-      return { error: { message: e.Error || e.Status } };
+      return { error: new TXError(handleContractErrorMessage(e), '') };
     }
   };
 
