@@ -12,6 +12,7 @@ import { useCallback, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
 import { ILeaderboardActivity } from 'utils/activity';
+import { setActivityLocalJoinStatus } from 'utils/activity/activityJoinStatus';
 import { FontColor } from 'utils/getFontStyle';
 
 export type TLeaderboardJoinStatus = {
@@ -111,6 +112,7 @@ export const LeaderboardExecuteBtn = ({
     emitGTag();
     if (isJoined) return history.push(activity.info.executeBtnLink);
 
+    const address = walletInfo?.address || '';
     setIsLoading(true);
     let signResult: { plainText: string; signature: string; pubkey: string };
     try {
@@ -121,13 +123,19 @@ export const LeaderboardExecuteBtn = ({
     }
 
     try {
-      await setActivityJoin({
+      const result = await setActivityJoin({
         message: signResult.plainText,
         signature: signResult.signature,
         publicKey: signResult.pubkey,
-        address: walletInfo?.address || '',
+        address,
         activityId: Number(activity.serviceId || 0),
       });
+      if (result) {
+        setActivityLocalJoinStatus(activity.pageId, {
+          address,
+          serviceId: activity.serviceId || '',
+        });
+      }
     } catch (error) {
       console.log('join error', error);
     } finally {
@@ -140,6 +148,7 @@ export const LeaderboardExecuteBtn = ({
   }, [
     activity.info.executeBtnLink,
     activity.info.signPlainText,
+    activity.pageId,
     activity.serviceId,
     emitGTag,
     getActivitySign,

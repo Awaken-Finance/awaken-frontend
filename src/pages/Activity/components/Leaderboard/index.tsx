@@ -18,6 +18,7 @@ import { ZERO } from 'constants/misc';
 import { useMobile } from 'utils/isMobile';
 import { ActivityRichText } from '../common/ActivityRichText';
 import { useConnectWallet } from '@aelf-web-login/wallet-adapter-react';
+import { getActivityLocalJoinStatus, setActivityLocalJoinStatus } from 'utils/activity/activityJoinStatus';
 
 export type TLeaderboardProps = {
   activity: ILeaderboardActivity;
@@ -61,9 +62,24 @@ export const Leaderboard = ({ activity }: TLeaderboardProps) => {
     try {
       const address = walletInfo?.address;
 
+      let _isLoading = !!address;
+      if (address) {
+        const isJoinedLocal = getActivityLocalJoinStatus(activity.pageId, {
+          address,
+          serviceId: activity.serviceId || '',
+        });
+        if (isJoinedLocal) {
+          setJoinStatus({
+            isJoined: true,
+            isLoading: false,
+          });
+          _isLoading = false;
+        }
+      }
+
       setJoinStatus((pre) => ({
         ...pre,
-        isLoading: !!address,
+        isLoading: _isLoading,
       }));
 
       const { numberOfJoin: _numberOfJoin, status: _status } = await getActivityJoinStatus({
@@ -71,10 +87,18 @@ export const Leaderboard = ({ activity }: TLeaderboardProps) => {
         address: address || 'empty',
       });
       setNumberOfJoin(_numberOfJoin);
-      setJoinStatus({
-        isJoined: !!_status,
+
+      const _isJoined = !!_status;
+      setJoinStatus((pre) => ({
+        isJoined: pre.isJoined || _isJoined,
         isLoading: false,
-      });
+      }));
+      if (_isJoined && address) {
+        setActivityLocalJoinStatus(activity.pageId, {
+          address,
+          serviceId: activity.serviceId || '',
+        });
+      }
     } catch (error) {
       console.log('getActivityJoinStatus error', error);
     } finally {
@@ -83,7 +107,8 @@ export const Leaderboard = ({ activity }: TLeaderboardProps) => {
         isLoading: false,
       }));
     }
-  }, [activity.serviceId, walletInfo?.address]);
+  }, [activity.pageId, activity.serviceId, walletInfo?.address]);
+
   useEffect(() => {
     init();
   }, [init]);

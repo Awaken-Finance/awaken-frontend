@@ -36,6 +36,7 @@ function initLanguage() {
       interpolation: {
         escapeValue: false, // react already safes from xss
       },
+      nsSeparator: '::',
     });
   moment.locale(lng.replace('_', '-'));
 }
