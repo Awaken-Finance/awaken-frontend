@@ -14,8 +14,8 @@ export type TLeaderboardEntryProps = {
   activity: ILeaderboardEntryActivity;
 };
 
-const OFFSET_TOP = 140;
-const MOBILE_OFFSET_TOP = 60;
+const OFFSET_TOP = 80;
+const MOBILE_OFFSET_TOP = 20;
 
 export const LeaderboardEntry = ({ activity }: TLeaderboardEntryProps) => {
   const t = useCmsTranslations<TLeaderboardEntryInfoTranslations>(activity.info.translations);
@@ -27,11 +27,14 @@ export const LeaderboardEntry = ({ activity }: TLeaderboardEntryProps) => {
   const onRouteClick = useCallback(
     (idx: number) => {
       const elements = document.getElementsByClassName('leaderboard-entry-sub');
+      const stickyElement = document.querySelector('.leaderboard-entry-sub-route');
 
       const element = elements[idx];
-      if (!element) return;
+      if (!element || !stickyElement) return;
       const rect = element.getBoundingClientRect();
-      const absoluteElementTop = rect.top + window.scrollY - (isMobile ? MOBILE_OFFSET_TOP : OFFSET_TOP);
+      const stickyRect = stickyElement.getBoundingClientRect();
+      const absoluteElementTop =
+        rect.top + window.scrollY - stickyRect.height - (isMobile ? MOBILE_OFFSET_TOP : OFFSET_TOP);
 
       window.scrollTo({
         top: absoluteElementTop,

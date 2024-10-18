@@ -12,6 +12,7 @@ import { timesDecimals } from './calculate';
 import { isSymbol } from './reg';
 import { isMobile } from 'react-device-detect';
 import { getContractKey } from 'contexts/useAElfContract/utils';
+import { textProcessor } from './textProcessor';
 const Wallet = AElf.wallet;
 
 let wallet: any = null;
@@ -80,11 +81,11 @@ export function getSerializedDataFromLog(log: any) {
   return AElf.pbUtils.getSerializedDataFromLog(log);
 }
 
-class TXError extends Error {
+export class TXError extends Error {
   public TransactionId?: string;
   public transactionId?: string;
   constructor(message: string, id?: string) {
-    super(message);
+    super(textProcessor.format(message) || '');
     this.TransactionId = id;
     this.transactionId = id;
   }

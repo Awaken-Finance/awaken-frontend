@@ -14,6 +14,7 @@ import { IconArrowDown3, IconArrowUp2, IconNew } from 'assets/icons';
 import { getLeaderboardActualRewardsMap, getLeaderboardRewardsMap } from 'utils/activity/leaderboard';
 import { formatPriceUSD } from 'utils/price';
 import { formatDefaultAddress } from 'utils/format';
+import { ZERO } from 'constants/misc';
 
 export type TLeaderboardRankingListProps = {
   activity: ILeaderboardActivity;
@@ -69,9 +70,15 @@ export const LeaderboardRankingList = ({ activity, list }: TLeaderboardRankingLi
         width: 325,
         key: 'totalVolume',
         dataIndex: 'totalPoint',
-        render: (val: number) => (
-          <div>{`${activity.info.pointPrefix || ''}${formatPriceUSD(val)}${activity.info.pointUnit || ''}`}</div>
-        ),
+        render: (val: number) => {
+          if (ZERO.plus(val).lt(0.01)) {
+            return <div>{`<${activity.info.pointPrefix || ''}0.01${activity.info.pointUnit || ''}`}</div>;
+          }
+
+          return (
+            <div>{`${activity.info.pointPrefix || ''}${formatPriceUSD(val)}${activity.info.pointUnit || ''}`}</div>
+          );
+        },
       },
       {
         title: t('rankingChangeLabel'),

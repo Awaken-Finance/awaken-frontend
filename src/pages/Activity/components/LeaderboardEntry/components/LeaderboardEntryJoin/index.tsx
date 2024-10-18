@@ -18,6 +18,7 @@ import { useHistory } from 'react-router-dom';
 import { useGetActivitySign } from 'hooks/activity/useGetActivitySign';
 import { IS_MAIN_NET } from 'constants/index';
 import { getValidAddress } from 'utils/wallet';
+import { setActivityLocalJoinStatus } from 'utils/activity/activityJoinStatus';
 
 export type TLeaderboardEntryJoinProps = {
   activity: ILeaderboardActivity;
@@ -63,6 +64,13 @@ export const LeaderboardEntryJoin = ({
   }>(() => {
     if (!isConnected)
       return { label: localT(isLocking ? 'Unlock' : 'connectWallet'), fontColor: 'primary', active: true };
+
+    if (status === ActivityStatusEnum.Completion) {
+      return {
+        label: t('expiredJoinBtn') || '',
+        fontColor: 'two',
+      };
+    }
 
     if (!isJoined)
       return {
@@ -145,6 +153,8 @@ export const LeaderboardEntryJoin = ({
   const onClick = useCallback(async () => {
     emitGTag();
     if (isJoined) return history.push(`/activity/${activity.pageId}`);
+
+    const address = walletInfo?.address || '';
     setIsLoading(true);
     let signResult: { plainText: string; signature: string; pubkey: string };
     try {
@@ -155,13 +165,19 @@ export const LeaderboardEntryJoin = ({
     }
 
     try {
-      await setActivityJoin({
+      const result = await setActivityJoin({
         message: signResult.plainText,
         signature: signResult.signature,
         publicKey: signResult.pubkey,
-        address: walletInfo?.address || '',
+        address,
         activityId: Number(activity.serviceId || 0),
       });
+      if (result) {
+        setActivityLocalJoinStatus(activity.pageId, {
+          address,
+          serviceId: activity.serviceId || '',
+        });
+      }
     } catch (error) {
       console.log('join error', error);
     } finally {

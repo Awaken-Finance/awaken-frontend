@@ -1,4 +1,4 @@
-import { IconDiscord, IconLogo, IconTelegram, IconTgBot, IconX } from 'assets/icons';
+import { IconLogo, IconTelegram, IconTgBot, IconX } from 'assets/icons';
 import Font from 'components/Font';
 import { TG_BOT_LINK } from 'config/webLoginConfig';
 import { useTranslation } from 'react-i18next';
@@ -20,11 +20,11 @@ const MEDIA_LIST: Required<TMenuItem>[] = [
     title: 'Twitter',
     link: 'https://twitter.com/AwakenSwap',
   },
-  {
-    icon: IconDiscord,
-    title: 'Discord',
-    link: 'https://discord.gg/uVbGVVbRhA',
-  },
+  // {
+  //   icon: IconDiscord,
+  //   title: 'Discord',
+  //   link: 'https://discord.gg/uVbGVVbRhA',
+  // },
   {
     icon: IconTelegram,
     title: 'Telegram',
