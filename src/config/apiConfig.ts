@@ -19,7 +19,7 @@ const apiConfig: { [key: string]: ApiConfig } = {
     explorer: 'https://testnet.aelfscan.io/tDVW',
   },
   mainnet: {
-    socket: 'https://app-k8s.awaken.finance',
+    socket: 'https://app.awaken.finance',
     explorer: 'https://aelfscan.io/tDVV',
   },
 };
