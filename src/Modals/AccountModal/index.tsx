@@ -40,6 +40,7 @@ import { LimitOrderStatusMap } from 'constants/limit';
 import { DEPOSIT_TIP_MODAL_CONFIRMED } from 'Modals/DepositTipModal';
 
 import { ETransferConfig, WalletTypeEnum, etransferCore, unsubscribeUserOrderRecord } from '@etransfer/ui-react';
+import { resetActivityLocalJoinStatus } from 'utils/activity/activityJoinStatus';
 
 const MENU_LIST = [
   {
@@ -101,6 +102,7 @@ function AccountModal() {
       });
       etransferCore.services.setRequestHeaders('Authorization', '');
       localStorage.removeItem(DEPOSIT_TIP_MODAL_CONFIRMED);
+      resetActivityLocalJoinStatus();
     } catch (error) {
       console.log('disconnectWallet error', error);
     }

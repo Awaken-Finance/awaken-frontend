@@ -10,10 +10,12 @@ import { useConnectWallet } from '@aelf-web-login/wallet-adapter-react';
 import { useLeaderboardWS } from 'hooks/activity/useLeaderboardWS';
 import { parseUrl } from 'query-string';
 import { useMobile } from 'utils/isMobile';
+import { TLeaderboardJoinStatus } from '../LeaderboardExecuteBtn';
 
 export type TLeaderboardCountdownProps = {
   activity: ILeaderboardActivity;
   status: ActivityStatusEnum;
+  joinStatus: TLeaderboardJoinStatus;
 };
 
 const INFO_REFRESH_INTERVAL_LIST = [5, 10, 15, 20, 30];
@@ -21,7 +23,7 @@ const INFO_REFRESH_INTERVAL_LIST = [5, 10, 15, 20, 30];
 const LIST_OFFSET_TOP = 80;
 const LIST_MOBILE_OFFSET_TOP = 20;
 
-export const LeaderboardRanking = ({ activity, status }: TLeaderboardCountdownProps) => {
+export const LeaderboardRanking = ({ activity, status, joinStatus }: TLeaderboardCountdownProps) => {
   const { walletInfo } = useConnectWallet();
   const isMobile = useMobile();
 
@@ -143,6 +145,7 @@ export const LeaderboardRanking = ({ activity, status }: TLeaderboardCountdownPr
           status={status}
           list={list}
           info={rankingInfo}
+          joinStatus={joinStatus}
         />
       )}
 

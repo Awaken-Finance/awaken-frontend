@@ -3,7 +3,7 @@ import './styles.less';
 import { IconLeaderboardCrown } from 'assets/icons';
 import { TLeaderboardInfoTranslations } from 'graphqlServer/queries/activity/leaderboard';
 import { useCmsTranslations } from 'hooks/cms';
-import { LeaderboardExecuteBtn } from '../LeaderboardExecuteBtn';
+import { LeaderboardExecuteBtn, TLeaderboardJoinStatus } from '../LeaderboardExecuteBtn';
 import { ActivityStatusEnum } from 'pages/Activity/hooks/common';
 import { LeaderboardProgress } from '../LeaderboardProgress';
 import { LeaderboardSection } from 'pages/Activity/components/LeaderboardEntry/components/LeaderboardSection';
@@ -24,11 +24,19 @@ export type TLeaderboardRankingMineProps = {
   className?: string;
   list: TLeaderboardRankingItem[];
   info?: TLeaderboardRankingMine;
+  joinStatus: TLeaderboardJoinStatus;
 };
 
 const INVALID_RANKING_NUMBER = 1001;
 
-export const LeaderboardRankingMine = ({ activity, status, className, info, list }: TLeaderboardRankingMineProps) => {
+export const LeaderboardRankingMine = ({
+  activity,
+  status,
+  className,
+  info,
+  list,
+  joinStatus,
+}: TLeaderboardRankingMineProps) => {
   const t = useCmsTranslations<TLeaderboardInfoTranslations>(activity.info.translations);
   const rewardsMap = useMemo(() => getLeaderboardRewardsMap(activity), [activity]);
 
@@ -142,6 +150,7 @@ export const LeaderboardRankingMine = ({ activity, status, className, info, list
             status={status}
             extraId="Mine"
             className="leaderboard-ranking-mine-detail-btn"
+            joinStatus={joinStatus}
           />
         )}
       </div>

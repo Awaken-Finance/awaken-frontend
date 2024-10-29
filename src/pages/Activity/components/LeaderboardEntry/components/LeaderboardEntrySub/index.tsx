@@ -16,7 +16,8 @@ import { IconLeaderboard } from 'assets/icons';
 import { ActivityStatusEnum, useActivityStatus } from 'pages/Activity/hooks/common';
 import { useConnectWallet } from '@aelf-web-login/wallet-adapter-react';
 import { getActivityJoinStatus } from 'api/utils/activity';
-import { useIsConnected } from 'hooks/useLogin';
+import { IS_MAIN_NET } from 'constants/index';
+import { getActivityLocalJoinStatus, setActivityLocalJoinStatus } from 'utils/activity/activityJoinStatus';
 
 export type TLeaderboardEntrySubProps = {
   activity: ILeaderboardActivity;
@@ -36,18 +37,42 @@ export const LeaderboardEntrySub = ({ activity }: TLeaderboardEntrySubProps) => 
     [activity.info.rewardList],
   );
 
+  const { walletInfo, walletType } = useConnectWallet();
   const history = useHistory();
   const onLinkClick = useCallback(() => {
+    try {
+      gtag &&
+        gtag('event', `${IS_MAIN_NET ? '' : 'test_'}activity_${location?.pathname?.split('/')?.reverse()?.[0] || ''}`, {
+          event_category: 'button',
+          event_label: `LeaderboardEntryRanking`,
+          value: 1,
+          address: walletInfo?.address || '',
+          walletType: walletType,
+          activityStatus: ActivityStatusEnum[status],
+          joinActivityPageId: activity.pageId,
+        });
+    } catch (error) {
+      console.log('emitGTag error', error);
+    }
     history.push(`/activity/${activity.pageId}?anchor=list`);
-  }, [activity.pageId, history]);
+  }, [activity.pageId, history, status, walletInfo?.address, walletType]);
 
-  const { walletInfo } = useConnectWallet();
-  const isConnected = useIsConnected();
   const [isJoined, setIsJoined] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const init = useCallback(async () => {
     const address = walletInfo?.address;
     if (!address) {
+      setIsLoading(false);
+      return;
+    }
+
+    const isJoinedLocal = getActivityLocalJoinStatus(activity.pageId, {
+      address,
+      serviceId: activity.serviceId || '',
+    });
+    if (isJoinedLocal) {
+      console.log('cache joined');
+      setIsJoined(true);
       setIsLoading(false);
       return;
     }
@@ -59,13 +84,20 @@ export const LeaderboardEntrySub = ({ activity }: TLeaderboardEntrySubProps) => 
         address,
       });
 
-      setIsJoined(!!_status);
+      const _isJoined = !!_status;
+      setIsJoined(_isJoined);
+      if (_isJoined) {
+        setActivityLocalJoinStatus(activity.pageId, {
+          address,
+          serviceId: activity.serviceId || '',
+        });
+      }
     } catch (error) {
       console.log('initMyRankingInfo error', error);
     } finally {
       setIsLoading(false);
     }
-  }, [activity.serviceId, walletInfo?.address]);
+  }, [activity.pageId, activity.serviceId, walletInfo?.address]);
   useEffect(() => {
     init();
   }, [init]);
@@ -78,8 +110,6 @@ export const LeaderboardEntrySub = ({ activity }: TLeaderboardEntrySubProps) => 
         <div className="leaderboard-entry-sub-header-title">{t('activityName')}</div>
         <div className="leaderboard-entry-sub-header-tip">{t('labelTag')}</div>
         {status !== ActivityStatusEnum.Preparation &&
-          isConnected &&
-          isJoined &&
           (isMobile ? (
             <IconLeaderboard onClick={onLinkClick} className="leaderboard-entry-sub-link" />
           ) : (

@@ -10,12 +10,14 @@ const approveCancelMsg = [
 ];
 
 function getErrorMsg(error: any): string {
+  if (typeof error === 'string') return error;
+  if (error?.message) return error.message;
   return error instanceof Error ? error.toString() : JSON.stringify(error);
 }
 
 export function formatApproveError(error: any) {
   const errorMsg = getErrorMsg(error);
-  let errorStr = 'ApproveFail';
+  let errorStr = errorMsg;
   if (approveCancelMsg.some((msg) => new RegExp(msg).test(errorMsg))) {
     errorStr = 'User Cancel';
   }

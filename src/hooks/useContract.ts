@@ -13,7 +13,14 @@ import { ChainConstants } from 'constants/ChainConstants';
 import { SupportedSwapRate } from 'constants/swap';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { AElfContract, IContract } from 'types';
-import { callViewMethod, getContractMethods, isELFChain, transformArrayToMap } from 'utils/aelfUtils';
+import {
+  callViewMethod,
+  getContractMethods,
+  handleContractErrorMessage,
+  isELFChain,
+  transformArrayToMap,
+  TXError,
+} from 'utils/aelfUtils';
 import { ContractBasic, ContractInterface } from 'utils/contract';
 import { useActiveWeb3React } from './web3';
 import { useConnectWallet } from '@aelf-web-login/wallet-adapter-react';
@@ -123,12 +130,21 @@ export function useAElfContract(contractAddress?: string) {
         if (methodName === 'Approve' && NETWORK_TYPE === 'TESTNET') {
           (args as any)['networkType'] = NETWORK_TYPE;
         }
-        return callSendMethod({
-          contractAddress,
-          methodName,
-          args: args,
-          sendOptions,
-        });
+
+        try {
+          const result: any = await callSendMethod({
+            contractAddress,
+            methodName,
+            args: args,
+            sendOptions,
+          });
+          if (result?.error) {
+            result.error = new TXError(handleContractErrorMessage(result.error), result?.transactionId || '');
+          }
+          return result;
+        } catch (error) {
+          throw new TXError(handleContractErrorMessage(error), '');
+        }
       },
       callSendPromiseMethod: async (functionName: string, account: string, paramsOption: any, sendOptions: any) => {
         if (!contractAddress) {

@@ -56,5 +56,5 @@ export const setActivityJoin = async (params: TSetActivityJoinParams) => {
     method: 'POST',
     data: params,
   });
-  return res.code === 20000;
+  return res.code === '20000' || res.message === 'Join already';
 };

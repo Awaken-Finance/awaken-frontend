@@ -6,7 +6,7 @@ export const PORTKEY_SERVICE = {
       connectServer: 'http://192.168.66.203:8001',
     },
     v2: {
-      graphQLUrl: 'http://192.168.67.99:8083/AElfIndexer_DApp/PortKeyIndexerCASchema/graphql',
+      graphQLUrl: 'https://dapp-aa-portkey-test.portkey.finance/aefinder-v2/api/app/graphql/portkey',
       apiServer: 'https://test3-applesign-v2.portkey.finance',
       connectServer: 'http://192.168.67.127:8080',
     },
@@ -18,7 +18,7 @@ export const PORTKEY_SERVICE = {
       connectServer: 'http://192.168.66.203:8001',
     },
     v2: {
-      graphQLUrl: 'http://192.168.67.99:8083/AElfIndexer_DApp/PortKeyIndexerCASchema/graphql',
+      graphQLUrl: 'https://dapp-aa-portkey-test.portkey.finance/aefinder-v2/api/app/graphql/portkey',
       apiServer: 'https://test3-applesign-v2.portkey.finance',
       connectServer: 'http://192.168.67.127:8080',
     },
@@ -30,7 +30,7 @@ export const PORTKEY_SERVICE = {
       connectServer: 'https://auth-portkey-test.portkey.finance',
     },
     v2: {
-      graphQLUrl: 'https://dapp-aa-portkey-test.portkey.finance/Portkey_V2_DID/PortKeyIndexerCASchema/graphql',
+      graphQLUrl: 'https://dapp-aa-portkey-test.portkey.finance/aefinder-v2/api/app/graphql/portkey',
       apiServer: 'https://aa-portkey-test.portkey.finance',
       connectServer: 'https://auth-aa-portkey-test.portkey.finance',
     },
@@ -42,7 +42,7 @@ export const PORTKEY_SERVICE = {
       connectServer: 'https://auth-portkey.portkey.finance',
     },
     v2: {
-      graphQLUrl: 'https://dapp-aa-portkey.portkey.finance/Portkey_V2_DID/PortKeyIndexerCASchema/graphql',
+      graphQLUrl: 'https://dapp-aa-portkey.portkey.finance/aefinder-v2/api/app/graphql/portkey',
       apiServer: 'https://aa-portkey.portkey.finance',
       connectServer: 'https://auth-aa-portkey.portkey.finance',
     },

@@ -6,7 +6,7 @@ import { formatQueryActivity, TActivity } from 'utils/activity';
 import './styles.less';
 import { LeaderboardEntry } from './components/LeaderboardEntry';
 import { Leaderboard } from './components/Leaderboard';
-import { useRouteMatch } from 'react-router-dom';
+import { useHistory, useRouteMatch } from 'react-router-dom';
 import CommonLoading from 'components/CommonLoading';
 import { useActivityAllowCheck } from 'hooks/activity/useActivityAllowCheck';
 import { handleLoopFetch } from 'utils';
@@ -20,6 +20,7 @@ export default () => {
   const [activity, setActivity] = useState<TActivity>();
   const isAllow = useActivityAllowCheck(activity);
 
+  const history = useHistory();
   const init = useCallback(async () => {
     try {
       setIsLoading(true);
@@ -40,16 +41,20 @@ export default () => {
       });
 
       const activityDetail = result?.data?.activityList?.[0];
-      if (!activityDetail) return;
+      if (!activityDetail) {
+        history.replace('/');
+        return;
+      }
 
       const _activity = formatQueryActivity(activityDetail);
       setActivity(_activity);
     } catch (error) {
       console.log('activity init error', error);
+      history.replace('/');
     } finally {
       setIsLoading(false);
     }
-  }, [getActivityDetailList, pageId]);
+  }, [getActivityDetailList, history, pageId]);
 
   useEffect(() => {
     init();

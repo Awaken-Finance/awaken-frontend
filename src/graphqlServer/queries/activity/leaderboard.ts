@@ -87,6 +87,7 @@ export const LEADERBOARD_INFO_LIST_FRAGMENT = gql`
     participationShowThreshold
     signPlainText
     executeBtnLink
+    backBtnLink
     mainImage {
       ...cmsFileFields
     }
@@ -121,6 +122,7 @@ export type TQueryLeaderboardInfo = {
   participationShowThreshold: number;
   signPlainText: string;
   executeBtnLink: string;
+  backBtnLink?: string;
   rewardList: Array<{
     leaderboardRewardList_id: TQueryLeaderboardReward;
   }>;
