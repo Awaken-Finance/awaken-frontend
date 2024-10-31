@@ -21,9 +21,10 @@ type TokenInfoItem = {
 export function TokenItem({ data }: { data: TokenInfoItem }) {
   const { chainName } = useChainId();
   const displayChainName = useMemo(() => {
-    return WEB_LOGIN_CONFIG.baseConfig.networkType == 'TESTNET'
-      ? `${chainName} ${WEB_LOGIN_CONFIG.baseConfig.networkType}`
-      : chainName;
+    // return WEB_LOGIN_CONFIG.baseConfig.networkType == 'TESTNET'
+    //   ? `${chainName} ${WEB_LOGIN_CONFIG.baseConfig.networkType}`
+    //   : chainName;
+    return chainName;
   }, [chainName]);
 
   return (
