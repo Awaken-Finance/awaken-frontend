@@ -90,8 +90,8 @@ export const CHAIN_NAME: { [chainId in SupportedChainId | SupportedELFChainId]: 
   [SupportedChainId.POLYGON_TESTNET]: 'Polygon Testnet',
 
   [SupportedELFChainId.MAINNET]: 'MainChain AELF',
-  [SupportedELFChainId.tDVV]: 'SideChain tDVV',
-  [SupportedELFChainId.tDVW]: 'SideChain tDVW',
+  [SupportedELFChainId.tDVV]: 'aelf dAppChain',
+  [SupportedELFChainId.tDVW]: 'aelf dAppChain',
 };
 export const ACTIVE_CHAIN: any = {
   [SupportedChainId.MAINNET]: 'Ethereum',
