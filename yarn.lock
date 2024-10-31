@@ -2889,58 +2889,58 @@
     "@ethersproject/properties" "^5.6.0"
     "@ethersproject/strings" "^5.6.1"
 
-"@etransfer/core@^1.7.0":
-  version "1.7.0"
-  resolved "https://registry.yarnpkg.com/@etransfer/core/-/core-1.7.0.tgz#17c7e9e81bd558a9314accf4386a98339d7f684b"
-  integrity sha512-Uhmwrf8cWZOlOoIa2xIEM0bnwGtcq1+VsmDwRKJ5Ub6x6ByFB6qj0MBNZ3GwuZfvaqmbO0kW7sCiQ73PgV9p8Q==
+"@etransfer/core@^1.9.1":
+  version "1.9.1"
+  resolved "https://registry.yarnpkg.com/@etransfer/core/-/core-1.9.1.tgz#1a512b239ede6ffd11a384037e9897cb91919852"
+  integrity sha512-m7OLfZ8s3/Rx1u7/vSDZzbjEVmfi0hbwBdT8an6Ah9bSpQdd64RoPrYO+gNDiZJemVhtTeNVRpCiPmFnXgn0lw==
   dependencies:
-    "@etransfer/services" "^1.7.0"
-    "@etransfer/socket" "^1.7.0"
-    "@etransfer/types" "^1.7.0"
-    "@etransfer/utils" "^1.7.0"
+    "@etransfer/services" "^1.9.1"
+    "@etransfer/socket" "^1.9.1"
+    "@etransfer/types" "^1.9.1"
+    "@etransfer/utils" "^1.9.1"
 
-"@etransfer/request@^1.7.0":
-  version "1.7.0"
-  resolved "https://registry.yarnpkg.com/@etransfer/request/-/request-1.7.0.tgz#9f7404f28b72e00dfc0f84d6ae122cc558a15019"
-  integrity sha512-RFu95PfIP/z8Oe/ACo+hPPqAwF7eJCwAfrzXVFUv2s2vYleV+Lxu9BrI79f3VzRvrZ7DVw8AcvRpOSz1PFfVKQ==
+"@etransfer/request@^1.9.1":
+  version "1.9.1"
+  resolved "https://registry.yarnpkg.com/@etransfer/request/-/request-1.9.1.tgz#f8024aa8c3d28f8a08fb74767f6873e1a554b19c"
+  integrity sha512-gczok5tYFrigIt7XPCDXuXBZQp1hoGYrgdhMf5ceK0ZYMUd0s7gkhUGqzCyYxHdW8g2uM7WmYXVa93iByDcuwQ==
   dependencies:
-    "@etransfer/types" "^1.7.0"
-    "@etransfer/utils" "^1.7.0"
+    "@etransfer/types" "^1.9.1"
+    "@etransfer/utils" "^1.9.1"
     axios "^0.24.0"
 
-"@etransfer/services@^1.7.0":
-  version "1.7.0"
-  resolved "https://registry.yarnpkg.com/@etransfer/services/-/services-1.7.0.tgz#93139b5e8c63120416c0d7535819df82cb0783ff"
-  integrity sha512-C3c5sOh2+vnn5AlVYGfMHygXYzo+FYK2vrkG4C7pK6XYPIH74S2YZAA7J4XsT6dX7fAqASM+bwtEeWf+Dgj+jQ==
+"@etransfer/services@^1.9.1":
+  version "1.9.1"
+  resolved "https://registry.yarnpkg.com/@etransfer/services/-/services-1.9.1.tgz#3708c70bcff12a01a02f59a5cf45ae2ca0feef3d"
+  integrity sha512-N1e2tUZGCbF/VUHyx2qFKbMwK6aLAIEdB2UsJ4aeDfqaPq4Ef0ITqBYcxzy9qZw64PqdCQolto1dsz8ZP140xg==
   dependencies:
-    "@etransfer/request" "^1.7.0"
-    "@etransfer/types" "^1.7.0"
-    "@etransfer/utils" "^1.7.0"
-    "@portkey/types" "2.6.6"
+    "@etransfer/request" "^1.9.1"
+    "@etransfer/types" "^1.9.1"
+    "@etransfer/utils" "^1.9.1"
+    "@portkey/types" "2.15.0"
 
-"@etransfer/socket@^1.7.0":
-  version "1.7.0"
-  resolved "https://registry.yarnpkg.com/@etransfer/socket/-/socket-1.7.0.tgz#f5dc55a61d6d47d9685acc588466a637e8e11066"
-  integrity sha512-k6laXPKWhksXpRwZdZRb2QFfQzNMytTueOqD04aPRR8V9vMHIQR1bZUIm/nF28lLlpLg5Vb2YHqiUZmULI9ATQ==
+"@etransfer/socket@^1.9.1":
+  version "1.9.1"
+  resolved "https://registry.yarnpkg.com/@etransfer/socket/-/socket-1.9.1.tgz#735dedbaf78d518a63e2b0b346e4fce4f13b32fc"
+  integrity sha512-98t/JZ3N3iYIwjrolKEuKWDQLlvJl0Mw8rShlrDDPtTdh87PEqpY3GMkm/X2XH+TJ8eGzWy6ctwl9RW8bh1m0Q==
   dependencies:
     "@abp/signalr" "^7.0.0"
-    "@etransfer/utils" "^1.7.0"
+    "@etransfer/utils" "^1.9.1"
 
-"@etransfer/types@^1.7.0":
-  version "1.7.0"
-  resolved "https://registry.yarnpkg.com/@etransfer/types/-/types-1.7.0.tgz#c5fe1ee89d6e046f6ce15914f2cc65a102f3f8b8"
-  integrity sha512-EULmi+rB21Gi05n6HnQq1HOpLxTTcpnunKugegvZI5Ez0136IganYCCyQr68m442FMMULVzCw4eEs3E1W4zF8w==
+"@etransfer/types@^1.9.1":
+  version "1.9.1"
+  resolved "https://registry.yarnpkg.com/@etransfer/types/-/types-1.9.1.tgz#90a932d415d34b768ea1de9b72204b888c168f27"
+  integrity sha512-g50Fokrs2zdS1D0/tHuavnWNQ2AcAYpfD3g9oakgzD3H4zxEss8vqgpiyncU6W/cqIUY4BazZI9D26jYclWacg==
 
-"@etransfer/ui-react@^1.7.0":
-  version "1.7.0"
-  resolved "https://registry.yarnpkg.com/@etransfer/ui-react/-/ui-react-1.7.0.tgz#89b2d03a14bcc9f680364b85ecc7d3bdb2b35cf5"
-  integrity sha512-8iF2rBiGlBfdYfBFwzdXZ33rMojSTx2orSN02MU6iIPwWbVBFPQfpeLNYYkBsd22TXOoLaoc7xr4Qfh7z3fFwA==
+"@etransfer/ui-react@^1.9.1":
+  version "1.9.1"
+  resolved "https://registry.yarnpkg.com/@etransfer/ui-react/-/ui-react-1.9.1.tgz#a09949d138bd96b9545b75967cfafdce9ea4e898"
+  integrity sha512-Lr3T5e4UAgkZU1d4uMEh5SQZEIpjXq7e5r8GGWiJQuEMsmHoZU+4aOBiQy8NYEJj3uu4g9ka6eQoWbEDjoUAag==
   dependencies:
-    "@etransfer/core" "^1.7.0"
-    "@etransfer/types" "^1.7.0"
-    "@etransfer/utils" "^1.7.0"
-    "@portkey/types" "2.6.6"
-    "@portkey/utils" "2.6.6"
+    "@etransfer/core" "^1.9.1"
+    "@etransfer/types" "^1.9.1"
+    "@etransfer/utils" "^1.9.1"
+    "@portkey/types" "2.15.0"
+    "@portkey/utils" "2.15.0"
     antd "4.24.14"
     bignumber.js "^9.1.0"
     clsx "^1.2.1"
@@ -2952,13 +2952,13 @@
     react-use "^17.4.0"
     uuid "^8.3.2"
 
-"@etransfer/utils@^1.7.0":
-  version "1.7.0"
-  resolved "https://registry.yarnpkg.com/@etransfer/utils/-/utils-1.7.0.tgz#506d015496da58c5a1b24068e6ce2233a56ace23"
-  integrity sha512-ZdQn4hvFC7E5AvaCKznfPot+o9Ybi+GAT8LeJ+gS2tGcCsx7XQqdeX/oXRvmSHjlwp6PZvhneQIzFgaxQaTZmQ==
+"@etransfer/utils@^1.9.1":
+  version "1.9.1"
+  resolved "https://registry.yarnpkg.com/@etransfer/utils/-/utils-1.9.1.tgz#48682a4c8ed2c41b92c18c5af9fb2e18072d0e4b"
+  integrity sha512-3V2NksL59yLfP8fGvv+KmBJtOURa3GWna56nvdBA45J7fK1WYVxgbMKr7cwv/Ryo4uEjNy6ETOPlwdxgqQkEbg==
   dependencies:
-    "@etransfer/services" "^1.7.0"
-    "@etransfer/types" "^1.7.0"
+    "@etransfer/services" "^1.9.1"
+    "@etransfer/types" "^1.9.1"
     bn.js "^5.2.1"
 
 "@floating-ui/core@^1.6.0":
@@ -3604,10 +3604,10 @@
     "@abp/signalr" "^7.0.0"
     "@portkey/utils" "^2.7.2"
 
-"@portkey/types@2.6.6":
-  version "2.6.6"
-  resolved "https://registry.yarnpkg.com/@portkey/types/-/types-2.6.6.tgz#07af958da36f777aa68149a6bfd7bb0df1c9f992"
-  integrity sha512-oMsduRi2juBqQffhIgD5NSoVxnmmG+lL3W6RnJueyfh/itbaEZfIlC1g9o4NM4TVuxZPIf0ahfPaXGR9CriIYQ==
+"@portkey/types@2.15.0":
+  version "2.15.0"
+  resolved "https://registry.yarnpkg.com/@portkey/types/-/types-2.15.0.tgz#8d6235e699e624d55b738642921e7987506efb9c"
+  integrity sha512-yA4ZAgdVtt3GqG/RwPKViis3Ih4dc4aI8h+lybs3f9pkjX129PPnU5Qmbv405vXaa1oHxS0gmw9j26FfvJ91Ng==
 
 "@portkey/types@^2.0.0-alpha.0", "@portkey/types@^2.6.8":
   version "2.6.8"
@@ -3624,10 +3624,12 @@
   resolved "https://registry.yarnpkg.com/@portkey/types/-/types-2.7.2.tgz#48884640e25a740bb24343250ab30e0987693f90"
   integrity sha512-HB2swkxeNfJIn0CJJlYHIwt5l8RTQutBoPlMOTd4mrDWnL/PFdhalKzCIVSmAJtDs1FH+EXROr9FzGK9fWfXZg==
 
-"@portkey/utils@2.6.6":
-  version "2.6.6"
-  resolved "https://registry.yarnpkg.com/@portkey/utils/-/utils-2.6.6.tgz#8fa5eb93a4ca43baa14345a75876a8701de2c1f6"
-  integrity sha512-1hooVcRxGafEyyD/TGqx9vsGwsl50RElCBz5hqTJ1mUDy3Q5OWFtSPU0dnTPpUwJlzJHUJCZMvO+wI2dCJHncA==
+"@portkey/utils@2.15.0":
+  version "2.15.0"
+  resolved "https://registry.yarnpkg.com/@portkey/utils/-/utils-2.15.0.tgz#d84d58a33515c2fb3108e9c77ed40e8b2bf287a4"
+  integrity sha512-PZ1sRKdJkzhyDAXaq2Qfn5B/h7W4SktTAqFFj3/B1hJ60Y5C9tnWW/G4EVKjQ31JvryBg9HkZbv8djXdRAUAjA==
+  dependencies:
+    node-forge "^1.3.1"
 
 "@portkey/utils@^2.4.5", "@portkey/utils@^2.6.8":
   version "2.6.8"
