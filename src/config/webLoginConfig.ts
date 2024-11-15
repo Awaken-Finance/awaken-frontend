@@ -68,6 +68,7 @@ const baseConfig = {
   design: 'CryptoDesign', // "SocialDesign" | "CryptoDesign" | "Web2Design"
   titleForSocialDesign: 'Crypto wallet',
   iconSrcForSocialDesign: 'https://awaken.finance/favicon.ico',
+  enableAcceleration: true,
 };
 
 const wallets = [
@@ -75,6 +76,7 @@ const wallets = [
     appName: APP_NAME,
     chainId: CHAIN_ID,
     autoShowUnlock: true,
+    enableAcceleration: true,
   }),
   new PortkeyDiscoverWallet({
     networkType: networkType,
