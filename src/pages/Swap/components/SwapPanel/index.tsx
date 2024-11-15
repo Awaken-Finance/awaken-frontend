@@ -68,8 +68,6 @@ export const SwapPanel = () => {
   const currencyBalances = useCurrencyBalancesV2([swapInfo.tokenIn, swapInfo.tokenOut]);
   const refreshTokenValueRef = useRef<typeof refreshTokenValue>();
 
-  const routeListRef = useRef<TPairRoute[]>();
-
   const [swapRoute, setSwapRoute] = useState<TSwapRoute>();
 
   const [isPriceReverse, setIsPriceReverse] = useState(false);
@@ -180,7 +178,6 @@ export const SwapPanel = () => {
     if (!timerRef.current) return;
     clearInterval(timerRef.current);
     timerRef.current = undefined;
-    routeListRef.current = undefined;
     console.log('clearTimer');
   }, []);
 
