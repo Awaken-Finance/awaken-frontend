@@ -1,4 +1,4 @@
-FROM node:18.16.0-alpine as base
+FROM node:18-alpine AS base
 WORKDIR /app
 RUN apk update && apk add git
 COPY package.json ./

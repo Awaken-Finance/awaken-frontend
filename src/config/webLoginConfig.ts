@@ -6,7 +6,7 @@ import { PortkeyDiscoverWallet } from '@aelf-web-login/wallet-adapter-portkey-di
 import { PortkeyAAWallet } from '@aelf-web-login/wallet-adapter-portkey-aa';
 import { NightElfWallet } from '@aelf-web-login/wallet-adapter-night-elf';
 import { IConfigProps } from '@aelf-web-login/wallet-adapter-bridge';
-import { TChainId } from '@aelf-web-login/wallet-adapter-base';
+import { SignInDesignEnum, TChainId } from '@aelf-web-login/wallet-adapter-base';
 
 const API_ENV = process.env.REACT_APP_API_ENV;
 export const APP_NAME = 'awaken.finance';
@@ -33,7 +33,7 @@ switch (API_ENV) {
     break;
 }
 
-const didConfig = {
+const didConfig: IConfigProps['didConfig'] = {
   graphQLUrl: portkeyService.v2.graphQLUrl,
   connectUrl: portkeyService.v2.connectServer,
   serviceUrl: portkeyService.v2.apiServer,
@@ -60,21 +60,24 @@ const didConfig = {
   },
 };
 
-const baseConfig = {
-  networkType: networkType,
+const baseConfig: IConfigProps['baseConfig'] = {
+  networkType: networkType as any,
   chainId: CHAIN_ID,
+  sideChainId: CHAIN_ID,
   keyboard: true,
   noCommonBaseModal: false,
-  design: 'CryptoDesign', // "SocialDesign" | "CryptoDesign" | "Web2Design"
+  design: SignInDesignEnum.CryptoDesign, // "SocialDesign" | "CryptoDesign" | "Web2Design"
   titleForSocialDesign: 'Crypto wallet',
   iconSrcForSocialDesign: 'https://awaken.finance/favicon.ico',
+  enableAcceleration: true,
 };
 
-const wallets = [
+const wallets: IConfigProps['wallets'] = [
   new PortkeyAAWallet({
     appName: APP_NAME,
     chainId: CHAIN_ID,
     autoShowUnlock: true,
+    enableAcceleration: true,
   }),
   new PortkeyDiscoverWallet({
     networkType: networkType,
@@ -107,11 +110,11 @@ const wallets = [
   }),
 ];
 
-export const WEB_LOGIN_CONFIG = {
+export const WEB_LOGIN_CONFIG: IConfigProps = {
   didConfig,
   baseConfig,
   wallets,
-} as IConfigProps;
+};
 
 export const TG_BOT_LINK = tgBotLink;
 export const NETWORK_TYPE = networkType;
