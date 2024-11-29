@@ -30,7 +30,7 @@ export const PORTKEY_SERVICE = {
       connectServer: 'https://auth-portkey-test.portkey.finance',
     },
     v2: {
-      graphQLUrl: 'https://dapp-aa-portkey-test.portkey.finance/aefinder-v2/api/app/graphql/portkey',
+      graphQLUrl: 'https://test-indexer-api.aefinder.io/api/app/graphql/portkey',
       apiServer: 'https://aa-portkey-test.portkey.finance',
       connectServer: 'https://auth-aa-portkey-test.portkey.finance',
     },
@@ -42,7 +42,7 @@ export const PORTKEY_SERVICE = {
       connectServer: 'https://auth-portkey.portkey.finance',
     },
     v2: {
-      graphQLUrl: 'https://dapp-aa-portkey.portkey.finance/aefinder-v2/api/app/graphql/portkey',
+      graphQLUrl: 'https://indexer-api.aefinder.io/api/app/graphql/portkey',
       apiServer: 'https://aa-portkey.portkey.finance',
       connectServer: 'https://auth-aa-portkey.portkey.finance',
     },
