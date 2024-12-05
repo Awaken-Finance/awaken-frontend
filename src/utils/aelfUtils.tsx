@@ -3,7 +3,6 @@ import { getExploreLink, shortenString, sleep } from 'utils';
 import BigNumber from 'bignumber.js';
 import { ContractBasic } from './contract';
 import AElf from './aelf';
-import { COMMON_PRIVATE } from 'constants/aelf';
 import { ChainConstants } from 'constants/ChainConstants';
 import storages from 'storages';
 import { baseRequest } from 'api';
@@ -26,7 +25,7 @@ export function getAElf() {
 }
 
 export function getWallet() {
-  if (!wallet) wallet = Wallet.getWalletByPrivateKey(COMMON_PRIVATE);
+  if (!wallet) wallet = Wallet.createNewWallet();
 
   return wallet;
 }
