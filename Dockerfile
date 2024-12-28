@@ -3,7 +3,7 @@ WORKDIR /app
 RUN apk update && apk add git
 COPY package.json ./
 COPY yarn.lock ./
-RUN yarn install
+RUN yarn install --registry=https://registry.yarnpkg.com/
 ARG BUILD_ENV
 COPY  . ./
 RUN yarn build:${BUILD_ENV}
