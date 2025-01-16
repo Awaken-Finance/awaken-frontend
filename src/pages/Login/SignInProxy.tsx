@@ -4,7 +4,6 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { useLocation } from 'react-use';
 import { isNightElfApp, isPortkeyAppWithDiscover } from 'utils/isApp';
-import { isMobileSize } from 'utils/isMobile';
 
 export default React.forwardRef((props, ref) => {
   const { pathname } = useLocation();
@@ -28,13 +27,6 @@ export default React.forwardRef((props, ref) => {
     return lifeCycle === 'Login' || !lifeCycle;
   }, [lifeCycle]);
 
-  const width = useMemo(() => {
-    return isLogin ? '960px' : '548px';
-  }, [isLogin]);
-  const height = useMemo(() => {
-    return isLogin ? '720px' : '652px';
-  }, [isLogin]);
-
   useInterval(
     () => {
       const dom = document.getElementById('awaken-portkey-sdk-root');
@@ -45,15 +37,6 @@ export default React.forwardRef((props, ref) => {
     100,
     [renderDom],
   );
-
-  useEffect(() => {
-    if (isMobileSize()) return;
-    const dom = document.getElementById('awaken-portkey-sdk-root');
-    if (dom) {
-      dom.style.width = width;
-      dom.style.minHeight = height;
-    }
-  }, [height, width]);
 
   const SignComponent = useMemo(() => {
     return PortkeyDid.SignIn;
