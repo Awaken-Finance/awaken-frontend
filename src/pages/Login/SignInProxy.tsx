@@ -107,6 +107,7 @@ export default React.forwardRef((props, ref) => {
         key="signin"
         {...props}
         ref={ref}
+        design={isLogin ? 'Web2Design' : 'CryptoDesign'}
         keyboard={true}
         defaultLifeCycle={defaultLifeCycle}
         onLifeCycleChange={onLifeCycleChange}
@@ -120,6 +121,7 @@ export default React.forwardRef((props, ref) => {
       {...props}
       ref={ref}
       uiType="Full"
+      design={isLogin ? 'Web2Design' : 'CryptoDesign'}
       keyboard={true}
       defaultLifeCycle={defaultLifeCycle}
       onLifeCycleChange={onLifeCycleChange}

@@ -51,7 +51,7 @@ const didConfig: IConfigProps['didConfig'] = {
     },
   },
   loginConfig: {
-    loginMethodsOrder: ['Email', 'Google', 'Apple', 'Telegram', 'Scan'],
+    loginMethodsOrder: ['Google', 'Apple', 'Telegram', 'Scan'],
   },
   networkType: networkType,
   referralInfo: {
