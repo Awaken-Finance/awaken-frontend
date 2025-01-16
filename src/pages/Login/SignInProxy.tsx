@@ -12,8 +12,9 @@ export default React.forwardRef((props, ref) => {
   const [renderDom, setRenderDom] = useState<HTMLElement>();
   const [lifeCycle, setLifeCycle] = useState<any>(pathname?.startsWith('/login') ? 'Login' : 'SignUp');
 
+  const isLogin = useMemo(() => pathname?.startsWith('/login'), [pathname]);
   const defaultLifeCycle = useMemo(() => {
-    if (pathname?.startsWith('/login')) {
+    if (isLogin) {
       return {
         Login: undefined,
       };
@@ -22,10 +23,7 @@ export default React.forwardRef((props, ref) => {
         SignUp: undefined,
       };
     }
-  }, [pathname]);
-  const isLogin = useMemo(() => {
-    return lifeCycle === 'Login' || !lifeCycle;
-  }, [lifeCycle]);
+  }, [isLogin]);
 
   useInterval(
     () => {
@@ -67,11 +65,11 @@ export default React.forwardRef((props, ref) => {
   const onLifeCycleChange = (lifeCycle: any) => {
     console.log('lifeCycle', lifeCycle);
     if (!pathname?.startsWith('/login') && !pathname?.startsWith('/signup')) return;
-    if (lifeCycle === 'Login' && !pathname?.startsWith('/login')) {
-      history.replaceState(null, '', '/login');
-    } else if (lifeCycle === 'SignUp' && !pathname?.startsWith('/signup')) {
-      history.replaceState(null, '', '/signup');
-    }
+    // if (lifeCycle === 'Login' && !pathname?.startsWith('/login')) {
+    //   history.replaceState(null, '', '/login');
+    // } else if (lifeCycle === 'SignUp' && !pathname?.startsWith('/signup')) {
+    //   history.replaceState(null, '', '/signup');
+    // }
     setLifeCycle(lifeCycle);
     if (lifeCycle === 'SetPinAndAddManager') {
       setIsPreparing(true);
