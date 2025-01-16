@@ -100,13 +100,13 @@ function PcHeader({ menuList, activity }: TPcHeaderProps) {
   return (
     <Layout.Header className={clsx('site-header', 'activity-site-header')}>
       <ActivityNotice activity={activity} />
-      <Row className="site-header-content" align="middle" gutter={[20, 0]}>
+      <Row className="site-header-content" align="middle">
         <Col>
           <NavLink to={'/'}>
             <IconLogo className="menu-logo" />
           </NavLink>
         </Col>
-        <Col flex="1">
+        <Col className="site-header-menu-list" flex="1">
           <NavMenu menuList={menuList} />
         </Col>
         <Col>
