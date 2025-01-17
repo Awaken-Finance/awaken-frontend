@@ -4,7 +4,6 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { useLocation } from 'react-use';
 import { isNightElfApp, isPortkeyAppWithDiscover } from 'utils/isApp';
-import { isMobileSize } from 'utils/isMobile';
 
 export default React.forwardRef((props, ref) => {
   const { pathname } = useLocation();
@@ -13,8 +12,9 @@ export default React.forwardRef((props, ref) => {
   const [renderDom, setRenderDom] = useState<HTMLElement>();
   const [lifeCycle, setLifeCycle] = useState<any>(pathname?.startsWith('/login') ? 'Login' : 'SignUp');
 
+  const isLogin = useMemo(() => pathname?.startsWith('/login'), [pathname]);
   const defaultLifeCycle = useMemo(() => {
-    if (pathname?.startsWith('/login')) {
+    if (isLogin) {
       return {
         Login: undefined,
       };
@@ -23,16 +23,6 @@ export default React.forwardRef((props, ref) => {
         SignUp: undefined,
       };
     }
-  }, [pathname]);
-  const isLogin = useMemo(() => {
-    return lifeCycle === 'Login' || !lifeCycle;
-  }, [lifeCycle]);
-
-  const width = useMemo(() => {
-    return isLogin ? '960px' : '548px';
-  }, [isLogin]);
-  const height = useMemo(() => {
-    return isLogin ? '720px' : '652px';
   }, [isLogin]);
 
   useInterval(
@@ -45,15 +35,6 @@ export default React.forwardRef((props, ref) => {
     100,
     [renderDom],
   );
-
-  useEffect(() => {
-    if (isMobileSize()) return;
-    const dom = document.getElementById('awaken-portkey-sdk-root');
-    if (dom) {
-      dom.style.width = width;
-      dom.style.minHeight = height;
-    }
-  }, [height, width]);
 
   const SignComponent = useMemo(() => {
     return PortkeyDid.SignIn;
@@ -84,11 +65,11 @@ export default React.forwardRef((props, ref) => {
   const onLifeCycleChange = (lifeCycle: any) => {
     console.log('lifeCycle', lifeCycle);
     if (!pathname?.startsWith('/login') && !pathname?.startsWith('/signup')) return;
-    if (lifeCycle === 'Login' && !pathname?.startsWith('/login')) {
-      history.replaceState(null, '', '/login');
-    } else if (lifeCycle === 'SignUp' && !pathname?.startsWith('/signup')) {
-      history.replaceState(null, '', '/signup');
-    }
+    // if (lifeCycle === 'Login' && !pathname?.startsWith('/login')) {
+    //   history.replaceState(null, '', '/login');
+    // } else if (lifeCycle === 'SignUp' && !pathname?.startsWith('/signup')) {
+    //   history.replaceState(null, '', '/signup');
+    // }
     setLifeCycle(lifeCycle);
     if (lifeCycle === 'SetPinAndAddManager') {
       setIsPreparing(true);
@@ -107,6 +88,7 @@ export default React.forwardRef((props, ref) => {
         key="signin"
         {...props}
         ref={ref}
+        design={isLogin ? 'Web2Design' : 'CryptoDesign'}
         keyboard={true}
         defaultLifeCycle={defaultLifeCycle}
         onLifeCycleChange={onLifeCycleChange}
@@ -120,6 +102,7 @@ export default React.forwardRef((props, ref) => {
       {...props}
       ref={ref}
       uiType="Full"
+      design={isLogin ? 'Web2Design' : 'CryptoDesign'}
       keyboard={true}
       defaultLifeCycle={defaultLifeCycle}
       onLifeCycleChange={onLifeCycleChange}
