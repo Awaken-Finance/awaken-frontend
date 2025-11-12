@@ -1,4 +1,4 @@
-import { PortkeyDid } from '@aelf-web-login/wallet-adapter-bridge';
+import { TelegramPlatform } from '@portkey/utils';
 import { MOBILE_DEVICE_WIDTH } from 'constants/misc';
 import { useStore } from 'contexts/useStore';
 import { useMemo } from 'react';
@@ -198,6 +198,6 @@ export function isMobileSize() {
 
 export function useIsTelegram() {
   return useMemo(() => {
-    return PortkeyDid.TelegramPlatform.isTelegramPlatform();
+    return TelegramPlatform.isTelegramPlatform();
   }, []);
 }

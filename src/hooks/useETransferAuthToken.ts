@@ -1,9 +1,15 @@
 import AElf from 'utils/aelf';
 import { useCallback, useEffect, useRef } from 'react';
-import { etransferEvents, recoverPubKeyBySignature, resetETransferJWT, removeELFAddressSuffix } from '@etransfer/utils';
+import {
+  etransferEvents,
+  recoverPubKeyBySignature,
+  resetETransferJWT,
+  removeELFAddressSuffix,
+  SignatureData,
+} from '@etransfer/utils';
 import { AuthTokenSource, PortkeyVersion } from '@etransfer/types';
 
-import { ETransferConfig, getETransferReCaptcha, WalletTypeEnum, etransferCore } from '@etransfer/ui-react';
+import { ETransferConfig, getETransferReCaptcha, etransferCore } from '@etransfer/ui-react';
 import { useConnectWallet } from '@aelf-web-login/wallet-adapter-react';
 
 import { getManagerAddressByWallet } from 'utils/wallet';
@@ -12,7 +18,10 @@ import { APP_NAME } from 'config/webLoginConfig';
 import { TWalletType } from '@etransfer/types';
 import { useGetAccount } from './wallet';
 import { getETransferUserInfo } from 'utils/etransfer';
-import { sleep } from 'utils';
+import { isEOA, sleep } from 'utils';
+import { WalletTypeEnum } from '@aelf-web-login/wallet-adapter-base';
+import detectProvider from '@portkey/detect-provider';
+import { zeroFill } from '@portkey/utils';
 
 export type TSetETransferConfigParams = {
   managerAddress: string;
@@ -20,8 +29,72 @@ export type TSetETransferConfigParams = {
   jwt: string;
   isDeposit?: boolean;
 };
+
+export function useGetTransactionSignature() {
+  const { walletInfo, walletType, getSignature } = useConnectWallet();
+
+  return useCallback(
+    async (signInfo: any): Promise<SignatureData | null> => {
+      const ownerAddress = walletInfo?.address;
+      let signatureResult: SignatureData | null = {
+        error: 0,
+        errorMessage: '',
+        signature: '',
+        from: '',
+      };
+      if (!ownerAddress) return signatureResult;
+      const isFairyVault = walletType === WalletTypeEnum.fairyVault;
+      const isWebPortkey = walletType === WalletTypeEnum.web;
+
+      console.log(isWebPortkey, '====isWebPortkey');
+
+      const isDiscover = walletType === WalletTypeEnum.discover;
+      if (isDiscover || isFairyVault || isWebPortkey) {
+        // discover
+        signatureResult.from = WalletTypeEnum.discover;
+
+        // discover and FairyVault
+        let provider: any = (walletInfo?.extraInfo as any)?.provider;
+        if (isFairyVault) {
+          provider = await detectProvider({ providerName: 'FairyVault' as any });
+        } else if (isWebPortkey) {
+          provider = await detectProvider({ providerName: 'PortkeyWebWallet' as any });
+        }
+
+        if (provider?.methodCheck?.('wallet_getTransactionSignature') || isFairyVault || isWebPortkey) {
+          console.log(provider, '======provider');
+
+          const sin = await provider?.request({
+            method: 'wallet_getTransactionSignature',
+            payload: { hexData: signInfo },
+          });
+          signatureResult.signature = [zeroFill(sin.r), zeroFill(sin.s), `0${sin.recoveryParam.toString()}`].join('');
+        } else {
+          const signatureRes = await getSignature({
+            appName: APP_NAME,
+            address: removeELFAddressSuffix(ownerAddress),
+            signInfo,
+          });
+          signatureResult.signature = signatureRes?.signature || '';
+        }
+      } else {
+        const signatureRes = await getSignature({
+          appName: APP_NAME,
+          address: removeELFAddressSuffix(ownerAddress),
+          signInfo,
+        });
+        signatureResult = signatureRes;
+      }
+      return signatureResult;
+    },
+    [getSignature, walletInfo, walletType],
+  );
+}
+
 export function useETransferAuthToken() {
   const { getSignature, walletType, walletInfo, callSendMethod } = useConnectWallet();
+  const getTransactionSignature = useGetTransactionSignature();
+
   const isLogin = useIsConnected();
   const isLoginRef = useRef(isLogin);
   isLoginRef.current = isLogin;
@@ -44,19 +117,22 @@ ${Date.now()}`;
       signature: string;
       from: string;
     } | null;
-    if (walletType === WalletTypeEnum.discover) {
+
+    const isFairyVault = walletType === WalletTypeEnum.fairyVault;
+    const isDiscover = walletType === WalletTypeEnum.discover;
+    if (isDiscover || isFairyVault) {
       // discover
-      const discoverInfo = walletInfo?.extraInfo as any;
-      if ((discoverInfo?.provider as any).methodCheck('wallet_getManagerSignature')) {
-        const sin = await discoverInfo?.provider?.request({
+
+      let provider: any = (walletInfo?.extraInfo as any)?.provider;
+      if (isFairyVault) {
+        provider = await detectProvider({ providerName: 'FairyVault' as any });
+      }
+      if (provider?.methodCheck('wallet_getManagerSignature')) {
+        const sin = await provider?.request({
           method: 'wallet_getManagerSignature',
           payload: { hexData: plainText },
         });
-        const signInfo = [
-          sin.r.toString('hex', 32),
-          sin.s.toString('hex', 32),
-          `0${sin.recoveryParam.toString()}`,
-        ].join('');
+        const signInfo = [zeroFill(sin.r), zeroFill(sin.s), `0${sin.recoveryParam.toString()}`].join('');
         signResult = {
           error: 0,
           errorMessage: '',
@@ -80,8 +156,8 @@ ${Date.now()}`;
         signInfo,
       });
     } else {
-      // portkey sdk
-      const signInfo = Buffer.from(plainText).toString('hex');
+      // portkey web wallet
+      const signInfo = plainText;
       signResult = await getSignature({
         appName: APP_NAME,
         address: walletInfo.address,
@@ -113,6 +189,8 @@ ${Date.now()}`;
         managerAddress: managerAddress,
       };
     } catch (error) {
+      console.log(error, '=====getUserInfo');
+
       throw new Error('Failed to obtain user information');
     }
   }, [walletInfo, walletType]);
@@ -122,7 +200,7 @@ ${Date.now()}`;
       if (!walletInfo) throw new Error('Failed to obtain wallet information.');
       if (!isLoginRef.current) throw new Error('You are not logged in.');
       let reCaptchaToken = undefined;
-      if (isCheckReCaptcha && walletType === WalletTypeEnum.elf) {
+      if (isCheckReCaptcha && isEOA(walletType)) {
         reCaptchaToken = await getETransferReCaptcha(walletInfo.address);
       }
       const signatureResult = await handleGetSignature();
@@ -159,9 +237,11 @@ ${Date.now()}`;
               appName: APP_NAME,
               address: removeELFAddressSuffix(ownerAddress),
             }),
-          walletType: walletType,
+          getTransactionSignature: (signInfo) => getTransactionSignature(signInfo),
+          // TODO: Update etransfer SDK
+          walletType: walletType as any,
           accounts: accounts,
-          managerAddress: walletType === WalletTypeEnum.elf ? ownerAddress : managerAddress,
+          managerAddress: isEOA(walletType) ? ownerAddress : managerAddress,
           caHash: caHash,
         },
         authorization: {
@@ -169,7 +249,7 @@ ${Date.now()}`;
         },
       });
     },
-    [accounts, callSendMethod, getSignature, walletInfo?.address, walletType],
+    [accounts, callSendMethod, getSignature, getTransactionSignature, walletInfo?.address, walletType],
   );
   const setETransferConfigRef = useRef(setETransferConfig);
   setETransferConfigRef.current = setETransferConfig;
@@ -183,7 +263,7 @@ ${Date.now()}`;
         const { caHash, managerAddress, originChainId } = await getUserInfo();
 
         // 1: local storage has JWT token
-        const source = walletType === WalletTypeEnum.elf ? AuthTokenSource.NightElf : AuthTokenSource.Portkey;
+        const source = isEOA(walletType) ? AuthTokenSource.NightElf : AuthTokenSource.Portkey;
         const storageJwt = await etransferCore.getAuthTokenFromStorage({
           walletType: (source as unknown as TWalletType) || TWalletType.Portkey,
           caHash: caHash,
@@ -210,7 +290,7 @@ ${Date.now()}`;
           managerAddress,
           version: PortkeyVersion.v2,
           source: source,
-          recaptchaToken: walletType === WalletTypeEnum.elf ? recaptchaToken : undefined,
+          recaptchaToken: isEOA(walletType) ? recaptchaToken : undefined,
         });
 
         await setETransferConfigRef.current({

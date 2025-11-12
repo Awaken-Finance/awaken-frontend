@@ -214,7 +214,7 @@ export default function useSearchPairList(
   }, [config?.socket, updateItem]);
 
   const init = useCallback(async () => {
-    if (isPortkeyAppWithDiscover() || isNightElfApp() || walletType === WalletTypeEnum.aa) {
+    if (isPortkeyAppWithDiscover() || isNightElfApp() || walletType === WalletTypeEnum.web) {
       pageInfo.current = {
         ...pageInfo.current,
         pageNum: 1,
