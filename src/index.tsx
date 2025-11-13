@@ -13,17 +13,13 @@ import TokenPriceProvider from 'contexts/useTokenPrice';
 
 import { ANTD_LOCAL } from './i18n/config';
 import { useLanguage } from './i18n';
-import SignInProxy from 'pages/Login/SignInProxy';
-import ConfirmLogoutDialog from 'Modals/ConfirmLogoutDialog';
 import { WebLoginProvider } from '@aelf-web-login/wallet-adapter-react';
 import { DID_CONFIG, getConfig } from './config/webLoginConfig';
-import { SignInDesignEnum } from '@aelf-web-login/wallet-adapter-base';
 
 import './sentry';
 import './index.css';
 import './App.less';
 import './assets/js/telegram-web-app';
-import { isMobileDevice, useIsTelegram } from 'utils/isMobile';
 import { ETransferConfig } from '@etransfer/ui-react';
 import { etransferConfig } from 'config/etransferConfig';
 import { did } from '@portkey/did';
@@ -50,33 +46,10 @@ function ContextProviders({ children }: { children?: React.ReactNode }) {
 }
 
 function RootApp() {
-  // TODO: check
-  // const isTelegram = useIsTelegram();
-
   useMemo(() => {
     did.setConfig(DID_CONFIG);
     checkConnectedWallet();
   }, []);
-
-  // const bridgeAPI = useMemo(() => {
-  //   const isMobile = isMobileDevice();
-  //   return init({
-  //     ...WEB_LOGIN_CONFIG,
-  //     baseConfig: {
-  //       ...WEB_LOGIN_CONFIG.baseConfig,
-  //       noCommonBaseModal: isTelegram ? false : true,
-  //       design: SignInDesignEnum.Web2Design,
-  //       keyboard: true,
-  //       SignInComponent: isTelegram ? undefined : (SignInProxy as any),
-  //       ConfirmLogoutDialog: ConfirmLogoutDialog,
-  //       PortkeyProviderProps: {
-  //         theme: 'dark',
-  //         networkType: WEB_LOGIN_CONFIG.baseConfig.networkType,
-  //       },
-  //     },
-  //     wallets: isMobile ? [WEB_LOGIN_CONFIG.wallets[0], WEB_LOGIN_CONFIG.wallets[1]] : WEB_LOGIN_CONFIG.wallets,
-  //   });
-  // }, [isTelegram]);
 
   const config = useMemo(() => getConfig(), []);
 
