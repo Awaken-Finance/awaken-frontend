@@ -1,10 +1,11 @@
 import { TWalletInfo, WalletTypeEnum } from '@aelf-web-login/wallet-adapter-base';
 import { GetCAHolderByManagerParams } from '@portkey/services';
 
-import { PortkeyDid } from '@aelf-web-login/wallet-adapter-bridge';
+import { did } from '@portkey/did';
 import { TChainId } from '@aelf-web-login/wallet-adapter-base';
 import { DEFAULT_CHAIN } from 'constants/index';
 import { recoverManagerAddressByPubkey } from '@etransfer/utils';
+import { getPortkeyWebWalletInfo } from './portkey';
 
 export const getCaHashAndOriginChainIdByWallet = async (
   walletInfo: TWalletInfo,
@@ -18,16 +19,18 @@ export const getCaHashAndOriginChainIdByWallet = async (
 
   let caHash, originChainId;
   if (walletType === WalletTypeEnum.discover) {
-    const res = await PortkeyDid.did.services.getHolderInfoByManager({
+    const res = await did.services.getHolderInfoByManager({
       caAddresses: [walletInfo?.address],
     } as unknown as GetCAHolderByManagerParams);
     const caInfo = res[0];
     caHash = caInfo?.caHash;
     originChainId = caInfo?.chainId as TChainId;
-  } else if (walletType === WalletTypeEnum.aa) {
-    const portkeyAAInfo = walletInfo?.extraInfo as any;
-    caHash = portkeyAAInfo.portkeyInfo.caInfo.caHash;
-    originChainId = portkeyAAInfo.portkeyInfo.chainId;
+  } else if (walletType === WalletTypeEnum.web) {
+    const _sdkWalletInfo = getPortkeyWebWalletInfo();
+    console.log(_sdkWalletInfo, '===_sdkWalletInfo');
+
+    caHash = _sdkWalletInfo?.caHash;
+    originChainId = _sdkWalletInfo?.originChainId;
   }
 
   return {
@@ -48,9 +51,9 @@ export const getManagerAddressByWallet = async (
     managerAddress = await discoverInfo?.provider?.request({
       method: 'wallet_getCurrentManagerAddress',
     });
-  } else if (walletType === WalletTypeEnum.aa) {
-    const portkeyAAInfo = walletInfo?.extraInfo as any;
-    managerAddress = portkeyAAInfo.portkeyInfo.walletInfo.address;
+  } else if (walletType === WalletTypeEnum.web) {
+    const _sdkWalletInfo = getPortkeyWebWalletInfo();
+    managerAddress = _sdkWalletInfo?.managerAddress;
   } else {
     // WalletTypeEnum.elf
     managerAddress = walletInfo?.address;
@@ -62,7 +65,7 @@ export const getManagerAddressByWallet = async (
 };
 
 export const IsCAWallet = (walletType: WalletTypeEnum) =>
-  [WalletTypeEnum.discover, WalletTypeEnum.aa].includes(walletType);
+  [WalletTypeEnum.discover, WalletTypeEnum.web].includes(walletType);
 
 export const getValidAddress = (str: string) => {
   const strArray = str.split('_');

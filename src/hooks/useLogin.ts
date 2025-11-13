@@ -1,8 +1,7 @@
-import { useHistory } from 'react-router-dom';
+import { ERR_CODE, WalletTypeEnum } from '@aelf-web-login/wallet-adapter-base';
 import { useConnectWallet } from '@aelf-web-login/wallet-adapter-react';
-import { isNightElfApp, isPortkeyAppWithDiscover } from 'utils/isApp';
-import { useIsTelegram } from 'utils/isMobile';
 import { useMemo } from 'react';
+import { checkConnectedWallet } from 'utils/portkey';
 
 export const useIsConnected = () => {
   const { walletInfo } = useConnectWallet();
@@ -22,42 +21,31 @@ export function appendRedirect(path: string, redirect: string | undefined = unde
   return newPath;
 }
 
-export default function useLogin(redirect: string | undefined = undefined) {
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+export default function useLogin(_redirect: string | undefined = undefined) {
   const { isLocking, connectWallet } = useConnectWallet();
   const isConnected = useIsConnected();
-  const history = useHistory();
-  const isTelegram = useIsTelegram();
 
-  const toLogin = () => {
-    if (isLocking) {
-      connectWallet();
-      return;
-    }
-
-    if (!isConnected) {
-      if (isPortkeyAppWithDiscover() || isNightElfApp() || isTelegram) {
-        connectWallet();
-        return;
-      } else {
-        history.push(appendRedirect('/login', redirect));
-        return;
+  const toLogin = async () => {
+    try {
+      await connectWallet();
+    } catch (error: any) {
+      // NightElf unavailable. Clear cache.
+      if (error?.nativeError?.code === ERR_CODE.INIT_BRIDGE_ERROR) {
+        checkConnectedWallet(WalletTypeEnum.elf);
       }
     }
-
-    console.log('toLogin invalid');
   };
 
-  const toSignup = () => {
+  const toSignup = async () => {
     if (!isConnected && !isLocking) {
-      if (isPortkeyAppWithDiscover() || isNightElfApp() || isTelegram) {
-        connectWallet();
-        return;
-      } else {
-        history.push(appendRedirect('/signup', redirect));
-        return;
+      try {
+        await connectWallet();
+        console.log('1231');
+      } catch (error) {
+        console.log(error, '=====error');
       }
     }
-    console.log('toSignup invalid');
   };
 
   return {

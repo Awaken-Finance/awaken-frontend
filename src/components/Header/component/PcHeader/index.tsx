@@ -31,7 +31,7 @@ export type TPcHeaderProps = {
 };
 
 function PcHeader({ menuList, activity }: TPcHeaderProps) {
-  const { walletInfo, isLocking } = useConnectWallet();
+  const { walletInfo } = useConnectWallet();
   const isConnected = useIsConnected();
   const { chainId } = useChainId();
   const { t } = useTranslation();
@@ -39,7 +39,7 @@ function PcHeader({ menuList, activity }: TPcHeaderProps) {
 
   const [modalState] = useModal();
   const modalDispatch = useModalDispatch();
-  const { toLogin, toSignup } = useLogin();
+  const { toLogin } = useLogin();
 
   const toggleAccountModal = () => {
     modalDispatch(basicModalView.setAccountModal.actions(!modalState.accountModal));
@@ -76,24 +76,11 @@ function PcHeader({ menuList, activity }: TPcHeaderProps) {
       );
     }
     return (
-      <>
-        <Col>
-          <CommonButton
-            className="signup-btn"
-            style={{ fontWeight: '600' }}
-            type={isLocking ? 'primary' : 'text'}
-            onClick={toLogin}>
-            {t(isLocking ? 'Unlock' : 'Log In')}
-          </CommonButton>
-        </Col>
-        {!isLocking && (
-          <Col>
-            <CommonButton className="signup-btn" style={{ fontWeight: '600' }} type="primary" onClick={toSignup}>
-              {t('Sign Up')}
-            </CommonButton>
-          </Col>
-        )}
-      </>
+      <Col>
+        <CommonButton className="signup-btn" style={{ fontWeight: '600' }} type="primary" onClick={toLogin}>
+          {t('Log In')}
+        </CommonButton>
+      </Col>
     );
   };
 

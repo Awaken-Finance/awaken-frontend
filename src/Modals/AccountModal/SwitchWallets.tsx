@@ -16,8 +16,8 @@ export default function SwitchWallets({
 
   const wallets = [
     {
-      type: WalletTypeEnum.aa,
-      text: 'Portkey SDK',
+      type: WalletTypeEnum.web,
+      text: 'Portkey Web Wallet',
       Icon: IconWalletSDK,
     },
     {

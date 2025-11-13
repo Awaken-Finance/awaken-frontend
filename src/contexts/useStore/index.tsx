@@ -9,10 +9,10 @@ import { useEffectOnce, useSearchParam } from 'react-use';
 import storages from 'storages';
 import isMobile, { useIsTelegram } from 'utils/isMobile';
 import { switchNetwork } from 'utils/network';
-import { PortkeyDid } from '@aelf-web-login/wallet-adapter-bridge';
 import { MOBILE_DEVICE_WIDTH } from 'constants/misc';
 import { useRequest } from 'ahooks';
 import { getTransactionFee } from 'pages/Exchange/apis/getTransactionFee';
+import { TelegramPlatform } from '@portkey/utils';
 const body = window.document.getElementsByTagName('body')[0];
 body.className = 'pc-site-content';
 const INITIAL_STATE = {
@@ -71,7 +71,7 @@ export default function Provider({ children }: { children: React.ReactNode }) {
           isM.android.phone ||
           isM.apple.tablet ||
           isM.android.tablet ||
-          PortkeyDid.TelegramPlatform.isTelegramPlatform() ||
+          TelegramPlatform.isTelegramPlatform() ||
           window.innerWidth <= MOBILE_DEVICE_WIDTH,
       );
     };

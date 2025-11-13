@@ -4,7 +4,7 @@ import { basicModalView } from 'contexts/useModal/actions';
 import { useModalDispatch } from 'contexts/useModal/hooks';
 import { useCallback } from 'react';
 import { WalletTypeEnum } from '@aelf-web-login/wallet-adapter-base';
-import { WEB_LOGIN_CONFIG } from 'config/webLoginConfig';
+import { getConfig } from 'config/webLoginConfig';
 
 export default function useLoginCheck<T = any>(
   options: {
@@ -34,8 +34,8 @@ export default function useLoginCheck<T = any>(
         return;
       }
 
-      if (options.checkAccountSync && isConnected && walletType === WalletTypeEnum.aa) {
-        const syncCompleted = await getWalletSyncIsCompleted(WEB_LOGIN_CONFIG.baseConfig.chainId);
+      if (options.checkAccountSync && isConnected && walletType === WalletTypeEnum.web) {
+        const syncCompleted = await getWalletSyncIsCompleted(getConfig().baseConfig.chainId);
         if (!syncCompleted) {
           popupSynchronizedAccountInfoModal();
           return true;
