@@ -2997,15 +2997,15 @@
     "@etransfer/types" "^1.14.0"
     "@etransfer/utils" "^1.14.0"
 
-"@etransfer/core@^1.16.0-alpha.5":
-  version "1.16.0-alpha.5"
-  resolved "https://registry.yarnpkg.com/@etransfer/core/-/core-1.16.0-alpha.5.tgz#82a246b96c13a4ffa7580d649c09d5cc4d12921e"
-  integrity sha512-/kKX2/I1nA7qHgFMAXwlRtWl1q0LT4mehPtqASL+oDQwgxULbjKqvsD7QLWOrsxddlEEtmbozURupHWXa3Db5w==
+"@etransfer/core@^1.16.0-alpha.6":
+  version "1.16.0-alpha.6"
+  resolved "https://registry.yarnpkg.com/@etransfer/core/-/core-1.16.0-alpha.6.tgz#d829edfe0d2eb069550e29b42681fba1d4c72a5d"
+  integrity sha512-Va96pKSuddWCk6PcxEosgEwh0uhdIAJFbkNsIEGfTaBWYBjRSWjVcta/zITz+kUG7i5Zn2QBKgsBHBhawHfBYA==
   dependencies:
-    "@etransfer/services" "^1.16.0-alpha.5"
-    "@etransfer/socket" "^1.16.0-alpha.5"
-    "@etransfer/types" "^1.16.0-alpha.5"
-    "@etransfer/utils" "^1.16.0-alpha.5"
+    "@etransfer/services" "^1.16.0-alpha.6"
+    "@etransfer/socket" "^1.16.0-alpha.6"
+    "@etransfer/types" "^1.16.0-alpha.6"
+    "@etransfer/utils" "^1.16.0-alpha.6"
 
 "@etransfer/request@^1.14.0":
   version "1.14.0"
@@ -3016,13 +3016,13 @@
     "@etransfer/utils" "^1.14.0"
     axios "^0.24.0"
 
-"@etransfer/request@^1.16.0-alpha.5":
-  version "1.16.0-alpha.5"
-  resolved "https://registry.yarnpkg.com/@etransfer/request/-/request-1.16.0-alpha.5.tgz#c4f978b538e799f0b80d7c7d786f7c5edf5df492"
-  integrity sha512-OxWdSu7DHols0qc7Pcur42fCdmPtr7VJAIy2LqCI5kOtPsab6117WnJ5QQwTnzSSNGFkQVrns7WcbjTsNaIq8g==
+"@etransfer/request@^1.16.0-alpha.6":
+  version "1.16.0-alpha.6"
+  resolved "https://registry.yarnpkg.com/@etransfer/request/-/request-1.16.0-alpha.6.tgz#125301ee5b0566b7c6753ae6970bdd86c7972aa6"
+  integrity sha512-OUsj1G3VONJL5esV0+BGRQ1GbSuSN71ITBjf+b9ZITB80900uzzlE/Z1RjSPd8i0mw7hpkVLB5+qulq4DBQkFw==
   dependencies:
-    "@etransfer/types" "^1.16.0-alpha.5"
-    "@etransfer/utils" "^1.16.0-alpha.5"
+    "@etransfer/types" "^1.16.0-alpha.6"
+    "@etransfer/utils" "^1.16.0-alpha.6"
     axios "^0.24.0"
 
 "@etransfer/services@^1.0.0-alpha.9", "@etransfer/services@^1.14.0":
@@ -3035,14 +3035,14 @@
     "@etransfer/utils" "^1.14.0"
     "@portkey/types" "2.15.10"
 
-"@etransfer/services@^1.16.0-alpha.5":
-  version "1.16.0-alpha.5"
-  resolved "https://registry.yarnpkg.com/@etransfer/services/-/services-1.16.0-alpha.5.tgz#889bf26370dfb918be02352779949e633dd1bfee"
-  integrity sha512-HMrzdZfzDot+XUk4TwO1lt9dZJoor1vdK6wzqVISTAQ9vuY4vWvzqdUmh4FkrxvRGClGCFTFgpTriFCokl1Cqg==
+"@etransfer/services@^1.16.0-alpha.6":
+  version "1.16.0-alpha.6"
+  resolved "https://registry.yarnpkg.com/@etransfer/services/-/services-1.16.0-alpha.6.tgz#073bd3ce8194b9335f51aca7cad5b3ad824364a3"
+  integrity sha512-LHhqsZ+zyLkWlZgvyEi1zD2jUAhWVpIV0yAH7FZwP9ea6rqBh/2Kp8HTG9j41sw1xusUfu6qHxcuVpL5Unk8kQ==
   dependencies:
-    "@etransfer/request" "^1.16.0-alpha.5"
-    "@etransfer/types" "^1.16.0-alpha.5"
-    "@etransfer/utils" "^1.16.0-alpha.5"
+    "@etransfer/request" "^1.16.0-alpha.6"
+    "@etransfer/types" "^1.16.0-alpha.6"
+    "@etransfer/utils" "^1.16.0-alpha.6"
     "@portkey/types" "^2.23.0-alpha.7"
 
 "@etransfer/socket@^1.14.0":
@@ -3053,32 +3053,32 @@
     "@abp/signalr" "^7.0.0"
     "@etransfer/utils" "^1.14.0"
 
-"@etransfer/socket@^1.16.0-alpha.5":
-  version "1.16.0-alpha.5"
-  resolved "https://registry.yarnpkg.com/@etransfer/socket/-/socket-1.16.0-alpha.5.tgz#7ef4e522fa8275850069f20fbf5e69421f852c4f"
-  integrity sha512-LizO2xqQJcFK8mPZhnDyDAf/w2Hr/jjS0ysEECD8LqDDjMDcktp6joJDaPB1nTGdo/uyEKQmi3R60VfiZt2ShQ==
+"@etransfer/socket@^1.16.0-alpha.6":
+  version "1.16.0-alpha.6"
+  resolved "https://registry.yarnpkg.com/@etransfer/socket/-/socket-1.16.0-alpha.6.tgz#58b74924ead8bbe7893356ab5b35bbc04b74aa05"
+  integrity sha512-iC/9g87oNphgtQ4ek2vSit3rIOXZlaVjxbHPmPlvVs1pJOdybXZfuPfJLIS9OkwiEwYwB5GELtYch57MyFF/bg==
   dependencies:
     "@abp/signalr" "^7.0.0"
-    "@etransfer/utils" "^1.16.0-alpha.5"
+    "@etransfer/utils" "^1.16.0-alpha.6"
 
 "@etransfer/types@^1.0.0-alpha.9", "@etransfer/types@^1.14.0":
   version "1.14.0"
   resolved "https://registry.yarnpkg.com/@etransfer/types/-/types-1.14.0.tgz#a160926487403e2260c34836a7c2af4212e18aab"
   integrity sha512-Cu+hhnsWDM6MNFfYUpb6B27djKfBQNq2uLAR2TKYrKAPoH4G0+W3bVeNfWmJ0jda2vHEYPSlPLZqeLAe+tQP2g==
 
-"@etransfer/types@^1.16.0-alpha.5":
-  version "1.16.0-alpha.5"
-  resolved "https://registry.yarnpkg.com/@etransfer/types/-/types-1.16.0-alpha.5.tgz#761c830a0b31a0741e861ff104b59957c54d22c7"
-  integrity sha512-EHgAa66ohfKshi+QQKFevwckctG3meWqF6t+gWJSec1K0PJ+zbvsKBCMdxX/biJ+/7po9h/EX5/KToaIuTMiYw==
+"@etransfer/types@^1.16.0-alpha.6":
+  version "1.16.0-alpha.6"
+  resolved "https://registry.yarnpkg.com/@etransfer/types/-/types-1.16.0-alpha.6.tgz#2e77e968cd19c8018dab316f1c1d8e2fbef2ad05"
+  integrity sha512-RZ7bYFuxiHXp1QHKvQcKoFI8xcTgkcIAxwbYQgf2oeIlJ2Ee+oikIyyk7n6xXrkxI/qeVNUeteutpDhghJYoTQ==
 
-"@etransfer/ui-react@^1.16.0-alpha.5":
-  version "1.16.0-alpha.5"
-  resolved "https://registry.yarnpkg.com/@etransfer/ui-react/-/ui-react-1.16.0-alpha.5.tgz#c4f43af6df14397fc3d3b478c1594445d06e7628"
-  integrity sha512-tShb3JubYIONDFmsuWawDayEzrQDRUqq6HDV4FtZrkyBps1Z+AG6zZCyswJPFj2SdJUUFWwbkVXoCbjQysoMnw==
+"@etransfer/ui-react@^1.16.0-alpha.6":
+  version "1.16.0-alpha.6"
+  resolved "https://registry.yarnpkg.com/@etransfer/ui-react/-/ui-react-1.16.0-alpha.6.tgz#98b2caf259fe69f9e9d859dd60b4ead556d3694d"
+  integrity sha512-Hu1v4de3JT7X2LShhYT3XuMmWvQu5mrKzWZ1q2Ool7vs0OknrVzEJen0Phrevrx9DnsJ4xqaV1HPppZWB42rjQ==
   dependencies:
-    "@etransfer/core" "^1.16.0-alpha.5"
-    "@etransfer/types" "^1.16.0-alpha.5"
-    "@etransfer/utils" "^1.16.0-alpha.5"
+    "@etransfer/core" "^1.16.0-alpha.6"
+    "@etransfer/types" "^1.16.0-alpha.6"
+    "@etransfer/utils" "^1.16.0-alpha.6"
     "@portkey/types" "^2.23.0-alpha.7"
     "@portkey/utils" "^2.23.0-alpha.7"
     antd "4.24.14"
@@ -3102,13 +3102,13 @@
     "@etransfer/types" "^1.14.0"
     bn.js "^5.2.1"
 
-"@etransfer/utils@^1.16.0-alpha.5":
-  version "1.16.0-alpha.5"
-  resolved "https://registry.yarnpkg.com/@etransfer/utils/-/utils-1.16.0-alpha.5.tgz#b43a886d6bb57027f709a783839871463fb05510"
-  integrity sha512-XjUP0qD1jLeKqlw3bSZ5oQT9YVWer5M8DjJ5prQ6tB8wSg5gKXRuNiASibpMF90D9ziQj6c4/aFkgEuXxFzPyw==
+"@etransfer/utils@^1.16.0-alpha.6":
+  version "1.16.0-alpha.6"
+  resolved "https://registry.yarnpkg.com/@etransfer/utils/-/utils-1.16.0-alpha.6.tgz#f673eb7809110b39c5f22cb7e71fb69ddc2e8840"
+  integrity sha512-QkHQDvx14/WLodC46Nx4EghJyUvILJ5Jc7HL7BgF2hY+j0OmyOx+mZHOZk5RS4egQQhteVTeNWihlX/ahVj9sg==
   dependencies:
-    "@etransfer/services" "^1.16.0-alpha.5"
-    "@etransfer/types" "^1.16.0-alpha.5"
+    "@etransfer/services" "^1.16.0-alpha.6"
+    "@etransfer/types" "^1.16.0-alpha.6"
     bn.js "^5.2.1"
 
 "@floating-ui/core@^1.6.0":
