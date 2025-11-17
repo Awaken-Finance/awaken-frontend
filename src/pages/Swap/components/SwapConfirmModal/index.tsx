@@ -26,6 +26,7 @@ import { SWAP_HOOK_CONTRACT_ADDRESS } from 'constants/index';
 import { getCID, sleep } from 'utils';
 import { SWAP_LABS_FEE_RATE, SWAP_RECEIVE_RATE } from 'constants/swap';
 import BigNumber from 'bignumber.js';
+import { formatSwapError } from 'utils/formatError';
 
 export type TSwapConfirmModalProps = {
   onSuccess?: () => void;
@@ -247,6 +248,10 @@ export const SwapConfirmModal = forwardRef(
         }
       } catch (error) {
         console.log('SwapConfirmModal onSwap error', error);
+        formatSwapError(error, {
+          amount: divDecimals(valueIn, tokenIn.decimals).dp(8).toFixed(),
+          symbol: tokenOut?.symbol,
+        });
       } finally {
         console.log('onSwap finally');
         setIsSwapping(false);
