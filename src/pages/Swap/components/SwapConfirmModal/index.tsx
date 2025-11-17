@@ -112,6 +112,7 @@ export const SwapConfirmModal = forwardRef(
           swapRoute: _swapRoute,
         };
       } catch (error) {
+        formatSwapError(error);
         console.log('SwapConfirmModal executeCb error:', error);
         return;
       }
