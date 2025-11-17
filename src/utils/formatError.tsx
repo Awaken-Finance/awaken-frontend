@@ -12,6 +12,7 @@ const approveCancelMsg = [
 function getErrorMsg(error: any): string {
   if (typeof error === 'string') return error;
   if (error?.message) return error.message;
+  if (error?.Error?.Message) return error?.Error?.Message;
   return error instanceof Error ? error.toString() : JSON.stringify(error);
 }
 
@@ -26,13 +27,13 @@ export function formatApproveError(error: any) {
 
 export function formatSwapError(
   error: any,
-  data: {
+  data?: {
     amount?: string;
     symbol?: string;
   },
 ) {
   const errorMsg = getErrorMsg(error);
-  if (/Insufficient allowance. Token/.test(errorMsg)) {
+  if (!!data && /Insufficient allowance. Token/.test(errorMsg)) {
     notification.error({
       message: i18n.t('swapFailed'),
       description: i18n.t('ensuring that you approve an adequate amount', data),
@@ -42,7 +43,7 @@ export function formatSwapError(
 
   notification.error({
     message: i18n.t('swapFailed'),
-    description: error.message,
+    description: errorMsg,
   });
 }
 
