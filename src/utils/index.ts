@@ -6,6 +6,7 @@ import { EventEmitter } from 'events';
 import { DEFAULT_CID } from 'constants/channel';
 import { TokenInfo } from 'types';
 import apiConfig from 'config/apiConfig';
+import { WalletTypeEnum } from '@aelf-web-login/wallet-adapter-base';
 export const eventBus = new EventEmitter();
 
 export const toLowerCase = (address?: string): string => {
@@ -188,3 +189,7 @@ export const handleLoopFetch = async <T>({
     checkIsInvalid,
   });
 };
+
+export function isEOA(walletType: WalletTypeEnum) {
+  return walletType === WalletTypeEnum.elf || walletType === WalletTypeEnum.fairyVault;
+}

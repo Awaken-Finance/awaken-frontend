@@ -8,7 +8,6 @@ import PriceUSDDigits from 'components/PriceUSDDigits';
 import getFontStyle from 'utils/getFontStyle';
 import { formatSymbol } from 'utils/token';
 import { ZERO } from 'constants/misc';
-import { WEB_LOGIN_CONFIG } from 'config/webLoginConfig';
 
 type TokenInfoItem = {
   symbol: string;
@@ -21,9 +20,6 @@ type TokenInfoItem = {
 export function TokenItem({ data }: { data: TokenInfoItem }) {
   const { chainName } = useChainId();
   const displayChainName = useMemo(() => {
-    // return WEB_LOGIN_CONFIG.baseConfig.networkType == 'TESTNET'
-    //   ? `${chainName} ${WEB_LOGIN_CONFIG.baseConfig.networkType}`
-    //   : chainName;
     return chainName;
   }, [chainName]);
 

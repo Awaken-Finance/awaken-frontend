@@ -131,7 +131,9 @@ export default () => {
 
       await getAuthToken(isDeposit);
     } catch (error) {
-      historyRouter.replace('/');
+      console.log(error, '=====error');
+
+      // historyRouter.replace('/');
     }
   }, [getAuthToken, historyRouter, tab]);
   const initRef = useRef(init);

@@ -5,6 +5,7 @@
 @import './assets/theme/common.less';
 @import './assets/theme/common-move.less';
 @import './assets/theme/color.less';
+@import './assets/theme/global.less';
 
 body.pc-site-content,
 body.mobile-site-content {
@@ -14,6 +15,15 @@ body.mobile-site-content {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   background-color: var(--ant-body-bg-color);
+}
+
+body.mobile-site-content {
+  overflow: hidden;
+}
+
+#root {
+  height: 100%;
+  overflow: auto;
 }
 
 .awaken-layout {
