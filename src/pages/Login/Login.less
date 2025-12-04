@@ -1,0 +1,205 @@
+.page-login {
+  min-height: calc(100vh - 60px);
+  overflow: hidden;
+}
+
+#awaken-portkey-sdk-root {
+  background-color: var(--ant-container-bg-color);
+  max-height: calc(100vh - 60px);
+  min-height: 562px !important;
+  max-width: 960px;
+  display: inline-block;
+  height: 562px;
+  border-radius: 8px;
+
+  &.awaken-portkey-sdk-pc {
+    margin: 0 auto;
+  }
+
+  .step-page-full-wrapper {
+    max-height: calc(100vh - 60px);
+  }
+
+  .portkey-sign-full-wrapper {
+    height: 100%;
+
+    .portkey-ui-custom-svg.backleft-icon {
+      display: none;
+    }
+  }
+
+  &.awaken-portkey-sdk-mobile {
+    width: 100%;
+    min-height: calc(100vh - 60px);
+    max-height: calc(100vh - 60px);
+  }
+
+  .portkey-ui-web2design-wrapper {
+    .left-wrapper {
+      .portkey-ui-flex-1 {
+        flex: none;
+      }
+      .web2-design-upgraded-portkey {
+        margin: 0;
+        padding: 3px 10px;
+        border: none;
+        background-color: rgb(250 173 20 / 10%);
+      }
+    }
+  }
+
+  .web2-header {
+    .title {
+      color: var(--portkey-ui-font-7);
+    }
+  }
+
+  .portkey-ui-switch-upgraded-wrapper {
+    width: 100%;
+    align-self: center;
+    margin: 0;
+  }
+
+  .aelf-web-conntect-drawer {
+    .ant-drawer-mask {
+      background: rgb(0 0 0 / 60%);
+    }
+    .portkey-ant-drawer-content {
+      background-color: var(--ant-container-bg-color);
+      border: none;
+    }
+    .portkey-ant-drawer-title {
+      position: relative;
+      .title {
+        color: var(--ant-black-font-color-1);
+        font-weight: 500;
+      }
+      > img {
+        position: absolute;
+        right: 0;
+        top: 0.01rem;
+      }
+    }
+  }
+
+  .nested-entry-wrapper {
+    padding-top: 0;
+    padding-bottom: 0;
+
+    .nested-wallet-wrapper {
+      span {
+        color: #515a62;
+      }
+    }
+  }
+
+  .nested-connect-modal {
+    border-radius: 8px;
+    overflow: hidden;
+    .ant-modal-header,
+    .ant-modal-body,
+    .portkey-ant-modal-content {
+      background-color: var(--ant-container-bg-color);
+      border: none;
+    }
+    .portkey-ant-modal-title {
+      position: relative;
+
+      .aelf-web-logout-dialog-title {
+        color: var(--ant-black-font-color-1);
+        font-weight: 500;
+        font-size: 16px;
+        line-height: 24px;
+        padding: 0;
+        text-align: left;
+      }
+      > img {
+        position: absolute;
+        right: 0;
+        top: 0.01rem;
+        cursor: pointer;
+      }
+    }
+  }
+
+  .portkey-ui-web2design-switch-sign {
+    display: none;
+  }
+}
+
+.pc-site-content {
+  .page-login {
+    display: flex;
+    justify-content: center;
+    padding-top: 80px;
+    padding-bottom: 40px;
+
+    @media screen and (max-width: 1920px) {
+      padding-top: calc((100vw - 1680px) / (1920 - 1680) * 20 + 60px);
+    }
+
+    @media screen and (max-width: 1680px) {
+      padding-top: calc((100vw - 1440px) / (1680 - 1440) * 20 + 40px);
+    }
+
+    @media screen and (max-width: 1440px) {
+      padding-top: 40px;
+    }
+  }
+
+  #awaken-portkey-sdk-root {
+    min-width: 548px;
+  }
+
+  .portkey-ui-web2design-wrapper {
+    overflow-y: hidden;
+  }
+
+  .portkey-sign-full-wrapper {
+    .register-start-card.sign-ui-card {
+      padding: 64px 64px 0;
+    }
+    .portkey-ui-custom-svg.backleft-icon {
+      display: none;
+    }
+    .social-login-title {
+      padding-top: 0;
+      padding-bottom: 52px;
+      .title {
+        text-align: left;
+        font-size: 32px;
+        font-weight: 600;
+        line-height: 40px;
+      }
+    }
+  }
+
+  .portkey-ui-web2design-login {
+    width: 960px;
+  }
+  .signup-login-content {
+    width: 548px;
+  }
+}
+
+.mobile-site-content {
+  .page-login {
+    overflow: initial;
+  }
+  #awaken-portkey-sdk-root {
+    max-height: none;
+    height: calc(100vh - 60px);
+    .portkey-sign-full-wrapper {
+      height: 100%;
+    }
+
+    .left-wrapper {
+      padding: 24px 16px 0;
+    }
+
+    .nested-entry-wrapper {
+      padding-left: 30px;
+      padding-right: 30px;
+    }
+  }
+}

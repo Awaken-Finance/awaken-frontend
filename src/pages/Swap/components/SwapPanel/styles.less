@@ -1,0 +1,149 @@
+.swap-panel {
+  position: relative;
+
+  .common-question {
+    width: 16px;
+    height: 16px;
+  }
+
+  .route-empty-warning {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    .route-empty-warning-icon-wrap {
+      height: 20px;
+      display: flex;
+      align-items: center;
+    }
+    .route-empty-warning-icon {
+      margin-right: 4px;
+      display: flex;
+      background-image: url('../../../../assets/icons/icon-notification-warning.svg');
+      width: 16px;
+      height: 16px;
+      background-size: 100% 100%;
+    }
+  }
+
+  .swap-input-out-row {
+    margin-bottom: 10px;
+    overflow: hidden;
+  }
+
+  .swap-btn-wrap {
+    padding-top: 30px;
+  }
+
+  .swap-btn {
+    width: 100%;
+
+    &.swap-btn-error {
+      background-color: #5a2738 !important;
+      border-color: #5a2738 !important;
+      span {
+        color: #9c7d88 !important;
+      }
+
+      &:hover,
+      &:focus {
+        background-color: #5a2738 !important;
+        border-color: #5a2738 !important;
+      }
+    }
+  }
+
+  .swap-select-token-btn.common-button.ant-btn.ant-btn-default {
+    background-color: #2a2e3a;
+    margin-left: 8px;
+    .ant-image {
+      margin-right: 0;
+    }
+  }
+
+  .swap-token-switch-wrap {
+    height: 4px;
+    display: flex;
+    z-index: 100;
+    justify-content: center;
+    align-items: center;
+    // background-color: ;
+
+    .swap-token-switch-btn {
+      cursor: pointer;
+      .swap-token-switch-btn-default {
+        display: block;
+      }
+      .swap-token-switch-btn-hover {
+        display: none;
+      }
+    }
+    .swap-token-switch-btn:hover {
+      .swap-token-switch-btn-default {
+        display: none;
+      }
+      .swap-token-switch-btn-hover {
+        display: block;
+      }
+    }
+  }
+
+  .swap-extra-wrap {
+    margin-top: 24px;
+  }
+
+  .price-warp {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+
+    .price-switch-btn {
+      margin-left: 4px;
+      margin-right: 16px;
+      cursor: pointer;
+    }
+  }
+
+  .swap-detail-btn {
+    cursor: pointer;
+    transition: transform 0.25s ease-in-out;
+  }
+  .swap-detail-btn-show {
+    transform: rotateX(180deg);
+  }
+
+  .swap-detail {
+    display: none;
+    flex-direction: column;
+    margin-top: 16px;
+    gap: 12px;
+
+    .swap-detail-title {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .slippage-set-fee.setting-fee-btn.ant-btn.ant-btn-default {
+      height: 20px;
+      background-color: var(--ant-container-bg-color);
+    }
+  }
+  .swap-detail-show {
+    display: flex;
+  }
+
+  .swap-order-routing-tip-wrap {
+    .common-tooltip {
+      max-width: 380px;
+      width: 380px;
+      .ant-tooltip-inner {
+        max-width: 380px;
+        width: 380px;
+      }
+    }
+  }
+
+  .deposit-link {
+    text-align: center;
+    margin-top: 8px;
+  }
+}

@@ -1,0 +1,95 @@
+.common-slider {
+  padding: 0;
+  height: 4px;
+  margin-top: 2px;
+  &.ant-slider:hover {
+    .ant-slider-rail {
+      background-color: var(--ant-title-bg-color);
+    }
+    .ant-slider-track {
+      background-color: var(--ant-primary-color);
+    }
+  }
+
+  .ant-slider-rail,
+  .ant-slider-track,
+  .ant-slider-step {
+    height: 4px;
+  }
+
+  .ant-slider-handle {
+    height: 10px;
+    width: 10px;
+    margin-top: -3px;
+    background-color: var(--ant-black-font-color-1);
+    border: solid 2px var(--ant-black-font-color-1);
+    &:hover {
+      border: solid 2px var(--ant-primary-color);
+    }
+    &:focus {
+      box-shadow: none;
+    }
+  }
+
+  &.ant-slider:hover .ant-slider-handle:not(.ant-tooltip-open) {
+    border-color: var(--ant-primary-color);
+  }
+
+  .ant-slider-rail {
+    background-color: var(--ant-title-bg-color);
+  }
+  .ant-slider-track {
+    background-color: var(--ant-primary-color);
+  }
+  .ant-slider-step {
+    .ant-slider-dot {
+      width: 8px;
+      height: 8px;
+      background-color: var(--ant-title-bg-color);
+      &.ant-slider-dot-active {
+        background-color: var(--ant-primary-color);
+        border-color: var(--ant-primary-color);
+      }
+    }
+  }
+  .ant-slider-mark {
+    top: 9px;
+    .ant-slider-mark-text:last-child {
+      transform: translateX(-90%) !important;
+    }
+  }
+
+  .ant-tooltip-inner {
+    width: 32px;
+    height: 26px;
+    background: var(--ant-button-gray-hover-color);
+    color: var(--ant-black-font-color-1);
+    font-size: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 6px;
+  }
+  .ant-tooltip-arrow {
+    .ant-tooltip-arrow-content {
+      --antd-arrow-background-color: linear-gradient(
+        to right bottom,
+        var(--ant-button-gray-hover-color),
+        var(--ant-button-gray-hover-color)
+      );
+    }
+  }
+
+  &.ant-slider-disabled {
+    .ant-slider-handle {
+      display: none;
+    }
+    .ant-slider-step .ant-slider-dot {
+      background-color: var(--ant-title-bg-color);
+      border-color: var(--ant-title-bg-color);
+    }
+    .ant-slider-rail {
+      background-color: var(--ant-title-bg-color) !important;
+    }
+  }
+}

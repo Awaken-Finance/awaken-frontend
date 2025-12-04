@@ -1,0 +1,81 @@
+@keyframes awaken-move-down-in {
+  0% {
+    transform: translateY(100%);
+    transform-origin: 0 0;
+    opacity: 0;
+  }
+  25% {
+    transform: translateY(75%);
+    transform-origin: 0 0;
+    opacity: 0.25;
+  }
+  50% {
+    transform: translateY(50%);
+    transform-origin: 0 0;
+    opacity: 0.5;
+  }
+  75% {
+    transform: translateY(25%);
+    transform-origin: 0 0;
+    opacity: 0.75;
+  }
+  100% {
+    transform: translateY(0%);
+    transform-origin: 0 0;
+    opacity: 1;
+  }
+}
+
+@keyframes awaken-move-down-out {
+  0% {
+    transform: translateY(0%);
+    transform-origin: 0 0;
+    opacity: 1;
+  }
+  25% {
+    transform: translateY(25%);
+    transform-origin: 0 0;
+    opacity: 0.75;
+  }
+  50% {
+    transform: translateY(50%);
+    transform-origin: 0 0;
+    opacity: 0.5;
+  }
+  75% {
+    transform: translateY(75%);
+    transform-origin: 0 0;
+    opacity: 0.25;
+  }
+  100% {
+    transform: translateY(100%);
+    transform-origin: 0 0;
+    opacity: 0;
+  }
+}
+@move-time: 0.15s;
+
+.awaken-move-down-enter,
+.awaken-move-down-appear {
+  animation-duration: @move-time;
+  animation-fill-mode: both;
+  animation-play-state: paused;
+  opacity: 0;
+  animation-timing-function: cubic-bezier(0.08, 0.82, 0.17, 1);
+}
+.awaken-move-down-leave {
+  animation-duration: @move-time;
+  animation-fill-mode: both;
+  animation-play-state: paused;
+  animation-timing-function: cubic-bezier(0.6, 0.04, 0.98, 0.34);
+}
+.awaken-move-down-enter.awaken-move-down-enter-active,
+.awaken-move-down-appear.awaken-move-down-appear-active {
+  animation-name: awaken-move-down-in;
+  animation-play-state: running;
+}
+.awaken-move-down-leave.awaken-move-down-leave-active {
+  animation-name: awaken-move-down-out;
+  animation-play-state: running;
+  pointer-events: none;
+}

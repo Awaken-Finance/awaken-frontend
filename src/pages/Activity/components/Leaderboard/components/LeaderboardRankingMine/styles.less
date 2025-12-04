@@ -1,0 +1,209 @@
+.leaderboard-ranking-mine {
+  padding: 32px 24px 24px;
+
+  .leaderboard-ranking-mine-header {
+    .leaderboard-ranking-mine-title {
+      position: relative;
+      font-size: 25px;
+      font-weight: 700;
+      line-height: 32px;
+      color: #e5e8ef;
+      display: inline-block;
+      z-index: 0;
+
+      svg {
+        position: absolute;
+        top: -10px;
+        right: -18px;
+        z-index: -1;
+        width: 32px;
+        height: 32px;
+      }
+    }
+  }
+
+  .leaderboard-ranking-mine-win-tip {
+    background: #1e212b;
+    border-radius: 8px;
+    margin-top: 12px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 13px 20px;
+    color: #2aed9b;
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 22px;
+
+    &.leaderboard-ranking-mine-encourage-tip {
+      color: #e5e8ef;
+      font-weight: 400;
+      font-size: 15px;
+      line-height: 20px;
+    }
+  }
+
+  .leaderboard-ranking-mine-detail {
+    margin-top: 24px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+  }
+
+  .leaderboard-ranking-mine-detail-info {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 32px;
+
+    .leaderboard-ranking-mine-detail-box {
+      width: 200px;
+      display: flex;
+      flex-direction: column;
+
+      &:nth-child(2) {
+        width: 120px;
+      }
+
+      .leaderboard-ranking-mine-detail-box-title {
+        font-size: 13px;
+        font-weight: 400;
+        line-height: 20px;
+        color: #9ba0b0;
+      }
+      .leaderboard-ranking-mine-detail-box-content {
+        font-size: 22px;
+        font-weight: 700;
+        line-height: 28px;
+        color: #e5e8ef;
+        &.leaderboard-ranking-mine-detail-box-rewards {
+          color: #ffc736;
+        }
+      }
+    }
+  }
+
+  .leaderboard-ranking-mine-detail-btn {
+    width: 192px;
+    border-radius: 8px;
+    font-size: 15px;
+    font-weight: 700;
+    line-height: 20px;
+    height: 40px;
+    span {
+      font-size: 15px;
+      font-weight: 700;
+      line-height: 20px;
+    }
+  }
+
+  .leaderboard-ranking-mine-expect-wrap {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 3px;
+    margin-bottom: 2px;
+
+    .leaderboard-ranking-mine-expect-wrap-header {
+      font-size: 12px;
+      line-height: 18px;
+      color: #e5e8ef;
+    }
+    .leaderboard-ranking-mine-expect-wrap-content {
+      font-size: 13px;
+      font-weight: 700;
+      line-height: 20px;
+      color: #ffc736;
+    }
+  }
+}
+
+.mobile-site-content {
+  .leaderboard-ranking-mine {
+    padding: 16px 12px;
+
+    .leaderboard-ranking-mine-header {
+      .leaderboard-ranking-mine-title {
+        font-size: 24px;
+        line-height: 32px;
+        z-index: 0;
+
+        svg {
+          top: -4px;
+          right: -10px;
+          width: 24px;
+          height: 24px;
+          z-index: -1;
+        }
+      }
+    }
+
+    .leaderboard-ranking-mine-win-tip {
+      margin-top: 12px;
+      font-size: 14px;
+      line-height: 20px;
+      padding: 8px 12px;
+
+      &.leaderboard-ranking-mine-encourage-tip {
+        font-size: 14px;
+        line-height: 20px;
+      }
+    }
+
+    .leaderboard-ranking-mine-detail {
+      margin-top: 32px;
+      margin-bottom: 32px;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    .leaderboard-ranking-mine-detail-info {
+      width: 100%;
+      gap: 12px;
+      align-items: flex-start;
+
+      .leaderboard-ranking-mine-detail-box {
+        align-items: center;
+        width: auto;
+        flex: 1;
+        flex-shrink: 0;
+
+        &:first-child {
+          align-items: flex-start;
+          text-align: left;
+        }
+        &:last-child {
+          align-items: flex-end;
+          text-align: right;
+        }
+
+        .leaderboard-ranking-mine-detail-box-title {
+          font-size: 14px;
+          line-height: 20px;
+        }
+        .leaderboard-ranking-mine-detail-box-content {
+          font-size: 20px;
+          line-height: 28px;
+        }
+      }
+    }
+
+    .leaderboard-ranking-mine-detail-btn {
+      width: 100%;
+    }
+
+    .leaderboard-ranking-mine-expect-wrap {
+      flex-direction: column;
+      align-items: flex-end;
+      justify-content: flex-start;
+      gap: 0;
+      .leaderboard-ranking-mine-expect-wrap-content {
+        font-size: 14px;
+        line-height: 22px;
+      }
+    }
+  }
+}

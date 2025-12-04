@@ -1,0 +1,38 @@
+.collect-icon {
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: -4px;
+  .checked {
+    background-image: url('../../assets/icons/icon-collected.svg');
+  }
+  .uncheck {
+    background-image: url('../../assets/icons/icon-not-collect.svg');
+    &:hover {
+      background-image: url('../../assets/icons/icon-collected.svg');
+    }
+  }
+
+  .uncheck-mobile {
+    background-image: url('../../assets/icons/icon-not-collect.svg');
+  }
+  > i {
+    transition: all 0.2s;
+    width: 24px;
+    height: 24px;
+    display: block;
+    background-repeat: no-repeat;
+  }
+}
+
+.collect-icon-list {
+  .uncheck {
+    background-image: url('../../assets/icons/icon-not-collect.svg');
+    &:hover {
+      background-image: url('../../assets/icons/icon-not-collect.svg');
+    }
+  }
+}
+

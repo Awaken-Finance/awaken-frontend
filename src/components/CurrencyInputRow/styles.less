@@ -1,0 +1,52 @@
+.currency-input-row {
+  height: 82px;
+  padding: 16px 12px;
+  border-radius: 4px;
+  background-color: var(--ant-input-bg-color);
+  border: 1px solid var(--ant-input-bg-color);
+  transition: border-color 0.2s;
+  .currency-input.ant-input-affix-wrapper {
+    padding: 0;
+  }
+
+  .common-input.ant-input-affix-wrapper {
+    border: none;
+  }
+
+  &:hover,
+  &:focus-within {
+    border-color: var(--ant-primary-color);
+  }
+  .ant-input {
+    font-size: 20px;
+  }
+
+  .ant-input[disabled] {
+    color: var(--ant-black-font-color-1);;
+  }
+
+  .common-input {
+    height: 24px;
+    input::placeholder {
+      font-size: 20px !important;
+      color: var(--ant-black-font-color-3);
+    }
+  }
+  .blance-box {
+    display: flex;
+    .max-btn {
+      width: 40px;
+      height: 20px;
+      margin-left: 8px;
+      color: var(--ant-primary-color);
+      cursor: pointer;
+      font-size: 13px;
+      border: 1px solid var(--ant-primary-color);
+      border-radius: 4px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 500;
+    }
+  }
+}

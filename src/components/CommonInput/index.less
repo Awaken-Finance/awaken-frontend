@@ -1,0 +1,83 @@
+.common-input {
+  background-color: var(--ant-input-bg-color) !important;
+  padding: 0 12px;
+  border-radius: 4px;
+  height: 40px;
+  border: 1px solid var(--ant-input-bg-color);
+  color: var(--ant-black-font-color-1);
+  box-shadow: none !important;
+
+  .ant-input {
+    background-color: var(--ant-input-bg-color);
+    color: var(--ant-black-font-color-1);
+    box-shadow: none !important;
+    // &.ant-input-status-error {
+    //   border-color: #e43555;
+    // }
+  }
+
+  &:hover,
+  &:focus-visible {
+    border-color: var(--ant-border-color);
+  }
+
+  &::placeholder {
+    color: var(--ant-black-font-color-3);
+  }
+
+  &-center {
+    .ant-input {
+      text-align: center;
+    }
+  }
+  &-right {
+    .ant-input {
+      text-align: right;
+    }
+  }
+
+  .ant-input-clear-icon {
+    display: inline-flex;
+    align-items: center;
+  }
+}
+
+.common-input.ant-input-affix-wrapper {
+  background-color: var(--ant-input-bg-color);
+  border-color: var(--ant-input-bg-color);
+  border-width: 1px;
+}
+.common-input.ant-input-affix-wrapper:focus,
+.common-input.ant-input-affix-wrapper-focused {
+  box-shadow: none;
+  border-color: var(--ant-border-color);
+}
+
+.common-input.ant-input {
+  background-color: var(--ant-input-bg-color);
+  padding: 0 8px;
+  border-radius: 4px;
+  height: 40px;
+  border: 1px solid var(--ant-input-bg-color);
+  color: var(--ant-black-font-color-1);
+  &:hover,
+  &:focus-visible {
+    border-color: var(--ant-border-color);
+  }
+
+  &::placeholder {
+    color: var(--ant-black-font-color-3);
+  }
+
+  &-center {
+    text-align: center;
+  }
+  &-right {
+    text-align: right;
+  }
+}
+
+::placeholder {
+  color: var(--ant-black-font-color-3) !important;
+  font-size: 14px;
+}

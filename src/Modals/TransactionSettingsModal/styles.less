@@ -1,0 +1,59 @@
+/* stylelint-disable no-descending-specificity */
+
+.transactions-settings-modal {
+  box-shadow: 0 0 24px 0 rgb(0 0 0 / 50%);
+  .ant-modal-header {
+    height: 56px;
+    border-bottom: none;
+  }
+
+  .ant-drawer-header {
+    border-bottom: none;
+  }
+
+  .ant-modal-body {
+    padding: 0 24px 24px;
+  }
+
+  .ant-drawer-body {
+    padding: 0 16px 64px;
+  }
+
+  .fee-item {
+    width: 58px;
+    height: 36;
+    line-height: 34px;
+    border: 1px solid #393d47;
+    border-radius: 4px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s;
+    &-ative {
+      border-color: var(--ant-primary-color);
+    }
+    &-mobile {
+      width: 64px;
+    }
+  }
+
+  .fee-input {
+    height: 36px;
+    border-radius: 4px;
+  }
+
+  .mins-input {
+    height: 36px;
+    width: 124px;
+    text-align: right;
+    border-radius: 4px;
+  }
+
+  .box-margin {
+    margin-top: 8px;
+  }
+
+  .switch-icon {
+    display: flex;
+    justify-content: flex-end;
+  }
+}

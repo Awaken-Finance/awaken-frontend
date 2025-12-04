@@ -1,0 +1,339 @@
+.account-modal.ant-modal {
+  max-width: 100%;
+  padding-bottom: 0;
+  z-index: 1000;
+
+  .account-info {
+    display: flex;
+    align-items: center;
+    margin-bottom: 32px;
+    padding: 0 16px;
+    .account-addr-info {
+      display: flex;
+      align-items: center;
+
+      .ant-col {
+        display: flex;
+        align-items: center;
+      }
+    }
+  }
+
+  .icon-copy-addr {
+    color: var(--ant-black-font-color-2);
+
+    &:hover {
+      color: var(--ant-black-font-color-1);
+      cursor: pointer;
+    }
+  }
+
+  .logout-icon {
+    width: 32px;
+    height: 32px;
+    padding: 4px;
+    border-radius: 16px;
+    background-color: #343948;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    > path {
+      fill: var(--ant-black-font-color-2);
+    }
+
+    &:hover {
+      > path {
+        fill: var(--ant-black-font-color-1);
+      }
+    }
+  }
+
+  .ant-modal-body {
+    padding: 0;
+    margin: 0;
+    background-color: transparent;
+  }
+
+  .ant-modal-content {
+    background-color: var(--ant-container-bg-color);
+    border-radius: 8px;
+    max-height: calc(100vh - 110px);
+    overflow-y: auto;
+    box-shadow: 0 0 24px 0 rgb(0 0 0 / 50%);
+  }
+
+  .switch-wallet-btn {
+    width: 100%;
+    margin: 24px 0;
+    height: 40px;
+  }
+
+  .account-content {
+    width: 420px;
+    min-height: 628px;
+    padding: 24px 0;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+
+    .account-content-title {
+      padding: 0 16px;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+    }
+  }
+
+  .account-switch {
+    padding: 8px;
+
+    .switch-wallet-header {
+      padding: 16px;
+
+      .back-icon {
+        width: 32px;
+        height: 32px;
+        padding: 4px;
+        color: var(--ant-black-font-color-2);
+      }
+
+      .title {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+    }
+
+    .wallet-item {
+      height: 68px;
+      border-radius: 4px;
+      width: 100%;
+      padding-right: 16px;
+      user-select: none;
+
+      &:hover {
+        background-color: var(--ant-list-item-color-hover);
+      }
+
+      .icon-col {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .name-col {
+        display: flex;
+        align-items: center;
+      }
+
+      .state-col {
+        display: flex;
+        align-items: center;
+        justify-content: right;
+      }
+    }
+  }
+
+  .account-modal-view-more-btn {
+    position: absolute;
+    bottom: 24px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    left: 0;
+    right: 0;
+    .common-link {
+      gap: 4px;
+    }
+  }
+
+  .my-tokens-hidden-btn {
+    height: 24px;
+    padding: 2px 8px;
+    font-size: 14px;
+
+    > span {
+      display: block;
+      width: 41px;
+    }
+  }
+
+  .my-tokens-split {
+    padding: 20px;
+  }
+
+  .account-modal-list-empty {
+    margin-top: 127px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 32px;
+
+    .account-modal-list-empty-title {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      padding: 0 16px;
+      .default-font-style {
+        text-align: center;
+      }
+    }
+
+    img {
+      width: 80px;
+      height: 80px;
+    }
+  }
+
+  .account-modal-menu-header {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-bottom: 8px;
+    gap: 16px;
+    padding: 0 16px;
+    margin-top: 32px;
+
+    .account-modal-menu-item {
+      cursor: pointer;
+    }
+
+    .account-modal-menu-item-active {
+      .default-font-style {
+        color: var(--ant-black-font-color-1);
+      }
+    }
+  }
+
+  .account-modal-position-list {
+    display: flex;
+    flex-direction: column;
+    padding: 0 16px 36px;
+  }
+
+  .account-modal-position-item {
+    padding: 10px 0;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+
+    .account-modal-position-item-middle {
+      margin-left: 8px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      .fee-rate-use-bg {
+        display: inline-block;
+      }
+      .account-modal-position-fee-wrap {
+        line-height: 20px;
+        height: 20px;
+      }
+    }
+    .account-modal-position-item-right {
+      margin-left: 12px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: end;
+      gap: 2px;
+      .price-digits-wrapper {
+        line-height: 16px;
+      }
+    }
+  }
+
+  .account-modal-limit-middle {
+    gap: 2px;
+    .account-modal-limit-header {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      gap: 2px;
+    }
+    .account-modal-limit-content {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      gap: 8px;
+    }
+  }
+}
+
+.mobile-site-content {
+  .account-modal {
+    width: 100%;
+    height: 100%;
+
+    .account-content {
+      padding: 16px 0;
+      position: relative;
+    }
+
+    .ant-modal-header {
+      height: 48px;
+      background-color: var(--ant-container-bg-color);
+      border: none;
+    }
+    .ant-modal-close {
+      color: var(--ant-black-font-color-2);
+      .ant-modal-close-x {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 32px;
+        height: 32px;
+        padding: 4px;
+        line-height: 48px;
+        margin-right: 12px;
+        margin-top: 12px;
+      }
+    }
+
+    &.ant-modal,
+    .ant-modal-content {
+      height: 100%;
+      width: 100vw;
+      margin: 0;
+      top: 0;
+      max-height: max-content;
+      border-radius: 0;
+    }
+
+    .ant-modal-body {
+      height: calc(100vh - 48px);
+    }
+
+    .ant-modal-content {
+      max-height: auto;
+    }
+    .account-info {
+      padding: 0 16px;
+    }
+    .account-content-title {
+      padding: 0 16px;
+    }
+    .account-content-item {
+      padding: 0 16px;
+      &:hover {
+        background-color: unset;
+      }
+    }
+    .logout-icon {
+      > path {
+        fill: var(--ant-black-font-color-1);
+      }
+
+      &:hover {
+        > path {
+          fill: unset;
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,46 @@
+.price-sink-wrapper {
+  position: relative;
+  .price-hide-decimals {
+    position: relative;
+    top: 4px;
+  }
+  &.font-size-10,
+  &.font-size-12,
+  &.font-size-14,
+  &.font-size-16,
+  &.font-size-18 {
+    .price-hide-decimals {
+      top: 4px;
+    }
+  }
+  &.font-size-20,
+  &.font-size-24,
+  &.font-size-32 {
+    .price-hide-decimals {
+      top: 8px;
+    }
+  }
+}
+
+.price-sink-small {
+  font-size: 12px;
+  line-height: 18px;
+
+  .price-hide-decimals {
+    top: 4px;
+  }
+}
+.price-sink-default {
+  font-size: 14px;
+  line-height: 20px;
+  .price-hide-decimals {
+    top: 4px;
+  }
+}
+.price-sink-large {
+  font-size: 32px;
+  line-height: 36px;
+  .price-hide-decimals {
+    top: 8px;
+  }
+}
