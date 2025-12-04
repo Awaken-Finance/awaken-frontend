@@ -1,0 +1,75 @@
+.activity-countdown {
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+  align-items: center;
+
+  .activity-countdown-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+
+    .activity-countdown-box-title {
+      font-size: 12px;
+      line-height: 20px;
+      color: #9ba0b0;
+    }
+
+    .activity-countdown-box-content {
+      background: #2a2e3a;
+      border-radius: 8px;
+      padding: 10px 8px;
+      min-width: 50px;
+      height: 50px;
+      font-size: 25px;
+      font-weight: 700;
+      line-height: 32px;
+      text-align: center;
+      color: #e5e8ef;
+    }
+  }
+}
+
+.activity-countdown.activity-countdown-row {
+  gap: 13px;
+
+  .activity-countdown-box {
+    flex-direction: row;
+    gap: 6px;
+
+    .activity-countdown-box-content {
+      width: 32px;
+      height: 32px;
+      padding: 6px 4px;
+      min-width: 32px;
+      font-size: 16px;
+      line-height: 20px;
+      text-align: center;
+    }
+  }
+}
+
+.mobile-site-content {
+  .activity-countdown {
+    .activity-countdown-box-title {
+      font-size: 12px;
+      line-height: 18px;
+    }
+
+    .activity-countdown-box-content {
+      height: 48px;
+      min-width: 48px;
+      padding: 4px;
+      font-size: 24px;
+      line-height: 40px;
+    }
+  }
+
+  .activity-countdown.activity-countdown-row {
+    .activity-countdown-box-title {
+      font-size: 16px;
+      line-height: 24px;
+    }
+  }
+}

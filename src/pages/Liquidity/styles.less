@@ -1,0 +1,168 @@
+.manage-liquidity-page {
+  .manage-liquidity-setting {
+    position: absolute;
+    right: 28px;
+    top: calc(50% - 1px);
+    transform: translateY(-44%);
+    background-color: var(--ant-container-bg-color);
+  }
+}
+
+.mobile-site-content {
+  .manage-liquidity-setting {
+    right: 12px;
+  }
+  .remove-modal-box {
+    .remove-modal-box-input {
+      .remove-input {
+        .remove-input-suffix {
+          max-width: 150px;
+        }
+      }
+    }
+  }
+}
+
+.remove-modal-box,
+.add-modal-box {
+  &-input {
+    padding: 16px 12px;
+    border-radius: 4px;
+    background-color: var(--ant-input-bg-color);
+    border: 1px solid var(--ant-input-bg-color);
+    transition: border-color 0.2s;
+    box-sizing: border-box;
+
+    .remove-input {
+      padding: 0;
+      line-height: 24px;
+      height: auto;
+      .remove-input-logo-wrap {
+        height: 24px;
+        display: flex;
+        align-items: center;
+
+        .currency-logo {
+          line-height: 20PX;
+        }
+      }
+
+      .remove-input-suffix {
+        max-width: 250px;
+      }
+      .remove-input-pairs-wrap {
+        .pairs {
+          max-height: 48px;
+          overflow: hidden;
+          /* stylelint-disable-next-line value-no-vendor-prefix */
+          display: -webkit-box;
+          -webkit-box-orient: vertical;
+          -webkit-line-clamp: 2;
+          color: var(--ant-black-font-color-1);
+        }
+      }
+    }
+
+    .remove-input.ant-input-affix-wrapper {
+      padding-left: 0;
+    }
+
+    .common-input.ant-input-affix-wrapper {
+      border: none;
+    }
+
+    &:hover,
+    &:focus-within {
+      border-color: var(--ant-primary-color);
+    }
+    .ant-input {
+      font-size: 20px;
+      &::placeholder {
+        font-size: 20px;
+      }
+    }
+  }
+
+  .add-btn {
+    margin-top: 2px;
+  }
+
+  &-lp {
+    padding: 16px 12px;
+    background-color: var(--ant-k-line-bg-color);
+    border-radius: 4px;
+  }
+
+  .confirm-btn {
+    width: 100%;
+  }
+
+  .supply-button-error {
+    color: rgb(229 232 239 / 100%) !important;
+    background-color: #6d293c !important;
+    border-color: #6d293c !important;
+    &:hover,
+    &:focus {
+      background-color: #6d293c !important;
+      border-color: #6d293c !important;
+    }
+  }
+}
+
+.remove-modal-box {
+  .max-btn {
+    width: 45px;
+    height: 20px;
+    margin-left: 8px;
+    color: var(--ant-primary-color);
+    cursor: pointer;
+    font-size: 13px;
+    border: 1px solid var(--ant-primary-color);
+    border-radius: 4px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 500;
+  }
+}
+
+.pooled-tokens-modal {
+  .title {
+    padding-bottom: 24px;
+    line-height: 20px;
+  }
+  .ant-modal-header {
+    border-bottom: none;
+  }
+  .ant-modal-body {
+    padding: 0 16px 24px;
+  }
+}
+
+.remove-liq-confirm-modal,
+.add-liq-confirm-modal,
+.liq-confirm-modal-m {
+  .ant-modal-header {
+    border-bottom: none;
+  }
+
+  .ant-modal-body {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    padding-top: 0;
+
+    .sub-row-container {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+  }
+}
+
+.liq-confirm-modal-m {
+  border-radius: 8px;
+  .ant-modal-body {
+    padding: 0 16px 24px;
+  }
+}

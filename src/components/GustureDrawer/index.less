@@ -1,0 +1,50 @@
+.guster-drawer {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 1000;
+  pointer-events: none;
+
+  &-mask {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 1000;
+    background: rgb(0 0 0 / 45%);
+    pointer-events: auto;
+  }
+
+  &-content {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-color: var(--ant-container-bg-color);
+  }
+
+  &-icon-back {
+    width: 32px;
+    height: 32px;
+    position: absolute;
+    left: 16px;
+    top: 16px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  &-icon-close {
+    width: 32px;
+    height: 32px;
+    position: absolute;
+    right: 16px;
+    top: 16px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+}

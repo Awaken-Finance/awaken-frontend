@@ -1,0 +1,94 @@
+.common-button.ant-btn {
+  height: 40px;
+  padding: 0 24px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  text-shadow: none !important;
+  box-shadow: none !important;
+
+  .ant-image {
+    margin-right: 4px;
+  }
+
+  &.ant-btn-default {
+    border: none;
+    color: var(--ant-black-font-color-1);
+    background-color: var(--ant-button-gray-color);
+    &:hover {
+      background-color: var(--ant-button-gray-hover-color);
+    }
+  }
+
+  &.ant-btn-text {
+    color: var(--ant-black-font-color-1);
+    &:hover {
+      color: var(--ant-primary-color);
+      svg {
+        stroke: var(--ant-primary-color);
+
+        * {
+          stroke: var(--ant-primary-color);
+        }
+      }
+    }
+  }
+
+  &.ant-btn-ghost {
+    border: 1px solid var(--ant-button-ghost-border-color);
+    color: var(--ant-primary-font-color);
+    // &:hover {
+    //   background-color: var(--ant-button-gray-hover-color);
+    // }
+  }
+
+  &.ant-btn-icon-only {
+    padding: 0;
+    color: var(--ant-black-font-color-1);
+    &:hover {
+      color: var(--ant-primary-color);
+      svg {
+        stroke: var(--ant-primary-color);
+
+        * {
+          stroke: var(--ant-primary-color);
+        }
+      }
+    }
+  }
+
+  &[disabled],
+  &.ant-btn-primary[disabled] {
+    background-color: var(--ant-button-gray-color);
+    border-color: var(--ant-button-gray-color);
+    color: var(--ant-black-font-color-2);
+  }
+}
+
+.common-button-lg.ant-btn {
+  height: 48px;
+  font-size: 16px;
+}
+
+.common-button-sm.ant-btn {
+  height: 28px;
+  padding: 0 8px;
+  font-size: 14px;
+}
+
+.common-button-ellipsis.common-button.ant-btn {
+  & > span {
+    flex: 0 1 auto;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}
+
+button[ant-click-animating-without-extra-node]::after {
+  border: 0 none;
+  opacity: 0;
+  animation: none 0 ease 0 1 normal;
+}

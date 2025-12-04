@@ -1,0 +1,37 @@
+.common-switch.ant-switch {
+  width: 48px;
+  height: 20px;
+  background: var(--ant-input-bg-color);
+  .ant-switch-handle {
+    top: 50%;
+    transform: translateY(-50%);
+    &::before {
+      background-color: var(--ant-button-gray-color);
+      width: 24px;
+      height: 16px;
+      top: 1px;
+    }
+  }
+  &:focus {
+    box-shadow: none;
+  }
+
+  &.ant-switch-checked .ant-switch-handle {
+    left: calc(100% - 24px - 2px);
+    &::before {
+      background-color: var(--ant-white-color);
+    }
+  }
+
+  .ant-click-animating-node {
+    display: none;
+  }
+}
+
+.common-switch.ant-switch-checked:focus {
+  box-shadow: none;
+}
+
+.common-switch.ant-switch-checked {
+  background-color: var(--ant-primary-color);
+}

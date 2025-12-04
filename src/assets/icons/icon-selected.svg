@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="16px" height="16px" viewBox="0 0 16 16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>编组 15</title>
+    <g id="行情" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="行情页面弹窗" transform="translate(-182.000000, -358.000000)">
+            <g id="新建交易对" transform="translate(87.000000, 128.000000)">
+                <g id="编组-15" transform="translate(95.000000, 230.000000)">
+                    <circle id="椭圆形" fill="currentColor" cx="8" cy="8" r="8"></circle>
+                    <polyline id="路径-3" stroke="#FFFFFF" stroke-linecap="round" stroke-linejoin="round" points="3.79285714 8 6.79096381 10.8571429 12.0410714 5.17142857"></polyline>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

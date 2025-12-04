@@ -1,0 +1,266 @@
+.deposit-history-page {
+  padding: 20px 40px 24px;
+  color: var(--etransfer-ui-primary-text);
+
+  .deposit-history-page-header {
+    padding: 12px 0 16px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 8px;
+    .deposit-history-page-back-btn {
+      width: 24px;
+      svg {
+        width: 24px;
+        height: 24px;
+      }
+    }
+  }
+
+  .etransfer-ui-history-web-filter-reset-icon {
+    display: inline-flex;
+    margin-top: -3px;
+  }
+
+  .etransfer-ui-history-web-filter-title {
+    display: none;
+  }
+  .etransfer-ui-history-web {
+    padding: 0 16px 16px;
+    background-color: var(--ant-container-bg-color);
+    border-radius: 8px;
+  }
+  .etransfer-ant-table,
+  .etransfer-ant-table-tbody > tr.etransfer-ant-table-placeholder:hover > td {
+    background-color: var(--ant-container-bg-color);
+  }
+  .etransfer-ant-table {
+    color: var(--etransfer-ui-primary-text);
+  }
+
+  .etransfer-ant-table-tbody > tr.etransfer-ant-table-row:hover > td,
+  .etransfer-ant-table-tbody > tr > td.etransfer-ant-table-cell-row-hover {
+    background-color: var(--ant-container-bg-color-2);
+  }
+
+  .etransfer-ant-table-empty .etransfer-ant-table-tbody > tr.etransfer-ant-table-placeholder {
+    color: var(--ant-black-font-color-2);
+  }
+  .etransfer-ant-table-thead > tr > th,
+  .etransfer-ant-table-tbody > tr > td {
+    border: none;
+  }
+  .etransfer-ant-select-suffix {
+    svg {
+      fill: #e5e8ef;
+    }
+  }
+  .etransfer-ui-history-mobile-filter-icon {
+    svg {
+      path {
+        fill: #e5e8ef;
+      }
+    }
+  }
+
+  .etransfer-ant-table-pagination.etransfer-ant-pagination {
+    align-items: center;
+    color: var(--ant-black-font-color-2);
+  }
+  .etransfer-ant-pagination-options-quick-jumper input {
+    background-color: var(--ant-input-bg-color);
+    color: var(--ant-black-font-color-2);
+    border: 1px solid var(--etransfer-ui-border) !important;
+    box-shadow: none;
+  }
+
+  .etransfer-ant-pagination-next .etransfer-ant-pagination-item-link,
+  .etransfer-ant-pagination-prev .etransfer-ant-pagination-item-link {
+    font-size: 11px;
+    background-color: var(--ant-input-bg-color);
+    color: var(--ant-black-font-color-2);
+    border: none;
+  }
+
+  .etransfer-ant-pagination-next,
+  .etransfer-ant-pagination-prev {
+    width: 24px;
+    height: 24px;
+    min-width: 24px;
+    border: 1px solid #393e4e;
+    box-sizing: border-box;
+    line-height: 22px;
+    text-align: center;
+    background-color: var(--ant-input-bg-color);
+    color: var(--ant-black-font-color-2);
+    border-radius: 4px;
+  }
+  .etransfer-ant-pagination-item {
+    width: auto;
+    padding: 0 6px;
+    height: 24px;
+    min-width: 24px;
+    border: 1px solid #393e4e;
+    box-sizing: border-box;
+    line-height: 22px;
+    text-align: center;
+    background-color: var(--ant-input-bg-color);
+    color: var(--ant-black-font-color-2);
+    border-radius: 4px;
+    a {
+      color: var(--ant-black-font-color-2);
+      padding: 0;
+    }
+  }
+  .etransfer-ant-pagination-item-active {
+    background-color: var(--ant-primary-color);
+    border: 1px solid var(--ant-primary-color);
+    & > a {
+      color: var(--ant-black-font-color-1);
+    }
+  }
+
+  .etransfer-ant-pagination-jump-next .etransfer-ant-pagination-item-container .etransfer-ant-pagination-item-ellipsis,
+  .etransfer-ant-pagination-jump-prev .etransfer-ant-pagination-item-container .etransfer-ant-pagination-item-ellipsis {
+    color: var(--ant-black-font-color-2);
+  }
+
+  .etransfer-ant-pagination-jump-prev,
+  .etransfer-ant-pagination-jump-next {
+    width: 24px;
+    height: 24px;
+    min-width: 24px;
+    border: 1px solid transparent;
+    box-sizing: border-box;
+    line-height: 22px;
+    text-align: center;
+    background-color: transparent;
+    color: var(--ant-black-font-color-2);
+    border-radius: 4px;
+  }
+}
+
+.emptybox-icon {
+  svg > g > path {
+    fill: #8eaeff;
+  }
+  svg > g > g > path {
+    fill: #6a87d4;
+  }
+}
+
+.etransfer-ant-select-dropdown,
+.etransfer-ant-select:not(.etransfer-ant-select-customize-input) .etransfer-ant-select-selector {
+  background-color: var(--etransfer-ui-page-bg) !important;
+  color: var(--etransfer-ui-primary-text);
+  border-color: var(--etransfer-ui-border) !important;
+}
+.etransfer-ant-select-item-option-active:not(.etransfer-ant-select-item-option-disabled) {
+  background-color: var(--etransfer-ui-hover-bg) !important;
+}
+
+.etransfer-ant-picker {
+  background-color: var(--etransfer-ui-page-bg) !important;
+  color: var(--etransfer-ui-primary-text) !important;
+  border: 1px solid var(--etransfer-ui-border) !important;
+  input {
+    color: var(--etransfer-ui-primary-text) !important;
+  }
+  .anticon-calendar {
+    svg {
+      fill: #e5e8ef;
+    }
+  }
+  // caret-color: ;
+}
+
+.mobile-site-content {
+  .deposit-history-page {
+    padding: 16px 0;
+
+    .deposit-history-page-header {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      padding: 0 12px;
+      height: 48px;
+      gap: 8px;
+
+      .deposit-history-page-back-btn {
+        width: 20px;
+        border: none;
+        margin-left: -4px;
+
+        svg {
+          width: 20px;
+          height: 20px;
+        }
+      }
+    }
+
+    .etransfer-ui-empty-data {
+      min-height: 400px;
+    }
+  }
+}
+
+.etransfer-ant-picker-dropdown {
+  .etransfer-ant-picker-range-arrow::before {
+    background: var(--etransfer-ui-normal-bg) !important;
+  }
+
+  .etransfer-ant-picker-panel-container {
+    background-color: var(--etransfer-ui-normal-bg) !important;
+
+    .etransfer-ant-picker-content th,
+    .etransfer-ant-picker-header-view button,
+    .etransfer-ant-picker-header button {
+      color: var(--etransfer-ui-secondary-text);
+    }
+    .etransfer-ant-picker-header,
+    .etransfer-ant-picker-panel,
+    .etransfer-ant-picker-panel .etransfer-ant-picker-footer {
+      border-color: var(--etransfer-ui-border);
+    }
+    .etransfer-ant-picker-cell {
+      color: var(--etransfer-ui-third-text);
+    }
+
+    .etransfer-ant-picker-cell-in-view {
+      color: var(--etransfer-ui-primary-text);
+    }
+
+    .etransfer-ant-picker-cell-in-view.etransfer-ant-picker-cell-in-range.etransfer-ant-picker-cell-range-hover::before,
+    .etransfer-ant-picker-cell-in-view.etransfer-ant-picker-cell-range-end.etransfer-ant-picker-cell-range-hover::before,
+    .etransfer-ant-picker-cell-in-view.etransfer-ant-picker-cell-range-end:not(.etransfer-ant-picker-cell-range-end-single).etransfer-ant-picker-cell-range-hover-end::before,
+    .etransfer-ant-picker-cell-in-view.etransfer-ant-picker-cell-range-start.etransfer-ant-picker-cell-range-hover::before,
+    .etransfer-ant-picker-cell-in-view.etransfer-ant-picker-cell-range-start:not(.etransfer-ant-picker-cell-range-start-single).etransfer-ant-picker-cell-range-hover-start::before,
+    .etransfer-ant-picker-panel
+      > :not(.etransfer-ant-picker-date-panel)
+      .etransfer-ant-picker-cell-in-view.etransfer-ant-picker-cell-in-range.etransfer-ant-picker-cell-range-hover-end::before,
+    .etransfer-ant-picker-panel
+      > :not(.etransfer-ant-picker-date-panel)
+      .etransfer-ant-picker-cell-in-view.etransfer-ant-picker-cell-in-range.etransfer-ant-picker-cell-range-hover-start::before {
+      background-color: var(--etransfer-ui-hover) !important;
+    }
+
+    .etransfer-ant-picker-date-panel
+      .etransfer-ant-picker-cell-in-view.etransfer-ant-picker-cell-in-range.etransfer-ant-picker-cell-range-hover-end
+      .etransfer-ant-picker-cell-inner::after,
+    .etransfer-ant-picker-date-panel
+      .etransfer-ant-picker-cell-in-view.etransfer-ant-picker-cell-in-range.etransfer-ant-picker-cell-range-hover-start
+      .etransfer-ant-picker-cell-inner::after {
+      background-color: var(--etransfer-ui-hover) !important;
+    }
+
+    .etransfer-ant-picker-cell-in-view.etransfer-ant-picker-cell-in-range::before {
+      background: var(--etransfer-ui-hover) !important;
+    }
+
+    .etransfer-ant-picker-cell:hover:not(.etransfer-ant-picker-cell-in-view) .etransfer-ant-picker-cell-inner,
+    .etransfer-ant-picker-cell:hover:not(.etransfer-ant-picker-cell-selected, .etransfer-ant-picker-cell-range-start, .etransfer-ant-picker-cell-range-end, .etransfer-ant-picker-cell-range-hover-start, .etransfer-ant-picker-cell-range-hover-end)
+      .etransfer-ant-picker-cell-inner {
+      background: var(--etransfer-ui-hover) !important;
+    }
+  }
+}
