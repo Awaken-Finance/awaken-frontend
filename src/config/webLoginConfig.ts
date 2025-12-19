@@ -87,7 +87,7 @@ export function getConfig() {
   });
   setTimeout(() => {
     (fairyVaultDiscoverWallet as any).detect();
-  }, 100);
+  }, 500);
   const isMobileDevices = devices.isMobileDevices();
   const config: IConfigProps = {
     baseConfig,
