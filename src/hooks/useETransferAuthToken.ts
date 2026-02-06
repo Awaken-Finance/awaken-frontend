@@ -1,3 +1,10 @@
+/**
+ * ETransfer Auth Token Hook
+ * Commented out after Deposit module removal.
+ * Uncomment to restore ETransfer authentication functionality.
+ */
+
+/*
 import AElf from 'utils/aelf';
 import { useCallback, useEffect, useRef } from 'react';
 import {
@@ -324,3 +331,4 @@ ${Date.now()}`;
 
   return { getAuthToken, getUserInfo };
 }
+*/

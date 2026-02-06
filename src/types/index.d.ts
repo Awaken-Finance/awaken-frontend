@@ -24,13 +24,6 @@ export type LendingTokens = {
     decimals: number;
   };
 };
-export type DepositToken = {
-  symbol: string;
-  address: string | string[];
-  decimals?: number;
-  name?: string;
-};
-
 export type ChainType = 'ERC' | 'ELF';
 
 export type AElfContract = {

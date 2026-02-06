@@ -4,7 +4,7 @@ import clsx from 'clsx';
 import Network from 'components/Network';
 import { basicModalView } from 'contexts/useModal/actions';
 import { useModalDispatch } from 'contexts/useModal/hooks';
-import { useCallback, useMemo, useRef } from 'react';
+import { useMemo } from 'react';
 import LanguageMenu from '../LanguageMenu';
 import NavMenu from '../NavMenu';
 import { NavLink } from 'react-router-dom';
@@ -19,8 +19,6 @@ import { useMonitorScroll } from 'hooks/useMonitorScroll';
 import useChainId from 'hooks/useChainId';
 import { shortenAddress } from 'utils';
 import { useConnectWallet } from '@aelf-web-login/wallet-adapter-react';
-import { DepositTipModal, DepositTipModalInterface } from 'Modals/DepositTipModal';
-import { useIsDepositPath } from 'hooks/route';
 import { MenuItem } from 'components/Header/router';
 import { TActivityBase } from 'graphqlServer/queries/activity/common';
 import { ActivityNotice } from '../ActivityNotice';
@@ -35,8 +33,6 @@ function PcHeader({ menuList, activity }: TPcHeaderProps) {
   const isConnected = useIsConnected();
   const { chainId } = useChainId();
   const { t } = useTranslation();
-  const depositTipModalRef = useRef<DepositTipModalInterface>();
-
   const [modalState] = useModal();
   const modalDispatch = useModalDispatch();
   const { toLogin } = useLogin();
@@ -46,12 +42,6 @@ function PcHeader({ menuList, activity }: TPcHeaderProps) {
   };
 
   useMonitorScroll();
-
-  const isDepositPath = useIsDepositPath();
-  const onDepositClick = useCallback(() => {
-    if (isDepositPath) return;
-    depositTipModalRef.current?.show();
-  }, [isDepositPath]);
 
   const displayAddress = useMemo(() => {
     if (!walletInfo?.address) return '';
@@ -98,18 +88,6 @@ function PcHeader({ menuList, activity }: TPcHeaderProps) {
         </Col>
         <Col>
           <Row align="middle" gutter={[16, 0]}>
-            {isConnected && (
-              <Col>
-                <CommonButton
-                  className={clsx(['signup-btn', isDepositPath && 'deposit-menu-disable'])}
-                  style={{ fontWeight: '600' }}
-                  type="ghost"
-                  onClick={onDepositClick}>
-                  {t('deposit')}
-                </CommonButton>
-              </Col>
-            )}
-
             <Col>
               <Network />
             </Col>
@@ -120,7 +98,6 @@ function PcHeader({ menuList, activity }: TPcHeaderProps) {
           </Row>
         </Col>
       </Row>
-      <DepositTipModal ref={depositTipModalRef} />
     </Layout.Header>
   );
 }

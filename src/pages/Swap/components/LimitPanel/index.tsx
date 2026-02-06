@@ -38,8 +38,6 @@ import TransactionFee from 'pages/Exchange/components/ExchangeContainer/componen
 import { FeeRow } from '../FeeRow';
 import { useMobile } from 'utils/isMobile';
 import { LIMIT_LABS_FEE_RATE, LIMIT_RECEIVE_RATE } from 'constants/swap';
-import { DepositLink } from 'components/DepositLink';
-
 export type TLimitInfo = {
   tokenIn?: Currency;
   tokenOut?: Currency;
@@ -442,8 +440,6 @@ export const LimitPanel = () => {
           </Font>
         </AuthBtn>
       </div>
-
-      {isExceedBalance && <DepositLink receiveToken={limitInfo.tokenIn?.symbol} />}
 
       <Row gutter={[0, 12]} className="limit-info-wrap">
         <Col span={24}>

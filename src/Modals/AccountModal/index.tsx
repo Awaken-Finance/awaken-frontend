@@ -37,9 +37,7 @@ import { getLimitOrderPrice } from 'utils/limit';
 import PriceDigits from 'components/PriceDigits';
 import { formatSymbol } from 'utils/token';
 import { LimitOrderStatusMap } from 'constants/limit';
-import { DEPOSIT_TIP_MODAL_CONFIRMED } from 'Modals/DepositTipModal';
-
-import { ETransferConfig, WalletTypeEnum, etransferCore, unsubscribeUserOrderRecord } from '@etransfer/ui-react';
+// import { ETransferConfig, WalletTypeEnum, etransferCore, unsubscribeUserOrderRecord } from '@etransfer/ui-react';
 import { resetActivityLocalJoinStatus } from 'utils/activity/activityJoinStatus';
 
 const MENU_LIST = [
@@ -93,15 +91,15 @@ function AccountModal() {
     try {
       await disConnectWallet();
       myEvents.DisconnectWallet.emit();
-      unsubscribeUserOrderRecord(address);
-      ETransferConfig.setConfig({
-        accountInfo: {
-          accounts: {},
-          walletType: WalletTypeEnum.unknown,
-        },
-      });
-      etransferCore.services.setRequestHeaders('Authorization', '');
-      localStorage.removeItem(DEPOSIT_TIP_MODAL_CONFIRMED);
+      // ETransfer cleanup - commented out after Deposit module removal
+      // unsubscribeUserOrderRecord(address);
+      // ETransferConfig.setConfig({
+      //   accountInfo: {
+      //     accounts: {},
+      //     walletType: WalletTypeEnum.unknown,
+      //   },
+      // });
+      // etransferCore.services.setRequestHeaders('Authorization', '');
       resetActivityLocalJoinStatus();
     } catch (error) {
       console.log('disconnectWallet error', error);

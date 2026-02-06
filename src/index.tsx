@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from 'react';
+import React, { useMemo } from 'react';
 import { ConfigProvider, message } from 'antd';
 import { createRoot } from 'react-dom/client';
 
@@ -20,8 +20,9 @@ import './sentry';
 import './index.css';
 import './App.less';
 import './assets/js/telegram-web-app';
-import { ETransferConfig } from '@etransfer/ui-react';
-import { etransferConfig } from 'config/etransferConfig';
+// ETransfer - commented out after Deposit module removal
+// import { ETransferConfig } from '@etransfer/ui-react';
+// import { etransferConfig } from 'config/etransferConfig';
 import { did } from '@portkey/did';
 import { checkConnectedWallet } from 'utils/portkey';
 
@@ -53,9 +54,10 @@ function RootApp() {
 
   const config = useMemo(() => getConfig(), []);
 
-  useEffect(() => {
-    ETransferConfig.setConfig(etransferConfig);
-  }, []);
+  // ETransfer - commented out after Deposit module removal
+  // useEffect(() => {
+  //   ETransferConfig.setConfig(etransferConfig);
+  // }, []);
 
   return (
     <ChianProvider>
