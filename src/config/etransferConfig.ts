@@ -1,3 +1,10 @@
+/**
+ * ETransfer Configuration
+ * Commented out after Deposit module removal.
+ * Uncomment to restore ETransfer configuration.
+ */
+
+/*
 import { ETransferConfigProps } from '@etransfer/ui-react';
 
 const API_ENV = process.env.REACT_APP_API_ENV;
@@ -57,3 +64,4 @@ export const ETRANSFER_DEPOSIT_CONFIG = etransferDepositConfig;
 export const ETRANSFER_WITHDRAW_CONFIG = etransferWithdrawConfig;
 export const ETRANSFER_DEPOSIT_DEFAULT_NETWORK = depositDefaultNetwork;
 export const ETRANSFER_DEPOSIT_DEFAULT_NETWORK_MAP = depositDefaultNetworkMap;
+*/

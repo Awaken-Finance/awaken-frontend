@@ -22,8 +22,6 @@ import { LimitSellBtnWithPay } from 'Buttons/LimitSellBtn';
 import { FeeRow } from 'pages/Swap/components/FeeRow';
 import { LimitPairPrice } from 'pages/Swap/components/LimitPairPrice';
 import { LIMIT_LABS_FEE_RATE, LIMIT_RECEIVE_RATE } from 'constants/swap';
-import { DepositLink } from 'components/DepositLink';
-
 export type TLimitRightCardProps = {
   rate: string;
   tokenA?: Currency;
@@ -334,7 +332,6 @@ export const LimitRightCard = ({ tokenA, tokenB, balances, reserves, rate }: TLi
           }}
         />
       </Col>
-      {amountError.error && <DepositLink receiveToken={tokenA?.symbol} />}
     </Row>
   );
 };

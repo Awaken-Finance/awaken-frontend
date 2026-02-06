@@ -37,8 +37,6 @@ import { formatSymbol } from 'utils/token';
 import { useTransactionFee } from 'contexts/useStore/hooks';
 import { FeeRow } from 'pages/Swap/components/FeeRow';
 import { SWAP_LABS_FEE_RATE, SWAP_RECEIVE_RATE } from 'constants/swap';
-import { DepositLink } from 'components/DepositLink';
-
 export type TLeftCardProps = {
   rate: string;
   tokenA?: Currency;
@@ -340,7 +338,6 @@ export default function LeftCard({ tokenA, tokenB, balances, reserves, rate, get
           }}
         />
       </Col>
-      {totalError.error && <DepositLink receiveToken={tokenB?.symbol} />}
     </Row>
   );
 }

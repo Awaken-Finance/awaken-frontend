@@ -36,8 +36,6 @@ import { useIsConnected } from 'hooks/useLogin';
 import { useTransactionFee } from 'contexts/useStore/hooks';
 import { SWAP_RECEIVE_RATE } from 'constants/swap';
 import BigNumber from 'bignumber.js';
-import { DepositLink } from 'components/DepositLink';
-
 export type TSwapInfo = {
   tokenIn?: Currency;
   tokenOut?: Currency;
@@ -552,8 +550,6 @@ export const SwapPanel = () => {
             </Font>
           </AuthBtn>
         </div>
-
-        {isExceedBalance && <DepositLink receiveToken={swapInfo.tokenIn?.symbol} />}
 
         {isExtraInfoShow && (
           <>
